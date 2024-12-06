@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3 test practice page</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            display: flex; /* Arrange content horizontally */
+            gap: 20px; /* Space between the circle and bar plot */
+            justify-content: center; /* Center both horizontally */
+            align-items: flex-start; /* Align items at the top */
+        }
+
+        .frame {
+            border: 1px solid black; /* Optional border for debugging layout */
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        #circle {
+            width: 50%; /* Adjust width as needed */
+        }
+
+        #chart {
+            width: 50%; /* Adjust width as needed */
+        }
+    </style>
+</head>
+<body>
+    <div class="frame" id="circle">
+        <h1>Circle Test</h1>
+    </div>
+
+    <div class="frame" id="chart">
+        <h1>Bar Plot with D3</h1>
+    </div>
+
+    <script src="circle.js"></script>
+    <script src="barplot.js"></script>
+</body>
+</html>

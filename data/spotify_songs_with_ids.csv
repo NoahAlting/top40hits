@@ -1,4 +1,4 @@
-Artist,Title,Popularity,Duration_ms,Album,Danceability,Acousticness,Energy,Liveness,Loudness,Valence,Tempo,Speechiness,Artist_Popularity,Artist Genres,Artist_Followers,Artist_Country,Artist_Song,Song_ID
+Artist,Title,Popularity,Duration_ms,Album,Danceability,Acousticness,Energy,Liveness,Loudness,Valence,Tempo,Speechiness,Artist_Popularity,Artist_Genres,Artist_Followers,Artist_Country,Artist_Song,Song_ID
 Lady Gaga & Bruno Mars,DIE WITH A SMILE,100,251667,Die With A Smile,0.521,0.308,0.592,0.122,-7.777,0.535,157.969,0.0304,92,"art pop, dance pop, pop",32798999,Unknown,Lady Gaga & Bruno Mars - DIE WITH A SMILE,1
 Disturbed,THE SOUND OF SILENCE - CYRIL REMIX,63,185238,The Sound of Silence (CYRIL Remix),0.68,0.123,0.721,0.162,-4.379,0.244,125.963,0.188,77,"alternative metal, nu metal, rap metal, rock",6960803,Unknown,Disturbed - THE SOUND OF SILENCE - CYRIL REMIX,2
 Sabrina Carpenter,TASTE,94,157279,Short n' Sweet,0.674,0.101,0.907,0.297,-4.086,0.721,112.964,0.064,94,pop,15022263,Unknown,Sabrina Carpenter - TASTE,3
@@ -1247,7 +1247,7 @@ Kensington,RIDDLES,44,208544,Rivals,0.488,0.0367,0.704,0.0763,-7.897,0.624,147.9
 "Macklemore & Ryan Lewis feat. Eric Nally, Melle Mel, Kool Moe Dee & Grandmaster Caz",DOWNTOWN,63,292593,This Unruly Mess I've Made,0.828,0.0916,0.609,0.291,-4.402,0.707,109.725,0.0694,73,"pop rap, seattle hip hop",2595607,Unknown,"Macklemore & Ryan Lewis feat. Eric Nally, Melle Mel, Kool Moe Dee & Grandmaster Caz - DOWNTOWN",1246
 Pharrell Williams,FREEDOM,65,162466,Freedom,0.428,0.395,0.559,0.136,-6.374,0.607,86.459,0.067,82,"dance pop, pop",4896648,Unknown,Pharrell Williams - FREEDOM,1247
 Eva Simons,POLICEMAN,48,194400,Policeman,0.636,0.0408,0.954,0.33,-1.596,0.865,104.664,0.136,55,dutch pop,95472,Unknown,Eva Simons - POLICEMAN,1248
-Sharon Doorson,SOMETHING BEAUTIFUL,10,207412,Something Beautiful,0.646,9.08e-05,0.629,0.244,-5.977,0.416,100.018,0.0284,29,dutch pop,12179,Unknown,Sharon Doorson - SOMETHING BEAUTIFUL,1249
+Sharon Doorson,SOMETHING BEAUTIFUL,10,207412,Something Beautiful,0.646,9.08E-05,0.629,0.244,-5.977,0.416,100.018,0.0284,29,dutch pop,12179,Unknown,Sharon Doorson - SOMETHING BEAUTIFUL,1249
 Jason Derülo,WANT TO WANT ME,73,207719,Everything Is 4,0.775,0.00906,0.68,0.109,-5.508,0.656,114.025,0.0629,79,"dance pop, pop",12269639,Unknown,Jason Derülo - WANT TO WANT ME,1250
 Lil' Kleine & Ronnie Flex,DRANK & DRUGS,55,145978,New Wave,0.923,0.0494,0.742,0.0829,-5.047,0.784,120.038,0.0495,66,"dutch hip hop, dutch rap pop",1099493,Unknown,Lil' Kleine & Ronnie Flex - DRANK & DRUGS,1251
 Lost Frequencies,ARE YOU WITH ME,79,138013,Less Is More,0.763,0.262,0.608,0.12,-8.1,0.394,121.02,0.035,81,"belgian edm, edm, pop dance, tropical house",2934850,Unknown,Lost Frequencies - ARE YOU WITH ME,1252
@@ -1348,7 +1348,7 @@ Hardwell feat. Chris Jones,YOUNG AGAIN,41,219534,United We Are,0.572,0.0271,0.78
 Taylor Swift,SHAKE IT OFF,68,219200,1989,0.647,0.0561,0.785,0.148,-5.414,0.943,160.015,0.165,100,pop,126148293,Unknown,Taylor Swift - SHAKE IT OFF,1347
 Kygo & Kyla la Grange,CUT YOUR TEETH,54,399013,Cut Your Teeth (Kygo Remix),0.674,0.59,0.678,0.051,-8.452,0.465,99.985,0.0406,44,"metropopolis, shimmer pop",48989,Unknown,Kygo & Kyla la Grange - CUT YOUR TEETH,1348
 Anouk,PLACES TO GO,31,226613,Paradise And Back Again,0.594,0.00856,0.702,0.156,-5.225,0.176,94.99,0.0234,55,"dutch pop, dutch rock",378303,Unknown,Anouk - PLACES TO GO,1349
-Lenny Kravitz,THE CHAMBER,53,297301,Strut,0.663,9.83e-05,0.897,0.0901,-7.663,0.884,117.508,0.032,73,"permanent wave, rock",3383621,Unknown,Lenny Kravitz - THE CHAMBER,1350
+Lenny Kravitz,THE CHAMBER,53,297301,Strut,0.663,9.83E-05,0.897,0.0901,-7.663,0.884,117.508,0.032,73,"permanent wave, rock",3383621,Unknown,Lenny Kravitz - THE CHAMBER,1350
 Dotan,FALL,39,251014,7 Layers,0.524,0.709,0.443,0.091,-11.761,0.164,165.071,0.0395,57,folk-pop,192967,Unknown,Dotan - FALL,1351
 Enrique Iglesias feat. Sean Paul & Gente De Zona & Descemer Bueno,BAILANDO,48,243240,SEX AND LOVE,0.719,0.0793,0.844,0.0551,-3.529,0.941,90.951,0.103,79,"dance pop, latin pop, mexican pop",11227981,Unknown,Enrique Iglesias feat. Sean Paul & Gente De Zona & Descemer Bueno - BAILANDO,1352
 Nico & Vinz,AM I WRONG,74,245866,Black Star Elephant,0.729,0.175,0.675,0.55,-6.003,0.779,119.968,0.0312,62,afrobeats,541526,Unknown,Nico & Vinz - AM I WRONG,1353
@@ -1610,7 +1610,7 @@ Kaskade feat. Neon Trees,LESSONS IN LOVE,27,247760,Fire & Ice,0.576,0.0263,0.823
 Adele,SKYFALL,84,286480,Skyfall,0.346,0.417,0.552,0.114,-6.864,0.0789,75.881,0.0282,87,"british soul, pop, pop soul, uk pop",60224488,Unknown,Adele - SKYFALL,1609
 Bingo Players & Far East Movement,GET UP (RATTLE),72,166932,Get Up (Rattle) [feat. Far East Movement],0.801,0.0205,0.985,0.297,-2.69,0.72,127.99,0.0647,61,"big room, dutch house, edm, electro house, melbourne bounce, pop dance, progressive electro house, progressive house",473870,Unknown,Bingo Players & Far East Movement - GET UP (RATTLE),1610
 Hardwell feat. Amba Shepherd,APOLLO,24,284600,"Club Life, Vol. 3 - Stockholm",0.618,0.00958,0.83,0.303,-5.147,0.117,128.128,0.122,69,"big room, dutch house, edm, electro house, pop dance, progressive electro house, progressive house",3653658,Unknown,Hardwell feat. Amba Shepherd - APOLLO,1611
-Johannes Rypma,PLAY ME,8,186615,Play Me,0.497,4.64e-05,0.853,0.0847,-3.467,0.477,135.034,0.0406,23,friese muziek,965,Unknown,Johannes Rypma - PLAY ME,1612
+Johannes Rypma,PLAY ME,8,186615,Play Me,0.497,4.64E-05,0.853,0.0847,-3.467,0.477,135.034,0.0406,23,friese muziek,965,Unknown,Johannes Rypma - PLAY ME,1612
 Lisa Lois,SILHOUETTE,27,216533,Breaking Away (Deluxe Edition),0.503,0.185,0.593,0.0938,-8.353,0.39,94.04,0.0343,34,"dutch pop, dutch rock",18040,Unknown,Lisa Lois - SILHOUETTE,1613
 P!nk,TRY,79,247906,The Truth About Love,0.674,0.00144,0.628,0.0944,-7.079,0.552,103.998,0.03,82,"dance pop, pop",17312636,Unknown,P!nk - TRY,1614
 De Kraaien,IK VIND JE LEKKER,34,212205,Ik Vind Je Lekker,0.733,0.00442,0.729,0.282,-7.312,0.806,130.022,0.0427,43,nederlandse hardstyle,13349,Unknown,De Kraaien - IK VIND JE LEKKER,1615
@@ -1900,9 +1900,9 @@ Basto,GREGORY'S THEME,29,173222,Live Tonight,0.556,0.0272,0.961,0.447,-5.241,0.5
 Alex Clare,TOO CLOSE,58,256560,The Lateness Of The Hour,0.584,0.0112,0.712,0.114,-4.311,0.286,126.043,0.0395,55,modern alternative rock,520276,Unknown,Alex Clare - TOO CLOSE,1899
 David Guetta feat. Nicki Minaj & Flo Rida,WHERE THEM GIRLS AT?,67,210093,Nothing but the Beat 2.0,0.664,0.0306,0.872,0.228,-3.117,0.555,129.873,0.0396,90,"big room, dance pop, edm, pop, pop dance",26429487,Unknown,David Guetta feat. Nicki Minaj & Flo Rida - WHERE THEM GIRLS AT?,1900
 Lady Gaga,THE EDGE OF GLORY,60,320586,Born This Way,0.582,0.000343,0.772,0.11,-6.544,0.36,127.957,0.0401,92,"art pop, dance pop, pop",32798999,Unknown,Lady Gaga - THE EDGE OF GLORY,1901
-Neon Trees,1983,46,222560,Habits,0.463,7.37e-05,0.981,0.102,-3.922,0.703,153.048,0.18,66,"modern rock, neo mellow, pop rock, pov: indie",1239069,Unknown,Neon Trees - 1983,1902
+Neon Trees,1983,46,222560,Habits,0.463,7.37E-05,0.981,0.102,-3.922,0.703,153.048,0.18,66,"modern rock, neo mellow, pop rock, pov: indie",1239069,Unknown,Neon Trees - 1983,1902
 Chris Brown & Benny Benassi,BEAUTIFUL PEOPLE,58,226773,F.A.M.E. (Expanded Edition),0.417,0.0703,0.806,0.0841,-5.339,0.545,127.887,0.16,88,"r&b, rap",24074048,Unknown,Chris Brown & Benny Benassi - BEAUTIFUL PEOPLE,1903
-Foo Fighters,WALK,65,255960,Wasting Light,0.234,3.62e-05,0.865,0.289,-5.131,0.194,137.107,0.0516,78,"alternative metal, alternative rock, modern rock, permanent wave, post-grunge, rock",12148969,Unknown,Foo Fighters - WALK,1904
+Foo Fighters,WALK,65,255960,Wasting Light,0.234,3.62E-05,0.865,0.289,-5.131,0.194,137.107,0.0516,78,"alternative metal, alternative rock, modern rock, permanent wave, post-grunge, rock",12148969,Unknown,Foo Fighters - WALK,1904
 Guus Meeuwis,DIT LIED,11,215853,Armen Open (Deluxe Editie),0.4,0.00606,0.9,0.34,-4.823,0.81,163.969,0.0637,57,"dutch pop, dutch rock, kermis",421377,Unknown,Guus Meeuwis - DIT LIED,1905
 Usher,MORE (REDONE JIMMY JOKER REMIX),67,219986,More,0.551,0.00166,0.893,0.348,-2.628,0.794,125.083,0.0543,83,"atl hip hop, contemporary r&b, dance pop, pop, r&b, rap, south carolina hip hop, urban contemporary",12400599,Unknown,Usher - MORE (REDONE JIMMY JOKER REMIX),1906
 Beyoncé,RUN THE WORLD (GIRLS),69,236093,4,0.732,0.00496,0.899,0.372,-4.237,0.759,127.091,0.143,87,"pop, r&b",38988503,Unknown,Beyoncé - RUN THE WORLD (GIRLS),1907
@@ -2100,7 +2100,7 @@ John Marks,CARNIVAL,8,174533,Super Trance 0.2,0.716,0.00272,0.965,0.125,-8.526,0
 Armin van Buuren feat. Racoon,LOVE YOU MORE,25,223626,The Best Of Armin Only,0.44,0.000126,0.884,0.0691,-7.728,0.0802,137.991,0.0382,76,"dutch house, dutch trance, edm, pop dance, progressive house, trance",4435159,Unknown,Armin van Buuren feat. Racoon - LOVE YOU MORE,2099
 Frans Bauer,UN DOS TRÈS,13,216000,Voor Altijd,0.683,0.00365,0.937,0.339,-6.902,0.937,114.007,0.032,50,levenslied,130442,Unknown,Frans Bauer - UN DOS TRÈS,2100
 Pakito,LIVING ON VIDEO,20,199546,Living On Video,0.633,0.000193,0.877,0.256,-6.116,0.558,131.012,0.0345,50,,30236,Unknown,Pakito - LIVING ON VIDEO,2101
-Keane,CRYSTAL BALL,56,233960,Under The Iron Sea,0.435,7.62e-05,0.97,0.0778,-3.612,0.401,124.305,0.0518,76,"neo mellow, piano rock, pop rock",3556622,Unknown,Keane - CRYSTAL BALL,2102
+Keane,CRYSTAL BALL,56,233960,Under The Iron Sea,0.435,7.62E-05,0.97,0.0778,-3.612,0.401,124.305,0.0518,76,"neo mellow, piano rock, pop rock",3556622,Unknown,Keane - CRYSTAL BALL,2102
 Fergie,LONDON BRIDGE,62,241306,The Dutchess,0.77,0.214,0.609,0.166,-5.894,0.631,90.952,0.345,71,"dance pop, pop",5836989,Unknown,Fergie - LONDON BRIDGE,2103
 Gnarls Barkley,CRAZY,70,182066,St. Elsewhere,0.836,0.0172,0.741,0.0826,-1.609,0.611,111.963,0.0339,65,"atl hip hop, neo soul",558592,Unknown,Gnarls Barkley - CRAZY,2104
 Marco Borsato,ROOD,41,319186,#1,0.484,0.00644,0.781,0.0754,-8.008,0.18,137.977,0.0475,57,"dutch cabaret, dutch pop, dutch rock",708953,Unknown,Marco Borsato - ROOD,2105
@@ -2125,7 +2125,7 @@ Paris,STARS ARE BLIND,58,236600,Paris (U.S. Standard Version),0.745,0.00593,0.69
 Fort Minor feat. Holly Brook & Jonah Matranga,WHERE'D YOU GO,52,231866,The Rising Tied,0.684,0.262,0.819,0.113,-3.309,0.25,179.999,0.238,61,rap rock,627241,Unknown,Fort Minor feat. Holly Brook & Jonah Matranga - WHERE'D YOU GO,2124
 Juanes,LA CAMISA NEGRA,72,216706,Mi Sangre,0.751,0.0838,0.731,0.0556,-4.419,0.973,97.007,0.0308,77,"colombian pop, latin pop, mexican pop, rock en espanol",4986657,Unknown,Juanes - LA CAMISA NEGRA,2125
 Ne-Yo,SEXY LOVE,70,220853,In My Own Words,0.693,0.296,0.513,0.0604,-6.447,0.49,94.021,0.0415,83,"dance pop, pop, r&b, urban contemporary",9289838,Unknown,Ne-Yo - SEXY LOVE,2126
-Keane,IS IT ANY WONDER?,60,186173,Under The Iron Sea,0.489,3.82e-05,0.955,0.334,-2.771,0.816,129.352,0.0363,76,"neo mellow, piano rock, pop rock",3556622,Unknown,Keane - IS IT ANY WONDER?,2127
+Keane,IS IT ANY WONDER?,60,186173,Under The Iron Sea,0.489,3.82E-05,0.955,0.334,-2.771,0.816,129.352,0.0363,76,"neo mellow, piano rock, pop rock",3556622,Unknown,Keane - IS IT ANY WONDER?,2127
 Outwork feat. Mr. Gee,ELEKTRO,44,142525,Elektro (feat. Mr. Gee),0.813,0.0554,0.709,0.115,-4.14,0.36,126.635,0.116,68,edm,292610,Unknown,Outwork feat. Mr. Gee - ELEKTRO,2128
 Do,BEAUTIFUL THING,41,435480,Nyana Mixed by Tiësto,0.724,0.00617,0.631,0.262,-9.659,0.522,134.493,0.0407,42,"trance, uplifting trance, vocal trance",45038,Unknown,Do - BEAUTIFUL THING,2129
 Ali B,ZOMERVIBE,7,183040,Petje Af,0.888,0.292,0.623,0.0581,-5.019,0.923,115.102,0.106,49,dutch hip hop,200851,Unknown,Ali B - ZOMERVIBE,2130
@@ -2157,7 +2157,7 @@ Yes-R feat. Brace,MAMMIE,18,226786,Mijn Pad,0.755,0.0836,0.612,0.0436,-6.297,0.9
 Cafe De Wereld,CAFÉ DE WERELDCUP,2,268040,Cafe De Wereldcup,0.661,0.288,0.875,0.808,-7.362,0.746,130.043,0.232,0,,54,Unknown,Cafe De Wereld - CAFÉ DE WERELDCUP,2156
 PostMan feat. Anouk,DOWNHILL,22,210090,Green,0.672,0.223,0.491,0.0722,-6.941,0.462,79.007,0.103,14,,317,Unknown,PostMan feat. Anouk - DOWNHILL,2157
 The Feeling,SEWN,38,355786,Twelve Stops And Home (Deluxe),0.554,0.142,0.614,0.0836,-8.976,0.219,150.033,0.0338,41,english indie rock,95112,Unknown,The Feeling - SEWN,2158
-Till West & DJ Delicious,SAME MAN,35,155080,Same Man,0.653,9.04e-05,0.812,0.232,-7.451,0.968,125.587,0.0351,29,,1587,Unknown,Till West & DJ Delicious - SAME MAN,2159
+Till West & DJ Delicious,SAME MAN,35,155080,Same Man,0.653,9.04E-05,0.812,0.232,-7.451,0.968,125.587,0.0351,29,,1587,Unknown,Till West & DJ Delicious - SAME MAN,2159
 Coldplay,THE HARDEST PART,61,262880,X&Y,0.5,0.0228,0.844,0.455,-5.883,0.445,123.721,0.0368,92,"permanent wave, pop",54734700,Unknown,Coldplay - THE HARDEST PART,2160
 The Source feat. Candi Staton,YOU GOT THE LOVE [NEW VOYAGER RADIO EDIT],61,193600,You Got the Love,0.591,0.0523,0.898,0.411,-4.78,0.482,107.094,0.0336,48,classic house,4314,Unknown,The Source feat. Candi Staton - YOU GOT THE LOVE [NEW VOYAGER RADIO EDIT],2161
 Sean Paul,TEMPERATURE,78,218573,The Trinity,0.951,0.106,0.6,0.0712,-4.675,0.822,125.04,0.0685,82,"dance pop, dancehall, pop, pop rap",4927648,Unknown,Sean Paul - TEMPERATURE,2162
@@ -2182,7 +2182,7 @@ Bløf & Kodo,AANZOEK ZONDER RINGEN,37,283333,Umoja,0.548,0.0191,0.85,0.318,-7.73
 Akon feat. Ali B & Yes-R,GHETTO,32,248173,Petje Af,0.738,0.0476,0.596,0.0962,-7.44,0.782,93.647,0.0444,49,dutch hip hop,200851,Unknown,Akon feat. Ali B & Yes-R - GHETTO,2181
 Armin van Buuren,SAIL,28,217675,The Best Of Armin Only,0.598,0.000288,0.751,0.0818,-9.441,0.369,135.996,0.0353,76,"dutch house, dutch trance, edm, pop dance, progressive house, trance",4435159,Unknown,Armin van Buuren - SAIL,2182
 Jenn Cuneta,COME RAIN COME SHINE,28,229973,Come Rain Come Shine,0.596,0.00774,0.918,0.302,-3.49,0.825,127.906,0.0674,16,,485,Unknown,Jenn Cuneta - COME RAIN COME SHINE,2183
-Roy Gates,LOSE MYSELF,2,212413,Toco Dance Party Vol. 7,0.573,1.52e-05,0.788,0.149,-11.318,0.794,135.979,0.0369,19,dutch trance,1374,Unknown,Roy Gates - LOSE MYSELF,2184
+Roy Gates,LOSE MYSELF,2,212413,Toco Dance Party Vol. 7,0.573,1.52E-05,0.788,0.149,-11.318,0.794,135.979,0.0369,19,dutch trance,1374,Unknown,Roy Gates - LOSE MYSELF,2184
 The Opposites,SLAAP,47,212706,De Fik Erin,0.699,0.0558,0.871,0.144,-3.256,0.73,100.055,0.144,52,dutch hip hop,158664,Unknown,The Opposites - SLAAP,2185
 The Shapeshifters,INCREDIBLE,6,311986,Sound Advice,0.728,0.0559,0.945,0.0422,-5.745,0.644,123.982,0.0656,53,"disco house, diva house, vocal house",82599,Unknown,The Shapeshifters - INCREDIBLE,2186
 KT Tunstall,SUDDENLY I SEE,75,201706,Eye To The Telescope,0.587,0.225,0.767,0.112,-5.713,0.664,100.38,0.0449,63,"ectofolk, lilith, neo mellow, pop rock, scottish singer-songwriter",437467,Unknown,KT Tunstall - SUDDENLY I SEE,2187
@@ -2263,7 +2263,7 @@ Guus Meeuwis,DE WEG,39,265600,Wijzer,0.462,0.911,0.212,0.113,-10.914,0.255,71.99
 Krezip,I APOLOGIZE,33,185973,What Are You Waiting For,0.593,0.505,0.304,0.106,-8.183,0.266,91.015,0.0251,51,"dutch pop, dutch rock",117884,Unknown,Krezip - I APOLOGIZE,2262
 Jamiroquai,(DON'T) GIVE HATE A CHANCE,45,300226,Dynamite,0.702,0.0135,0.836,0.197,-7.243,0.814,127.871,0.0337,70,dance pop,2509496,Unknown,Jamiroquai - (DON'T) GIVE HATE A CHANCE,2263
 The Rasmus,SAIL AWAY,45,229066,Hide from the Sun,0.406,0.0177,0.686,0.147,-5.964,0.419,165.808,0.0296,60,"finnish alternative rock, funk metal",509679,Unknown,The Rasmus - SAIL AWAY,2264
-Ferry Corsten,FIRE,36,271586,L.E.F.,0.504,7.67e-06,0.77,0.0943,-9.047,0.694,132.022,0.0252,55,"dutch trance, progressive house, progressive trance, trance, uplifting trance",277327,Unknown,Ferry Corsten - FIRE,2265
+Ferry Corsten,FIRE,36,271586,L.E.F.,0.504,7.67E-06,0.77,0.0943,-9.047,0.694,132.022,0.0252,55,"dutch trance, progressive house, progressive trance, trance, uplifting trance",277327,Unknown,Ferry Corsten - FIRE,2265
 Sean Paul,WE BE BURNIN',64,213066,The Trinity,0.95,0.145,0.803,0.0748,-4.195,0.86,117,0.151,82,"dance pop, dancehall, pop, pop rap",4927648,Unknown,Sean Paul - WE BE BURNIN',2266
 Nickelback,PHOTOGRAPH,31,320301,Live From Nashville,0.238,0.0969,0.895,0.885,-4.919,0.235,149.06,0.115,80,"alternative metal, canadian rock, post-grunge",7173421,Unknown,Nickelback - PHOTOGRAPH,2267
 Tom Novy,YOUR BODY,53,264194,Your Body (Cat Dealers Remix),0.684,0.326,0.612,0.351,-4.468,0.344,123.967,0.365,47,"disco house, vocal house",21004,Unknown,Tom Novy - YOUR BODY,2268
@@ -2284,7 +2284,7 @@ Depeche Mode,PRECIOUS,65,250160,Playing the Angel (Deluxe),0.568,0.0973,0.883,0.
 Bloodhound Gang,FOXTROT UNIFORM CHARLIE KILO,61,171973,Hefty Fine,0.767,0.00436,0.599,0.0714,-5.176,0.788,137.035,0.0404,64,"alternative metal, comic, funk metal, funk rock, nu metal, rap rock",1013967,Unknown,Bloodhound Gang - FOXTROT UNIFORM CHARLIE KILO,2283
 Gwen Stefani,COOL,55,189333,Love. Angel. Music. Baby. (Deluxe Version),0.709,0.0322,0.721,0.355,-3.52,0.801,112.019,0.0281,75,"dance pop, pop",6672497,Unknown,Gwen Stefani - COOL,2284
 The White Stripes,MY DOORBELL,51,241866,Get Behind Me Satan,0.614,0.29,0.663,0.0986,-9.965,0.823,97.083,0.0352,72,"alternative rock, blues rock, detroit rock, garage rock, modern blues rock, permanent wave, punk blues, rock",3261018,Unknown,The White Stripes - MY DOORBELL,2285
-Bon Jovi,HAVE A NICE DAY,60,229106,Have A Nice Day,0.5,4.84e-05,0.899,0.0794,-4.066,0.566,130.06,0.0736,80,"glam metal, rock",14165110,Unknown,Bon Jovi - HAVE A NICE DAY,2286
+Bon Jovi,HAVE A NICE DAY,60,229106,Have A Nice Day,0.5,4.84E-05,0.899,0.0794,-4.066,0.566,130.06,0.0736,80,"glam metal, rock",14165110,Unknown,Bon Jovi - HAVE A NICE DAY,2286
 DJ Jean,FEEL IT,1,197381,I-ROC Vol. #1,0.824,0.024,0.679,0.0671,-3.129,0.583,95.071,0.231,1,,15,Unknown,DJ Jean - FEEL IT,2287
 K3,BORST VOORUIT,28,200666,Kuma hé,0.682,0.0268,0.866,0.386,-4.906,0.412,130.027,0.0275,58,"belgian pop, muziek voor kinderen, vlaamse kinderliedje",292236,Unknown,K3 - BORST VOORUIT,2288
 Freemasons feat. Amanda Wilson,LOVE ON MY MIND,48,313320,Unmixed,0.644,0.00648,0.962,0.294,-4.285,0.86,127.946,0.0888,46,"disco house, diva house, vocal house",58205,Unknown,Freemasons feat. Amanda Wilson - LOVE ON MY MIND,2289
@@ -2347,7 +2347,7 @@ Simple Plan,WELCOME TO MY LIFE,57,206773,Still Not Getting Any,0.421,0.0134,0.85
 Armin van Buuren,SHIVERS,38,189816,Armin Anthems Top 100 (Ultimate Singles Collected),0.472,0.00152,0.88,0.507,-10.189,0.362,135.007,0.0323,76,"dutch house, dutch trance, edm, pop dance, progressive house, trance",4435159,Unknown,Armin van Buuren - SHIVERS,2346
 Amerie,1 THING,64,238760,Touch,0.612,0.107,0.961,0.0413,-3.078,0.867,129.873,0.333,57,"contemporary r&b, hip pop, neo soul, r&b, urban contemporary",946287,Unknown,Amerie - 1 THING,2347
 The Game feat. 50 Cent,HATE IT OR LOVE IT,78,206400,The Documentary,0.802,0.14,0.785,0.123,-4.781,0.435,99.998,0.207,72,"detroit hip hop, gangster rap, hip hop, pop rap, rap, southern hip hop, trap",4917626,Unknown,The Game feat. 50 Cent - HATE IT OR LOVE IT,2348
-Ron van den Beuken,SUNSET,6,527800,Sunset,0.415,1.14e-05,0.908,0.147,-7.25,0.13,140.005,0.0334,54,,9528,Unknown,Ron van den Beuken - SUNSET,2349
+Ron van den Beuken,SUNSET,6,527800,Sunset,0.415,1.14E-05,0.908,0.147,-7.25,0.13,140.005,0.0334,54,,9528,Unknown,Ron van den Beuken - SUNSET,2349
 Daddy Yankee,GASOLINA,80,192600,Barrio Fino (Bonus Track Version),0.852,0.322,0.797,0.0845,-6.543,0.741,96.008,0.0614,88,"latin hip hop, reggaeton, trap latino, urbano latino",35505353,Unknown,Daddy Yankee - GASOLINA,2350
 Intwine,YOU,15,292093,Perfect,0.228,0.141,0.511,0.147,-6.727,0.287,89.532,0.0286,30,dutch rock,11088,Unknown,Intwine - YOU,2351
 U2,SOMETIMES YOU CAN'T MAKE IT ON YOUR OWN,53,305080,How To Dismantle An Atomic Bomb,0.53,0.00275,0.597,0.105,-5.652,0.346,96,0.0247,79,"irish rock, permanent wave, rock",12699333,Unknown,U2 - SOMETIMES YOU CAN'T MAKE IT ON YOUR OWN,2352
@@ -2375,7 +2375,7 @@ EliZe,AUTOMATIC,34,191653,In Control,0.771,0.00615,0.725,0.177,-6.198,0.558,123.
 Mario,LET ME LOVE YOU,70,249093,Turning Point,0.622,0.163,0.593,0.0979,-8.352,0.607,94.364,0.0916,70,"dance pop, r&b, southern hip hop, urban contemporary",3577538,Unknown,Mario - LET ME LOVE YOU,2374
 50 Cent,CANDY SHOP,78,209106,The Massacre,0.613,0.0253,0.574,0.38,-7.961,0.755,125.18,0.467,85,"east coast hip hop, gangster rap, hip hop, pop rap, queens hip hop, rap",16051367,Unknown,50 Cent - CANDY SHOP,2375
 Ciara feat. Missy Elliott,"1, 2 STEP",75,203786,Goodies,0.944,0.042,0.511,0.0379,-10.96,0.842,113.046,0.161,72,"dance pop, hip pop, pop, r&b, urban contemporary",6808964,Unknown,"Ciara feat. Missy Elliott - 1, 2 STEP",2376
-DJ Jose,STEPPING TO THE BEAT,1,304906,"The 12"" Selection",0.772,2.26e-05,0.639,0.0305,-13.728,0.572,137.902,0.0536,27,dutch trance,3810,Unknown,DJ Jose - STEPPING TO THE BEAT,2377
+DJ Jose,STEPPING TO THE BEAT,1,304906,"The 12"" Selection",0.772,2.26E-05,0.639,0.0305,-13.728,0.572,137.902,0.0536,27,dutch trance,3810,Unknown,DJ Jose - STEPPING TO THE BEAT,2377
 Anouk,GIRL,49,210733,Hotel New York,0.672,0.00753,0.803,0.0597,-4.693,0.794,136.007,0.0285,55,"dutch pop, dutch rock",378303,Unknown,Anouk - GIRL,2378
 Studio B,I SEE GIRLS,43,182093,I See Girls,0.726,0.0104,0.899,0.538,-4,0.937,127.011,0.0432,30,,1588,Unknown,Studio B - I SEE GIRLS,2379
 Southside Spinners,LUVSTRUCK KLUBBHEADS 2005 REMIX,37,209908,Luvstruck,0.585,0.000488,0.99,0.133,-3.806,0.341,138.047,0.0595,41,"belgian dance, bouncy house, bubble trance, hard house, trance",6760,Unknown,Southside Spinners - LUVSTRUCK KLUBBHEADS 2005 REMIX,2380
@@ -2441,7 +2441,7 @@ Elvis Presley,ALL SHOOK UP,59,117360,Platinum - A Life In Music,0.688,0.89,0.468
 JoJo feat. Bow Wow,BABY IT'S YOU,56,191693,JoJo,0.899,0.0182,0.399,0.161,-7.07,0.689,119.91,0.195,63,"dance pop, pop, post-teen pop",2395956,Unknown,JoJo feat. Bow Wow - BABY IT'S YOU,2440
 DJ Jean,EVERY SINGLE DAY,36,159426,Every Single Day,0.77,0.000769,0.86,0.0797,-9.162,0.498,138.056,0.0685,43,"bouncy house, dutch trance",15154,Unknown,DJ Jean - EVERY SINGLE DAY,2441
 Armand van Helden,MY MY MY,65,182266,Nympho,0.652,0.00672,0.733,0.0392,-8.207,0.744,127.533,0.246,64,"big beat, classic house, deep house, disco house, filter house, house, speed garage, uk dance, vocal house",276304,Unknown,Armand van Helden - MY MY MY,2442
-Tiësto feat. Kirsty Hawkshaw,JUST BE,39,524933,Just Be,0.62,3.05e-05,0.832,0.128,-9.651,0.39,134.959,0.0335,84,"big room, brostep, dutch edm, edm, house, pop dance, progressive electro house, slap house, trance",7569247,Unknown,Tiësto feat. Kirsty Hawkshaw - JUST BE,2443
+Tiësto feat. Kirsty Hawkshaw,JUST BE,39,524933,Just Be,0.62,3.05E-05,0.832,0.128,-9.651,0.39,134.959,0.0335,84,"big room, brostep, dutch edm, edm, house, pop dance, progressive electro house, slap house, trance",7569247,Unknown,Tiësto feat. Kirsty Hawkshaw - JUST BE,2443
 Anastacia,WELCOME TO MY TRUTH,33,243106,Anastacia,0.507,0.014,0.92,0.107,-2.953,0.351,127.804,0.0535,62,pop soul,406546,Unknown,Anastacia - WELCOME TO MY TRUTH,2444
 Eminem,JUST LOSE IT,69,248680,Encore (Deluxe Version),0.94,0.0581,0.633,0.281,-3.56,0.962,121.003,0.0467,93,"detroit hip hop, hip hop, rap",93162600,Unknown,Eminem - JUST LOSE IT,2445
 Bløf,OPSTAND,2,272400,Aanzoek Zonder Ringen,0.477,0.227,0.334,0.71,-11.477,0.2,129.429,0.0337,59,"dutch pop, dutch rock",388326,Unknown,Bløf - OPSTAND,2446
@@ -2608,7 +2608,7 @@ No Doubt,UNDERNEATH IT ALL,61,302720,Rock Steady (Expanded Edition),0.729,0.235,
 Hilary Duff,COME CLEAN,57,214560,Metamorphosis,0.577,0.016,0.892,0.299,-5.121,0.454,118.096,0.0675,57,"dance pop, pop, post-teen pop",2358839,Unknown,Hilary Duff - COME CLEAN,2607
 No Doubt,IT'S MY LIFE,62,225866,The Set List,0.606,0.0026,0.75,0.321,-4.535,0.771,126.316,0.0306,70,"dance pop, dance rock, permanent wave, pop rock, rock",2925242,Unknown,No Doubt - IT'S MY LIFE,2608
 Evanescence,MY IMMORTAL,72,262533,Fallen,0.19,0.863,0.265,0.134,-9.206,0.101,79.012,0.0356,76,alternative metal,4914020,Unknown,Evanescence - MY IMMORTAL,2609
-Marco V vs. Jens,LOOPS & TINGS RELOOPED,24,404933,Loops & Tings Relooped (Special Edition),0.652,1.03e-05,0.992,0.153,-6.03,0.342,138.003,0.0381,42,"dutch trance, progressive house, trance, uplifting trance",35588,Unknown,Marco V vs. Jens - LOOPS & TINGS RELOOPED,2610
+Marco V vs. Jens,LOOPS & TINGS RELOOPED,24,404933,Loops & Tings Relooped (Special Edition),0.652,1.03E-05,0.992,0.153,-6.03,0.342,138.003,0.0381,42,"dutch trance, progressive house, trance, uplifting trance",35588,Unknown,Marco V vs. Jens - LOOPS & TINGS RELOOPED,2610
 Kim-Lian,HEY BOY!,2,183040,Balance,0.519,0.000514,0.976,0.351,-3.948,0.722,155.046,0.0623,33,dutch pop,4872,Unknown,Kim-Lian - HEY BOY!,2611
 Ultrabeat,FEELIN' FINE,6,179386,Ultrabeat The Album,0.56,0.00304,0.979,0.349,-6.07,0.299,142.011,0.0573,49,"bouncy house, eurodance",49271,Unknown,Ultrabeat - FEELIN' FINE,2612
 George Michael,AMAZING,56,265826,Patience,0.805,0.0884,0.754,0.117,-6.825,0.88,128.429,0.0394,75,"new wave pop, soft rock",5066500,Unknown,George Michael - AMAZING,2613
@@ -2691,7 +2691,7 @@ Lee-Cabrera feat. Alex Cartana,SHAKE IT (MOVE A LITTLE CLOSER),24,465627,shake i
 Dewi,LEFT OF CENTER,4,182573,Know Me,0.657,0.000927,0.832,0.148,-5.345,0.636,101.946,0.0551,9,,479,Unknown,Dewi - LEFT OF CENTER,2690
 Nelly & P. Diddy & Murphy Lee,SHAKE YA TAILFEATHER,60,295173,Murphy's Law,0.715,0.134,0.733,0.157,-7.068,0.897,87.665,0.262,55,"dirty south rap, st louis rap",233219,Unknown,Nelly & P. Diddy & Murphy Lee - SHAKE YA TAILFEATHER,2691
 Veldhuis & Kemper,BIJZONDER,27,180680,Half Zo Echt,0.575,0.0438,0.856,0.0552,-6.415,0.582,102.085,0.0308,43,"dutch cabaret, dutch pop, dutch rock",61819,Unknown,Veldhuis & Kemper - BIJZONDER,2692
-Ferry Corsten,ROCK YOUR BODY ROCK,26,315093,Right Of Way (Deluxe Edition),0.569,5.1e-05,0.704,0.118,-9.653,0.616,131.998,0.0397,55,"dutch trance, progressive house, progressive trance, trance, uplifting trance",277327,Unknown,Ferry Corsten - ROCK YOUR BODY ROCK,2693
+Ferry Corsten,ROCK YOUR BODY ROCK,26,315093,Right Of Way (Deluxe Edition),0.569,5.10E-05,0.704,0.118,-9.653,0.616,131.998,0.0397,55,"dutch trance, progressive house, progressive trance, trance, uplifting trance",277327,Unknown,Ferry Corsten - ROCK YOUR BODY ROCK,2693
 Delta Goodrem,LOST WITHOUT YOU,49,248546,Innocent Eyes,0.581,0.0365,0.747,0.193,-6.682,0.514,146.301,0.0283,50,australian pop,251138,Unknown,Delta Goodrem - LOST WITHOUT YOU,2694
 Fabolous feat. Tamia,INTO YOU,61,293840,Street Dreams,0.681,0.201,0.529,0.184,-7.897,0.568,91.081,0.0341,66,"gangster rap, hip hop, pop rap, rap, trap, urban contemporary",2682979,Unknown,Fabolous feat. Tamia - INTO YOU,2695
 Shuman & Angel-Eye,DON'T BE CRUEL,3,180800,Travel in Time,0.587,0.28,0.865,0.181,-6.771,0.86,165.875,0.0893,6,,705,Unknown,Shuman & Angel-Eye - DON'T BE CRUEL,2696
@@ -2704,9 +2704,9 @@ Lumidee,"NEVER LEAVE YOU (UH OOOH, UH OOOH)",60,184906,Almost Famous,0.811,0.039
 Soulvation,RESET YOUR BRAIN,2,516026,Reset Your Brain,0.725,0.000846,0.97,0.0712,-7.06,0.619,126.997,0.0439,21,dutch house,1478,Unknown,Soulvation - RESET YOUR BRAIN,2703
 Nickelback,SOMEDAY,70,207466,The Long Road,0.455,0.000616,0.858,0.226,-5.659,0.597,163.118,0.0391,80,"alternative metal, canadian rock, post-grunge",7173421,Unknown,Nickelback - SOMEDAY,2704
 Mark,TEGEN BETER WETEN IN,3,268453,Hier Ben Ik,0.661,0.0776,0.57,0.0903,-6.951,0.283,121.266,0.0299,6,,412,Unknown,Mark - TEGEN BETER WETEN IN,2705
-Birgit,EVERYBODY WANTS TO BE...,3,483520,"50 Trance Tunes, Vol. 10",0.633,9.15e-05,0.677,0.119,-11.268,0.552,128.02,0.038,2,,32,Unknown,Birgit - EVERYBODY WANTS TO BE...,2706
+Birgit,EVERYBODY WANTS TO BE...,3,483520,"50 Trance Tunes, Vol. 10",0.633,9.15E-05,0.677,0.119,-11.268,0.552,128.02,0.038,2,,32,Unknown,Birgit - EVERYBODY WANTS TO BE...,2706
 The Rolling Stones,SYMPATHY FOR THE DEVIL - REMIX,33,377133,Sympathy For The Devil Remix,0.562,0.604,0.676,0.0413,-10.951,0.609,111.261,0.248,80,"album rock, british invasion, classic rock, rock",14637657,Unknown,The Rolling Stones - SYMPATHY FOR THE DEVIL - REMIX,2707
-Jewel,INTUITION,43,228893,0304,0.718,0.00447,0.798,0.0639,-4.309,0.814,100.03,0.0586,58,"alaska indie, ectofolk, lilith, permanent wave, pop rock, singer-songwriter",809437,Unknown,Jewel - INTUITION,2708
+Jewel,INTUITION,43,228893,304,0.718,0.00447,0.798,0.0639,-4.309,0.814,100.03,0.0586,58,"alaska indie, ectofolk, lilith, permanent wave, pop rock, singer-songwriter",809437,Unknown,Jewel - INTUITION,2708
 Frans Bauer,'N ONS GELUK,23,203226,Bauer Top100,0.776,0.348,0.859,0.326,-5.635,0.961,115.999,0.0436,50,levenslied,130442,Unknown,Frans Bauer - 'N ONS GELUK,2709
 Blu Cantrell,BREATHE,58,228000,Bittersweet,0.8,0.048,0.663,0.252,-3.832,0.472,91.934,0.0324,63,"hip pop, urban contemporary",309836,Unknown,Blu Cantrell - BREATHE,2710
 Metallica,FRANTIC,42,350360,St. Anger,0.483,0.00497,0.978,0.0782,-3.063,0.563,161.764,0.0882,84,"hard rock, metal, old school thrash, rock, thrash metal",28985359,Unknown,Metallica - FRANTIC,2711
@@ -2719,7 +2719,7 @@ Justin Timberlake,SEÑORITA,66,294866,Justified,0.841,0.0725,0.63,0.0742,-5.356,
 Muse,TIME IS RUNNING OUT,68,236535,Absolution,0.544,0.000644,0.892,0.0832,-3.212,0.317,118.005,0.0591,77,"alternative rock, modern rock, permanent wave, rock",8017215,Unknown,Muse - TIME IS RUNNING OUT,2718
 Simply Red,FAKE,31,224119,Fake European Single,0.589,0.131,0.912,0.122,-4.224,0.504,115.859,0.0473,69,"british soul, new romantic, new wave, new wave pop, soft rock, sophisti-pop",2501660,Unknown,Simply Red - FAKE,2719
 Kane,RAIN DOWN ON ME - TIËSTO REMIX,33,419666,What If,0.644,0.000309,0.868,0.0372,-7.749,0.294,132.997,0.0332,45,"dutch pop, dutch rock",99164,Unknown,Kane - RAIN DOWN ON ME - TIËSTO REMIX,2720
-Sensation,THE ANTHEM 2003,4,438310,ASOT 986 - A State Of Trance Episode 986 (Including Armin van Buuren & Ferry Corsten B2B Vinyl Set),0.557,1.5e-05,0.974,0.344,-7.014,0.177,135.72,0.0449,25,dutch trance,3319,Unknown,Sensation - THE ANTHEM 2003,2721
+Sensation,THE ANTHEM 2003,4,438310,ASOT 986 - A State Of Trance Episode 986 (Including Armin van Buuren & Ferry Corsten B2B Vinyl Set),0.557,1.50E-05,0.974,0.344,-7.014,0.177,135.72,0.0449,25,dutch trance,3319,Unknown,Sensation - THE ANTHEM 2003,2721
 Eminem,BUSINESS,70,251720,The Eminem Show,0.901,0.0325,0.813,0.144,-4.509,0.502,96.442,0.199,93,"detroit hip hop, hip hop, rap",93162600,Unknown,Eminem - BUSINESS,2722
 Benny Benassi presents 'The Biz',SATISFACTION,64,285570,Hypnotica (Benny Benassi Presents The Biz),0.793,0.163,0.698,0.0745,-3.626,0.339,130.017,0.104,67,"dutch house, edm, electro house, pop dance",571217,Unknown,Benny Benassi presents 'The Biz' - SATISFACTION,2723
 Amy Studt,MISFIT,31,208533,False Smiles,0.628,0.0363,0.733,0.336,-6.412,0.703,87.998,0.0399,23,,9083,Unknown,Amy Studt - MISFIT,2724
@@ -2778,7 +2778,7 @@ Robbie Williams,COME UNDONE,54,278440,Escapology,0.375,0.0385,0.57,0.354,-5.364,
 Jim,TELL HER,26,160493,Tomorrow,0.701,0.626,0.484,0.124,-8.08,0.853,163.707,0.111,27,,9307,Unknown,Jim - TELL HER,2777
 Stuart,FREE (LET IT BE),20,198160,Free (Let It Be),0.642,0.000852,0.783,0.185,-7.799,0.845,126.068,0.0522,12,,29,Unknown,Stuart - FREE (LET IT BE),2778
 Simply Red,SUNRISE,59,199040,Home,0.794,0.00215,0.732,0.0845,-5.131,0.913,105.989,0.0288,69,"british soul, new romantic, new wave, new wave pop, soft rock, sophisti-pop",2501660,Unknown,Simply Red - SUNRISE,2779
-Girls Aloud,NO GOOD ADVICE,38,226733,Sound Of The Underground (Deluxe Edition),0.59,8.87e-05,0.885,0.0491,-3.633,0.86,148.058,0.0408,55,"europop, girl group, talent show",538881,Unknown,Girls Aloud - NO GOOD ADVICE,2780
+Girls Aloud,NO GOOD ADVICE,38,226733,Sound Of The Underground (Deluxe Edition),0.59,8.87E-05,0.885,0.0491,-3.633,0.86,148.058,0.0408,55,"europop, girl group, talent show",538881,Unknown,Girls Aloud - NO GOOD ADVICE,2780
 Linkin Park,FAINT,84,162106,Meteora,0.554,0.127,0.98,0.0833,-3.514,0.611,135.12,0.108,93,"alternative metal, nu metal, post-grunge, rap metal, rock",27616056,Unknown,Linkin Park - FAINT,2781
 Room 5 feat. Oliver Cheatham,MAKE LUV,14,212960,Make Luv (feat. Oliver Cheatham),0.87,0.00711,0.786,0.0409,-9.003,0.738,124.853,0.127,49,"disco house, vocal house",31977,Unknown,Room 5 feat. Oliver Cheatham - MAKE LUV,2782
 Jennifer Love Hewitt,BARENAKED,33,222173,BareNaked,0.579,0.0225,0.836,0.0372,-4.646,0.731,161.973,0.0387,42,"dance pop, post-teen pop",362532,Unknown,Jennifer Love Hewitt - BARENAKED,2783
@@ -2798,7 +2798,7 @@ Will Young,YOU AND I,31,237760,Star Wars: Attack of the Clones (Original Motion 
 Scooter,WEEKEND!,56,212466,The Stadium Techno Experience,0.49,0.000949,0.977,0.722,-5.495,0.489,143.056,0.0553,68,"eurodance, german techno, hamburg electronic, happy hardcore",884985,Unknown,Scooter - WEEKEND!,2797
 Dare,CHIHUAHUA,12,176560,"30 Exitos Serie Diamante, Vol. 2",0.566,0.507,0.845,0.0645,-2.947,0.946,186.765,0.283,51,"classic sierreno, musica sonorense",74329,Unknown,Dare - CHIHUAHUA,2798
 Sugababes,SHAPE,39,249880,Angels With Dirty Faces,0.653,0.125,0.703,0.0956,-6.587,0.721,84.01,0.0894,60,"dance pop, europop, girl group, talent show",706757,Unknown,Sugababes - SHAPE,2799
-DJ Cor Fijneman feat. Jan Johnston,VENUS (MEANT TO BE YOUR LOVER),17,289160,Nyana Mixed by Tiësto,0.484,4.93e-05,0.91,0.17,-10.006,0.396,139.476,0.0386,6,,171,Unknown,DJ Cor Fijneman feat. Jan Johnston - VENUS (MEANT TO BE YOUR LOVER),2800
+DJ Cor Fijneman feat. Jan Johnston,VENUS (MEANT TO BE YOUR LOVER),17,289160,Nyana Mixed by Tiësto,0.484,4.93E-05,0.91,0.17,-10.006,0.396,139.476,0.0386,6,,171,Unknown,DJ Cor Fijneman feat. Jan Johnston - VENUS (MEANT TO BE YOUR LOVER),2800
 Gareth Gates,ANYONE OF US (STUPID MISTAKE),30,227933,Bravo - The Hits 2003,0.695,0.27,0.756,0.101,-4.861,0.612,107.013,0.0264,47,talent show,163443,Unknown,Gareth Gates - ANYONE OF US (STUPID MISTAKE),2801
 Kelly Rowland,CAN'T NOBODY,29,244133,Simply Deep,0.797,0.0311,0.791,0.139,-6.134,0.964,97.373,0.177,70,"atl hip hop, dance pop, hip pop, r&b, urban contemporary",3518920,Unknown,Kelly Rowland - CAN'T NOBODY,2802
 Madonna,AMERICAN LIFE,42,297840,American Life,0.784,0.0438,0.583,0.282,-7.16,0.704,101.977,0.185,81,"dance pop, pop",8190030,Unknown,Madonna - AMERICAN LIFE,2803
@@ -2852,7 +2852,7 @@ Sir,ALL I NEEDED,0,224466,Sir Sings Harry Belafonte,0.672,0.059,0.945,0.322,-3.7
 The Cheeky Girls,CHEEKY SONG (TOUCH MY BUM),31,203080,Greatest - The Cheeky Girls,0.765,0.0142,0.908,0.0545,-6.533,0.869,130.073,0.037,26,,15617,Unknown,The Cheeky Girls - CHEEKY SONG (TOUCH MY BUM),2851
 Laura Pausini,SURRENDER,16,236253,From the inside,0.641,0.0252,0.889,0.428,-2.898,0.415,125.946,0.0336,74,"europop, italian adult pop, latin arena pop, mexican pop",2636821,Unknown,Laura Pausini - SURRENDER,2852
 Tomcraft,LONELINESS,36,226906,Loneliness,0.634,0.0376,0.919,0.159,-7.356,0.705,131.983,0.0383,48,"bubble trance, german techno, munich electronic",38410,Unknown,Tomcraft - LONELINESS,2853
-Avril Lavigne,SK8ER BOI,77,204000,Let Go,0.487,6.79e-05,0.9,0.358,-4.417,0.484,149.937,0.0482,78,"canadian pop, candy pop, dance pop, pop",11379313,Unknown,Avril Lavigne - SK8ER BOI,2854
+Avril Lavigne,SK8ER BOI,77,204000,Let Go,0.487,6.79E-05,0.9,0.358,-4.417,0.484,149.937,0.0482,78,"canadian pop, candy pop, dance pop, pop",11379313,Unknown,Avril Lavigne - SK8ER BOI,2854
 Raymzter,DOWN MET JOU,0,240240,Rayalistisch,0.757,0.68,0.915,0.493,-3.001,0.731,92.428,0.245,9,dutch hip hop,1796,Unknown,Raymzter - DOWN MET JOU,2855
 Panjabi MC,MUNDIAN TO BACH KE,61,245560,The Album,0.777,0.303,0.852,0.136,-6.625,0.907,98.073,0.0362,55,"bhangra, classic bhangra, desi hip hop",298333,Unknown,Panjabi MC - MUNDIAN TO BACH KE,2856
 Liberty X,HOLDING ON FOR YOU,24,212866,Thinking It Over,0.535,0.00644,0.603,0.0797,-8.321,0.543,171.989,0.038,41,"europop, girl group, talent show",147005,Unknown,Liberty X - HOLDING ON FOR YOU,2857
@@ -2880,7 +2880,7 @@ Justin Timberlake,LIKE I LOVE YOU,61,283626,Justified,0.853,0.0439,0.811,0.0703,
 Novaspace,TO FRANCE,34,218346,Supernova,0.632,0.308,0.984,0.144,-5.136,0.542,138.01,0.0757,36,"cantaditas, eurodance",12415,Unknown,Novaspace - TO FRANCE,2879
 Céline Dion,GOODBYE'S (THE SADDEST WORD),50,319266,A New Day Has Come,0.532,0.405,0.49,0.305,-6.929,0.193,137.661,0.0291,78,canadian pop,9045564,Unknown,Céline Dion - GOODBYE'S (THE SADDEST WORD),2880
 Mariah Carey,THROUGH THE RAIN,41,288640,Charmbracelet,0.508,0.759,0.318,0.184,-9.911,0.141,122.04,0.0365,82,"dance pop, pop, urban contemporary",10629538,Unknown,Mariah Carey - THROUGH THE RAIN,2881
-P!nk,JUST LIKE A PILL,66,236600,M!ssundaztood (Expanded Edition),0.689,8.72e-05,0.774,0.0941,-4.528,0.25,102.054,0.0278,82,"dance pop, pop",17312636,Unknown,P!nk - JUST LIKE A PILL,2882
+P!nk,JUST LIKE A PILL,66,236600,M!ssundaztood (Expanded Edition),0.689,8.72E-05,0.774,0.0941,-4.528,0.25,102.054,0.0278,82,"dance pop, pop",17312636,Unknown,P!nk - JUST LIKE A PILL,2882
 Missy Elliott,WORK IT,67,263226,Under Construction,0.884,0.0778,0.677,0.0732,-5.603,0.584,101.868,0.283,72,"dance pop, hip hop, hip pop, neo soul, pop rap, r&b, rap, urban contemporary, virginia hip hop",2561372,Unknown,Missy Elliott - WORK IT,2883
 Gordon & Re-Play,ZOLANG,24,237360,Gordon & Re-Play,0.314,0.758,0.401,0.0941,-6.509,0.273,203.513,0.0485,37,dutch pop,26689,Unknown,Gordon & Re-Play - ZOLANG,2884
 Ja Rule,THUG LOVIN,41,290386,The Last Temptation,0.769,0.133,0.686,0.667,-5.648,0.773,93.041,0.177,71,"dance pop, east coast hip hop, gangster rap, hip hop, hip pop, pop rap, queens hip hop, rap, urban contemporary",1957063,Unknown,Ja Rule - THUG LOVIN,2885
@@ -2952,7 +2952,7 @@ Elvis Presley vs. JXL,A LITTLE LESS CONVERSATION,63,211506,A Little Less Convers
 Puddle Of Mudd,SHE HATES ME,71,216760,Come Clean,0.58,0.00935,0.748,0.753,-5.433,0.584,109.781,0.0323,65,"alternative metal, nu metal, post-grunge",2120088,Unknown,Puddle Of Mudd - SHE HATES ME,2951
 Intenso Project,LUV DA SUNSHINE,7,200460,Luv Da Sunshine,0.705,0.0208,0.74,0.114,-6.535,0.829,129.013,0.0338,6,,272,Unknown,Intenso Project - LUV DA SUNSHINE,2952
 Kate Ryan,DÉSENCHANTÉE,63,218533,Different,0.51,0.144,0.891,0.208,-7.517,0.326,139.973,0.0653,56,"belgian pop, eurodance",90489,Unknown,Kate Ryan - DÉSENCHANTÉE,2953
-David Guetta,"LOVE, DON'T LET ME GO",53,216893,Just a Little More Love,0.593,7.37e-05,0.836,0.117,-4.774,0.406,127.087,0.0463,90,"big room, dance pop, edm, pop, pop dance",26429487,Unknown,"David Guetta - LOVE, DON'T LET ME GO",2954
+David Guetta,"LOVE, DON'T LET ME GO",53,216893,Just a Little More Love,0.593,7.37E-05,0.836,0.117,-4.774,0.406,127.087,0.0463,90,"big room, dance pop, edm, pop, pop dance",26429487,Unknown,"David Guetta - LOVE, DON'T LET ME GO",2954
 Mary J Blige feat. Ja Rule,RAINY DAYZ,48,276360,No More Drama (Version 2),0.476,0.182,0.663,0.321,-6.905,0.524,74.884,0.19,73,"dance pop, hip pop, neo soul, r&b, urban contemporary",3997685,Unknown,Mary J Blige feat. Ja Rule - RAINY DAYZ,2955
 Shakira,UNDERNEATH YOUR CLOTHES,59,224066,Laundry Service,0.616,0.691,0.597,0.104,-5.328,0.362,165.508,0.0415,88,"colombian pop, dance pop, latin pop, pop",35419689,Unknown,Shakira - UNDERNEATH YOUR CLOTHES,2956
 Karaja,SHE MOVES (LA LA LA),34,221077,Oscar Salguero presents WOW! (100 Dance Club Hits),0.676,0.0023,0.919,0.624,-5.312,0.379,134.004,0.0334,21,,487,Unknown,Karaja - SHE MOVES (LA LA LA),2957
@@ -2984,11 +2984,11 @@ One-T,MUSIC IS THE ONE-T ODC,24,238173,The One-T ODC,0.634,0.000451,0.84,0.308,-
 Bruce Springsteen,THE RISING,52,287040,The Rising,0.499,0.0655,0.761,0.0895,-6.381,0.326,110.186,0.0324,79,"heartland rock, mellow gold, permanent wave, rock, singer-songwriter",6649763,Unknown,Bruce Springsteen - THE RISING,2983
 Missy Elliott,4 MY PEOPLE,47,289373,Miss E... So Addictive,0.969,0.14,0.701,0.201,-7.503,0.905,121.392,0.156,72,"dance pop, hip hop, hip pop, neo soul, pop rap, r&b, rap, urban contemporary, virginia hip hop",2561372,Unknown,Missy Elliott - 4 MY PEOPLE,2984
 Kylie,LOVE AT FIRST SIGHT,48,238266,Fever,0.603,0.0288,0.774,0.0533,-6.066,0.48,124.994,0.0428,75,"australian dance, australian pop, dance pop, eurodance, new wave pop",2092414,Unknown,Kylie - LOVE AT FIRST SIGHT,2985
-Moony,DOVE (I'LL BE LOVING YOU),54,243720,Dove (I'll Be Loving You),0.69,7.99e-05,0.791,0.0349,-5.446,0.962,127.042,0.0425,49,,19070,Unknown,Moony - DOVE (I'LL BE LOVING YOU),2986
+Moony,DOVE (I'LL BE LOVING YOU),54,243720,Dove (I'll Be Loving You),0.69,7.99E-05,0.791,0.0349,-5.446,0.962,127.042,0.0425,49,,19070,Unknown,Moony - DOVE (I'LL BE LOVING YOU),2986
 Dance Nation,DANCE!,34,237000,Authentic Holland (Authentiek Nederland),0.567,0.85,0.106,0.0557,-13.302,0.931,180.463,0.32,27,dutch folk,586,Unknown,Dance Nation - DANCE!,2987
 Kane,RAIN DOWN ON ME,33,419666,What If,0.644,0.000309,0.868,0.0372,-7.749,0.294,132.997,0.0332,45,"dutch pop, dutch rock",99164,Unknown,Kane - RAIN DOWN ON ME,2988
 Within Temptation,MOTHER EARTH,45,331280,Mother Earth,0.425,0.0223,0.589,0.26,-5.876,0.144,104.948,0.0284,65,"dutch metal, gothic metal, gothic symphonic metal, symphonic metal",1327699,Unknown,Within Temptation - MOTHER EARTH,2989
-Hampenberg,DUCKTOY,26,205160,Duck Off,0.677,6.86e-05,0.993,0.32,-6.348,0.25,138.011,0.0979,32,danish electronic,6556,Unknown,Hampenberg - DUCKTOY,2990
+Hampenberg,DUCKTOY,26,205160,Duck Off,0.677,6.86E-05,0.993,0.32,-6.348,0.25,138.011,0.0979,32,danish electronic,6556,Unknown,Hampenberg - DUCKTOY,2990
 Enrique Iglesias,LOVE TO SEE YOU CRY,31,245093,Escape,0.75,0.139,0.803,0.0937,-5.866,0.683,123,0.0353,79,"dance pop, latin pop, mexican pop",11227981,Unknown,Enrique Iglesias - LOVE TO SEE YOU CRY,2991
 The Prodigy,BABYS GOT A TEMPER,45,267000,Baby's Got a Temper,0.567,0.000495,0.952,0.338,-5.634,0.497,105.957,0.0465,66,"big beat, breakbeat, dance rock, hardcore techno, rave",2582579,Unknown,The Prodigy - BABYS GOT A TEMPER,2992
 Mad'house,HOLIDAY,26,215813,Absolutely Mad,0.74,0.006,0.674,0.408,-10.373,0.897,127.954,0.0551,36,,4747,Unknown,Mad'house - HOLIDAY,2993
@@ -3005,7 +3005,7 @@ Galleon,SO I BEGIN,27,216190,"So, I Begin",0.623,0.00203,0.837,0.221,-5.791,0.53
 Mary J Blige,NO MORE DRAMA,50,326240,No More Drama,0.654,0.536,0.836,0.0784,-6.818,0.634,97.911,0.126,73,"dance pop, hip pop, neo soul, r&b, urban contemporary",3997685,Unknown,Mary J Blige - NO MORE DRAMA,3004
 Westlife,BOP BOP BABY,49,261893,World of Our Own (Expanded Edition),0.679,0.0141,0.89,0.139,-4.483,0.656,118.018,0.0301,71,boy band,4355810,Unknown,Westlife - BOP BOP BABY,3005
 Shakira,WHENEVER WHEREVER,74,196160,Laundry Service,0.794,0.237,0.832,0.203,-4.862,0.871,107.657,0.0407,88,"colombian pop, dance pop, latin pop, pop",35419689,Unknown,Shakira - WHENEVER WHEREVER,3006
-DJ Tiësto,LETHAL INDUSTRY,50,163813,Magikal Journey -The Hits Collection 1998 - 2008,0.513,5.38e-05,0.949,0.132,-6.021,0.0441,134.983,0.0454,84,"big room, brostep, dutch edm, edm, house, pop dance, progressive electro house, slap house, trance",7569247,Unknown,DJ Tiësto - LETHAL INDUSTRY,3007
+DJ Tiësto,LETHAL INDUSTRY,50,163813,Magikal Journey -The Hits Collection 1998 - 2008,0.513,5.38E-05,0.949,0.132,-6.021,0.0441,134.983,0.0454,84,"big room, brostep, dutch edm, edm, house, pop dance, progressive electro house, slap house, trance",7569247,Unknown,DJ Tiësto - LETHAL INDUSTRY,3007
 *Nsync feat. Nelly,GIRLFRIEND - THE NEPTUNES REMIX,38,284466,Greatest Hits,0.788,0.141,0.882,0.0633,-4.173,0.882,93.993,0.223,77,"boy band, dance pop, pop",2736830,Unknown,*Nsync feat. Nelly - GIRLFRIEND - THE NEPTUNES REMIX,3008
 Tweet,OOPS (OH MY),57,237800,Southern Hummingbird,0.66,0.233,0.536,0.111,-8.786,0.775,159.963,0.29,47,"contemporary r&b, hip pop, neo soul, r&b, urban contemporary",611343,Unknown,Tweet - OOPS (OH MY),3009
 Anastacia,ONE DAY IN YOUR LIFE,45,209773,Pieces of A Dream,0.695,0.063,0.711,0.0682,-4.367,0.348,118.893,0.0471,62,pop soul,406546,Unknown,Anastacia - ONE DAY IN YOUR LIFE,3010
@@ -3074,7 +3074,7 @@ Nelly Furtado,**** ON THE RADIO (REMEMBER THE DAYS),9,235506,The Best of Nelly F
 Nas,GOT UR SELF A...,51,228626,Stillmatic,0.699,0.0118,0.869,0.0982,-4.263,0.616,93.612,0.238,74,"conscious hip hop, east coast hip hop, gangster rap, hardcore hip hop, hip hop, queens hip hop, rap",3958772,Unknown,Nas - GOT UR SELF A...,3073
 Robbie Williams & Nicole Kidman,SOMETHIN' STUPID,65,170493,Swing When You're Winning,0.654,0.429,0.515,0.174,-12.185,0.677,106.191,0.0261,72,"dance rock, europop",2975633,Unknown,Robbie Williams & Nicole Kidman - SOMETHIN' STUPID,3074
 DJ Melvin,L.O.I.S.,12,208688,L.O.I.S.,0.695,0.014,0.965,0.221,-7.688,0.385,136.99,0.0541,13,bouncy house,372,Unknown,DJ Melvin - L.O.I.S.,3075
-P.O.D.,ALIVE,63,205026,Satellite (U.S. Version),0.421,1.21e-05,0.95,0.314,-3.985,0.553,80.912,0.0768,64,"alternative metal, funk metal, nu metal, rap metal, rap rock",1995099,Unknown,P.O.D. - ALIVE,3076
+P.O.D.,ALIVE,63,205026,Satellite (U.S. Version),0.421,1.21E-05,0.95,0.314,-3.985,0.553,80.912,0.0768,64,"alternative metal, funk metal, nu metal, rap metal, rap rock",1995099,Unknown,P.O.D. - ALIVE,3076
 Outkast feat. Killer Mike,THE WHOLE WORLD,50,295346,Big Boi & Dre Present...OutKast,0.814,0.0958,0.852,0.0288,-6.176,0.717,184.682,0.401,77,"atl hip hop, dirty south rap, hip hop, old school atlanta hip hop, rap, southern hip hop",2903808,Unknown,Outkast feat. Killer Mike - THE WHOLE WORLD,3077
 De Poema's,ZIJ MAAKT HET VERSCHIL,47,280386,Best Of De Poema's,0.337,0.332,0.552,0.119,-7.9,0.361,172.823,0.0438,38,"dutch pop, dutch rock, nederpop",29292,Unknown,De Poema's - ZIJ MAAKT HET VERSCHIL,3078
 Sita,HAPPY,10,247626,Happy,0.41,0.000522,0.832,0.217,-3.019,0.318,159.854,0.0343,42,dutch pop,3523,Unknown,Sita - HAPPY,3079
@@ -3087,7 +3087,7 @@ Sonic Inc.,THE TASTE OF SUMMER,5,430444,"A State Of Trance Classics, Vol. 8 (The
 Riva feat. Dannii Minogue,WHO DO YOU LOVE NOW? (STRINGER),1,204360,Neon Nights,0.607,0.00385,0.838,0.167,-5.984,0.938,135.056,0.0394,3,,29,Unknown,Riva feat. Dannii Minogue - WHO DO YOU LOVE NOW? (STRINGER),3086
 Christina Milian,AM TO PM,52,231213,Christina Milian,0.872,0.153,0.868,0.843,-3.036,0.822,105.005,0.12,53,"dance pop, hip pop, r&b, urban contemporary",1395358,Unknown,Christina Milian - AM TO PM,3087
 René Froger,SHE ...A SONG FOR MAXIMA,16,187000,Sweet Hello`s and Sad Goodbye`s Part 2,0.371,0.435,0.416,0.207,-10.443,0.174,66.089,0.0295,49,"dutch pop, dutch rock, levenslied",86426,Unknown,René Froger - SHE ...A SONG FOR MAXIMA,3088
-Marco V,GODD,19,374520,Godd,0.639,5.89e-05,0.984,0.451,-5.499,0.151,139.991,0.0645,42,"dutch trance, progressive house, trance, uplifting trance",35588,Unknown,Marco V - GODD,3089
+Marco V,GODD,19,374520,Godd,0.639,5.89E-05,0.984,0.451,-5.499,0.151,139.991,0.0645,42,"dutch trance, progressive house, trance, uplifting trance",35588,Unknown,Marco V - GODD,3089
 Ja Rule feat. Case,LIVIN' IT UP,46,257133,Pain Is Love,0.875,0.0547,0.774,0.0414,-4.087,0.606,106.027,0.309,71,"dance pop, east coast hip hop, gangster rap, hip hop, hip pop, pop rap, queens hip hop, rap, urban contemporary",1957063,Unknown,Ja Rule feat. Case - LIVIN' IT UP,3090
 Kylie,CAN'T GET YOU OUT OF MY HEAD,78,230640,Fever,0.766,0.0263,0.563,0.115,-7.516,0.964,126.007,0.0339,75,"australian dance, australian pop, dance pop, eurodance, new wave pop",2092414,Unknown,Kylie - CAN'T GET YOU OUT OF MY HEAD,3091
 Volumia!,NOG ÉÉN KEER,18,225426,Het Beste Van Volumia!,0.663,0.041,0.333,0.281,-9.47,0.289,121.982,0.0294,41,"dutch pop, dutch rock",50060,Unknown,Volumia! - NOG ÉÉN KEER,3092
@@ -3101,7 +3101,7 @@ Westlife,QUEEN OF MY HEART,56,259186,World of Our Own (Expanded Edition),0.514,0
 Destiny's Child,8 DAYS OF CHRISTMAS,59,209360,8 Days Of Christmas,0.685,0.0493,0.8,0.0799,-1.866,0.587,99.675,0.202,73,"dance pop, girl group, pop, r&b, urban contemporary",7499934,Unknown,Destiny's Child - 8 DAYS OF CHRISTMAS,3100
 Atomic Kitten,YOU ARE,28,213333,Right Now,0.668,0.0237,0.559,0.0578,-5.05,0.738,90.985,0.0353,56,"candy pop, dance pop, europop, girl group",488601,Unknown,Atomic Kitten - YOU ARE,3101
 City High,WHAT WOULD YOU DO?,56,175560,City High,0.733,0.259,0.794,0.483,-6.909,0.832,95.877,0.223,46,,41542,Unknown,City High - WHAT WOULD YOU DO?,3102
-Basement Jaxx,WHERE'S YOUR HEAD AT,61,285533,Rooty,0.61,6.42e-05,0.918,0.273,-4.817,0.415,127.864,0.0298,55,"alternative dance, big beat, electronica",542091,Unknown,Basement Jaxx - WHERE'S YOUR HEAD AT,3103
+Basement Jaxx,WHERE'S YOUR HEAD AT,61,285533,Rooty,0.61,6.42E-05,0.918,0.273,-4.817,0.415,127.864,0.0298,55,"alternative dance, big beat, electronica",542091,Unknown,Basement Jaxx - WHERE'S YOUR HEAD AT,3103
 System Of A Down,CHOP SUEY!,83,210240,Toxicity,0.417,0.000278,0.934,0.132,-3.908,0.287,127.066,0.119,82,"alternative metal, nu metal, rap metal, rock",11683602,Unknown,System Of A Down - CHOP SUEY!,3104
 Janet,SON OF A GUN (I BETCHA THINK THIS SONG IS ABOUT YOU),36,356373,All For You,0.885,0.00844,0.765,0.0981,-5.806,0.484,104.466,0.275,66,"dance pop, r&b, urban contemporary",3982533,Unknown,Janet - SON OF A GUN (I BETCHA THINK THIS SONG IS ABOUT YOU),3105
 Alien Ant Farm,SMOOTH CRIMINAL,73,209266,Anthology,0.653,0.00316,0.964,0.144,-4.26,0.872,126.928,0.0578,62,"alternative metal, funk metal, nu metal, post-grunge",902671,Unknown,Alien Ant Farm - SMOOTH CRIMINAL,3106
@@ -3160,7 +3160,7 @@ Kurupt,IT'S OVER,29,204466,Space Boogie: Smoke Oddessey (Digitally Remastered),0
 Macy Gray (feat. Erykah Badu),SWEET BABY,51,229333,the id,0.487,0.224,0.774,0.145,-5.096,0.415,80.928,0.0487,62,neo soul,693524,Unknown,Macy Gray (feat. Erykah Badu) - SWEET BABY,3159
 Ian van Dahl,CASTLES IN THE SKY,56,227133,Castles In The Sky,0.578,0.00268,0.87,0.0346,-6.422,0.667,139.992,0.0323,49,"belgian dance, bouncy house, eurodance",70549,Unknown,Ian van Dahl - CASTLES IN THE SKY,3160
 Armin van Buuren presents Perpetuous Dreamer,THE SOUND OF GOODBYE,5,649653,"40 Best Trance Hits Ever, Vol. 2 (Extended Versions)",0.567,0.000166,0.941,0.0759,-7.357,0.296,135.001,0.0504,35,dutch trance,2800,Unknown,Armin van Buuren presents Perpetuous Dreamer - THE SOUND OF GOODBYE,3161
-System F,DANCE VALLEY THEME 2001,32,224773,Dance Valley Theme 2001,0.621,6.96e-05,0.985,0.0439,-8.055,0.115,136.001,0.0744,46,"bouncy house, dutch trance, trance",30981,Unknown,System F - DANCE VALLEY THEME 2001,3162
+System F,DANCE VALLEY THEME 2001,32,224773,Dance Valley Theme 2001,0.621,6.96E-05,0.985,0.0439,-8.055,0.115,136.001,0.0744,46,"bouncy house, dutch trance, trance",30981,Unknown,System F - DANCE VALLEY THEME 2001,3162
 Destiny's Child,BOOTYLICIOUS,60,207906,Survivor,0.84,0.00281,0.835,0.152,-4.386,0.637,103.376,0.275,73,"dance pop, girl group, pop, r&b, urban contemporary",7499934,Unknown,Destiny's Child - BOOTYLICIOUS,3163
 Raven Maize,THE REAL LIFE,31,176266,The Real Life,0.58,0.00205,0.871,0.332,-8.576,0.692,129.017,0.04,26,,1361,Unknown,Raven Maize - THE REAL LIFE,3164
 Five,LET'S DANCE,40,218626,Let's Dance,0.631,0.00876,0.821,0.293,-7.853,0.547,118.007,0.0867,54,boy band,494645,Unknown,Five - LET'S DANCE,3165
@@ -3233,7 +3233,7 @@ Daft Punk,ONE MORE TIME,74,320357,Discovery,0.613,0.0194,0.697,0.332,-8.618,0.47
 Gorillaz,CLINT EASTWOOD,68,340920,Gorillaz,0.663,0.0253,0.694,0.0698,-8.627,0.525,167.953,0.171,81,"alternative hip hop, modern rock, rock",12358742,Unknown,Gorillaz - CLINT EASTWOOD,3232
 Lil Bow Wow,BOW WOW (THAT'S MY NAME),38,223266,Beware Of Dog,0.92,0.216,0.677,0.0981,-3.484,0.939,91.939,0.266,61,"dance pop, hip pop, pop rap, r&b, rap, southern hip hop, trap, urban contemporary",1512905,Unknown,Lil Bow Wow - BOW WOW (THAT'S MY NAME),3233
 Mauro Picotto,PROXIMUS - MEDLEY WITH ADIEMUS,32,189093,Proximus (Medley With Adiemus),0.651,0.0323,0.751,0.0702,-8.369,0.238,138.095,0.0429,54,"bubble trance, hard house, italian trance, italo dance, trance",89421,Unknown,Mauro Picotto - PROXIMUS - MEDLEY WITH ADIEMUS,3234
-Modjo,CHILLIN',54,293732,Modjo (Remastered),0.58,6.54e-05,0.89,0.0518,-5.559,0.909,124.971,0.036,65,"disco house, filter house",234239,Unknown,Modjo - CHILLIN',3235
+Modjo,CHILLIN',54,293732,Modjo (Remastered),0.58,6.54E-05,0.89,0.0518,-5.559,0.909,124.971,0.036,65,"disco house, filter house",234239,Unknown,Modjo - CHILLIN',3235
 Dario G,DREAM TO ME,35,188560,In Full Colour,0.47,0.00466,0.905,0.492,-6.471,0.55,134.969,0.0359,49,"dream trance, eurodance, hip house",29259,Unknown,Dario G - DREAM TO ME,3236
 Robbie Williams,LET LOVE BE YOUR ENERGY,31,301026,Sing When You're Winning,0.348,0.00223,0.908,0.0388,-3.464,0.696,177.904,0.0405,72,"dance rock, europop",2975633,Unknown,Robbie Williams - LET LOVE BE YOUR ENERGY,3237
 Mauro Picotto,KOMODO,55,203440,Greatest Hits & Remixes,0.596,0.0405,0.863,0.37,-6.177,0.421,137.716,0.0362,54,"bubble trance, hard house, italian trance, italo dance, trance",89421,Unknown,Mauro Picotto - KOMODO,3238
@@ -3286,7 +3286,7 @@ Twarres,WÊR BISTO,47,226466,Stream,0.52,0.325,0.323,0.0938,-10.534,0.178,87.972
 Madonna,DON'T TELL ME,41,280973,Music,0.699,0.0502,0.618,0.0914,-7.338,0.679,99.965,0.0594,81,"dance pop, pop",8190030,Unknown,Madonna - DON'T TELL ME,3285
 Westlife,MY LOVE,68,231760,Coast To Coast (Expanded Edition),0.491,0.098,0.593,0.257,-5.975,0.328,144.142,0.0255,71,boy band,4355810,Unknown,Westlife - MY LOVE,3286
 Bløf,ZE IS ER NIET,33,225266,Watermakers,0.56,0.4,0.381,0.115,-11.403,0.216,77.984,0.0264,59,"dutch pop, dutch rock",388326,Unknown,Bløf - ZE IS ER NIET,3287
-Zebrahead,PLAYMATE OF THE YEAR,27,177666,Playmate Of The Year,0.541,1.47e-05,0.962,0.139,-5.814,0.698,131.245,0.0647,53,"funk metal, skate punk",341948,Unknown,Zebrahead - PLAYMATE OF THE YEAR,3288
+Zebrahead,PLAYMATE OF THE YEAR,27,177666,Playmate Of The Year,0.541,1.47E-05,0.962,0.139,-5.814,0.698,131.245,0.0647,53,"funk metal, skate punk",341948,Unknown,Zebrahead - PLAYMATE OF THE YEAR,3288
 Kane,CAN YOU HANDLE ME,32,201840,As Long As You Want This,0.546,0.0108,0.893,0.147,-6.372,0.605,115.498,0.0446,45,"dutch pop, dutch rock",99164,Unknown,Kane - CAN YOU HANDLE ME,3289
 Melanie C,IF THAT WERE ME,26,273293,Northern Star,0.846,0.353,0.513,0.0815,-7.816,0.666,110.375,0.032,56,"dance pop, europop, talent show",358234,Unknown,Melanie C - IF THAT WERE ME,3290
 Mýa,CASE OF THE EX,52,236826,Fear Of Flying,0.774,0.0687,0.684,0.0765,-4.721,0.354,98.001,0.0408,63,"contemporary r&b, hip pop, r&b, urban contemporary",1458281,Unknown,Mýa - CASE OF THE EX,3291
@@ -3298,7 +3298,7 @@ Baha Men,WHO LET THE DOGS OUT,64,198400,Who Let The Dogs Out,0.869,0.0605,0.887,
 Jody Bernal,"QUE SI, QUE NO",43,191506,"Que Si, Que No (Expanded Edition)",0.806,0.0246,0.798,0.296,-10.563,0.859,134.979,0.119,38,dutch pop,7734,Unknown,"Jody Bernal - QUE SI, QUE NO",3297
 U2,BEAUTIFUL DAY,63,246400,All That You Can't Leave Behind,0.539,0.014,0.926,0.36,-6.495,0.454,136.279,0.0499,79,"irish rock, permanent wave, rock",12699333,Unknown,U2 - BEAUTIFUL DAY,3298
 Milk Inc.,WALK ON WATER,52,192680,Land Of The Living,0.733,0.0938,0.79,0.152,-8.482,0.428,140.928,0.0588,51,"belgian dance, eurodance",95381,Unknown,Milk Inc. - WALK ON WATER,3299
-Alice Deejay,CELEBRATE OUR LOVE,34,205705,Who Needs Guitars Anyway?,0.582,3.43e-05,0.891,0.225,-5.265,0.413,136.969,0.0324,64,eurodance,166744,Unknown,Alice Deejay - CELEBRATE OUR LOVE,3300
+Alice Deejay,CELEBRATE OUR LOVE,34,205705,Who Needs Guitars Anyway?,0.582,3.43E-05,0.891,0.225,-5.265,0.413,136.969,0.0324,64,eurodance,166744,Unknown,Alice Deejay - CELEBRATE OUR LOVE,3300
 Britney Spears,STRONGER,63,203000,Oops!... I Did It Again,0.707,0.128,0.923,0.273,-3.957,0.842,108.049,0.0521,83,"dance pop, pop",15540146,Unknown,Britney Spears - STRONGER,3301
 R. Kelly,I WISH,44,334000,TP-2.com,0.42,0.068,0.463,0.119,-9.056,0.659,78.83,0.12,69,,2432337,Unknown,R. Kelly - I WISH,3302
 Minimalistix,STRUGGLE FOR PLEASURE,15,230693,Elements,0.421,0.000293,0.98,0.147,-6.599,0.652,140.016,0.0741,15,"belgian dance, dream trance",1921,Unknown,Minimalistix - STRUGGLE FOR PLEASURE,3303
@@ -3420,7 +3420,7 @@ Manu Chao,BONGO BONG,67,158426,Clandestino,0.755,0.944,0.545,0.144,-10.027,0.964
 P!nk,THERE YOU GO,53,202800,Can't Take Me Home (Expanded Edition),0.822,0.0854,0.847,0.0452,-6.729,0.668,107.908,0.0917,82,"dance pop, pop",17312636,Unknown,P!nk - THERE YOU GO,3419
 Him,JOIN ME,54,216744,Razorblade Romance (Deluxe Remastered Edition),0.622,0.0103,0.708,0.139,-6.117,0.512,113.807,0.0302,62,"dark rock, finnish alternative rock, gothic metal",794246,Unknown,Him - JOIN ME,3420
 SisQó,THONG SONG,68,253733,Unleash The Dragon,0.707,0.12,0.888,0.07,-6.959,0.714,121.543,0.0654,60,"contemporary r&b, hip pop, r&b, urban contemporary",1076291,Unknown,SisQó - THONG SONG,3421
-Da Cloot,GET UPPA!!,8,199773,Get-Uppa!!,0.654,3.9e-05,0.925,0.375,-7.246,0.455,137.89,0.0466,2,,20,Unknown,Da Cloot - GET UPPA!!,3422
+Da Cloot,GET UPPA!!,8,199773,Get-Uppa!!,0.654,3.90E-05,0.925,0.375,-7.246,0.455,137.89,0.0466,2,,20,Unknown,Da Cloot - GET UPPA!!,3422
 Gabrielle,RISE,54,219093,Rise,0.558,0.315,0.481,0.09,-9.487,0.631,144.673,0.026,58,"british soul, new wave pop",277884,Unknown,Gabrielle - RISE,3423
 Scoop,ROCK THE HOUSE,21,211760,Rock The House,0.673,0.00174,0.94,0.0215,-9.096,0.847,136.987,0.0453,35,"belgian dance, bouncy house",3106,Unknown,Scoop - ROCK THE HOUSE,3424
 TQ,DAILY,28,272493,Tq the Second Coming Domestic With Bonus Tracks,0.529,0.0274,0.504,0.0408,-6.772,0.861,169.996,0.119,41,,57772,Unknown,TQ - DAILY,3425
@@ -3459,7 +3459,7 @@ M2M,DON'T SAY YOU LOVE ME,57,225200,Shades of Purple,0.627,0.0141,0.723,0.118,-6
 Lene Marlin,SITTING DOWN HERE,59,234373,Playing My Game,0.764,0.163,0.709,0.334,-6.766,0.786,124.043,0.0348,48,norwegian pop,75879,Unknown,Lene Marlin - SITTING DOWN HERE,3458
 Shania Twain,DON'T BE STUPID (YOU KNOW I LOVE YOU),51,214011,Come On Over (Diamond Edition / Super Deluxe),0.782,0.159,0.657,0.351,-4.952,0.84,122.102,0.0321,73,"canadian country, canadian pop, contemporary country, country, country dawn",3157421,Unknown,Shania Twain - DON'T BE STUPID (YOU KNOW I LOVE YOU),3459
 Van Dik Hout,DROMENDIEF,17,266066,Ik Jou & Jij Mij,0.634,0.314,0.643,0.106,-8.967,0.672,150.948,0.0368,42,"dutch cabaret, dutch pop, dutch rock, nederpop",72786,Unknown,Van Dik Hout - DROMENDIEF,3460
-William Ørbit,BARBER'S ADAGIO FOR STRINGS,29,218826,Que vienen los DJ's!,0.481,2.49e-05,0.941,0.0837,-7.395,0.26,135.01,0.0325,47,"classic progressive house, downtempo, intelligent dance music",60127,Unknown,William Ørbit - BARBER'S ADAGIO FOR STRINGS,3461
+William Ørbit,BARBER'S ADAGIO FOR STRINGS,29,218826,Que vienen los DJ's!,0.481,2.49E-05,0.941,0.0837,-7.395,0.26,135.01,0.0325,47,"classic progressive house, downtempo, intelligent dance music",60127,Unknown,William Ørbit - BARBER'S ADAGIO FOR STRINGS,3461
 Donell Jones,U KNOW WHAT'S UP,62,243733,Where I Wanna Be,0.854,0.0402,0.543,0.0419,-6.166,0.868,103.032,0.0844,56,"contemporary r&b, r&b, urban contemporary",1229042,Unknown,Donell Jones - U KNOW WHAT'S UP,3462
 Backstreet Boys,SHOW ME THE MEANING OF BEING LONELY,67,234960,Millennium,0.63,0.231,0.625,0.0765,-5.088,0.683,167.998,0.0252,78,"boy band, dance pop, pop",5993383,Unknown,Backstreet Boys - SHOW ME THE MEANING OF BEING LONELY,3463
 Moby,NATURAL BLUES,49,253760,Play: The Complete Recordings,0.681,0.0465,0.653,0.276,-7.891,0.654,107.988,0.0326,70,"downtempo, electronica",1927936,Unknown,Moby - NATURAL BLUES,3464
@@ -3514,7 +3514,7 @@ Bloodhound Gang,THE BAD TOUCH,71,260506,Hooray For Boobies,0.831,0.00397,0.735,0
 A*Teens,GIMME! GIMME! GIMME! (A MAN AFTER MIDNIGHT),26,234480,The Abba Generation,0.621,0.0543,0.994,0.59,-1.075,0.354,130.037,0.07,47,"bubblegum dance, dance pop, europop",209651,Unknown,A*Teens - GIMME! GIMME! GIMME! (A MAN AFTER MIDNIGHT),3513
 Destiny's Child,BUG A BOO,50,212440,The Writing's On The Wall,0.76,0.00413,0.718,0.18,-3.087,0.927,104.42,0.147,73,"dance pop, girl group, pop, r&b, urban contemporary",7499934,Unknown,Destiny's Child - BUG A BOO,3514
 Britney Spears,(YOU DRIVE ME) CRAZY (THE STOP REMIX!),39,196666,Greatest Hits: My Prerogative,0.679,0.0832,0.96,0.35,-2.356,0.763,101.062,0.0465,83,"dance pop, pop",15540146,Unknown,Britney Spears - (YOU DRIVE ME) CRAZY (THE STOP REMIX!),3515
-Gouryella,WALHALLA,28,211360,In Search of Sunrise 1 Mixed by Tiësto,0.565,2.13e-05,0.959,0.105,-9.029,0.209,137.086,0.0421,44,"dutch trance, trance, uplifting trance",35573,Unknown,Gouryella - WALHALLA,3516
+Gouryella,WALHALLA,28,211360,In Search of Sunrise 1 Mixed by Tiësto,0.565,2.13E-05,0.959,0.105,-9.029,0.209,137.086,0.0421,44,"dutch trance, trance, uplifting trance",35573,Unknown,Gouryella - WALHALLA,3516
 Shania Twain,MAN! I FEEL LIKE A WOMAN!,70,233414,Come On Over (Diamond Edition / Super Deluxe),0.69,0.447,0.74,0.0858,-3.342,0.657,125.092,0.0351,73,"canadian country, canadian pop, contemporary country, country, country dawn",3157421,Unknown,Shania Twain - MAN! I FEEL LIKE A WOMAN!,3517
 Christina Aguilera,GENIE IN A BOTTLE,78,217573,Christina Aguilera (Expanded Edition),0.633,0.209,0.8,0.137,-6.945,0.913,175.716,0.166,79,"dance pop, pop",8590677,Unknown,Christina Aguilera - GENIE IN A BOTTLE,3518
 Shaft,(MUCHO MAMBO) SWAY,47,210400,Pick Up on This,0.626,0.442,0.948,0.553,-4.04,0.948,127.975,0.0373,36,,2711,Unknown,Shaft - (MUCHO MAMBO) SWAY,3519
@@ -3523,7 +3523,7 @@ Ronan Keating,WHEN YOU SAY NOTHING AT ALL,70,256825,Ronan,0.461,0.161,0.448,0.08
 Tina Turner,WHEN THE HEARTACHE IS OVER,46,225043,Twenty Four Seven,0.689,0.00703,0.73,0.0788,-7.585,0.433,114.974,0.0297,71,soft rock,4319884,Unknown,Tina Turner - WHEN THE HEARTACHE IS OVER,3522
 Ricky Martin,SHE'S ALL I EVER HAD,40,295333,Ricky Martin,0.393,0.0172,0.765,0.227,-5.924,0.274,81.088,0.0481,73,"latin pop, mexican pop, puerto rican pop",7675371,Unknown,Ricky Martin - SHE'S ALL I EVER HAD,3523
 Volumia!,BLIJF BIJ MIJ,34,209093,Wakker,0.605,0.0184,0.956,0.248,-6.454,0.827,104.063,0.0393,41,"dutch pop, dutch rock",50060,Unknown,Volumia! - BLIJF BIJ MIJ,3524
-Foo Fighters,LEARN TO FLY,73,235293,There Is Nothing Left To Lose,0.465,1.83e-05,0.919,0.262,-4.025,0.537,135.997,0.0408,78,"alternative metal, alternative rock, modern rock, permanent wave, post-grunge, rock",12148969,Unknown,Foo Fighters - LEARN TO FLY,3525
+Foo Fighters,LEARN TO FLY,73,235293,There Is Nothing Left To Lose,0.465,1.83E-05,0.919,0.262,-4.025,0.537,135.997,0.0408,78,"alternative metal, alternative rock, modern rock, permanent wave, post-grunge, rock",12148969,Unknown,Foo Fighters - LEARN TO FLY,3525
 Paul Johnson,GET GET DOWN,56,367786,Get Get Down,0.879,0.000161,0.95,0.0714,-6.375,0.615,126.903,0.0746,45,"chicago house, classic house, disco house",35537,Unknown,Paul Johnson - GET GET DOWN,3526
 Wyclef Jean feat. Bono,NEW DAY,15,283466,New Day,0.797,0.094,0.674,0.344,-9.659,0.637,100.913,0.0552,73,rap kreyol,362881,Unknown,Wyclef Jean feat. Bono - NEW DAY,3527
 Westlife,IF I LET YOU GO,66,221266,Westlife,0.581,0.00669,0.678,0.0807,-4.242,0.677,181.991,0.0284,71,boy band,4355810,Unknown,Westlife - IF I LET YOU GO,3528
@@ -3597,7 +3597,7 @@ Avant Garde,GET DOWN,4,387959,Fashion Deluxe 2018,0.661,0.00507,0.981,0.0748,-5.
 Ricky Martin,LIVIN' LA VIDA LOCA,73,243160,Ricky Martin,0.425,0.00414,0.954,0.0555,-3.756,0.933,178.043,0.0476,73,"latin pop, mexican pop, puerto rican pop",7675371,Unknown,Ricky Martin - LIVIN' LA VIDA LOCA,3596
 Smash Mouth,ALL STAR,78,200373,Astro Lounge,0.731,0.0394,0.867,0.0861,-5.881,0.776,104.02,0.032,68,"pop rock, post-grunge",1124777,Unknown,Smash Mouth - ALL STAR,3597
 Toy-Box,BEST FRIEND,51,212080,FanTastic,0.668,0.00439,0.98,0.273,-3.578,0.871,138.938,0.0365,53,bubblegum dance,102844,Unknown,Toy-Box - BEST FRIEND,3598
-Poco Loco Gang,LET'S GO TO THE PARTY,18,249173,Poco Loco,0.779,6.97e-05,0.979,0.0628,-8.8,0.92,139.014,0.0498,25,belgian dance,2348,Unknown,Poco Loco Gang - LET'S GO TO THE PARTY,3599
+Poco Loco Gang,LET'S GO TO THE PARTY,18,249173,Poco Loco,0.779,6.97E-05,0.979,0.0628,-8.8,0.92,139.014,0.0498,25,belgian dance,2348,Unknown,Poco Loco Gang - LET'S GO TO THE PARTY,3599
 Gordon & Re-Play,NEVER NOOIT MEER,37,268133,Met Hart En Ziel,0.589,0.561,0.425,0.116,-9.446,0.233,73.999,0.0302,37,dutch pop,26689,Unknown,Gordon & Re-Play - NEVER NOOIT MEER,3600
 Cartoons,WITCH DOCTOR,57,187453,Greatest Toons,0.875,0.0972,0.941,0.184,-6.438,0.968,136.044,0.0474,50,bubblegum dance,58676,Unknown,Cartoons - WITCH DOCTOR,3601
 Shanks & Bigfoot,SWEET LIKE CHOCOLATE,46,210960,Sweet Like Chocolate,0.909,0.0481,0.628,0.0967,-10.664,0.697,130.65,0.0722,33,"2-step, uk garage",4498,Unknown,Shanks & Bigfoot - SWEET LIKE CHOCOLATE,3602
@@ -3617,9 +3617,9 @@ Boyzone,YOU NEEDED ME,44,208773,The Love Songs Collection,0.583,0.465,0.499,0.15
 Blondie,MARIA,68,249426,Greatest Hits,0.549,0.0383,0.799,0.0678,-6.926,0.805,159.656,0.0597,72,"candy pop, new wave pop, permanent wave, power pop, rock, synthpop",1591068,Unknown,Blondie - MARIA,3616
 Jamiroquai,CANNED HEAT,64,331760,Synkronized,0.7,0.0136,0.865,0.0718,-5.827,0.78,128.043,0.133,70,dance pop,2509496,Unknown,Jamiroquai - CANNED HEAT,3617
 René Froger,CRAZY WAY ABOUT YOU,23,203000,"`K Heb Je Lief - 50 jaar de muziek, M`n fans, het leven",0.684,0.000816,0.911,0.105,-5.928,0.768,133.017,0.0431,49,"dutch pop, dutch rock, levenslied",86426,Unknown,René Froger - CRAZY WAY ABOUT YOU,3618
-Korn,FREAK ON A LEASH,77,255733,Follow The Leader,0.353,2.23e-05,0.898,0.39,-5.877,0.525,103.299,0.052,78,"alternative metal, funk metal, hard rock, nu metal, post-grunge, rap metal, rock",8227615,Unknown,Korn - FREAK ON A LEASH,3619
+Korn,FREAK ON A LEASH,77,255733,Follow The Leader,0.353,2.23E-05,0.898,0.39,-5.877,0.525,103.299,0.052,78,"alternative metal, funk metal, hard rock, nu metal, post-grunge, rap metal, rock",8227615,Unknown,Korn - FREAK ON A LEASH,3619
 Skunk Anansie,SECRETLY,46,285693,Post Orgasmic Chill,0.27,0.139,0.567,0.28,-8.127,0.314,86.898,0.0647,53,british alternative rock,375384,Unknown,Skunk Anansie - SECRETLY,3620
-Poco Loco Gang,POCO LOCO,34,232360,Poco Loco,0.793,1.1e-05,0.974,0.022,-9.73,0.753,139.025,0.0534,25,belgian dance,2348,Unknown,Poco Loco Gang - POCO LOCO,3621
+Poco Loco Gang,POCO LOCO,34,232360,Poco Loco,0.793,1.10E-05,0.974,0.022,-9.73,0.753,139.025,0.0534,25,belgian dance,2348,Unknown,Poco Loco Gang - POCO LOCO,3621
 *Nsync,THINKING OF YOU (I DRIVE MYSELF CRAZY),53,240733,'N Sync UK Version,0.562,0.0433,0.718,0.174,-6.551,0.51,86.964,0.0269,77,"boy band, dance pop, pop",2736830,Unknown,*Nsync - THINKING OF YOU (I DRIVE MYSELF CRAZY),3622
 De Kast,ONVOORSTELBAAR,11,226373,Onvoorspelbaar,0.579,0.00624,0.69,0.0858,-10.667,0.84,131.811,0.0381,37,"dutch pop, dutch rock, friese muziek, nederpop, streektaal",38245,Unknown,De Kast - ONVOORSTELBAAR,3623
 Mr. Oizo,FLAT BEAT,44,316973,Analog Worms Attack,0.936,0.000203,0.425,0.267,-11.586,0.494,129.023,0.572,54,filter house,243394,Unknown,Mr. Oizo - FLAT BEAT,3624
@@ -3650,7 +3650,7 @@ Tina Arena & Marc Anthony,I WANT TO SPEND MY LIFETIME LOVING YOU,44,284680,The M
 Double Date,EMAIL TO BERLIN,5,180333,Email to Berlin,0.584,0.299,0.778,0.302,-10.041,0.774,137.936,0.0763,1,,39,Unknown,Double Date - EMAIL TO BERLIN,3649
 Bon Jovi,REAL LIFE,28,230466,"100,000,000 Bon Jovi Fans Can't Be Wrong",0.507,0.000224,0.846,0.0787,-3.886,0.202,96.848,0.03,55,hard rock,2633077,Unknown,Bon Jovi - REAL LIFE,3650
 Plop,HET PLOPLIED,24,176173,Plop 20 Jaar Hits,0.755,0.684,0.764,0.553,-6.566,0.962,120.009,0.0914,48,"muziek voor kinderen, vlaamse kinderliedje",39022,Unknown,Plop - HET PLOPLIED,3651
-System F,OUT OF THE BLUE,49,234186,Out Of The Blue (Remastered),0.523,7.46e-05,0.922,0.0749,-8.864,0.575,140.033,0.0377,46,"bouncy house, dutch trance, trance",30981,Unknown,System F - OUT OF THE BLUE,3652
+System F,OUT OF THE BLUE,49,234186,Out Of The Blue (Remastered),0.523,7.46E-05,0.922,0.0749,-8.864,0.575,140.033,0.0377,46,"bouncy house, dutch trance, trance",30981,Unknown,System F - OUT OF THE BLUE,3652
 Vengaboys,"BOOM, BOOM, BOOM, BOOM!!",73,202583,The Party Album!,0.801,0.0117,0.948,0.025,-4.623,0.968,138.489,0.0386,65,"eurodance, europop",500067,Unknown,"Vengaboys - BOOM, BOOM, BOOM, BOOM!!",3653
 The Offspring,PRETTY FLY (FOR A WHITE GUY),75,188666,Americana,0.723,0.088,0.895,0.0717,-3.707,0.963,143.373,0.102,79,"alternative metal, permanent wave, post-grunge, punk, rock, skate punk, socal pop punk",5923407,Unknown,The Offspring - PRETTY FLY (FOR A WHITE GUY),3654
 R. Kelly,WHEN A WOMAN'S FED UP,45,278760,R.,0.682,0.467,0.579,0.0952,-6.526,0.712,76.915,0.101,69,,2432337,Unknown,R. Kelly - WHEN A WOMAN'S FED UP,3655
@@ -3705,7 +3705,7 @@ Alanis Morissette,THANK YOU,42,257826,The Collection (Standard Edition),0.662,0.
 Jennifer Paige,CRUSH,55,199960,Jennifer Paige,0.733,0.0262,0.706,0.0881,-5.652,0.598,115.04,0.0292,54,,130908,Unknown,Jennifer Paige - CRUSH,3704
 JD & Mariah,SWEETHEART,31,262240,Greatest Hits,0.768,0.0664,0.485,0.0969,-8.755,0.629,99.017,0.049,19,,98,Unknown,JD & Mariah - SWEETHEART,3705
 Tina Cousins,PRAY,17,236666,Killing Time,0.682,0.192,0.94,0.108,-7.114,0.432,129.99,0.0368,44,"bubblegum dance, eurodance",24498,Unknown,Tina Cousins - PRAY,3706
-The Cardigans,MY FAVOURITE GAME,69,220467,Gran Turismo (Remastered),0.583,4.78e-05,0.778,0.0729,-6.185,0.424,143.354,0.0303,71,"lilith, new wave pop, permanent wave, pop rock, swedish pop",1414263,Unknown,The Cardigans - MY FAVOURITE GAME,3707
+The Cardigans,MY FAVOURITE GAME,69,220467,Gran Turismo (Remastered),0.583,4.78E-05,0.778,0.0729,-6.185,0.424,143.354,0.0303,71,"lilith, new wave pop, permanent wave, pop rock, swedish pop",1414263,Unknown,The Cardigans - MY FAVOURITE GAME,3707
 Des'ree,LIFE,61,216040,Supernatural,0.721,0.113,0.74,0.0847,-5.453,0.716,104.812,0.0413,55,europop,275282,Unknown,Des'ree - LIFE,3708
 George Michael,OUTSIDE,34,286560,Outside,0.738,0.0417,0.9,0.339,-7.161,0.94,121.815,0.0366,75,"new wave pop, soft rock",5066500,Unknown,George Michael - OUTSIDE,3709
 Jewel,HANDS,51,235000,Spirit,0.643,0.421,0.495,0.082,-10.176,0.319,127.219,0.0292,58,"alaska indie, ectofolk, lilith, permanent wave, pop rock, singer-songwriter",809437,Unknown,Jewel - HANDS,3710
@@ -3771,7 +3771,7 @@ Volumia!,AFSCHEID,45,275840,Volumia!,0.657,0.574,0.342,0.112,-10.939,0.273,124.0
 Usher,MY WAY,53,214853,My Way,0.815,0.0105,0.521,0.0509,-8.178,0.887,90.079,0.136,83,"atl hip hop, contemporary r&b, dance pop, pop, r&b, rap, south carolina hip hop, urban contemporary",12400599,Unknown,Usher - MY WAY,3770
 Ultimate Kaos,CASANOVA,14,231133,ドライブが楽しくなる洋楽ヒッツ！90年代 R&B,0.662,0.0337,0.879,0.018,-6.513,0.676,97.736,0.1,34,new jack swing,3454,Unknown,Ultimate Kaos - CASANOVA,3771
 Frans Bauer,IK WIL MET JOU DANSEN - LIVE AHOY',3,188266,Bauer Top100,0.63,0.0929,0.875,0.916,-7.051,0.728,101.935,0.11,50,levenslied,130442,Unknown,Frans Bauer - IK WIL MET JOU DANSEN - LIVE AHOY',3772
-2 Unlimited,EDGE OF HEAVEN,0,267475,"Greatest Karaoke Hits, Vol. 366 (Karaoke Version)",0.536,2.2e-05,0.844,0.169,-7.809,0.133,132.494,0.0335,20,,906,Unknown,2 Unlimited - EDGE OF HEAVEN,3773
+2 Unlimited,EDGE OF HEAVEN,0,267475,"Greatest Karaoke Hits, Vol. 366 (Karaoke Version)",0.536,2.20E-05,0.844,0.169,-7.809,0.133,132.494,0.0335,20,,906,Unknown,2 Unlimited - EDGE OF HEAVEN,3773
 K-Ci & JoJo,ALL MY LIFE,68,331240,Love Always,0.634,0.114,0.512,0.0588,-8.651,0.193,128.019,0.0285,61,"contemporary r&b, r&b, urban contemporary",1757731,Unknown,K-Ci & JoJo - ALL MY LIFE,3774
 Total Touch,I'LL SAY GOODBYE,22,243133,This Way,0.671,0.141,0.712,0.171,-6.537,0.363,80.005,0.0392,31,"dutch pop, dutch rock",9912,Unknown,Total Touch - I'LL SAY GOODBYE,3775
 Bryan Adams,I'M READY,48,268893,MTV Unplugged,0.269,0.667,0.382,0.708,-11.495,0.218,71.358,0.0328,77,"canadian pop, canadian singer-songwriter, classic canadian rock, heartland rock, mellow gold, soft rock",3957555,Unknown,Bryan Adams - I'M READY,3776
@@ -3806,7 +3806,7 @@ Boyzone,ALL THAT I NEED,49,220533,Where We Belong,0.68,0.468,0.702,0.111,-7.139,
 Close II You,SOMEBODY,15,300293,Closer,0.599,0.25,0.526,0.066,-10.723,0.877,175.964,0.0336,19,,2146,Unknown,Close II You - SOMEBODY,3805
 Janet,TOGETHER AGAIN,61,301200,The Velvet Rope,0.865,0.0631,0.505,0.102,-11.813,0.475,123.102,0.102,66,"dance pop, r&b, urban contemporary",3982533,Unknown,Janet - TOGETHER AGAIN,3806
 Wyclef Jean,GONE TILL NOVEMBER,43,207626,Greatest Hits,0.673,0.0957,0.538,0.14,-7.957,0.454,85.936,0.0854,73,rap kreyol,362881,Unknown,Wyclef Jean - GONE TILL NOVEMBER,3807
-Eagle-Eye Cherry,SAVE TONIGHT,63,239226,Desireless,0.547,9.24e-05,0.693,0.113,-8.786,0.583,119.567,0.0353,60,pop rock,191310,Unknown,Eagle-Eye Cherry - SAVE TONIGHT,3808
+Eagle-Eye Cherry,SAVE TONIGHT,63,239226,Desireless,0.547,9.24E-05,0.693,0.113,-8.786,0.583,119.567,0.0353,60,pop rock,191310,Unknown,Eagle-Eye Cherry - SAVE TONIGHT,3808
 Janet,I GET LONELY,53,317560,The Velvet Rope,0.774,0.186,0.496,0.542,-8.144,0.452,125.137,0.0498,66,"dance pop, r&b, urban contemporary",3982533,Unknown,Janet - I GET LONELY,3809
 Sash!,LA PRIMAVERA,36,216520,Life Goes On,0.639,0.0362,0.871,0.0789,-7.776,0.359,136.073,0.032,66,"eurodance, german techno",172862,Unknown,Sash! - LA PRIMAVERA,3810
 Aqua,MY OH MY,53,204640,Aquarium (Special Edition),0.717,0.134,0.846,0.0934,-12.633,0.962,132.999,0.0341,67,"bubblegum dance, eurodance, europop",664417,Unknown,Aqua - MY OH MY,3811
@@ -4121,7 +4121,7 @@ Clouseau,SAMEN,10,219866,Adrenaline,0.49,0.594,0.414,0.109,-10.677,0.458,171.902
 DJ Paul Elstak,RAVE ON,41,203946,Rave On,0.561,0.087,0.978,0.388,-4.481,0.486,166.868,0.0555,61,"happy hardcore, hardcore techno, nederlandse hardstyle, nu gabber",259893,Unknown,DJ Paul Elstak - RAVE ON,4120
 Deep Blue Something,BREAKFAST AT TIFFANY'S,69,257373,Home,0.622,0.11,0.829,0.0954,-5.548,0.539,110.367,0.029,55,pop rock,63236,Unknown,Deep Blue Something - BREAKFAST AT TIFFANY'S,4121
 George Michael,SPINNING THE WHEEL,48,381626,Older,0.682,0.103,0.444,0.0982,-11.141,0.434,150.282,0.0692,75,"new wave pop, soft rock",5066500,Unknown,George Michael - SPINNING THE WHEEL,4122
-Garbage,ONLY HAPPY WHEN IT RAINS,55,236533,Garbage (20th Anniversary Deluxe Edition/Remastered),0.511,3.77e-05,0.827,0.208,-4.55,0.486,121.459,0.0323,60,"alternative rock, dance rock, electronic rock, permanent wave",1245208,Unknown,Garbage - ONLY HAPPY WHEN IT RAINS,4123
+Garbage,ONLY HAPPY WHEN IT RAINS,55,236533,Garbage (20th Anniversary Deluxe Edition/Remastered),0.511,3.77E-05,0.827,0.208,-4.55,0.486,121.459,0.0323,60,"alternative rock, dance rock, electronic rock, permanent wave",1245208,Unknown,Garbage - ONLY HAPPY WHEN IT RAINS,4123
 Toni Braxton,YOU'RE MAKIN ME HIGH,60,267440,Secrets,0.853,0.0118,0.563,0.119,-8.663,0.893,92.112,0.0379,65,"contemporary r&b, dance pop, r&b, urban contemporary",4260024,Unknown,Toni Braxton - YOU'RE MAKIN ME HIGH,4124
 4 Tune Fairytales,MY LITTLE FANTASY,35,365133,My Little Fantasy EP,0.492,0.00773,0.938,0.199,-7.16,0.156,177.777,0.0532,34,happy hardcore,2073,Unknown,4 Tune Fairytales - MY LITTLE FANTASY,4125
 Gary Barlow,FOREVER LOVE,45,290960,Open Road,0.584,0.868,0.137,0.133,-16.267,0.14,90.015,0.0266,46,talent show,370472,Unknown,Gary Barlow - FOREVER LOVE,4126
@@ -4254,7 +4254,7 @@ George Michael,JESUS TO A CHILD,58,411146,Older,0.534,0.314,0.415,0.0847,-11.781
 Scooter,BACK IN THE U.K.,33,203680,20 Years Of Hardcore (Remastered),0.38,0.000299,0.982,0.466,-3.323,0.405,180.068,0.141,68,"eurodance, german techno, hamburg electronic, happy hardcore",884985,Unknown,Scooter - BACK IN THE U.K.,4253
 Helmut Lotti,FUNICULI FUNICULA,14,149960,Helmut Lotti Goes Classic I - The Red Album,0.526,0.913,0.57,0.266,-8.772,0.59,130.091,0.0447,38,"canzone napoletana, italian romanticism, post-romantic era",1746,Unknown,Helmut Lotti - FUNICULI FUNICULA,4254
 Coolio,TOO HOT,36,219093,Gangsta's Paradise,0.849,0.095,0.46,0.163,-12.743,0.561,102.6,0.194,72,"g funk, gangster rap, hip hop, west coast rap",1311754,Unknown,Coolio - TOO HOT,4255
-La Bouche,I LOVE TO LOVE,50,362626,All Mixed Up,0.694,9.42e-05,0.938,0.364,-5.672,0.757,138.876,0.0346,68,"diva house, eurodance, europop, german techno",322400,Unknown,La Bouche - I LOVE TO LOVE,4256
+La Bouche,I LOVE TO LOVE,50,362626,All Mixed Up,0.694,9.42E-05,0.938,0.364,-5.672,0.757,138.876,0.0346,68,"diva house, eurodance, europop, german techno",322400,Unknown,La Bouche - I LOVE TO LOVE,4256
 Skee-Lo,I WISH,61,249293,I Wish,0.669,0.00137,0.809,0.38,-7.146,0.572,97.885,0.147,53,west coast rap,99900,Unknown,Skee-Lo - I WISH,4257
 Therapy?,DIANE,43,299506,Infernal Love,0.423,0.678,0.43,0.247,-12.016,0.0416,124.47,0.0397,44,alternative metal,111983,Unknown,Therapy? - DIANE,4258
 Mary J Blige,YOU MAKE ME FEEL LIKE A NATURAL WOMAN,32,176666,My Life,0.746,0.572,0.419,0.0963,-9.754,0.35,111.698,0.0317,73,"dance pop, hip pop, neo soul, r&b, urban contemporary",3997685,Unknown,Mary J Blige - YOU MAKE ME FEEL LIKE A NATURAL WOMAN,4259
@@ -4309,7 +4309,7 @@ Clouseau,ZIE ME GRAAG,33,215000,Oker,0.645,0.613,0.331,0.0807,-13.994,0.483,76.0
 Höllenboer,HET BUSJE KOMT ZO,22,184066,Het Busje Komt Zo,0.7,0.761,0.279,0.108,-13.881,0.749,99.3,0.053,13,,369,Unknown,Höllenboer - HET BUSJE KOMT ZO,4308
 Roxette,YOU DON'T UNDERSTAND ME,49,268693,Don't Bore Us - Get to the Chorus! Roxette's Greatest Hits,0.588,0.311,0.683,0.0928,-6.992,0.656,77.007,0.0295,74,"europop, swedish pop, synthpop",2392832,Unknown,Roxette - YOU DON'T UNDERSTAND ME,4309
 DJ BoBo,FREEDOM,50,236693,Freedom,0.631,0.00764,0.85,0.324,-6.806,0.512,140.017,0.0436,58,"eurodance, europop",245798,Unknown,DJ BoBo - FREEDOM,4310
-Vanessa,LIDIA,0,93750,"Little Star (Lidia, Vanessa, Flora & Cecilia Remix)",0.628,5.64e-05,0.559,0.548,-8.768,0.519,128.015,0.0264,0,,2,Unknown,Vanessa - LIDIA,4311
+Vanessa,LIDIA,0,93750,"Little Star (Lidia, Vanessa, Flora & Cecilia Remix)",0.628,5.64E-05,0.559,0.548,-8.768,0.519,128.015,0.0264,0,,2,Unknown,Vanessa - LIDIA,4311
 Benny Neyman,SCHERVEN VAN JE LEVEN,14,237706,Scherven Van Je Leven,0.237,0.344,0.549,0.11,-9.023,0.301,82.509,0.0289,43,"classic belgian pop, levenslied, nederpop, vintage dutch pop",49491,Unknown,Benny Neyman - SCHERVEN VAN JE LEVEN,4312
 Ace Of Base,LUCKY LOVE,40,175746,The Bridge,0.769,0.129,0.662,0.0814,-7.238,0.863,104.104,0.0319,70,"eurodance, europop, new wave pop",912278,Unknown,Ace Of Base - LUCKY LOVE,4313
 2 Unlimited,DO WHAT'S GOOD FOR ME,28,229492,Unlimited Hits & Remixes,0.722,0.171,0.914,0.127,-6.592,0.833,132.925,0.0464,58,"eurodance, europop, hip house",284820,Unknown,2 Unlimited - DO WHAT'S GOOD FOR ME,4314
@@ -4386,7 +4386,7 @@ Adiemus,ADIEMUS,61,237413,Adiemus - Songs Of Sanctuary,0.295,0.804,0.408,0.165,-
 Bon Jovi,THIS AIN'T A LOVE SONG,59,306240,These Days,0.348,0.0932,0.635,0.126,-6.836,0.144,87.974,0.0386,80,"glam metal, rock",14165110,Unknown,Bon Jovi - THIS AIN'T A LOVE SONG,4385
 DJ Paul Elstak,LUV U MORE,53,232285,May the Forze Be with You,0.513,0.00387,0.817,0.145,-11.416,0.0697,167.817,0.0341,61,"happy hardcore, hardcore techno, nederlandse hardstyle, nu gabber",259893,Unknown,DJ Paul Elstak - LUV U MORE,4386
 Jimmy Cliff & Lebo M,HAKUNA MATATA,33,264293,Rhythm Of The Pride Lands,0.61,0.0747,0.763,0.33,-8.223,0.83,79.346,0.111,59,movie tunes,27642,Unknown,Jimmy Cliff & Lebo M - HAKUNA MATATA,4387
-U2,"HOLD ME, THRILL ME, KISS ME, KILL ME",50,284600,The Best Of 1990-2000,0.368,7.47e-05,0.852,0.218,-6.978,0.347,171.692,0.0433,78,"irish rock, permanent wave, rock",12699333,Unknown,"U2 - HOLD ME, THRILL ME, KISS ME, KILL ME",4388
+U2,"HOLD ME, THRILL ME, KISS ME, KILL ME",50,284600,The Best Of 1990-2000,0.368,7.47E-05,0.852,0.218,-6.978,0.347,171.692,0.0433,78,"irish rock, permanent wave, rock",12699333,Unknown,"U2 - HOLD ME, THRILL ME, KISS ME, KILL ME",4388
 Bryan Adams,HAVE YOU EVER REALLY LOVED A WOMAN?,68,291666,18 Til I Die,0.57,0.536,0.478,0.0931,-10.185,0.358,145.517,0.0322,77,"canadian pop, canadian singer-songwriter, classic canadian rock, heartland rock, mellow gold, soft rock",3957555,Unknown,Bryan Adams - HAVE YOU EVER REALLY LOVED A WOMAN?,4389
 Palemiger Spatzen,HARMONIKA POWER,21,161720,Harmonika Party,0.606,0.0491,0.576,0.088,-14.915,0.87,133.692,0.103,21,,1265,Unknown,Palemiger Spatzen - HARMONIKA POWER,4390
 Weezer,BUDDY HOLLY,75,159226,Weezer,0.556,0.00271,0.92,0.117,-4.606,0.771,121.138,0.0367,76,"alternative rock, modern power pop, modern rock, permanent wave, rock",3929236,Unknown,Weezer - BUDDY HOLLY,4391
@@ -4423,7 +4423,7 @@ Brownstone,IF YOU LOVE ME,59,304160,From The Bottom Up,0.687,0.225,0.583,0.105,-
 Charly Lownoise & Mental Theo,TOGETHER IN WONDERLAND,24,311002,Charlottenburg,0.322,0.0109,0.913,0.946,-5.071,0.144,172.093,0.215,49,"bubble trance, happy hardcore, hardcore techno",32470,Unknown,Charly Lownoise & Mental Theo - TOGETHER IN WONDERLAND,4422
 Real McCoy,LOVE & DEVOTION,41,237933,Love & Devotion (The Essential 90s Mixes),0.752,0.121,0.734,0.361,-11.223,0.858,102.172,0.107,56,"diva house, eurodance, german techno, hip house",159654,Unknown,Real McCoy - LOVE & DEVOTION,4423
 Terence Trent D'Arby,HOLDING ON TO YOU,33,358173,Sananda Maitreya's Vibrator,0.465,0.41,0.666,0.922,-7.335,0.472,130.183,0.0628,51,,444053,Unknown,Terence Trent D'Arby - HOLDING ON TO YOU,4424
-2 Brothers On The 4th Floor,FLY THROUGH THE STARRY NIGHT,6,276400,Fly - Through The Starry Night (The Remixes),0.58,2.96e-05,0.834,0.0662,-11.334,0.666,159.642,0.0435,55,"eurodance, hip house",116164,Unknown,2 Brothers On The 4th Floor - FLY THROUGH THE STARRY NIGHT,4425
+2 Brothers On The 4th Floor,FLY THROUGH THE STARRY NIGHT,6,276400,Fly - Through The Starry Night (The Remixes),0.58,2.96E-05,0.834,0.0662,-11.334,0.666,159.642,0.0435,55,"eurodance, hip house",116164,Unknown,2 Brothers On The 4th Floor - FLY THROUGH THE STARRY NIGHT,4425
 Frans Bauer,WAAROM HEB JIJ MIJ VERLATEN?,11,197960,Frans Bauer,0.602,0.163,0.368,0.373,-12.807,0.483,119.947,0.0294,50,levenslied,130442,Unknown,Frans Bauer - WAAROM HEB JIJ MIJ VERLATEN?,4426
 The Outhere Brothers,BOOM BOOM,39,201893,Boom Boom Boom,0.723,0.0523,0.857,0.149,-9.989,0.642,129.87,0.241,44,"eurodance, hip house",27738,Unknown,The Outhere Brothers - BOOM BOOM,4427
 Corona,BABY BABY,42,228013,"90S, Vol. 1",0.639,0.00336,0.869,0.0576,-8.479,0.562,133.033,0.0311,63,"diva house, eurodance, europop, hip house",231943,Unknown,Corona - BABY BABY,4428
@@ -4503,7 +4503,7 @@ De Dijk,LAAIEND VUUR,23,254933,De Blauwe Schuit,0.595,0.466,0.788,0.255,-10.516,
 Ice MC,IT'S A RAINY DAY,57,255400,Ice 'n' Green,0.621,0.00508,0.729,0.335,-11.71,0.467,134.966,0.0306,55,eurodance,118354,Unknown,Ice MC - IT'S A RAINY DAY,4502
 Bon Jovi,ALWAYS,74,353026,Cross Road,0.384,0.115,0.659,0.0778,-5.558,0.326,140.795,0.0314,80,"glam metal, rock",14165110,Unknown,Bon Jovi - ALWAYS,4503
 Frans Bauer,HET LEVEN IS TE MOOI,11,228373,Frans Bauer,0.715,0.323,0.546,0.241,-13.072,0.659,117.54,0.0299,50,levenslied,130442,Unknown,Frans Bauer - HET LEVEN IS TE MOOI,4504
-Moby,FEELING SO REAL,49,202200,Feeling So Real 2024,0.355,2.48e-05,0.923,0.258,-4.863,0.158,159.916,0.0554,70,"downtempo, electronica",1927936,Unknown,Moby - FEELING SO REAL,4505
+Moby,FEELING SO REAL,49,202200,Feeling So Real 2024,0.355,2.48E-05,0.923,0.258,-4.863,0.158,159.916,0.0554,70,"downtempo, electronica",1927936,Unknown,Moby - FEELING SO REAL,4505
 Ini Kamoze,HERE COMES THE HOTSTEPPER,66,250466,Here Comes The Hotstepper,0.889,0.0141,0.453,0.202,-8.598,0.437,100.358,0.221,60,"reggae, reggae fusion, roots reggae",182805,Unknown,Ini Kamoze - HERE COMES THE HOTSTEPPER,4506
 Gordon,LET IT BE ME,11,223960,Peter And Gordon (1966) Plus,0.332,0.418,0.631,0.309,-7.147,0.516,95.727,0.0366,40,"beatlesque, british blues, british invasion",26007,Unknown,Gordon - LET IT BE ME,4507
 Definition Of Joy,STAY WITH ME 4 EVER,21,318013,Stay With Me 4 Ever,0.681,0.0172,0.817,0.324,-14.492,0.648,135.037,0.0371,12,,211,Unknown,Definition Of Joy - STAY WITH ME 4 EVER,4508
@@ -4592,7 +4592,7 @@ Whigfield,ANOTHER DAY,38,246961,Whigfield 1,0.732,0.00338,0.758,0.315,-8.928,0.9
 The B-52's,(MEET) THE FLINTSTONES,27,142320,90's One Hit Wonders,0.697,0.0599,0.914,0.0425,-5.971,0.792,139.882,0.0745,61,"album rock, classic rock, dance rock, new romantic, new wave, new wave pop, permanent wave, post-punk, rock, zolo",1157451,Unknown,The B-52's - (MEET) THE FLINTSTONES,4591
 Reel 2 Real feat. The Mad Stuntman,GO ON MOVE,30,321561,Go On Move (feat. The Mad Stuntman),0.826,0.0356,0.67,0.117,-6.748,0.449,122.052,0.082,51,"eurodance, hip house",48306,Unknown,Reel 2 Real feat. The Mad Stuntman - GO ON MOVE,4592
 Sonic Surfers,EVERYBODY!,0,339706,Everybody!,0.783,0.000198,0.831,0.32,-7.12,0.293,133.992,0.0369,7,,856,Unknown,Sonic Surfers - EVERYBODY!,4593
-Stiltskin,INSIDE,37,357066,She - Live,0.331,8.37e-05,0.806,0.959,-7.414,0.27,79.884,0.0397,38,,22575,Unknown,Stiltskin - INSIDE,4594
+Stiltskin,INSIDE,37,357066,She - Live,0.331,8.37E-05,0.806,0.959,-7.414,0.27,79.884,0.0397,38,,22575,Unknown,Stiltskin - INSIDE,4594
 Atlantic Ocean,BODY IN MOTION,10,223084,Body In Motion,0.647,0.0169,0.867,0.0968,-6.371,0.851,131.821,0.0584,28,,2496,Unknown,Atlantic Ocean - BODY IN MOTION,4595
 Cappella,U & ME,37,249240,Mozart: Die Zauberflöte,0.467,0.932,0.237,0.151,-17.068,0.23,107.11,0.164,77,"classical, classical era",5573216,Unknown,Cappella - U & ME,4596
 Maxx,NO MORE (I CAN'T STAND IT),51,281933,To The Maxximum,0.762,0.012,0.858,0.154,-9.782,0.618,137.96,0.0352,53,"eurodance, german techno, hip house",62765,Unknown,Maxx - NO MORE (I CAN'T STAND IT),4597
@@ -4620,14 +4620,14 @@ Timeless,WHERE IS THE LOVE,16,312160,Where is the love (Live),0.678,0.0677,0.822
 Magic Affair,GIVE ME ALL YOUR LOVE,31,381293,Omen - The Story Continues,0.64,0.00307,0.677,0.17,-12.3,0.265,136.009,0.0386,47,eurodance,53272,Unknown,Magic Affair - GIVE ME ALL YOUR LOVE,4619
 Paul Harrington & Charlie McGettigan,ROCK 'N' ROLL KIDS,33,206360,Rock n Roll Kids,0.714,0.855,0.262,0.089,-17.585,0.491,123.634,0.034,22,,839,Unknown,Paul Harrington & Charlie McGettigan - ROCK 'N' ROLL KIDS,4620
 Whigfield,SATURDAY NIGHT,66,247405,Saturday Night Single,0.728,0.0449,0.784,0.0964,-11.776,0.964,129.981,0.0379,57,"diva house, eurodance, europop",144406,Unknown,Whigfield - SATURDAY NIGHT,4621
-Björk,BIG TIME SENSUALITY,45,236640,Debut,0.723,7.67e-05,0.732,0.18,-12.251,0.516,118.582,0.0963,64,"alternative rock, art pop, electronica, experimental pop, experimental vocal, icelandic experimental, icelandic pop, icelandic singer-songwriter, metropopolis, permanent wave, trip hop",2185411,Unknown,Björk - BIG TIME SENSUALITY,4622
+Björk,BIG TIME SENSUALITY,45,236640,Debut,0.723,7.67E-05,0.732,0.18,-12.251,0.516,118.582,0.0963,64,"alternative rock, art pop, electronica, experimental pop, experimental vocal, icelandic experimental, icelandic pop, icelandic singer-songwriter, metropopolis, permanent wave, trip hop",2185411,Unknown,Björk - BIG TIME SENSUALITY,4622
 Pink Floyd,TAKE IT BACK,52,372225,The Division Bell,0.469,0.132,0.6,0.273,-11.155,0.135,112.426,0.0288,80,"album rock, art rock, classic rock, progressive rock, psychedelic rock, rock, symphonic rock",21127687,Unknown,Pink Floyd - TAKE IT BACK,4623
 Crystal Waters,100% PURE LOVE,54,280466,Storyteller,0.811,0.0923,0.697,0.0784,-8.019,0.712,120.242,0.0502,65,diva house,166435,Unknown,Crystal Waters - 100% PURE LOVE,4624
 Laura Pausini,STRANI AMORI,50,255773,Laura Pausini,0.625,0.727,0.33,0.0815,-7.787,0.227,78.036,0.0245,74,"europop, italian adult pop, latin arena pop, mexican pop",2636821,Unknown,Laura Pausini - STRANI AMORI,4625
 Roxette,CRASH! BOOM! BANG!,53,301493,Crash! Boom! Bang! (Extended Version),0.443,0.03,0.452,0.0844,-6.296,0.147,142.123,0.028,74,"europop, swedish pop, synthpop",2392832,Unknown,Roxette - CRASH! BOOM! BANG!,4626
 Aerosmith,CRAZY,72,316826,Get A Grip,0.348,0.0454,0.848,0.143,-4.674,0.486,162.189,0.0396,77,"album rock, classic rock, hard rock, rock",14809822,Unknown,Aerosmith - CRAZY,4627
 Mariah Carey,WITHOUT YOU,68,215110,Music Box,0.603,0.378,0.407,0.0529,-11.667,0.166,121.96,0.0314,82,"dance pop, pop, urban contemporary",10629538,Unknown,Mariah Carey - WITHOUT YOU,4628
-Dulfer,STREETBEATS,1,258840,"Big Boy, Dig Skin Deep (The Remixes 1994-1999)",0.545,2.58e-05,0.959,0.334,-9.874,0.646,140.058,0.078,12,"dutch jazz, dutch prog",3293,Unknown,Dulfer - STREETBEATS,4629
+Dulfer,STREETBEATS,1,258840,"Big Boy, Dig Skin Deep (The Remixes 1994-1999)",0.545,2.58E-05,0.959,0.334,-9.874,0.646,140.058,0.078,12,"dutch jazz, dutch prog",3293,Unknown,Dulfer - STREETBEATS,4629
 Tony Di Bart,THE REAL THING,21,215063,The Real Thing (Remixes),0.724,0.0371,0.487,0.0939,-18.309,0.593,128.823,0.043,30,"hardcore techno, hip house, vocal house",7513,Unknown,Tony Di Bart - THE REAL THING,4630
 CB Milton,HOLD ON (IF YOU BELIEVE IN LOVE),9,230466,The Best Of CB Milton,0.685,0.0798,0.914,0.276,-12.292,0.733,138.055,0.112,23,eurodance,3739,Unknown,CB Milton - HOLD ON (IF YOU BELIEVE IN LOVE),4631
 Nico Landers,LIEFDE IN DE NACHT (LOVE IS IN THE AIR),19,195866,Het beste Van Nico Landers - Deel 2,0.663,0.165,0.827,0.0853,-9.14,0.865,122.11,0.0328,15,levenslied,1421,Unknown,Nico Landers - LIEFDE IN DE NACHT (LOVE IS IN THE AIR),4632
@@ -4657,9 +4657,9 @@ East 17,HOUSE OF LOVE,43,269626,Walthamstow,0.618,0.0199,0.986,0.176,-3.916,0.25
 Primal Scream,ROCKS,34,217373,Give Out But Don't Give Up,0.635,0.000183,0.754,0.0411,-7.703,0.96,127.717,0.035,56,"alternative rock, britpop, dance rock, scottish indie",526401,Unknown,Primal Scream - ROCKS,4656
 Enigma,THE EYES OF TRUTH,49,434506,The Cross Of Changes,0.503,0.0247,0.691,0.113,-13,0.302,94.917,0.0461,64,"downtempo, gregorian dance",965449,Unknown,Enigma - THE EYES OF TRUTH,4657
 Willeke Alberti,WAAR IS DE ZON,1,296640,Live In Carré,0.293,0.806,0.315,0.981,-17.857,0.353,74.914,0.192,44,"dutch pop, levenslied, nederpop, vintage dutch pop",22773,Unknown,Willeke Alberti - WAAR IS DE ZON,4658
-Dr. Alban,LOOK WHOS TALKING!,51,324333,Look Who's Talking,0.68,8.82e-05,0.929,0.132,-9.851,0.978,133.016,0.0315,65,"eurodance, europop, hip house",281403,Unknown,Dr. Alban - LOOK WHOS TALKING!,4659
+Dr. Alban,LOOK WHOS TALKING!,51,324333,Look Who's Talking,0.68,8.82E-05,0.929,0.132,-9.851,0.978,133.016,0.0315,65,"eurodance, europop, hip house",281403,Unknown,Dr. Alban - LOOK WHOS TALKING!,4659
 Cappella,MOVE ON BABY,44,291800,U got 2 know album,0.654,0.18,0.886,0.103,-11.033,0.626,133.03,0.0436,45,"diva house, eurodance, hip house",74465,Unknown,Cappella - MOVE ON BABY,4660
-Waltari,SO FINE,7,242877,So Fine Sessions - Rarities And Demos,0.186,4.49e-05,0.85,0.194,-11.678,0.273,161.35,0.0797,27,avant-garde metal,10446,Unknown,Waltari - SO FINE,4661
+Waltari,SO FINE,7,242877,So Fine Sessions - Rarities And Demos,0.186,4.49E-05,0.85,0.194,-11.678,0.273,161.35,0.0797,27,avant-garde metal,10446,Unknown,Waltari - SO FINE,4661
 Deep Forest,SWEET LULLABY,45,233824,World Mix,0.567,0.424,0.53,0.13,-16.376,0.545,175.967,0.0411,35,,3698,Unknown,Deep Forest - SWEET LULLABY,4662
 K7,COME BABY COME,59,239733,Swing Batta Swing,0.832,0.028,0.726,0.0468,-7.739,0.55,106.125,0.19,47,"freestyle, miami bass",41812,Unknown,K7 - COME BABY COME,4663
 Lucilectric,MÄDCHEN,43,195106,Mädchen,0.735,0.00493,0.857,0.251,-8.592,0.662,99.029,0.0728,31,,2837,Unknown,Lucilectric - MÄDCHEN,4664
@@ -4726,7 +4726,7 @@ Urban Cookie Collective,FEELS LIKE HEAVEN,37,210133,The Very Best Of,0.639,0.114
 Hanny,IK FLUIT NAAR ALLE MANNEN,13,157365,'n Onbeschrijflijk Gevoel,0.666,0.131,0.741,0.0608,-8.058,0.966,110.763,0.0265,30,"classic dutch pop, levenslied, vintage dutch pop",4858,Unknown,Hanny - IK FLUIT NAAR ALLE MANNEN,4725
 Blind Melon,NO RAIN,73,217106,Blind Melon,0.389,0.619,0.476,0.255,-9.342,0.566,148.117,0.0316,62,"alternative metal, alternative rock, grunge, pop rock, rock",1232205,Unknown,Blind Melon - NO RAIN,4726
 Valensia,GAIA,20,351733,Valensia,0.364,0.717,0.409,0.308,-11.169,0.177,174.301,0.0308,21,,2523,Unknown,Valensia - GAIA,4727
-Aerosmith,CRYIN',69,308560,Get A Grip,0.452,8.31e-05,0.813,0.274,-4.45,0.539,105.757,0.0319,77,"album rock, classic rock, hard rock, rock",14809822,Unknown,Aerosmith - CRYIN',4728
+Aerosmith,CRYIN',69,308560,Get A Grip,0.452,8.31E-05,0.813,0.274,-4.45,0.539,105.757,0.0319,77,"album rock, classic rock, hard rock, rock",14809822,Unknown,Aerosmith - CRYIN',4728
 U2,"STAY (FARAWAY, SO CLOSE!)",57,298426,Zooropa,0.561,0.186,0.51,0.0674,-12.175,0.719,94.079,0.0258,78,"irish rock, permanent wave, rock",12699333,Unknown,"U2 - STAY (FARAWAY, SO CLOSE!)",4729
 Gavin Bryars with Tom Waits,JESUS' BLOOD NEVER FAILED ME YET,8,107866,Bryars: Jesus' Blood Never Failed Me Yet,0.15,0.572,0.00275,0.216,-45.426,0.137,136.374,0.0392,28,"21st century classical, british contemporary classical, compositional ambient, contemporary classical, minimalism, post-minimalism",18864,Unknown,Gavin Bryars with Tom Waits - JESUS' BLOOD NEVER FAILED ME YET,4730
 Robin S,WHAT I DO BEST,20,262626,Show Me Love,0.592,0.263,0.472,0.22,-8.995,0.307,120.025,0.0294,60,diva house,106747,Unknown,Robin S - WHAT I DO BEST,4731
@@ -4759,7 +4759,7 @@ Def Dames Dope,HAVIN' A GOOD TIME,15,228560,It's a Girl,0.596,0.0015,0.945,0.060
 Chaka Demus & Pliers,SHE DON'T LET NOBODY,45,246493,Tease Me,0.851,0.072,0.703,0.201,-9.814,0.645,89.789,0.119,57,funana,197780,Unknown,Chaka Demus & Pliers - SHE DON'T LET NOBODY,4758
 4 Non Blondes,SPACEMAN,45,220306,"Bigger, Better, Faster, More !",0.594,0.222,0.638,0.122,-9.325,0.177,125.581,0.032,65,"new wave pop, pop rock",559938,Unknown,4 Non Blondes - SPACEMAN,4759
 Tina,DISCO INFERNO,43,245466,What's Love Got to Do with It?,0.736,0.162,0.733,0.308,-9.098,0.965,131.212,0.0306,71,soft rock,4319884,Unknown,Tina - DISCO INFERNO,4760
-Bon Jovi,I BELIEVE,41,348266,Keep The Faith,0.498,5.56e-05,0.959,0.414,-4.402,0.315,112.747,0.0559,80,"glam metal, rock",14165110,Unknown,Bon Jovi - I BELIEVE,4761
+Bon Jovi,I BELIEVE,41,348266,Keep The Faith,0.498,5.56E-05,0.959,0.414,-4.402,0.315,112.747,0.0559,80,"glam metal, rock",14165110,Unknown,Bon Jovi - I BELIEVE,4761
 DJ Jazzy Jeff & The Fresh Prince,BOOM! SHAKE THE ROOM,49,226200,Code Red,0.792,0.0698,0.964,0.302,-5.405,0.621,99.771,0.154,53,"golden age hip hop, old school hip hop, philly rap",399126,Unknown,DJ Jazzy Jeff & The Fresh Prince - BOOM! SHAKE THE ROOM,4762
 M People,MOVING ON UP,57,215533,The Best Of M People,0.899,0.0499,0.857,0.112,-6.128,0.961,125.072,0.037,50,"diva house, new romantic, new wave pop, sophisti-pop",262381,Unknown,M People - MOVING ON UP,4763
 Whitney Houston,QUEEN OF THE NIGHT,50,188600,The Bodyguard - Original Soundtrack Album,0.741,0.000656,0.899,0.0991,-7.13,0.757,104.895,0.0445,78,"dance pop, pop",10623685,Unknown,Whitney Houston - QUEEN OF THE NIGHT,4764
@@ -4772,7 +4772,7 @@ Frank Boeijen,PARADIJS,21,288306,Jazz In Barcelona,0.613,0.463,0.667,0.0299,-10.
 Culture Beat,GOT TO GET IT,50,321426,Serenity,0.668,0.000705,0.909,0.235,-9.925,0.541,132.865,0.0397,61,"eurodance, europop, german techno, hip house",197361,Unknown,Culture Beat - GOT TO GET IT,4771
 Salt-N-Pepa,SHOOP,69,248573,Very Necessary,0.939,0.091,0.674,0.0565,-7.232,0.792,96.918,0.212,62,"girl group, golden age hip hop, hip hop, hip pop, old school hip hop, queens hip hop",859897,Unknown,Salt-N-Pepa - SHOOP,4772
 4 Non Blondes,WHAT'S UP?,79,295533,"Bigger, Better, Faster, More !",0.565,0.161,0.564,0.114,-10.044,0.454,134.358,0.0292,65,"new wave pop, pop rock",559938,Unknown,4 Non Blondes - WHAT'S UP?,4773
-Pearl Jam,GO,52,193426,Vs.,0.469,4.34e-06,0.863,0.33,-7.037,0.375,140.264,0.0494,77,"alternative metal, alternative rock, classic rock, grunge, hard rock, permanent wave, rock",9157787,Unknown,Pearl Jam - GO,4774
+Pearl Jam,GO,52,193426,Vs.,0.469,4.34E-06,0.863,0.33,-7.037,0.375,140.264,0.0494,77,"alternative metal, alternative rock, classic rock, grunge, hard rock, permanent wave, rock",9157787,Unknown,Pearl Jam - GO,4774
 Boobytrax,DON'T GO!,14,220626,Don't Go,0.663,0.00703,0.919,0.0758,-8.328,0.834,136.965,0.0493,5,,93,Unknown,Boobytrax - DON'T GO!,4775
 Freddie McGregor,THIS CARRY GO BRING COME (CHATTY CHATTY MOUTH),3,217893,Greensleeves Sampler 8,0.907,0.0179,0.725,0.0777,-7.923,0.79,125.336,0.105,49,"lovers rock, reggae, roots reggae",192764,Unknown,Freddie McGregor - THIS CARRY GO BRING COME (CHATTY CHATTY MOUTH),4776
 2 Unlimited,FACES,36,228351,No Limits,0.589,0.00409,0.953,0.339,-12.375,0.801,130.016,0.0401,58,"eurodance, europop, hip house",284820,Unknown,2 Unlimited - FACES,4777
@@ -4964,7 +4964,7 @@ Rage,RUN TO YOU,34,224306,Run To You,0.599,0.00441,0.945,0.126,-9.031,0.898,127.
 Jon Secada,JUST ANOTHER DAY,64,327426,Jon Secada,0.717,0.0194,0.642,0.043,-10.727,0.732,105.894,0.0287,62,soft rock,436558,Unknown,Jon Secada - JUST ANOTHER DAY,4963
 Boyz II Men,END OF THE ROAD,69,351466,Cooleyhighharmony (Bonus Tracks Version),0.641,0.0666,0.428,0.0579,-9.29,0.53,149.705,0.024,70,"boy band, contemporary r&b, new jack swing, r&b, urban contemporary",3248019,Unknown,Boyz II Men - END OF THE ROAD,4964
 Guns N' Roses,YESTERDAYS,60,196226,Use Your Illusion II,0.363,0.0666,0.849,0.306,-7.744,0.429,170.625,0.0554,81,"glam metal, hard rock, rock",32272920,Unknown,Guns N' Roses - YESTERDAYS,4965
-Felix,IT WILL MAKE ME CRAZY,21,354633,It Will Make Me Crazy,0.682,7.5e-05,0.603,0.256,-16.033,0.535,127.855,0.0319,52,"hardcore techno, hip house, rave",12054,Unknown,Felix - IT WILL MAKE ME CRAZY,4966
+Felix,IT WILL MAKE ME CRAZY,21,354633,It Will Make Me Crazy,0.682,7.50E-05,0.603,0.256,-16.033,0.535,127.855,0.0319,52,"hardcore techno, hip house, rave",12054,Unknown,Felix - IT WILL MAKE ME CRAZY,4966
 U2,WHO'S GONNA RIDE YOUR WILD HORSES,50,316426,Achtung Baby (Deluxe Edition),0.432,0.0302,0.679,0.053,-10.594,0.414,132.678,0.0366,78,"irish rock, permanent wave, rock",12699333,Unknown,U2 - WHO'S GONNA RIDE YOUR WILD HORSES,4967
 Gordon,IK HOU VAN JOU,17,196186,Ik Hou Van Jou,0.407,0.833,0.308,0.12,-12.759,0.173,81.914,0.029,37,dutch pop,26689,Unknown,Gordon - IK HOU VAN JOU,4968
 N.U.K.E.,NANA,10,100000,Alla marcia - Chamber Music,0.361,0.995,0.00752,0.0791,-32.667,0.181,62.214,0.0377,73,"classical, classical era, early romantic era, german romanticism",5402155,Unknown,N.U.K.E. - NANA,4969
@@ -5039,9 +5039,9 @@ Khaled,DIDI,45,298506,Best Of,0.731,0.018,0.868,0.0663,-6.767,0.785,98.768,0.054
 David Bowie,REAL COOL WORLD,15,256333,Real Cool World,0.598,0.000394,0.839,0.0722,-10.203,0.679,127.889,0.0469,78,"art rock, classic rock, glam rock, permanent wave, rock",10894682,Unknown,David Bowie - REAL COOL WORLD,5038
 Shabba Ranks,MR. LOVERMAN,47,336466,Shabba Ranks and Friends,0.732,0.0118,0.653,0.116,-9.143,0.669,172.948,0.159,50,reggae fusion,183730,Unknown,Shabba Ranks - MR. LOVERMAN,5039
 Arne Jansen,ZEG 'NS MEISJE,32,173493,18 Mega Piraten Favorieten,0.689,0.501,0.863,0.0925,-8.517,0.857,134.256,0.0492,34,"classic dutch pop, levenslied, nederpop, vintage dutch pop",9794,Unknown,Arne Jansen - ZEG 'NS MEISJE,5040
-Manic Street Preachers,MOTORCYCLE EMPTINESS,52,305706,Forever Delayed,0.522,8.2e-06,0.801,0.174,-3.641,0.197,112.445,0.0301,55,"britpop, permanent wave, rock, welsh rock",703485,Unknown,Manic Street Preachers - MOTORCYCLE EMPTINESS,5041
+Manic Street Preachers,MOTORCYCLE EMPTINESS,52,305706,Forever Delayed,0.522,8.20E-06,0.801,0.174,-3.641,0.197,112.445,0.0301,55,"britpop, permanent wave, rock, welsh rock",703485,Unknown,Manic Street Preachers - MOTORCYCLE EMPTINESS,5041
 Guns N' Roses,KNOCKIN' ON HEAVEN'S DOOR,77,336000,Use Your Illusion II,0.496,0.0209,0.739,0.106,-7.193,0.377,132.411,0.0416,81,"glam metal, hard rock, rock",32272920,Unknown,Guns N' Roses - KNOCKIN' ON HEAVEN'S DOOR,5042
-Rotterdam Termination Source,POING,32,328893,Poing 98 (Mark Van Dale with Enrico Remix),0.759,8.63e-05,0.994,0.297,-7.233,0.0367,147.413,0.112,24,"gabber, happy hardcore",3581,Unknown,Rotterdam Termination Source - POING,5043
+Rotterdam Termination Source,POING,32,328893,Poing 98 (Mark Van Dale with Enrico Remix),0.759,8.63E-05,0.994,0.297,-7.233,0.0367,147.413,0.112,24,"gabber, happy hardcore",3581,Unknown,Rotterdam Termination Source - POING,5043
 2 The Core,HAVE A NICE DAY,0,260678,2 The Core,0.69,0.054,0.914,0.0513,-9.244,0.559,124.818,0.0494,0,,1,Unknown,2 The Core - HAVE A NICE DAY,5044
 Mannenkoor Karrespoor,KAMPEREN BIJ DE BOER,0,188933,Kamperen Bij De Boer,0.72,0.407,0.583,0.241,-10.81,0.918,136.285,0.0423,31,"levenslied, streektaal",6519,Unknown,Mannenkoor Karrespoor - KAMPEREN BIJ DE BOER,5045
 MC Brains,OOCHIE COOCHIE,15,221800,Lovers Lane,0.84,0.0341,0.84,0.275,-8.408,0.674,119.774,0.17,10,,2021,Unknown,MC Brains - OOCHIE COOCHIE,5046
@@ -5085,7 +5085,7 @@ Elton John,THE ONE,50,253126,"Song Machine, Season One: Strange Timez (Deluxe)",
 Double You,PLEASE DON'T GO,56,200000,We All Need Love,0.707,0.0613,0.842,0.0297,-11.831,0.492,120.012,0.0405,52,eurodance,76309,Unknown,Double You - PLEASE DON'T GO,5084
 2 Unlimited,WORKAHOLIC,34,251646,Get Ready,0.57,0.000704,0.881,0.334,-12.808,0.623,128.91,0.0483,58,"eurodance, europop, hip house",284820,Unknown,2 Unlimited - WORKAHOLIC,5085
 En Vogue,MY LOVIN' (YOU'RE NEVER GONNA GET IT),55,281613,Funky Divas,0.767,0.0318,0.839,0.111,-5.519,0.461,98.055,0.0613,58,"contemporary r&b, girl group, hip pop, new jack swing, r&b, urban contemporary",1422964,Unknown,En Vogue - MY LOVIN' (YOU'RE NEVER GONNA GET IT),5086
-U96,I WANNA BE A KENNEDY,25,330333,Das Boot,0.607,1.91e-05,0.849,0.07,-11.764,0.696,130.025,0.0407,53,"bubble trance, eurodance, german techno, hamburg electronic, rave",71609,Unknown,U96 - I WANNA BE A KENNEDY,5087
+U96,I WANNA BE A KENNEDY,25,330333,Das Boot,0.607,1.91E-05,0.849,0.07,-11.764,0.696,130.025,0.0407,53,"bubble trance, eurodance, german techno, hamburg electronic, rave",71609,Unknown,U96 - I WANNA BE A KENNEDY,5087
 Sophie B. Hawkins,DAMN I WISH I WAS YOUR LOVER,52,323266,Tongues And Tails,0.546,0.22,0.781,0.363,-9.439,0.539,95.032,0.0506,47,"lilith, new wave pop",133329,Unknown,Sophie B. Hawkins - DAMN I WISH I WAS YOUR LOVER,5088
 Gordon,JONG VOOR ALTIJD,10,196000,"Compleet, Volmaakt Het Einde (m.m.v. Metropole Orkest)",0.429,0.144,0.924,0.106,-4.704,0.757,180.194,0.0608,37,dutch pop,26689,Unknown,Gordon - JONG VOOR ALTIJD,5089
 Indecent Obsession,KISS ME,30,276066,Indio,0.608,0.0556,0.886,0.453,-6.238,0.716,100.9,0.0636,44,,13427,Unknown,Indecent Obsession - KISS ME,5090
@@ -5095,7 +5095,7 @@ Loïs Lane,QUALIFIED,8,280053,Precious (Expanded Edition),0.789,0.00135,0.663,0.
 Saskia & Serge,ALS JE ZACHTJES ZEGT 'IK HOU VAN JOU',17,251093,Speciaal Voor U,0.399,0.45,0.384,0.218,-12.08,0.196,77.194,0.0268,24,"classic dutch pop, levenslied, nederpop, vintage dutch pop",3951,Unknown,Saskia & Serge - ALS JE ZACHTJES ZEGT 'IK HOU VAN JOU',5094
 André Hazes,SAMEN KUNNEN WE EUROPA AAN,8,243013,Meer Hazes,0.398,0.0061,0.736,0.986,-8.599,0.358,78.069,0.0304,63,"dutch rock, kermis, levenslied",807713,Unknown,André Hazes - SAMEN KUNNEN WE EUROPA AAN,5095
 Right Said Fred,DEEPLY DIPPY,17,201666,Up,0.795,0.438,0.229,0.146,-12.529,0.441,128.026,0.0459,51,,52042,Unknown,Right Said Fred - DEEPLY DIPPY,5096
-HousEK'92,AANVALLEN,0,198066,Aanvallen,0.525,6.71e-05,0.96,0.386,-11.483,0.597,131.952,0.0341,0,,0,Unknown,HousEK'92 - AANVALLEN,5097
+HousEK'92,AANVALLEN,0,198066,Aanvallen,0.525,6.71E-05,0.96,0.386,-11.483,0.597,131.952,0.0341,0,,0,Unknown,HousEK'92 - AANVALLEN,5097
 The Scene,OPEN,22,158747,"Majora's Mask Orchestrated, Vol. 2",0.236,0.958,0.094,0.0956,-19.158,0.0296,82.997,0.0383,49,scorecore,48455,Unknown,The Scene - OPEN,5098
 Kim Wilde,LOVE IS HOLY,24,243333,Love Is,0.587,0.0258,0.931,0.162,-10.579,0.687,127.288,0.0464,59,"new romantic, new wave, new wave pop",674864,Unknown,Kim Wilde - LOVE IS HOLY,5099
 Izabella,SHAME SHAME SHAME,21,231760,Iza,0.705,0.0852,0.937,0.087,-6.262,0.723,107.836,0.0416,10,,171,Unknown,Izabella - SHAME SHAME SHAME,5100
@@ -5123,7 +5123,7 @@ Shawn Christopher,DON'T LOSE THE MAGIC,29,228000,Don't Lose The Magic (Emmaculat
 Soul II Soul,JOY,28,271866,Volume III - Just Right,0.721,0.0194,0.676,0.31,-11.934,0.927,100.688,0.0327,54,british soul,307578,Unknown,Soul II Soul - JOY,5122
 Crowded House,WEATHER WITH YOU,69,224466,Woodface,0.643,0.25,0.614,0.214,-12.878,0.891,93.982,0.0279,72,"australian rock, permanent wave",896167,Unknown,Crowded House - WEATHER WITH YOU,5123
 Henk Westbroek,WAAR ZE LOOPT TE WANDELEN,15,271133,Voorjaar,0.689,0.0682,0.682,0.126,-10.681,0.799,130.102,0.0374,35,"dutch pop, dutch rock, nederpop",6539,Unknown,Henk Westbroek - WAAR ZE LOOPT TE WANDELEN,5124
-Iron Maiden,BE QUICK OR BE DEAD,41,203653,Fear of the Dark (2015 Remaster),0.335,9.4e-05,0.965,0.141,-4.354,0.622,127.744,0.0638,75,"alternative metal, hard rock, metal, nwobhm, rock",9450661,Unknown,Iron Maiden - BE QUICK OR BE DEAD,5125
+Iron Maiden,BE QUICK OR BE DEAD,41,203653,Fear of the Dark (2015 Remaster),0.335,9.40E-05,0.965,0.141,-4.354,0.622,127.744,0.0638,75,"alternative metal, hard rock, metal, nwobhm, rock",9450661,Unknown,Iron Maiden - BE QUICK OR BE DEAD,5125
 Naughty By Nature,O.P.P.,63,271066,Naughty By Nature,0.848,0.0326,0.838,0.124,-11.949,0.787,97.736,0.0721,61,"east coast hip hop, hip hop, new jersey rap",1194274,Unknown,Naughty By Nature - O.P.P.,5126
 René Froger,MAN WITH A MISSION,8,218000,Sweet Hello`s and Sad Goodbye`s,0.44,0.0347,0.63,0.12,-12.312,0.831,119.977,0.0463,49,"dutch pop, dutch rock, levenslied",86426,Unknown,René Froger - MAN WITH A MISSION,5127
 Ozzy Osbourne,NO MORE TEARS,70,443240,No More Tears (Expanded Edition),0.346,0.00167,0.749,0.648,-6.506,0.315,102.591,0.035,73,"album rock, alternative metal, birmingham metal, classic rock, glam metal, hard rock, metal, rock",5848617,Unknown,Ozzy Osbourne - NO MORE TEARS,5128
@@ -5207,7 +5207,7 @@ Hero,TOEN IK JE ZAG,47,205093,Jam,0.38,0.705,0.195,0.301,-13.698,0.133,102.891,0
 Roll Deep,GREEN LIGHT,22,237206,Green Light,0.666,0.00299,0.853,0.37,-4.93,0.591,124.92,0.192,42,grime,75557,Unknown,Roll Deep - GREEN LIGHT,5206
 Scouting For Girls,FAMOUS,38,155013,Everybody Wants To Be On TV,0.684,0.0243,0.822,0.289,-3.421,0.781,131.885,0.0355,56,talent show,347425,Unknown,Scouting For Girls - FAMOUS,5207
 Swedish House Mafia feat. Pharrell,ONE (YOUR NAME),46,163246,One (Your Name),0.733,0.0132,0.673,0.16,-6.572,0.636,125.061,0.0333,77,"edm, pop dance, progressive electro house",3857975,Unknown,Swedish House Mafia feat. Pharrell - ONE (YOUR NAME),5208
-Ke$ha,TAKE IT OFF,68,215200,Animal (Expanded Edition),0.729,4.14e-05,0.675,0.0867,-5.292,0.74,125.036,0.0286,81,"dance pop, pop",8300174,Unknown,Ke$ha - TAKE IT OFF,5209
+Ke$ha,TAKE IT OFF,68,215200,Animal (Expanded Edition),0.729,4.14E-05,0.675,0.0867,-5.292,0.74,125.036,0.0286,81,"dance pop, pop",8300174,Unknown,Ke$ha - TAKE IT OFF,5209
 Eminem feat. Rihanna,LOVE THE WAY YOU LIE,83,263373,Recovery,0.749,0.241,0.925,0.52,-5.034,0.641,86.989,0.227,93,"detroit hip hop, hip hop, rap",93207228,Unknown,Eminem feat. Rihanna - LOVE THE WAY YOU LIE,5210
 The Script,FOR THE FIRST TIME,58,252853,Science & Faith,0.396,0.0328,0.629,0.183,-4.78,0.358,173.794,0.0287,78,"celtic rock, pop",8294569,Unknown,The Script - FOR THE FIRST TIME,5211
 Nick & Simon,EEN NIEUWE DAG,26,209733,Fier,0.502,0.103,0.677,0.286,-6.326,0.477,76.981,0.0286,49,"dutch pop, dutch rock, kermis",209845,Unknown,Nick & Simon - EEN NIEUWE DAG,5212
@@ -5217,7 +5217,7 @@ Jan Smit,ZIE WEL HOE IK THUIS KOM,14,170840,Zie Wel Hoe Ik Thuis Kom,0.513,0.186
 Lifehouse,ALL IN,46,236280,Smoke & Mirrors (Deluxe),0.547,0.000931,0.878,0.191,-4.65,0.536,140.07,0.0431,66,"neo mellow, pop rock, post-grunge",2055498,Unknown,Lifehouse - ALL IN,5216
 Tom Helsen,SUN IN HER EYES,34,182226,Hilite Hotel,0.597,0.116,0.667,0.314,-6.221,0.694,91.992,0.0405,25,"belgian indie, belgian pop",7659,Unknown,Tom Helsen - SUN IN HER EYES,5217
 B.o.B feat. Hayley Williams of Paramore,AIRPLANES,73,180480,B.o.B Presents: The Adventures of Bobby Ray,0.66,0.11,0.867,0.0368,-4.285,0.377,93.033,0.116,75,"atl hip hop, dance pop, pop rap, rap, southern hip hop",2118418,Unknown,B.o.B feat. Hayley Williams of Paramore - AIRPLANES,5218
-Sia,YOU'VE CHANGED,30,191186,We Are Born,0.671,7.99e-05,0.825,0.147,-5.673,0.654,119.996,0.034,86,pop,28927943,Unknown,Sia - YOU'VE CHANGED,5219
+Sia,YOU'VE CHANGED,30,191186,We Are Born,0.671,7.99E-05,0.825,0.147,-5.673,0.654,119.996,0.034,86,pop,28927943,Unknown,Sia - YOU'VE CHANGED,5219
 Mike Posner,COOLER THAN ME,76,213293,31 Minutes to Takeoff,0.768,0.179,0.82,0.689,-4.63,0.625,129.965,0.0474,71,"dance pop, pop, pop dance, pop rap",1411933,Unknown,Mike Posner - COOLER THAN ME,5220
 Katy Perry,CALIFORNIA GURLS,72,234653,Teenage Dream,0.789,0.0038,0.753,0.18,-3.71,0.403,125.007,0.0537,86,pop,34996949,Unknown,Katy Perry - CALIFORNIA GURLS,5221
 Brandon Flowers,CROSSFIRE,56,256133,Flamingo,0.571,0.00403,0.686,0.22,-6.698,0.352,110.021,0.027,51,vegas indie,475728,Unknown,Brandon Flowers - CROSSFIRE,5222
@@ -5321,7 +5321,7 @@ Ke$ha (feat. 3Oh!3),BLAH BLAH BLAH,66,172053,Animal (Expanded Edition),0.752,0.0
 Jason Derülo,WHATCHA SAY,66,221253,Jason Derulo,0.615,0.0444,0.711,0.145,-5.507,0.711,144.034,0.078,79,"dance pop, pop",12271073,Unknown,Jason Derülo - WHATCHA SAY,5320
 Lady Gaga,BAD ROMANCE,82,294573,The Fame Monster (Deluxe Edition),0.695,0.00314,0.921,0.0842,-3.752,0.714,119.007,0.0363,92,"art pop, dance pop, pop",32816376,Unknown,Lady Gaga - BAD ROMANCE,5321
 Snow Patrol,JUST SAY YES,44,281986,Greatest Hits,0.535,0.0214,0.883,0.0276,-5.456,0.257,108.017,0.0324,71,"irish rock, modern rock, neo mellow, permanent wave, pop rock",3095735,Unknown,Snow Patrol - JUST SAY YES,5322
-Anouk,WOMAN,14,235813,Woman,0.393,2.68e-05,0.803,0.0968,-9.113,0.588,144.755,0.0303,54,"dutch pop, dutch rock",378335,Unknown,Anouk - WOMAN,5323
+Anouk,WOMAN,14,235813,Woman,0.393,2.68E-05,0.803,0.0968,-9.113,0.588,144.755,0.0303,54,"dutch pop, dutch rock",378335,Unknown,Anouk - WOMAN,5323
 The Heavy,HOW YOU LIKE ME NOW?,61,217493,The House That Dirt Built,0.647,0.000973,0.71,0.0777,-4.692,0.268,110.059,0.029,60,"bath indie, modern blues rock",458511,Unknown,The Heavy - HOW YOU LIKE ME NOW?,5324
 Edward Maya,THIS IS MY LIFE,51,229573,The Stereo Love Show,0.714,0.0204,0.757,0.329,-5.522,0.387,128.006,0.0313,69,"romanian house, romanian pop",287213,Unknown,Edward Maya - THIS IS MY LIFE,5325
 Jamie Cullum,DON'T STOP THE MUSIC,26,288720,The Pursuit,0.586,0.0903,0.463,0.104,-8.113,0.423,103.811,0.032,58,"contemporary vocal jazz, jazz pop, neo mellow",534438,Unknown,Jamie Cullum - DON'T STOP THE MUSIC,5326
@@ -5364,14 +5364,14 @@ Ralf,CLICK CLACK,33,165893,Click Clack,0.799,0.373,0.699,0.197,-5.741,0.736,125.
 Jordin Sparks,S.O.S. (LET THE MUSIC PLAY),25,212746,Battlefield,0.629,0.0199,0.841,0.324,-4.323,0.691,115.035,0.0576,64,"dance pop, pop, post-teen pop, urban contemporary",2446002,Unknown,Jordin Sparks - S.O.S. (LET THE MUSIC PLAY),5363
 John Mayer,WHO SAYS,58,175480,Battle Studies,0.584,0.267,0.509,0.36,-13.109,0.367,90.457,0.0287,79,"neo mellow, singer-songwriter",6079815,Unknown,John Mayer - WHO SAYS,5364
 Cascada,EVACUATE THE DANCEFLOOR,63,205884,Evacuate The Dancefloor,0.76,0.0195,0.696,0.278,-5.811,0.903,127.029,0.0491,68,"eurodance, europop, german techno, melbourne bounce international",554362,Unknown,Cascada - EVACUATE THE DANCEFLOOR,5365
-Armin van Buuren feat. VanVelzen,BROKEN TONIGHT,24,175906,Broken Tonight,0.553,6.66e-05,0.811,0.856,-7.592,0.366,131.02,0.0584,76,"dutch house, dutch trance, edm, pop dance, progressive house, trance",4435720,Unknown,Armin van Buuren feat. VanVelzen - BROKEN TONIGHT,5366
+Armin van Buuren feat. VanVelzen,BROKEN TONIGHT,24,175906,Broken Tonight,0.553,6.66E-05,0.811,0.856,-7.592,0.366,131.02,0.0584,76,"dutch house, dutch trance, edm, pop dance, progressive house, trance",4435720,Unknown,Armin van Buuren feat. VanVelzen - BROKEN TONIGHT,5366
 Tiësto,ESCAPE ME,40,257839,Kaleidoscope,0.604,0.000481,0.84,0.105,-3.948,0.514,132.949,0.0593,84,"big room, brostep, dutch edm, edm, house, pop dance, progressive electro house, slap house, trance",7570772,Unknown,Tiësto - ESCAPE ME,5367
 James Morrison,NOTHING EVER HURT LIKE YOU,24,231840,"Songs For You, Truths For Me",0.667,0.011,0.908,0.654,-3.209,0.785,119.982,0.0576,64,neo mellow,1541129,Unknown,James Morrison - NOTHING EVER HURT LIKE YOU,5368
 Mika,RAIN,55,224305,Game Of Thrones: Season 8 (Music from the HBO Series),0.285,0.792,0.15,0.102,-12.306,0.138,83.768,0.032,69,"german soundtrack, orchestral soundtrack, scorecore, soundtrack",670072,Unknown,Mika - RAIN,5369
 Anouk,THREE DAYS IN A ROW,35,253973,For Bitter Or Worse,0.392,0.00646,0.501,0.138,-5.56,0.369,171.022,0.0298,54,"dutch pop, dutch rock",378335,Unknown,Anouk - THREE DAYS IN A ROW,5370
 Damaru / Damaru & Jan Smit,MI ROWSU (TUINTJE IN MIJN HART) / MI ROWSU (TUINTJE IN MIJN HART),27,213146,15 Jaar Hits,0.624,0.0281,0.618,0.0811,-7.69,0.943,155.095,0.0337,34,"kaseko, nederreggae, surinamese hip hop, surinamese pop",10706,Unknown,Damaru / Damaru & Jan Smit - MI ROWSU (TUINTJE IN MIJN HART) / MI ROWSU (TUINTJE IN MIJN HART),5371
 Lady Gaga,"EH, EH (NOTHING ELSE I CAN SAY)",48,175360,The Fame,0.68,0.246,0.876,0.0788,-3.646,0.816,187.787,0.0577,92,"art pop, dance pop, pop",32816376,Unknown,"Lady Gaga - EH, EH (NOTHING ELSE I CAN SAY)",5372
-Stereo,STILL HERE,17,247205,I'm Still Here (Jim's Theme),0.618,8.92e-05,0.713,0.118,-6.746,0.713,110.8,0.0272,33,,1459,Unknown,Stereo - STILL HERE,5373
+Stereo,STILL HERE,17,247205,I'm Still Here (Jim's Theme),0.618,8.92E-05,0.713,0.118,-6.746,0.713,110.8,0.0272,33,,1459,Unknown,Stereo - STILL HERE,5373
 Nickelback,NEVER GONNA BE ALONE,59,227026,Dark Horse,0.544,0.00155,0.802,0.122,-4.152,0.59,130.022,0.0282,80,"alternative metal, canadian rock, post-grunge",7175516,Unknown,Nickelback - NEVER GONNA BE ALONE,5374
 Lily Allen,NOT FAIR,43,202546,"It's Not Me, It's You",0.718,0.052,0.806,0.0932,-9.191,0.929,121.488,0.0376,68,"dance pop, electropop, neo mellow",2080230,Unknown,Lily Allen - NOT FAIR,5375
 Foo Fighters,WHEELS,58,278213,Greatest Hits,0.426,0.000495,0.792,0.142,-4.709,0.557,161.994,0.0374,78,"alternative metal, alternative rock, modern rock, permanent wave, post-grunge, rock",12151132,Unknown,Foo Fighters - WHEELS,5376
@@ -5379,7 +5379,7 @@ Lisa Lois,NO GOOD FOR ME,14,178080,Smoke,0.508,0.226,0.681,0.176,-3.954,0.608,17
 The Veronicas,4EVER 2009,27,207773,4ever 2009,0.492,0.00416,0.883,0.0507,-2.036,0.466,145.93,0.0698,57,"australian pop, candy pop, dance pop, girl group, post-teen pop",966520,Unknown,The Veronicas - 4EVER 2009,5378
 Michael Jackson,THIS IS IT,48,216786,Michael Jackson's This Is It,0.636,0.604,0.648,0.072,-5.716,0.56,96.883,0.033,86,"r&b, soul",33427519,Unknown,Michael Jackson - THIS IS IT,5379
 Alicia Keys,DOESN'T MEAN ANYTHING,47,272613,The Element Of Freedom,0.713,0.0365,0.408,0.0963,-7.104,0.103,103.968,0.0308,81,"neo soul, pop, r&b",12226583,Unknown,Alicia Keys - DOESN'T MEAN ANYTHING,5380
-Editors,PAPILLON,50,324133,In This Light and on This Evening,0.506,2.1e-05,0.947,0.301,-5.157,0.656,125.993,0.0612,54,"british indie rock, indie rock, modern rock, new rave",750763,Unknown,Editors - PAPILLON,5381
+Editors,PAPILLON,50,324133,In This Light and on This Evening,0.506,2.10E-05,0.947,0.301,-5.157,0.656,125.993,0.0612,54,"british indie rock, indie rock, modern rock, new rave",750763,Unknown,Editors - PAPILLON,5381
 Jay-Z & Rihanna & Kanye West,RUN THIS TOWN,76,267520,The Blueprint 3,0.632,0.281,0.924,0.263,-1.802,0.441,86.844,0.29,85,"east coast hip hop, gangster rap, hip hop, pop rap, rap",9565879,Unknown,Jay-Z & Rihanna & Kanye West - RUN THIS TOWN,5382
 Kyteman,SORRY,36,189379,Sorry (Live @ Lowlands 2009),0.253,0.766,0.371,0.671,-9.597,0.0827,138.046,0.0392,31,"dutch indie, dutch pop, jazz rap",27384,Unknown,Kyteman - SORRY,5383
 Deadmau5 + Kaskade,I REMEMBER,56,240000,I Remember (John Summit Remix),0.531,0.00616,0.855,0.191,-6.722,0.117,126.018,0.0335,68,"canadian electronic, complextro, edm, electro house, pop dance, progressive electro house, progressive house",2818830,Unknown,Deadmau5 + Kaskade - I REMEMBER,5384
@@ -5500,7 +5500,7 @@ Rihanna,REHAB,65,294720,Good Girl Gone Bad: Reloaded,0.6,0.00321,0.792,0.315,-5.
 Katy Perry,THINKING OF YOU,47,246410,One Of The Boys,0.432,0.00167,0.803,0.331,-4.459,0.309,147.053,0.0363,86,pop,34996949,Unknown,Katy Perry - THINKING OF YOU,5499
 Rigby,PARADE,2,203040,Everything Must Go,0.332,0.0339,0.808,0.331,-4.365,0.308,146.042,0.0573,28,,4394,Unknown,Rigby - PARADE,5500
 Beyoncé,SINGLE LADIES (PUT A RING ON IT),63,193213,I AM...SASHA FIERCE,0.426,0.0383,0.584,0.188,-5.293,0.272,193.437,0.296,87,"pop, r&b",38994947,Unknown,Beyoncé - SINGLE LADIES (PUT A RING ON IT),5501
-U2,GET ON YOUR BOOTS,24,205146,No Line On The Horizon,0.557,6.08e-05,0.746,0.188,-6.171,0.601,149.035,0.0337,78,"irish rock, permanent wave, rock",12702258,Unknown,U2 - GET ON YOUR BOOTS,5502
+U2,GET ON YOUR BOOTS,24,205146,No Line On The Horizon,0.557,6.08E-05,0.746,0.188,-6.171,0.601,149.035,0.0337,78,"irish rock, permanent wave, rock",12702258,Unknown,U2 - GET ON YOUR BOOTS,5502
 Snow Patrol,CRACK THE SHUTTERS,35,200986,A Hundred Million Suns,0.567,0.000664,0.72,0.121,-5.715,0.342,106.022,0.0241,71,"irish rock, modern rock, neo mellow, permanent wave, pop rock",3095735,Unknown,Snow Patrol - CRACK THE SHUTTERS,5503
 André van Duin,DE BALLETJES VAN DE KONINGIN,3,189753,De balletjes van de Koningin,0.678,0.369,0.901,0.686,-6.383,0.83,122.208,0.231,39,"dutch cabaret, levenslied, nederpop",28123,Unknown,André van Duin - DE BALLETJES VAN DE KONINGIN,5504
 Britney Spears,CIRCUS,77,192360,Circus (Deluxe Version),0.791,0.147,0.733,0.0713,-5.215,0.761,114.98,0.052,83,"dance pop, pop",15545333,Unknown,Britney Spears - CIRCUS,5505
@@ -5509,14 +5509,14 @@ Jordin Sparks,TATTOO,57,233466,Jordin Sparks,0.566,0.431,0.766,0.101,-5.036,0.54
 Marco Borsato,DOCHTERS,46,270466,Wit Licht,0.644,0.568,0.523,0.111,-9.787,0.358,127.941,0.0304,57,"dutch cabaret, dutch pop, dutch rock",708986,Unknown,Marco Borsato - DOCHTERS,5508
 David Guetta & Chris Willis with Steve Angello & Sebastian Ingrosso,EVERYTIME WE TOUCH,32,220640,Pop Life,0.708,0.0086,0.471,0.179,-7.667,0.356,125.019,0.0354,90,"big room, dance pop, edm, pop, pop dance",26433416,Unknown,David Guetta & Chris Willis with Steve Angello & Sebastian Ingrosso - EVERYTIME WE TOUCH,5509
 VanVelzen,ON MY WAY,1,247755,On My Way,0.405,0.0305,0.86,0.101,-5.171,0.371,153.833,0.0453,33,"dutch pop, dutch rock",26643,Unknown,VanVelzen - ON MY WAY,5510
-Katy Perry,HOT N COLD,70,220226,One Of The Boys,0.706,7.73e-05,0.842,0.0688,-3.956,0.861,132.032,0.0417,86,pop,34996949,Unknown,Katy Perry - HOT N COLD,5511
+Katy Perry,HOT N COLD,70,220226,One Of The Boys,0.706,7.73E-05,0.842,0.0688,-3.956,0.861,132.032,0.0417,86,pop,34996949,Unknown,Katy Perry - HOT N COLD,5511
 Nick & Simon,VALLENDE STERREN,6,209866,Herinneringen: Het Beste Van,0.36,0.128,0.629,0.307,-5.897,0.304,159.896,0.0283,49,"dutch pop, dutch rock, kermis",209845,Unknown,Nick & Simon - VALLENDE STERREN,5512
 Gebroeders Ko,NIE PRATE NIE & NIE ZINGE NIE,11,183000,Ko & Ko,0.75,0.0949,0.896,0.234,-5.378,0.943,130.061,0.0468,42,"carnaval, levenslied",36323,Unknown,Gebroeders Ko - NIE PRATE NIE & NIE ZINGE NIE,5513
 Jeroen van der Boom,ALLES MIN ÉÉN,8,227546,Het Beste Van,0.579,0.191,0.688,0.101,-6.375,0.462,108.011,0.027,42,"dutch pop, dutch rock",83702,Unknown,Jeroen van der Boom - ALLES MIN ÉÉN,5514
 Outsiders feat. Amanda Wilson,KEEP THIS FIRE BURNING,4,512186,Keep This Fire Burning (feat. Amanda Wilson),0.676,0.000397,0.862,0.636,-6.059,0.829,127.998,0.0704,62,nederlandse hardstyle,123948,Unknown,Outsiders feat. Amanda Wilson - KEEP THIS FIRE BURNING,5515
 Bertolf,ANOTHER DAY,2,340226,Another Day,0.529,0.765,0.506,0.615,-10.714,0.884,163.881,0.0396,32,"dutch indie, dutch pop",11113,Unknown,Bertolf - ANOTHER DAY,5516
 Ne-Yo,MISS INDEPENDENT,77,232000,Year Of The Gentleman (Bonus Track Edition),0.673,0.52,0.681,0.235,-5.693,0.707,171.864,0.118,83,"dance pop, pop, r&b, urban contemporary",9292437,Unknown,Ne-Yo - MISS INDEPENDENT,5517
-Kate Ryan,I SURRENDER,8,211120,Free,0.549,9.33e-05,0.729,0.148,-4.077,0.67,129.934,0.0314,56,"belgian pop, eurodance",90513,Unknown,Kate Ryan - I SURRENDER,5518
+Kate Ryan,I SURRENDER,8,211120,Free,0.549,9.33E-05,0.729,0.148,-4.077,0.67,129.934,0.0314,56,"belgian pop, eurodance",90513,Unknown,Kate Ryan - I SURRENDER,5518
 Jason Mraz,I'M YOURS,76,242946,We Sing. We Dance. We Steal Things. (Bonus Tracks Version),0.703,0.559,0.444,0.0973,-9.331,0.712,150.96,0.0417,73,"acoustic pop, dance pop, neo mellow, pop",7259311,Unknown,Jason Mraz - I'M YOURS,5519
 Beyoncé,IF I WERE A BOY,63,249146,I AM...SASHA FIERCE,0.632,0.107,0.518,0.354,-6.126,0.427,90.007,0.0313,87,"pop, r&b",38994947,Unknown,Beyoncé - IF I WERE A BOY,5520
 Coldplay,VIVA LA VIDA,85,242373,Viva La Vida or Death and All His Friends,0.486,0.0954,0.617,0.109,-7.115,0.417,138.015,0.0287,92,"permanent wave, pop",54752166,Unknown,Coldplay - VIVA LA VIDA,5521
@@ -5540,7 +5540,7 @@ Bløf,VALLENDE ENGEL,21,280613,Oktober,0.526,0.655,0.443,0.125,-10.151,0.172,129
 Krezip,GO TO SLEEP,15,239920,Go To Sleep,0.476,0.00404,0.768,0.246,-4.562,0.382,96.012,0.0328,51,"dutch pop, dutch rock",117909,Unknown,Krezip - GO TO SLEEP,5539
 René Froger,DE ZON SCHIJNT VOOR IEDEREEN,14,226000,"`K Heb Je Lief - 50 jaar de muziek, M`n fans, het leven",0.581,0.259,0.695,0.113,-7.913,0.35,137.946,0.0324,49,"dutch pop, dutch rock, levenslied",86450,Unknown,René Froger - DE ZON SCHIJNT VOOR IEDEREEN,5540
 Stereo,UNEXPECTED,0,432972,"Blacklite Records 10 Years Anniversary, Vol. 4",0.571,0.000123,0.912,0.126,-7.373,0.539,148.007,0.0461,8,"full on groove, trance mexicano",1300,Unknown,Stereo - UNEXPECTED,5541
-Nickelback,GOTTA BE SOMEBODY,32,247840,Live From Nashville,0.37,4.52e-05,0.959,0.955,-4.316,0.146,121.997,0.117,80,"alternative metal, canadian rock, post-grunge",7175516,Unknown,Nickelback - GOTTA BE SOMEBODY,5542
+Nickelback,GOTTA BE SOMEBODY,32,247840,Live From Nashville,0.37,4.52E-05,0.959,0.955,-4.316,0.146,121.997,0.117,80,"alternative metal, canadian rock, post-grunge",7175516,Unknown,Nickelback - GOTTA BE SOMEBODY,5542
 Jan Smit,ALS JE LACHT,44,234586,Stilte In De Storm,0.583,0.255,0.738,0.306,-6.495,0.579,124.036,0.0412,57,"dutch pop, dutch rock, kermis, levenslied",220185,Unknown,Jan Smit - ALS JE LACHT,5543
 T.I.,WHATEVER YOU LIKE,73,249533,Paper Trail,0.68,0.0161,0.687,0.261,-6.162,0.467,150.053,0.0709,76,"atl hip hop, dirty south rap, gangster rap, hip hop, pop rap, rap, southern hip hop, trap",4887815,Unknown,T.I. - WHATEVER YOU LIKE,5544
 Britney Spears,WOMANIZER,77,224400,Circus (Deluxe Version),0.724,0.073,0.695,0.0889,-5.226,0.235,139,0.0622,83,"dance pop, pop",15545333,Unknown,Britney Spears - WOMANIZER,5545
@@ -5592,7 +5592,7 @@ Alphabeat,FASCINATION,52,182120,This Is Alphabeat,0.495,0.00027,0.878,0.07,-3.26
 Cascada,WHAT HURTS THE MOST,46,218586,Perfect Day,0.579,0.00991,0.981,0.515,-7.433,0.276,142.025,0.0994,68,"eurodance, europop, german techno, melbourne bounce international",554362,Unknown,Cascada - WHAT HURTS THE MOST,5591
 Sara Bareilles,BOTTLE IT UP,40,180626,Little Voice,0.621,0.199,0.717,0.153,-4.161,0.699,132.815,0.0326,65,"acoustic pop, lilith, neo mellow, pop rock, post-teen pop",1955567,Unknown,Sara Bareilles - BOTTLE IT UP,5592
 Enrique Iglesias,CAN YOU HEAR ME,22,222546,Greatest Hits,0.842,0.0111,0.627,0.0764,-3.688,0.54,116.991,0.0439,79,"dance pop, latin pop, mexican pop",11230466,Unknown,Enrique Iglesias - CAN YOU HEAR ME,5593
-Richard Durand,WEEP,6,180828,A State Of Trance Episode 384 (Year Mix 2008),0.619,1.75e-05,0.87,0.504,-8.503,0.0508,138.041,0.0463,47,"dutch trance, progressive house, progressive trance, trance, uplifting trance",54967,Unknown,Richard Durand - WEEP,5594
+Richard Durand,WEEP,6,180828,A State Of Trance Episode 384 (Year Mix 2008),0.619,1.75E-05,0.87,0.504,-8.503,0.0508,138.041,0.0463,47,"dutch trance, progressive house, progressive trance, trance, uplifting trance",54967,Unknown,Richard Durand - WEEP,5594
 Jean Claude Ades & Vincent Thomas,SHINGALING,0,360834,Shingaling,0.823,0.000189,0.819,0.0798,-7.413,0.942,128.998,0.0593,29,,5250,Unknown,Jean Claude Ades & Vincent Thomas - SHINGALING,5595
 Chris Brown,FOREVER,76,278573,Forever,0.672,0.0368,0.82,0.184,-4.456,0.438,120.005,0.0459,88,"r&b, rap",24084771,Unknown,Chris Brown - FOREVER,5596
 Colbie Caillat,REALIZE,50,244106,Coco,0.693,0.13,0.594,0.115,-6.408,0.192,123.933,0.0325,68,"dance pop, neo mellow, pop",2524328,Unknown,Colbie Caillat - REALIZE,5597
@@ -5608,8 +5608,8 @@ Sharam feat. Daniel Bedingfield,THE ONE,1,225053,Vic Latino Presents Ultra Mix,0
 Alain Clark,BLOW ME AWAY,26,183173,Live It Out,0.833,0.3,0.662,0.0872,-6.082,0.943,119.968,0.0366,46,"dutch pop, dutch rock",69641,Unknown,Alain Clark - BLOW ME AWAY,5607
 Veracocha,CARTE BLANCHE [2008 SINGLE EDIT],8,182891,History Of Dance - The Years 2007-2008,0.605,0.0134,0.932,0.357,-7.896,0.267,134.006,0.0464,46,"dutch trance, trance",15044,Unknown,Veracocha - CARTE BLANCHE [2008 SINGLE EDIT],5608
 Playahitty,THE SUMMER IS MAGIC 2008,37,205775,The Summer Is Magic (2008),0.673,0.00354,0.931,0.409,-6.238,0.912,133.94,0.0568,51,"eurodance, hip house",15211,Unknown,Playahitty - THE SUMMER IS MAGIC 2008,5609
-One Night Only,JUST FOR TONIGHT,12,258640,Indie Songs With Big Choruses,0.479,8.15e-05,0.938,0.1,-6.435,0.66,142.045,0.0409,30,,23194,Unknown,One Night Only - JUST FOR TONIGHT,5610
-Alex Gaudino feat. Shena,WATCH OUT,6,177600,Watch Out (feat. Shèna),0.674,5.83e-05,0.984,0.378,-4.701,0.404,128,0.15,62,"disco house, vocal house",133729,Unknown,Alex Gaudino feat. Shena - WATCH OUT,5611
+One Night Only,JUST FOR TONIGHT,12,258640,Indie Songs With Big Choruses,0.479,8.15E-05,0.938,0.1,-6.435,0.66,142.045,0.0409,30,,23194,Unknown,One Night Only - JUST FOR TONIGHT,5610
+Alex Gaudino feat. Shena,WATCH OUT,6,177600,Watch Out (feat. Shèna),0.674,5.83E-05,0.984,0.378,-4.701,0.404,128,0.15,62,"disco house, vocal house",133729,Unknown,Alex Gaudino feat. Shena - WATCH OUT,5611
 Jannes,GA DAN,35,225240,Meer dan een vriend,0.695,0.125,0.874,0.194,-5.174,0.948,120.036,0.0313,50,"levenslied, piratenmuziek",94824,Unknown,Jannes - GA DAN,5612
 Mêlée,IMITATION,14,213173,Devils & Angels (Standard Version),0.554,0.108,0.9,0.0674,-3.362,0.801,123.219,0.0455,32,piano rock,9057,Unknown,Mêlée - IMITATION,5613
 Lil Wayne,LOLLIPOP,64,299333,Tha Carter III (MTV Bonus Version),0.833,0.0606,0.43,0.124,-9.39,0.461,148.074,0.0827,88,"hip hop, new orleans rap, pop rap, rap, trap",15618356,Unknown,Lil Wayne - LOLLIPOP,5614
@@ -5692,7 +5692,7 @@ Syb,ALS IK JOU ZIE,0,220186,Hillich Fjoer | Heilig Vuur,0.638,0.0912,0.841,0.137
 Racoon,LUCKY ALL MY LIFE,8,299320,"Live at Chasse Theater, Breda",0.352,0.403,0.668,0.648,-7.637,0.46,99.129,0.0355,61,"dutch indie, dutch pop, dutch rock",305180,Unknown,Racoon - LUCKY ALL MY LIFE,5691
 Michael Jackson with Will.I.Am,THE GIRL IS MINE 2008,38,190253,Thriller 25 Super Deluxe Edition,0.77,0.0443,0.747,0.0864,-6.626,0.926,96.003,0.135,86,"r&b, soul",33427519,Unknown,Michael Jackson with Will.I.Am - THE GIRL IS MINE 2008,5692
 Milk Inc.,TONIGHT,37,229038,Undercover,0.744,0.12,0.808,0.0588,-7.435,0.394,129.976,0.0292,51,"belgian dance, eurodance",95402,Unknown,Milk Inc. - TONIGHT,5693
-Ernesto vs. Bastian,THRILL,14,168000,Thrill,0.539,3.45e-05,0.891,0.289,-7.281,0.304,130.014,0.0373,22,"deep progressive trance, trance",3775,Unknown,Ernesto vs. Bastian - THRILL,5694
+Ernesto vs. Bastian,THRILL,14,168000,Thrill,0.539,3.45E-05,0.891,0.289,-7.281,0.304,130.014,0.0373,22,"deep progressive trance, trance",3775,Unknown,Ernesto vs. Bastian - THRILL,5694
 Sugababes,CHANGE,10,218466,Change,0.514,0.0205,0.715,0.0708,-5.896,0.301,169.9,0.0326,60,"dance pop, europop, girl group, talent show",706806,Unknown,Sugababes - CHANGE,5695
 Snow Patrol,SHUT YOUR EYES,52,197133,Eyes Open,0.693,0.151,0.738,0.0987,-6.431,0.829,124.998,0.0287,71,"irish rock, modern rock, neo mellow, permanent wave, pop rock",3095735,Unknown,Snow Patrol - SHUT YOUR EYES,5696
 Dirty South,LET IT GO,21,424560,Let It Go,0.8,0.0517,0.744,0.252,-7.753,0.367,126.988,0.0891,48,"australian dance, dutch house, edm, electro house, pop dance, progressive electro house, progressive house",220707,Unknown,Dirty South - LET IT GO,5697
@@ -5735,7 +5735,7 @@ Craig David,HOT STUFF (LET'S DANCE),31,219213,Trust Me,0.762,0.0418,0.705,0.357,
 DJ Jose,PHYSICAL ATTRACTION,7,208200,Physical Attraction,0.669,0.00159,0.845,0.152,-7.397,0.45,127.02,0.0615,27,dutch trance,3812,Unknown,DJ Jose - PHYSICAL ATTRACTION,5734
 André Hazes & André Hazes Jr,BEDANKT MIJN VRIEND,29,195386,Samen Met Dré,0.477,0.408,0.692,0.139,-4.178,0.59,155.974,0.0372,63,"dutch rock, kermis, levenslied",807924,Unknown,André Hazes & André Hazes Jr - BEDANKT MIJN VRIEND,5735
 Robyn with Kleerup,WITH EVERY HEARTBEAT,40,255186,Robyn,0.501,0.00781,0.869,0.255,-4.103,0.352,120.859,0.0395,65,"dance pop, electropop, neo-synthpop, scandipop, swedish electropop, swedish pop",848538,Unknown,Robyn with Kleerup - WITH EVERY HEARTBEAT,5736
-Kylie,2 HEARTS,19,171266,X,0.667,9.31e-05,0.621,0.0572,-5.229,0.492,111.996,0.035,75,"australian dance, australian pop, dance pop, eurodance, new wave pop",2092946,Unknown,Kylie - 2 HEARTS,5737
+Kylie,2 HEARTS,19,171266,X,0.667,9.31E-05,0.621,0.0572,-5.229,0.492,111.996,0.035,75,"australian dance, australian pop, dance pop, eurodance, new wave pop",2092946,Unknown,Kylie - 2 HEARTS,5737
 Sandy Rivera & Haze,FREAK,14,388453,FREAK,0.842,0.00536,0.486,0.0852,-10.173,0.585,127.009,0.16,41,"chicago house, classic house, deep house, disco house, tribal house, vocal house",34243,Unknown,Sandy Rivera & Haze - FREAK,5738
 Armin van Buuren,THE SOUND OF GOODBYE,39,199133,"The Sound of Goodbye, Pt. 2",0.67,0.0228,0.945,0.0572,-6.721,0.806,135.972,0.0364,76,"dutch house, dutch trance, edm, pop dance, progressive house, trance",4435720,Unknown,Armin van Buuren - THE SOUND OF GOODBYE,5739
 James Blunt,1973,69,280026,All the Lost Souls,0.72,0.0653,0.668,0.0789,-7.928,0.769,123.005,0.0269,73,neo mellow,3072894,Unknown,James Blunt - 1973,5740
@@ -5788,7 +5788,7 @@ Marco Borsato,UN PO' BAMBINO,10,278840,Sento,0.72,0.563,0.707,0.37,-9.244,0.776,
 Genesis,I CAN'T DANCE,63,239613,We Can't Dance (2007 Remaster),0.914,0.468,0.531,0.0392,-9.816,0.914,107.571,0.0503,68,"album rock, art rock, classic rock, hard rock, mellow gold, new romantic, progressive rock, rock, soft rock, symphonic rock",3483918,Unknown,Genesis - I CAN'T DANCE,5787
 Patrick Bruel,CASSER LA VOIX - LIVE,31,454560,"Si ce soir, Vol. 2",0.268,0.0245,0.718,0.836,-9.664,0.341,135.174,0.0545,55,"chanson, french pop, variete francaise",659335,Unknown,Patrick Bruel - CASSER LA VOIX - LIVE,5788
 Chic,CHIC MYSTIQUE,24,399693,Chic-ism,0.824,0.000833,0.799,0.0281,-6.188,0.8,117.826,0.0382,61,"disco, funk, motown, soul",739615,Unknown,Chic - CHIC MYSTIQUE,5789
-Yothu Yindi,TREATY,29,243933,Tribal Voice,0.708,4.34e-05,0.849,0.36,-10.931,0.825,122.309,0.0477,37,"australian indigenous music, didgeridoo",33217,Unknown,Yothu Yindi - TREATY,5790
+Yothu Yindi,TREATY,29,243933,Tribal Voice,0.708,4.34E-05,0.849,0.36,-10.931,0.825,122.309,0.0477,37,"australian indigenous music, didgeridoo",33217,Unknown,Yothu Yindi - TREATY,5790
 U2,ONE,72,276186,Achtung Baby (Deluxe Edition),0.392,0.245,0.534,0.155,-8.793,0.325,181.305,0.0369,78,"irish rock, permanent wave, rock",12702258,Unknown,U2 - ONE,5791
 The Scene,ZUSTER,11,221506,Open,0.528,0.00984,0.537,0.0317,-7.605,0.162,103.07,0.0233,38,"belgian rock, dutch rock, nederpop",25087,Unknown,The Scene - ZUSTER,5792
 Curtis Stigers,I WONDER WHY,42,267240,Curtis Stigers,0.549,0.0573,0.62,0.591,-8.971,0.288,135.112,0.0306,47,,46364,Unknown,Curtis Stigers - I WONDER WHY,5793
@@ -5810,10 +5810,10 @@ Pearl Jam,ALIVE,73,340907,Ten,0.284,0.00752,0.875,0.402,-6.069,0.595,75.009,0.04
 Badesalz,I STILL HAVEN'T FOUND WHAT I'M LOOKING FOR,14,212466,Dabrauchemergarnetdrübberredde - Das Beste von Badesalz 2,0.654,0.519,0.423,0.186,-10.297,0.96,180.885,0.0658,32,kabarett,20639,Unknown,Badesalz - I STILL HAVEN'T FOUND WHAT I'M LOOKING FOR,5809
 Rozalla,ARE YOU READY TO FLY,14,235093,"Dance Floor Virus, Vol. 3",0.557,0.00159,0.663,0.193,-14.183,0.527,126.128,0.0302,43,diva house,33504,Unknown,Rozalla - ARE YOU READY TO FLY,5810
 Robby Valentine,LOVE TAKES ME HIGHER,3,224160,Robby Valentine (Expanded Edition),0.568,0.000961,0.603,0.162,-13.062,0.302,110.187,0.0497,19,,2937,Unknown,Robby Valentine - LOVE TAKES ME HIGHER,5811
-Apotheosis,O FORTUNA,28,290656,Ô Fortuna (Gladiators Excalibur 90's Rave Nation Anthem),0.469,7.23e-05,0.869,0.077,-7.265,0.255,130.761,0.0613,18,new beat,1170,Unknown,Apotheosis - O FORTUNA,5812
+Apotheosis,O FORTUNA,28,290656,Ô Fortuna (Gladiators Excalibur 90's Rave Nation Anthem),0.469,7.23E-05,0.869,0.077,-7.265,0.255,130.761,0.0613,18,new beat,1170,Unknown,Apotheosis - O FORTUNA,5812
 Rowwen Hèze,BESTEL MAR,44,186800,Boem,0.581,0.0749,0.852,0.119,-7.377,0.907,159.517,0.0968,49,"dutch rock, nederpop, streektaal",59812,Unknown,Rowwen Hèze - BESTEL MAR,5813
 Brian May,DRIVEN BY YOU,32,251986,Back To The Light (Deluxe),0.531,0.026,0.901,0.322,-5.154,0.562,131.961,0.0581,47,glam rock,383670,Unknown,Brian May - DRIVEN BY YOU,5814
-Def La Desh & The Fresh Witness,FEEL THE RHYTHM,0,201853,Feel The Rhythm,0.682,3.11e-05,0.644,0.0665,-10.839,0.49,115.995,0.0438,0,,6,Unknown,Def La Desh & The Fresh Witness - FEEL THE RHYTHM,5815
+Def La Desh & The Fresh Witness,FEEL THE RHYTHM,0,201853,Feel The Rhythm,0.682,3.11E-05,0.644,0.0665,-10.839,0.49,115.995,0.0438,0,,6,Unknown,Def La Desh & The Fresh Witness - FEEL THE RHYTHM,5815
 The KLF,JUSTIFIED & ANCIENT,47,228372,Solid State Logik 1,0.628,0.00276,0.953,0.427,-4.989,0.515,111.134,0.0626,44,"acid house, ambient house, big beat, hip house",118618,Unknown,The KLF - JUSTIFIED & ANCIENT,5816
 DJ Jazzy Jeff & The Fresh Prince,THE THINGS THAT U DO,15,296066,Homebase,0.807,0.00623,0.451,0.0414,-15.284,0.558,116.841,0.0744,52,"golden age hip hop, old school hip hop, philly rap",399213,Unknown,DJ Jazzy Jeff & The Fresh Prince - THE THINGS THAT U DO,5817
 Queen,BOHEMIAN RHAPSODY,69,354320,A Night At The Opera (Deluxe Remastered Version),0.391,0.289,0.402,0.243,-9.961,0.228,143.879,0.0539,86,"classic rock, glam rock, rock",51942948,Unknown,Queen - BOHEMIAN RHAPSODY,5818
@@ -5862,7 +5862,7 @@ Mecano,TU,38,258706,Aidalai (Bonus Track Edition),0.45,0.948,0.196,0.0686,-13.97
 Henk Temming,IK VRAAG AAN SINTERKLAAS EEN HEEL GELUKKIG KERSTFEEST,17,251066,De Hulpsinterklaas,0.623,0.402,0.41,0.103,-14.431,0.511,83.987,0.0245,19,,320,Unknown,Henk Temming - IK VRAAG AAN SINTERKLAAS EEN HEEL GELUKKIG KERSTFEEST,5861
 L.A. Style,JAMES BROWN IS DEAD,42,344400,James Brown Is Dead (Original Mix) - Single,0.599,0.0013,0.976,0.383,-7.649,0.501,130.724,0.0859,29,"new beat, rave",4768,Unknown,L.A. Style - JAMES BROWN IS DEAD,5862
 MC Skat Kat and The Stray Mob,SKAT STRUT,12,221066,The Adventures Of MC Skat Kat And The Stray Mob,0.797,0.0041,0.82,0.0879,-9.722,0.461,120.902,0.087,5,,564,Unknown,MC Skat Kat and The Stray Mob - SKAT STRUT,5863
-U2,THE FLY,46,269053,Achtung Baby (Deluxe Edition),0.507,3.52e-05,0.934,0.161,-8.888,0.417,108.345,0.0553,78,"irish rock, permanent wave, rock",12702258,Unknown,U2 - THE FLY,5864
+U2,THE FLY,46,269053,Achtung Baby (Deluxe Edition),0.507,3.52E-05,0.934,0.161,-8.888,0.417,108.345,0.0553,78,"irish rock, permanent wave, rock",12702258,Unknown,U2 - THE FLY,5864
 Hanny,ELKE VROUW,2,154843,De Regenboog Serie: Hanny,0.768,0.268,0.729,0.23,-8.207,0.935,127.988,0.0348,30,"classic dutch pop, levenslied, vintage dutch pop",4859,Unknown,Hanny - ELKE VROUW,5865
 Londonbeat,THIS IS YOUR LIFE,2,124533,In The Blood,0.753,0.693,0.16,0.125,-21.023,0.58,107.818,0.0355,53,hip house,47623,Unknown,Londonbeat - THIS IS YOUR LIFE,5866
 André van Duin,35 KOEIEN,7,194466,35 Koeien,0.612,0.56,0.972,0.428,-7.147,0.347,126.663,0.091,39,"dutch cabaret, levenslied, nederpop",28123,Unknown,André van Duin - 35 KOEIEN,5867
@@ -5898,7 +5898,7 @@ Human Resource,DOMINATOR,44,171883,Dominator,0.853,0.00529,0.879,0.592,-6.651,0.
 Dennis Jones,HEART OF GOLD,2,187309,Heart Of Gold - The Red Bullet Years,0.758,0.0381,0.724,0.122,-7.583,0.821,89.977,0.0277,16,carnaval,361,Unknown,Dennis Jones - HEART OF GOLD,5897
 Culture Beat,NO DEEPER MEANING,21,250666,No Deeper Meaning,0.722,0.0624,0.89,0.0389,-9.332,0.579,122.276,0.0415,61,"eurodance, europop, german techno, hip house",197460,Unknown,Culture Beat - NO DEEPER MEANING,5898
 Guns N' Roses,DON'T CRY,75,283733,Use Your Illusion I,0.455,0.00184,0.589,0.104,-8.64,0.254,124.634,0.0328,81,"glam metal, hard rock, rock",32281406,Unknown,Guns N' Roses - DON'T CRY,5899
-Right Said Fred,I'M TOO SEXY,60,170466,Up (Special Edition),0.683,4.91e-05,0.739,0.293,-12.831,0.836,122.113,0.0494,51,,52075,Unknown,Right Said Fred - I'M TOO SEXY,5900
+Right Said Fred,I'M TOO SEXY,60,170466,Up (Special Edition),0.683,4.91E-05,0.739,0.293,-12.831,0.836,122.113,0.0494,51,,52075,Unknown,Right Said Fred - I'M TOO SEXY,5900
 Banda Blanca,SOPA DE CARACOL,56,293906,Lo Mejor de Banda Blanca - 16 Exitos,0.927,0.308,0.544,0.312,-14.621,0.961,124.283,0.0769,48,"musica hondurena, punta, punta rock",35292,Unknown,Banda Blanca - SOPA DE CARACOL,5901
 Dire Straits,CALLING ELVIS,33,386733,On Every Street (Remaster),0.617,0.101,0.574,0.164,-11.594,0.399,120.038,0.0315,78,"album rock, classic rock, mellow gold, rock",7941283,Unknown,Dire Straits - CALLING ELVIS,5902
 Roxette,THE BIG L.,37,265733,Don't Bore Us - Get to the Chorus! Roxette's Greatest Hits,0.663,0.111,0.897,0.253,-5.533,0.937,142.507,0.0323,74,"europop, swedish pop, synthpop",2393839,Unknown,Roxette - THE BIG L.,5903
@@ -5962,7 +5962,7 @@ Crowded House,CHOCOLATE CAKE,38,242093,Woodface,0.71,0.103,0.642,0.0322,-11.786,
 Lonnie Gordon,GONNA CATCH YOU,37,231040,Bad Mood,0.84,0.000825,0.668,0.223,-9.071,0.953,121.649,0.0461,31,diva house,13281,Unknown,Lonnie Gordon - GONNA CATCH YOU,5961
 Cher,THE SHOOP SHOOP SONG (IT'S IN HIS KISS),65,170000,Love Hurts,0.678,0.467,0.61,0.397,-10.509,0.919,117.04,0.0306,72,"dance pop, pop",3501724,Unknown,Cher - THE SHOOP SHOOP SONG (IT'S IN HIS KISS),5962
 Timmy T,PARADISE,16,192550,Paradise,0.524,0.0109,0.808,0.103,-5.579,0.465,199.729,0.083,22,,2440,Unknown,Timmy T - PARADISE,5963
-T99,ANASTHASIA,32,275333,Anasthasia,0.602,9.92e-05,0.977,0.307,-11.249,0.516,128.019,0.0403,23,"hardcore techno, new beat, rave",3272,Unknown,T99 - ANASTHASIA,5964
+T99,ANASTHASIA,32,275333,Anasthasia,0.602,9.92E-05,0.977,0.307,-11.249,0.516,128.019,0.0403,23,"hardcore techno, new beat, rave",3272,Unknown,T99 - ANASTHASIA,5964
 Gang Starr,LOVESICK,31,207000,Step In The Arena,0.765,0.162,0.597,0.0822,-14.185,0.83,173.643,0.275,65,"alternative hip hop, conscious hip hop, east coast hip hop, hardcore hip hop, hip hop",987396,Unknown,Gang Starr - LOVESICK,5965
 The Doors,LIGHT MY FIRE,67,429760,The Doors,0.413,0.369,0.725,0.0905,-5.787,0.44,124.618,0.0324,75,"acid rock, album rock, classic rock, hard rock, psychedelic rock, rock",8205185,Unknown,The Doors - LIGHT MY FIRE,5966
 R.E.M.,SHINY HAPPY PEOPLE,71,225786,Out Of Time (25th Anniversary Edition),0.452,0.0313,0.909,0.23,-3.977,0.805,124.623,0.0366,75,"alternative rock, athens indie, permanent wave, rock",4798108,Unknown,R.E.M. - SHINY HAPPY PEOPLE,5967
@@ -6051,7 +6051,7 @@ Susanna Hoffs,MY SIDE OF THE BED,28,208360,WHEN YOU'RE A BOY,0.585,0.301,0.667,0
 Vanilla Ice,PLAY THAT FUNKY MUSIC,38,285800,To The Extreme,0.851,0.000928,0.514,0.381,-15.279,0.573,100.425,0.165,59,miami hip hop,546934,Unknown,Vanilla Ice - PLAY THAT FUNKY MUSIC,6050
 Queen,INNUENDO,38,393026,Innuendo,0.209,0.185,0.731,0.296,-5.751,0.172,74.168,0.0665,86,"classic rock, glam rock, rock",51942948,Unknown,Queen - INNUENDO,6051
 Tony Scott,LOVE LET LOVE,13,238333,Expressions from the Soul,0.708,0.0575,0.411,0.15,-19.486,0.67,116.069,0.0522,23,,2404,Unknown,Tony Scott - LOVE LET LOVE,6052
-Information Society,THINK,44,234880,Hi-Five: Information Society,0.622,3.46e-05,0.72,0.323,-13.475,0.904,120.942,0.0464,50,"freestyle, new romantic, synthpop",217981,Unknown,Information Society - THINK,6053
+Information Society,THINK,44,234880,Hi-Five: Information Society,0.622,3.46E-05,0.72,0.323,-13.475,0.904,120.942,0.0464,50,"freestyle, new romantic, synthpop",217981,Unknown,Information Society - THINK,6053
 Black Box,FANTASY,46,312986,Dreamland,0.713,0.00692,0.664,0.163,-9.095,0.49,98.102,0.046,54,"diva house, hip house, italo house",144102,Unknown,Black Box - FANTASY,6054
 A Tribe Called Quest,CAN I KICK IT?,68,251573,People's Instinctive Travels and the Paths of Rhythm (25th Anniversary Edition),0.848,0.173,0.666,0.129,-6.547,0.744,96.662,0.274,68,"conscious hip hop, east coast hip hop, golden age hip hop, hip hop, jazz rap, queens hip hop",2217614,Unknown,A Tribe Called Quest - CAN I KICK IT?,6055
 Céline Dion,WHERE DOES MY HEART BEAT NOW,55,272866,Unison,0.528,0.648,0.62,0.0801,-10.419,0.595,74.051,0.0285,78,canadian pop,9050629,Unknown,Céline Dion - WHERE DOES MY HEART BEAT NOW,6056
@@ -6226,7 +6226,7 @@ Alannah Myles,BLACK VELVET,71,287440,Alannah Myles,0.75,0.271,0.366,0.106,-10.07
 Wilson Phillips,HOLD ON,65,266866,Wilson Phillips,0.68,0.4,0.657,0.0497,-9.897,0.546,97.801,0.0255,54,"girl group, mellow gold, new wave pop, soft rock",651754,Unknown,Wilson Phillips - HOLD ON,6225
 The Pasadenas,LOVE THING,15,231160,Definitive Collection / Definitive Collection Bonus CD,0.696,0.00753,0.841,0.121,-10.227,0.833,108.403,0.0475,34,brit funk,21344,Unknown,The Pasadenas - LOVE THING,6226
 D-Shake,YAAAH,17,409506,Yaaah + Techno Trance (Remixes),0.614,0.00034,0.938,0.223,-7.207,0.306,128.366,0.0454,15,"hardcore techno, new beat",1796,Unknown,D-Shake - YAAAH,6227
-Elton John,CLUB AT THE END OF THE STREET,39,292173,Sleeping With The Past (Remastered with bonus tracks),0.65,8.12e-05,0.755,0.326,-9.645,0.782,124.844,0.0281,84,"glam rock, mellow gold, piano rock, rock",14038409,Unknown,Elton John - CLUB AT THE END OF THE STREET,6228
+Elton John,CLUB AT THE END OF THE STREET,39,292173,Sleeping With The Past (Remastered with bonus tracks),0.65,8.12E-05,0.755,0.326,-9.645,0.782,124.844,0.0281,84,"glam rock, mellow gold, piano rock, rock",14038409,Unknown,Elton John - CLUB AT THE END OF THE STREET,6228
 Soul II Soul,A DREAMS A DREAM,30,338866,Volume II - 1990 A New Decade,0.711,0.0269,0.652,0.0565,-13.49,0.544,103.258,0.0447,54,british soul,307653,Unknown,Soul II Soul - A DREAMS A DREAM,6229
 Toto Cutugno,INSIEME: 1992,48,263902,"Ritratto di Toto Cutugno, Vol. 3",0.788,0.084,0.708,0.12,-6.124,0.516,100.149,0.0283,58,classic italian pop,199676,Unknown,Toto Cutugno - INSIEME: 1992,6230
 Bonnie Raitt,HAVE A HEART,36,289970,Nick Of Time,0.717,0.485,0.269,0.0466,-15.357,0.432,67.726,0.0378,59,"country rock, electric blues, folk, folk rock, mellow gold, singer-songwriter, soft rock",749050,Unknown,Bonnie Raitt - HAVE A HEART,6231
@@ -6245,12 +6245,12 @@ Fish,A GENTLEMAN'S EXCUSE ME,38,259466,Vigil In A Wilderness Of Mirrors,0.331,0.
 BZN,HELP ME,8,239266,Gold,0.493,0.541,0.499,0.112,-8.556,0.586,82.039,0.0258,45,nederpop,50799,Unknown,BZN - HELP ME,6244
 Jason Donovan,HANG ON TO YOUR LOVE,2,182840,Between the Lines,0.64,0.12,0.986,0.125,-5.614,0.656,118.189,0.0684,47,"australian dance, australian pop, europop, new wave pop",79371,Unknown,Jason Donovan - HANG ON TO YOUR LOVE,6245
 Beats International,DUB BE GOOD TO ME,18,217626,Let Them Eat Bingo,0.866,0.000926,0.315,0.123,-17.73,0.695,95.906,0.0609,36,hip house,14243,Unknown,Beats International - DUB BE GOOD TO ME,6246
-Primal Scream,LOADED,37,422600,Screamadelica,0.624,8.5e-05,0.54,0.84,-14.741,0.872,91.15,0.0524,55,"alternative rock, britpop, dance rock, scottish indie",526530,Unknown,Primal Scream - LOADED,6247
+Primal Scream,LOADED,37,422600,Screamadelica,0.624,8.50E-05,0.54,0.84,-14.741,0.872,91.15,0.0524,55,"alternative rock, britpop, dance rock, scottish indie",526530,Unknown,Primal Scream - LOADED,6247
 Fleetwood Mac,SAVE ME,33,162293,Tusk (2015 Remaster),0.76,0.246,0.428,0.144,-11.147,0.673,122.996,0.0333,83,"album rock, classic rock, rock, soft rock, yacht rock",12306037,Unknown,Fleetwood Mac - SAVE ME,6248
 Maywood,IK WIL ALLES MET JE DELEN,7,200826,Ik Wil Alles Met Je Delen,0.558,0.539,0.457,0.239,-12.893,0.296,142.307,0.0379,41,"nederpop, piratenmuziek",24573,Unknown,Maywood - IK WIL ALLES MET JE DELEN,6249
 Kaoma,MÉLODIE D'AMOUR,35,252493,Lambada - Les originaux No. 1 de l'été (Original 1989),0.75,0.0139,0.7,0.0382,-7.615,0.965,120.131,0.0405,56,zouk,68540,Unknown,Kaoma - MÉLODIE D'AMOUR,6250
 New Kids On The Block,HANGIN' TOUGH,46,256560,Hangin' Tough,0.763,0.119,0.552,0.28,-11.98,0.744,90.775,0.0449,57,boy band,835026,Unknown,New Kids On The Block - HANGIN' TOUGH,6251
-Rebel MC,BETTER WORLD,12,220334,Rebel Music,0.651,2.34e-05,0.788,0.197,-8.954,0.468,118.348,0.0474,31,"britcore, jungle, old school uk hip hop, ragga jungle",7802,Unknown,Rebel MC - BETTER WORLD,6252
+Rebel MC,BETTER WORLD,12,220334,Rebel Music,0.651,2.34E-05,0.788,0.197,-8.954,0.468,118.348,0.0474,31,"britcore, jungle, old school uk hip hop, ragga jungle",7802,Unknown,Rebel MC - BETTER WORLD,6252
 David Bowie,FAME 90,29,217000,Fame '90,0.753,0.162,0.62,0.0619,-10.532,0.559,97.447,0.0426,78,"art rock, classic rock, glam rock, permanent wave, rock",10897205,Unknown,David Bowie - FAME 90,6253
 Jungle Brothers,"WHAT ""U"" WAITIN..... ""4""?",23,244133,Done By The Forces Of Nature,0.846,0.228,0.467,0.219,-16.6,0.716,109.989,0.189,42,"east coast hip hop, golden age hip hop, hip house, jazz rap, old school hip hop",185235,Unknown,"Jungle Brothers - WHAT ""U"" WAITIN..... ""4""?",6254
 J.T. and The Big Family,MOMENTS IN SOUL,26,312826,Hip House,0.844,0.0233,0.478,0.114,-14.728,0.719,103.094,0.106,14,,198,Unknown,J.T. and The Big Family - MOMENTS IN SOUL,6255
@@ -6337,7 +6337,7 @@ Phil Collins,ANOTHER DAY IN PARADISE,77,322133,...But Seriously (Deluxe Edition)
 Gloria Estefan,HERE WE ARE,34,289706,Cuts Both Ways,0.694,0.639,0.467,0.0869,-14.437,0.63,142.132,0.0329,65,"new wave pop, soft rock",817644,Unknown,Gloria Estefan - HERE WE ARE,6336
 Kaoma,LAMBADA,68,207466,Lambada - Les originaux No. 1 de l'été (Original 1989),0.756,0.211,0.8,0.0466,-5.158,0.967,118.924,0.0329,56,zouk,68540,Unknown,Kaoma - LAMBADA,6337
 Madonna,DEAR JESSIE,39,261506,Like a Prayer,0.702,0.755,0.26,0.304,-16.885,0.897,126.838,0.0449,81,"dance pop, pop",8191757,Unknown,Madonna - DEAR JESSIE,6338
-Mr. Lee,GET BUSY,24,229040,Get Busy,0.819,6.21e-05,0.763,0.0938,-11.772,0.963,124.284,0.0481,15,,820,Unknown,Mr. Lee - GET BUSY,6339
+Mr. Lee,GET BUSY,24,229040,Get Busy,0.819,6.21E-05,0.763,0.0938,-11.772,0.963,124.284,0.0481,15,,820,Unknown,Mr. Lee - GET BUSY,6339
 Arthur Baker and The Backbeat Disciples,THE MESSAGE IS LOVE,4,382933,Merge,0.683,0.306,0.647,0.134,-9.697,0.647,102.097,0.0263,19,,168,Unknown,Arthur Baker and The Backbeat Disciples - THE MESSAGE IS LOVE,6340
 Klein Orkest,OVER DE MUUR,14,212146,Later Is Al Lang Begonnen & Vroeger Komt Nog 1 Keer Terug (Live in Carré),0.494,0.561,0.717,0.722,-6.668,0.212,97.85,0.0437,37,dutch cabaret,15162,Unknown,Klein Orkest - OVER DE MUUR,6341
 The B-52's,LOVE SHACK,68,320680,Cosmic Thing,0.701,0.0544,0.803,0.7,-6.786,0.903,133.608,0.0545,61,"album rock, classic rock, dance rock, new romantic, new wave, new wave pop, permanent wave, post-punk, rock, zolo",1157730,Unknown,The B-52's - LOVE SHACK,6342
@@ -7492,7 +7492,7 @@ John Spencer,JOZEFIEN (YES TONIGHT JOSEPHINE),20,146000,Hit Jukebox,0.681,0.651,
 Shakatak,WATCHING YOU,30,321973,Down on the Street (Deluxe Version),0.652,0.621,0.54,0.158,-8.632,0.439,120.577,0.0431,47,"brit funk, post-disco, smooth jazz",84981,Unknown,Shakatak - WATCHING YOU,7491
 Prince and The Revolution,LET'S GO CRAZY,61,279240,Purple Rain,0.308,0.0192,0.93,0.106,-6.399,0.376,195.805,0.125,72,"funk, funk rock, minneapolis sound, rock, synth funk",7518369,Unknown,Prince and The Revolution - LET'S GO CRAZY,7492
 Foreigner,I WANT TO KNOW WHAT LOVE IS,81,304786,Agent Provocateur,0.477,0.193,0.471,0.131,-10.036,0.423,81.204,0.0277,73,"album rock, classic rock, glam metal, hard rock, mellow gold, rock, soft rock",3357983,Unknown,Foreigner - I WANT TO KNOW WHAT LOVE IS,7493
-Dazz Band,LET IT ALL BLOW,16,410466,Hot Spot (Deluxe Edition),0.806,3.73e-05,0.584,0.0562,-12.48,0.543,115.343,0.0476,47,"classic soul, disco, funk, motown, p funk, post-disco, quiet storm, soul",339411,Unknown,Dazz Band - LET IT ALL BLOW,7494
+Dazz Band,LET IT ALL BLOW,16,410466,Hot Spot (Deluxe Edition),0.806,3.73E-05,0.584,0.0562,-12.48,0.543,115.343,0.0476,47,"classic soul, disco, funk, motown, p funk, post-disco, quiet storm, soul",339411,Unknown,Dazz Band - LET IT ALL BLOW,7494
 The Alan Parsons Project,LET'S TALK ABOUT ME,36,268920,Vulture Culture (Expanded Edition),0.657,0.345,0.412,0.325,-10.877,0.516,143.107,0.044,64,"album rock, art rock, classic rock, mellow gold, progressive rock, soft rock, symphonic rock",1541904,Unknown,The Alan Parsons Project - LET'S TALK ABOUT ME,7495
 Mai Tai,AM I LOSING YOU FOREVER,14,359466,Ladies of Soul (Live at the Ziggo Dome 2019),0.433,0.191,0.838,0.625,-6.062,0.589,103.976,0.153,35,dutch pop,24178,Unknown,Mai Tai - AM I LOSING YOU FOREVER,7496
 John Fogerty,THE OLD MAN DOWN THE ROAD,59,214093,Centerfield – 25th Anniversary,0.768,0.0274,0.81,0.0584,-5.816,0.737,133.836,0.0289,56,"album rock, blues rock, classic rock, country rock, folk rock, heartland rock, mellow gold, singer-songwriter, soft rock, southern rock, swamp rock",893396,Unknown,John Fogerty - THE OLD MAN DOWN THE ROAD,7497
@@ -7747,7 +7747,7 @@ The Rolling Stones,SHE WAS HOT,32,281173,Undercover (2009 Re-Mastered),0.487,0.0
 Nino De Angelo,JENSEITS VON EDEN,28,234093,Das Beste,0.399,0.017,0.804,0.305,-5.471,0.549,177.653,0.0355,51,"classic schlager, schlager",186852,Unknown,Nino De Angelo - JENSEITS VON EDEN,7746
 Duran Duran,NEW MOON ON MONDAY,48,256279,Seven and the Ragged Tiger (Deluxe Edition),0.536,0.449,0.869,0.635,-4.56,0.425,122.218,0.151,71,"album rock, dance rock, new romantic, new wave, new wave pop, rock, soft rock, synthpop",3175791,Unknown,Duran Duran - NEW MOON ON MONDAY,7747
 Frank Boeijen Groep,ZWART WIT,38,185826,Onderweg,0.545,0.0283,0.63,0.371,-11.968,0.79,132.224,0.0328,44,"dutch cabaret, dutch rock, nederpop",54685,Unknown,Frank Boeijen Groep - ZWART WIT,7748
-China Crisis,WISHFUL THINKING,52,250706,Diary: A Collection,0.67,7.93e-05,0.512,0.105,-14.62,0.965,125.18,0.0335,45,"new romantic, new wave pop, sophisti-pop, synthpop",138722,Unknown,China Crisis - WISHFUL THINKING,7749
+China Crisis,WISHFUL THINKING,52,250706,Diary: A Collection,0.67,7.93E-05,0.512,0.105,-14.62,0.965,125.18,0.0335,45,"new romantic, new wave pop, sophisti-pop, synthpop",138722,Unknown,China Crisis - WISHFUL THINKING,7749
 Tom Robinson,LISTEN TO THE RADIO (ATMOSPHERICS),29,223986,War Baby - Hope & Glory,0.656,0.261,0.619,0.165,-10.708,0.526,91.482,0.0466,23,,7139,Unknown,Tom Robinson - LISTEN TO THE RADIO (ATMOSPHERICS),7750
 Doe Maar,MACHO,30,194148,Doe Maar - De Singles (Het Complete Singles Overzicht),0.911,0.383,0.321,0.127,-12.108,0.79,90.081,0.0537,52,"dutch cabaret, dutch pop, dutch rock, nederpop, nederreggae",135662,Unknown,Doe Maar - MACHO,7751
 Shakin' Stevens & Bonnie Tyler,A ROCKIN' GOOD WAY,30,170453,The Very Best of Bonnie Tyler,0.749,0.25,0.716,0.0951,-5.834,0.964,128.476,0.031,62,"classic uk pop, rockabilly",160022,Unknown,Shakin' Stevens & Bonnie Tyler - A ROCKIN' GOOD WAY,7752
@@ -7875,7 +7875,7 @@ Arie Ribbens,AKKETDOE....,3,224381,Het Beste Van Arie Ribbens,0.723,0.358,0.848,
 The Police,WRAPPED AROUND YOUR FINGER,59,313706,Synchronicity (Remastered 2003),0.747,0.0904,0.448,0.0631,-11.522,0.608,127.689,0.0345,78,"album rock, classic rock, permanent wave, rock",6525530,Unknown,The Police - WRAPPED AROUND YOUR FINGER,7874
 Freeez,I O U,45,231066,Gonna Get You (Expanded Edition),0.752,0.0157,0.77,0.196,-15.085,0.837,118.671,0.0532,36,"brit funk, hi-nrg, post-disco",16378,Unknown,Freeez - I O U,7875
 Kim Wilde,LOVE BLONDE,30,211800,Catch As Catch Can,0.687,0.052,0.432,0.0497,-7.715,0.511,130.13,0.0276,59,"new romantic, new wave, new wave pop",674971,Unknown,Kim Wilde - LOVE BLONDE,7876
-Trans-X,LIVING ON VIDEO,42,356440,Trans-X: Original 1983 Recordings,0.591,6.99e-05,0.709,0.155,-7.007,0.73,131.061,0.0738,46,"hi-nrg, italo disco",32905,Unknown,Trans-X - LIVING ON VIDEO,7877
+Trans-X,LIVING ON VIDEO,42,356440,Trans-X: Original 1983 Recordings,0.591,6.99E-05,0.709,0.155,-7.007,0.73,131.061,0.0738,46,"hi-nrg, italo disco",32905,Unknown,Trans-X - LIVING ON VIDEO,7877
 Future World Orchestra,ROULETTE,11,262642,Turning Point,0.428,0.409,0.663,0.157,-14.339,0.832,180.429,0.0371,13,synthesizer,1136,Unknown,Future World Orchestra - ROULETTE,7878
 Bonnie St. Claire,SLA JE ARM OM ME HEEN,21,273000,MEGA PIRATEN FESTIVAL deel 1,0.489,0.533,0.507,0.179,-7.929,0.298,91.39,0.0245,22,,434,Unknown,Bonnie St. Claire - SLA JE ARM OM ME HEEN,7879
 Sergio Mendes,NEVER GONNA LET YOU GO,60,255600,Sergio Mendes,0.639,0.567,0.403,0.67,-12.401,0.324,132.56,0.0349,63,"bossa nova, brazilian jazz, samba",228417,Unknown,Sergio Mendes - NEVER GONNA LET YOU GO,7880
@@ -7945,7 +7945,7 @@ Peter Tosh,JOHNNY B. GOODE,59,244253,Mama Africa,0.749,0.0299,0.849,0.115,-5.761
 Robin Gibb,JULIET,49,228000,How Old Are You?,0.57,0.0295,0.614,0.516,-12.201,0.747,129.948,0.038,48,soft rock,125592,Unknown,Robin Gibb - JULIET,7944
 Men At Work,OVERKILL,62,229466,Cargo,0.646,0.0854,0.809,0.0806,-3.99,0.588,139.2,0.0282,70,"album rock, australian rock, classic rock, hard rock, mellow gold, new romantic, new wave, new wave pop, rock, soft rock",1365243,Unknown,Men At Work - OVERKILL,7945
 Boys Town Gang,JUST CAN'T HELP BELIEVING,12,338693,Disc Charge,0.632,0.0128,0.572,0.141,-12.695,0.674,138.153,0.0342,46,hi-nrg,40045,Unknown,Boys Town Gang - JUST CAN'T HELP BELIEVING,7946
-UB40,FOOD FOR THOUGHT - LIVE,22,281066,UB40 Live,0.617,9.98e-05,0.851,0.285,-7.746,0.87,132.624,0.0446,70,"reggae fusion, uk reggae",2440807,Unknown,UB40 - FOOD FOR THOUGHT - LIVE,7947
+UB40,FOOD FOR THOUGHT - LIVE,22,281066,UB40 Live,0.617,9.98E-05,0.851,0.285,-7.746,0.87,132.624,0.0446,70,"reggae fusion, uk reggae",2440807,Unknown,UB40 - FOOD FOR THOUGHT - LIVE,7947
 Earth & Fire,THE TWO OF US,4,238500,In a State of Flux,0.676,0.00788,0.728,0.267,-9.268,0.889,123.066,0.0353,39,"dutch prog, nederpop",29296,Unknown,Earth & Fire - THE TWO OF US,7948
 Hot Chocolate,WHAT KINDA BOY YOU'RE LOOKIN' FOR (GIRL),0,227466,Hot Hits,0.8,0.0326,0.522,0.0748,-10.962,0.961,116.765,0.0301,15,,930,Unknown,Hot Chocolate - WHAT KINDA BOY YOU'RE LOOKIN' FOR (GIRL),7949
 Grandmaster Flash & The Furious Five,THE MESSAGE,47,431800,The Message,0.947,0.0249,0.607,0.0861,-10.58,0.732,100.619,0.202,44,"bronx hip hop, old school hip hop",129734,Unknown,Grandmaster Flash & The Furious Five - THE MESSAGE,7950
@@ -8000,7 +8000,7 @@ Indeep,LAST NIGHT A D.J. SAVED MY LIFE,38,252653,A Night to Remember (Mixed By T
 Fun Boy Three,THE TUNNEL OF LOVE,40,189040,Waiting,0.745,0.807,0.527,0.086,-11.821,0.715,121.187,0.0838,43,"new romantic, new wave, new wave pop, ska revival",112108,Unknown,Fun Boy Three - THE TUNNEL OF LOVE,7999
 Kenny Rogers & Sheena Easton,WE'VE GOT TONIGHT,63,234560,We've Got Tonight,0.543,0.767,0.227,0.103,-11.247,0.292,123.548,0.0298,71,"classic country pop, country, nashville sound, soft rock",2855307,Unknown,Kenny Rogers & Sheena Easton - WE'VE GOT TONIGHT,8000
 Pussycat,LOVERS OF A KIND,2,176426,After All,0.66,0.0335,0.751,0.111,-9.443,0.897,144.713,0.0291,48,nederpop,120414,Unknown,Pussycat - LOVERS OF A KIND,8001
-Powerplay,MAGIC,0,134645,Sealed Envelopes,0.238,3.35e-05,0.99,0.23,-2.545,0.45,91.06,0.208,4,,125,Unknown,Powerplay - MAGIC,8002
+Powerplay,MAGIC,0,134645,Sealed Envelopes,0.238,3.35E-05,0.99,0.23,-2.545,0.45,91.06,0.208,4,,125,Unknown,Powerplay - MAGIC,8002
 Het Goede Doel,VRIENDSCHAP,42,247400,Belgie,0.562,0.431,0.348,0.197,-14.347,0.721,170.2,0.0301,44,"dutch pop, dutch rock, nederpop",45779,Unknown,Het Goede Doel - VRIENDSCHAP,8003
 George Baker Selection,"THE WIND (AY, AY, AY, MARIA)",16,200000,Paradise Island,0.623,0.128,0.683,0.281,-12.738,0.963,120.32,0.0367,49,nederpop,57816,Unknown,"George Baker Selection - THE WIND (AY, AY, AY, MARIA)",8004
 The Maisonettes,HEARTACHE AVENUE,35,173973,Heartache Avenue: The Very Best of the Maisonettes,0.474,0.809,0.706,0.307,-7.597,0.402,125.006,0.0372,22,,1363,Unknown,The Maisonettes - HEARTACHE AVENUE,8005
@@ -9274,7 +9274,7 @@ Zangeres Zonder Naam,WEET JE WAAROM IK HUIL,3,220015,"Het Beste van de Zangeres 
 Donna Summer,I REMEMBER YESTERDAY,54,355173,I Remember Yesterday,0.674,0.031,0.711,0.0925,-15.581,0.961,126.696,0.0423,65,"disco, hi-nrg, new wave pop, soft rock",2040992,Unknown,Donna Summer - I REMEMBER YESTERDAY,9273
 Leo Sayer,THUNDER IN MY HEART,22,218053,Thunder In My Heart,0.681,0.00132,0.867,0.166,-3.689,0.525,128.962,0.0568,58,"mellow gold, soft rock",567120,Unknown,Leo Sayer - THUNDER IN MY HEART,9274
 Danny Williams,DANCIN' EASY,9,170550,Danny Williams,0.542,0.705,0.442,0.0879,-14.455,0.808,130.904,0.0453,33,,5589,Unknown,Danny Williams - DANCIN' EASY,9275
-The Stranglers,SOMETHING BETTER CHANGE,35,214826,No More Heroes,0.527,4.67e-05,0.853,0.279,-7.329,0.749,136.305,0.0341,58,"glam rock, new romantic, new wave, new wave pop, protopunk, pub rock, zolo",569526,Unknown,The Stranglers - SOMETHING BETTER CHANGE,9276
+The Stranglers,SOMETHING BETTER CHANGE,35,214826,No More Heroes,0.527,4.67E-05,0.853,0.279,-7.329,0.749,136.305,0.0341,58,"glam rock, new romantic, new wave, new wave pop, protopunk, pub rock, zolo",569526,Unknown,The Stranglers - SOMETHING BETTER CHANGE,9276
 Fleetwood Mac,DREAMS,84,257800,Rumours (Super Deluxe),0.828,0.0644,0.492,0.128,-9.744,0.789,120.151,0.0276,83,"album rock, classic rock, rock, soft rock, yacht rock",12310002,Unknown,Fleetwood Mac - DREAMS,9277
 Philadelphia International All Stars,LET'S CLEAN UP THE GHETTO,34,521373,Let's Clean Up the Ghetto,0.817,0.0688,0.721,0.0457,-8.861,0.946,122.045,0.0302,25,,2186,Unknown,Philadelphia International All Stars - LET'S CLEAN UP THE GHETTO,9278
 Guys 'n' Dolls,YOU DON'T HAVE TO SAY YOU LOVE ME,27,170666,"Guys 'N Dolls, The Greatest Hits",0.243,0.165,0.513,0.649,-9.842,0.475,81.21,0.031,20,,1459,Unknown,Guys 'n' Dolls - YOU DON'T HAVE TO SAY YOU LOVE ME,9279
@@ -9601,7 +9601,7 @@ Cliff Richard,MISS YOU NIGHTS,31,235573,I'm Nearly Famous,0.284,0.697,0.25,0.103
 Catherine Ferry,"1, 2, 3",32,150976,Mélodie bleue,0.678,0.209,0.673,0.0873,-8.675,0.884,140.752,0.0305,19,classic french pop,1172,Unknown,"Catherine Ferry - 1, 2, 3",9600
 Earth & Fire,WHAT DIFFERENCE DOES IT MAKE,3,187080,What Difference Does It Make,0.633,0.152,0.647,0.133,-10.827,0.891,112.209,0.0306,39,"dutch prog, nederpop",29296,Unknown,Earth & Fire - WHAT DIFFERENCE DOES IT MAKE,9601
 Mike Oldfield,IN DULCI JUBILO,36,170173,The Mike Oldfield Collection,0.351,0.208,0.322,0.554,-11.789,0.94,119.613,0.039,60,"progressive rock, symphonic rock",642084,Unknown,Mike Oldfield - IN DULCI JUBILO,9602
-Barry White,YOU SEE THE TROUBLE WITH ME,55,209906,Let The Music Play,0.666,4.53e-05,0.583,0.0772,-13.698,0.746,114.851,0.0284,67,"disco, quiet storm, soul",1999408,Unknown,Barry White - YOU SEE THE TROUBLE WITH ME,9603
+Barry White,YOU SEE THE TROUBLE WITH ME,55,209906,Let The Music Play,0.666,4.53E-05,0.583,0.0772,-13.698,0.746,114.851,0.0284,67,"disco, quiet storm, soul",1999408,Unknown,Barry White - YOU SEE THE TROUBLE WITH ME,9603
 The Trammps,THAT'S WHERE THE HAPPY PEOPLE GO,21,474266,Where The Happy People Go,0.696,0.0492,0.714,0.299,-13.815,0.395,123.067,0.0502,53,"disco, philly soul",268464,Unknown,The Trammps - THAT'S WHERE THE HAPPY PEOPLE GO,9604
 Pierre Rapsat,JUDY ET CIE,10,170400,L'essentiel,0.456,0.0598,0.597,0.143,-10.083,0.376,145.985,0.0289,32,classic belgian pop,7732,Unknown,Pierre Rapsat - JUDY ET CIE,9605
 The 4 Seasons,"DECEMBER, 1963 (OH, WHAT A NIGHT)",73,197146,Who Loves You,0.737,0.0588,0.495,0.0542,-13.489,0.967,104.409,0.027,65,"adult standards, bubblegum pop, doo-wop, lounge, northern soul, rock-and-roll, rockabilly",666351,Unknown,"The 4 Seasons - DECEMBER, 1963 (OH, WHAT A NIGHT)",9606
@@ -9727,7 +9727,7 @@ Afric Simone,HAFANANA,42,176706,Best of Afric Simone,0.567,0.382,0.893,0.38,-6.4
 Gilbert O'Sullivan,I'LL BELIEVE IT WHEN I SEE IT,3,320213,Southpaw (Deluxe Edition),0.332,0.646,0.476,0.116,-7.519,0.583,103.238,0.0271,59,"bubblegum pop, soft rock",389649,Unknown,Gilbert O'Sullivan - I'LL BELIEVE IT WHEN I SEE IT,9726
 Classics,RUSSIAN LADY,14,182230,Greatest Hits,0.613,0.109,0.761,0.107,-9.452,0.955,126.922,0.0305,30,vocal harmony group,3979,Unknown,Classics - RUSSIAN LADY,9727
 Mike Berry,TRIBUTE TO BUDDY HOLLY,24,178400,Sounds of the Sixties,0.425,0.589,0.549,0.188,-13.783,0.561,142.187,0.0367,13,,66,Unknown,Mike Berry - TRIBUTE TO BUDDY HOLLY,9728
-Catapult,THE STEALER,0,170333,The Single Collection,0.484,8.71e-05,0.894,0.0502,-6.317,0.961,147.689,0.042,10,nederpop,909,Unknown,Catapult - THE STEALER,9729
+Catapult,THE STEALER,0,170333,The Single Collection,0.484,8.71E-05,0.894,0.0502,-6.317,0.961,147.689,0.042,10,nederpop,909,Unknown,Catapult - THE STEALER,9729
 Glen Campbell,RHINESTONE COWBOY,64,194453,Rhinestone Cowboy (Expanded Edition),0.644,0.102,0.633,0.227,-8.006,0.648,115.192,0.0261,63,"adult standards, arkansas country, classic country pop, folk rock, mellow gold, nashville sound, singer-songwriter, soft rock",528644,Unknown,Glen Campbell - RHINESTONE COWBOY,9730
 Harpo,MOVIESTAR,53,202280,Moviestar,0.547,0.291,0.793,0.329,-7.78,0.708,119.298,0.0307,43,"classic swedish pop, classic uk pop",33245,Unknown,Harpo - MOVIESTAR,9731
 Rod Stewart,SAILING,65,277960,Atlantic Crossing,0.43,0.374,0.375,0.316,-9.949,0.189,128.791,0.0289,74,"mellow gold, soft rock",5012987,Unknown,Rod Stewart - SAILING,9732
@@ -9810,7 +9810,7 @@ André van Duin,DOORGAAN,18,288013,Tijdloos,0.447,0.272,0.611,0.645,-11.431,0.70
 Toni Santagata,LU MARITIELLO,7,194933,Storie italiane,0.425,0.497,0.631,0.0686,-9.479,0.96,185.466,0.0834,2,,226,Unknown,Toni Santagata - LU MARITIELLO,9809
 Classics,MY SONG IS LIKE A LOVESONG,13,202010,My Song Is Like a Lovesong / Down in the Mine,0.452,0.246,0.621,0.0949,-8.32,0.803,150.572,0.028,30,vocal harmony group,3979,Unknown,Classics - MY SONG IS LIKE A LOVESONG,9810
 Jim Gilstrap,SWING YOUR DADDY,30,175800,Swing Your Daddy,0.414,0.0324,0.523,0.157,-13.644,0.709,81.711,0.0695,18,,615,Unknown,Jim Gilstrap - SWING YOUR DADDY,9811
-Carl Wayne,WAY BACK IN THE FIFTIES,1,198000,Way Back In The Fifties,0.337,1.5e-05,0.635,0.128,-14.195,0.833,162.956,0.0336,9,,496,Unknown,Carl Wayne - WAY BACK IN THE FIFTIES,9812
+Carl Wayne,WAY BACK IN THE FIFTIES,1,198000,Way Back In The Fifties,0.337,1.50E-05,0.635,0.128,-14.195,0.833,162.956,0.0336,9,,496,Unknown,Carl Wayne - WAY BACK IN THE FIFTIES,9812
 Wings,LISTEN TO WHAT THE MAN SAID,49,240986,Venus And Mars (Archive Collection),0.499,0.179,0.616,0.552,-8.325,0.622,113.254,0.0392,66,"album rock, art rock, classic rock, folk rock, mellow gold, rock, singer-songwriter, soft rock",1128771,Unknown,Wings - LISTEN TO WHAT THE MAN SAID,9813
 Big Mouth & Little Eve,UNCLE,4,229186,The Singles Collection (Remastered),0.313,0.331,0.726,0.353,-7.852,0.809,174.345,0.0653,1,,25,Unknown,Big Mouth & Little Eve - UNCLE,9814
 Eric Clapton,SWING LOW SWEET CHARIOT,30,212266,There's One In Every Crowd,0.752,0.572,0.351,0.0604,-17.069,0.961,91.436,0.0379,73,"album rock, blues rock, classic rock, electric blues, mellow gold, rock, singer-songwriter, soft rock",6073890,Unknown,Eric Clapton - SWING LOW SWEET CHARIOT,9815
@@ -9916,7 +9916,7 @@ The Guess Who,DANCIN' FOOL,21,211626,Flavours,0.673,0.124,0.734,0.0954,-9.979,0.
 The Hollies,I'M DOWN,28,253373,Another Night,0.51,0.193,0.579,0.101,-6.628,0.407,122.068,0.0317,65,"album rock, british invasion, classic rock, folk rock, mellow gold, merseybeat, soft rock",1235030,Unknown,The Hollies - I'M DOWN,9915
 Donny & Marie Osmond,MORNING SIDE OF THE MOUNTAIN,30,183200,I'm Leaving It All Up To You,0.43,0.835,0.624,0.102,-4.828,0.442,111.329,0.0322,32,"adult standards, bubblegum pop",75260,Unknown,Donny & Marie Osmond - MORNING SIDE OF THE MOUNTAIN,9916
 Elvis Presley,MY BOY,49,198853,Good Times,0.387,0.586,0.534,0.607,-11.809,0.372,92.475,0.0331,81,"rock-and-roll, rockabilly",10043869,Unknown,Elvis Presley - MY BOY,9917
-The Rubettes,JUKEBOX JIVE,5,179847,Sugar Baby Love (Remastered 2022),0.426,8.22e-05,0.785,0.441,-5.681,0.548,86.972,0.0338,45,"classic uk pop, glam rock",110788,Unknown,The Rubettes - JUKEBOX JIVE,9918
+The Rubettes,JUKEBOX JIVE,5,179847,Sugar Baby Love (Remastered 2022),0.426,8.22E-05,0.785,0.441,-5.681,0.548,86.972,0.0338,45,"classic uk pop, glam rock",110788,Unknown,The Rubettes - JUKEBOX JIVE,9918
 David Essex,GONNA MAKE YOU A STAR,35,212906,David Essex,0.583,0.103,0.727,0.605,-8.425,0.514,131.356,0.106,41,glam rock,84972,Unknown,David Essex - GONNA MAKE YOU A STAR,9919
 Donna Summer,LADY OF THE NIGHT,25,236827,Lady Of The Night (Remastered),0.537,0.0943,0.805,0.223,-5.093,0.481,124.552,0.09,65,"disco, hi-nrg, new wave pop, soft rock",2040992,Unknown,Donna Summer - LADY OF THE NIGHT,9920
 Johnny & Rijk,VADER'S FANFARE,1,170210,Vader's Fanfare,0.551,0.648,0.726,0.736,-8.236,0.79,175.541,0.178,4,vintage dutch pop,577,Unknown,Johnny & Rijk - VADER'S FANFARE,9921
@@ -10677,7 +10677,7 @@ Curved Air,BACK STREET LUV,30,216906,Second Album,0.465,0.0101,0.64,0.0875,-9.93
 The Fortunes,"FREEDOM COME, FREEDOM GO",35,201973,Storm In A Teacup,0.802,0.134,0.7,0.0649,-9.316,0.974,83.617,0.0789,43,british invasion,62765,Unknown,"The Fortunes - FREEDOM COME, FREEDOM GO",10676
 Carpenters,SUPERSTAR,56,231506,Carpenters,0.306,0.728,0.253,0.138,-11.177,0.171,83.175,0.0294,72,"adult standards, mellow gold, soft rock",3424162,Unknown,Carpenters - SUPERSTAR,10677
 Marty,ALMA MIA,0,219093,Händel: Partenope - The Sony Opera House,0.632,0.961,0.192,0.179,-20.283,0.611,114.953,0.0754,67,"baroque, classical, early music, english baroque, german baroque",936888,Unknown,Marty - ALMA MIA,10678
-The Moody Blues,THE STORY IN YOUR EYES,48,176573,Every Good Boy Deserves Favour,0.328,2.7e-05,0.83,0.315,-9.831,0.636,85.725,0.0372,59,"album rock, art rock, british invasion, classic rock, country rock, flute rock, folk rock, mellow gold, progressive rock, rock, singer-songwriter, soft rock, symphonic rock",1375839,Unknown,The Moody Blues - THE STORY IN YOUR EYES,10679
+The Moody Blues,THE STORY IN YOUR EYES,48,176573,Every Good Boy Deserves Favour,0.328,2.70E-05,0.83,0.315,-9.831,0.636,85.725,0.0372,59,"album rock, art rock, british invasion, classic rock, country rock, flute rock, folk rock, mellow gold, progressive rock, rock, singer-songwriter, soft rock, symphonic rock",1375839,Unknown,The Moody Blues - THE STORY IN YOUR EYES,10679
 Daydé,MAMY BLUE,15,220946,J'Aime - Mamy Blue,0.566,0.452,0.622,0.196,-9.484,0.631,110.792,0.0481,6,rock progressif francais,193,Unknown,Daydé - MAMY BLUE,10680
 De Kermisklanten,ODE AAN MANUELA,0,154800,De Singles,0.335,0.696,0.608,0.374,-10.258,0.306,103.848,0.0375,25,"classic dutch pop, levenslied, nederpop, vintage dutch pop",5216,Unknown,De Kermisklanten - ODE AAN MANUELA,10681
 Neil Diamond,GIRL YOU'LL BE A WOMAN SOON,61,180253,The Bang Years 1966-1968 (The 23 Original Mono Recordings),0.515,0.567,0.641,0.321,-5.573,0.655,109.559,0.0272,69,"adult standards, brill building pop, folk rock, mellow gold, singer-songwriter, soft rock, yacht rock",2944313,Unknown,Neil Diamond - GIRL YOU'LL BE A WOMAN SOON,10682
@@ -10840,7 +10840,7 @@ The Cats,DON'T WASTE YOUR TIME,25,211840,Aglow,0.296,0.239,0.534,0.124,-9.81,0.5
 Ray Stevens,BRIDGET THE MIDGET,18,219240,Boogity Boogity,0.375,0.581,0.692,0.904,-15.43,0.724,91.043,0.121,42,"classic country pop, novelty",92890,Unknown,Ray Stevens - BRIDGET THE MIDGET,10839
 Les Humphries Singers,WE'LL FLY YOU TO THE PROMISED LAND,22,176493,PORTRAIT - THE LES HUMPHRIES SINGERS,0.347,0.0058,0.603,0.298,-12.339,0.781,182.92,0.0556,39,"classic schlager, classic uk pop, nederpop",39936,Unknown,Les Humphries Singers - WE'LL FLY YOU TO THE PROMISED LAND,10840
 Van Morrison,SPANISH ROSE,34,185693,Blowin' Your Mind!,0.648,0.123,0.608,0.136,-11.283,0.817,89.651,0.14,75,"classic rock, folk, folk rock, mellow gold, rock, singer-songwriter, soft rock",3322579,Unknown,Van Morrison - SPANISH ROSE,10841
-Fickle Pickle,MAYBE I'M AMAZED,2,158560,A Complete Pickle,0.205,5.62e-05,0.45,0.14,-6.678,0.303,148.58,0.0341,2,,204,Unknown,Fickle Pickle - MAYBE I'M AMAZED,10842
+Fickle Pickle,MAYBE I'M AMAZED,2,158560,A Complete Pickle,0.205,5.62E-05,0.45,0.14,-6.678,0.303,148.58,0.0341,2,,204,Unknown,Fickle Pickle - MAYBE I'M AMAZED,10842
 Elton John,YOUR SONG,79,241786,Elton John,0.552,0.828,0.315,0.101,-11.028,0.324,128.187,0.0299,84,"glam rock, mellow gold, piano rock, rock",14042796,Unknown,Elton John - YOUR SONG,10843
 John Lennon & The Plastic Ono Band,MOTHER,29,335626,Plastic Ono Band (The Ultimate Collection),0.509,0.0895,0.269,0.0787,-10.42,0.341,135.786,0.049,72,"classic rock, rock",6238023,Unknown,John Lennon & The Plastic Ono Band - MOTHER,10844
 The Jackson 5,GOIN' BACK TO INDIANA,29,210533,Third Album,0.74,0.152,0.765,0.262,-6.949,0.972,127.961,0.03,69,"motown, soul",1654786,Unknown,The Jackson 5 - GOIN' BACK TO INDIANA,10845
@@ -10900,7 +10900,7 @@ Badfinger,NO MATTER WHAT,55,180546,No Dice (Remastered 2010 / Deluxe Edition),0.
 Deep Purple,BLACK NIGHT,51,209400,Deep Purple in Rock (Anniversary Edition),0.507,0.0546,0.886,0.0919,-8.889,0.826,134.719,0.0873,67,"album rock, classic rock, hard rock, metal, rock",5661568,Unknown,Deep Purple - BLACK NIGHT,10899
 Elton John,BORDER SONG,41,202066,Elton John,0.434,0.766,0.297,0.0898,-11.042,0.288,130.288,0.0287,84,"glam rock, mellow gold, piano rock, rock",14042796,Unknown,Elton John - BORDER SONG,10900
 Melanie,STOP I DON'T WANNA' HEAR IT ANYMORE,9,119746,Reimaginings,0.483,0.387,0.748,0.0897,-4.844,0.76,110.099,0.0331,47,"folk, persian pop",124757,Unknown,Melanie - STOP I DON'T WANNA' HEAR IT ANYMORE,10901
-Black Sabbath,PARANOID,77,167720,Paranoid,0.423,6.28e-05,0.685,0.133,-9.651,0.328,162.78,0.078,74,"album rock, alternative metal, birmingham metal, classic rock, hard rock, metal, rock, stoner rock, uk doom metal",8304551,Unknown,Black Sabbath - PARANOID,10902
+Black Sabbath,PARANOID,77,167720,Paranoid,0.423,6.28E-05,0.685,0.133,-9.651,0.328,162.78,0.078,74,"album rock, alternative metal, birmingham metal, classic rock, hard rock, metal, rock, stoner rock, uk doom metal",8304551,Unknown,Black Sabbath - PARANOID,10902
 Het Radi-Ensemble,MONA LISA WACHT OP MIJ!,17,193704,Het Beste van Het Radi Ensemble,0.43,0.203,0.498,0.34,-9.602,0.704,106.59,0.0306,26,classic dutch pop,2538,Unknown,Het Radi-Ensemble - MONA LISA WACHT OP MIJ!,10903
 The Shuffles,TEARDROP ON TEARDROP,2,211006,Teardrop on Teardrop + Silly Man,0.597,0.639,0.404,0.37,-12.333,0.614,92.339,0.0368,14,,122,Unknown,The Shuffles - TEARDROP ON TEARDROP,10904
 Liesbeth List,VICTORIA,3,269066,100 Mooiste Liedjes van Ramses en Liesbeth,0.316,0.677,0.393,0.638,-11.7,0.157,92.989,0.031,37,"nederpop, vintage dutch pop",28690,Unknown,Liesbeth List - VICTORIA,10905
@@ -11501,7 +11501,7 @@ David Garrick,UNCHAINED MELODY,4,233160,The Pye Anthology,0.145,0.609,0.348,0.06
 Bee Gees,WORLD,36,195040,Horizontal,0.276,0.452,0.528,0.133,-9.862,0.26,86.301,0.0334,79,"disco, mellow gold, soft rock",8336995,Unknown,Bee Gees - WORLD,11500
 The Tielman Brothers,LITTLE BIRD,19,174230,"The Story of Indo Rock, Vol. 10",0.345,0.664,0.478,0.0781,-9.464,0.543,113.04,0.0444,20,"indorock, nederpop",8398,Unknown,The Tielman Brothers - LITTLE BIRD,11501
 The Small Faces,TIN SOLDIER,30,198776,Small Faces - Deluxe Edition (2012 Remaster),0.355,0.0128,0.704,0.0814,-8.523,0.304,114.012,0.0337,46,"british blues, british invasion, protopunk",334886,Unknown,The Small Faces - TIN SOLDIER,11502
-Rudy Bennett,I'M SO PROUD,2,134053,Golden Years Of Dutch Pop Music,0.403,6.96e-05,0.857,0.356,-2.364,0.876,112.741,0.0333,10,nederpop,611,Unknown,Rudy Bennett - I'M SO PROUD,11503
+Rudy Bennett,I'M SO PROUD,2,134053,Golden Years Of Dutch Pop Music,0.403,6.96E-05,0.857,0.356,-2.364,0.876,112.741,0.0333,10,nederpop,611,Unknown,Rudy Bennett - I'M SO PROUD,11503
 Left Side,CONFUSION IN MY MIND,9,187773,Alle 40 Goed - Palingsound,0.365,0.28,0.728,0.704,-4.038,0.548,119.14,0.0374,5,,239,Unknown,Left Side - CONFUSION IN MY MIND,11504
 Eddy Christiani,LOU-LOU,2,157040,Zang En Gitaar,0.619,0.789,0.448,0.0775,-10.744,0.894,124.752,0.0445,27,vintage dutch pop,2992,Unknown,Eddy Christiani - LOU-LOU,11505
 Heintje,MAMA,31,151693,Dit is Heintje,0.455,0.532,0.463,0.399,-4.762,0.709,107.988,0.0273,38,volksmusik,22454,Unknown,Heintje - MAMA,11506
@@ -11802,7 +11802,7 @@ Ferre Grignard,"RING, RING, I'VE GOT TO SING",35,230411,"Ring, Ring, I’ve Got 
 Cliff Richard,VISION,32,182386,Finders Keepers,0.518,0.844,0.334,0.109,-10.572,0.332,100.026,0.0266,56,"adult standards, rock-and-roll",361768,Unknown,Cliff Richard - VISION,11801
 Michel Polnareff,LA POUPÉE QUI FAIT NON,45,193706,Love Me Please Love Me,0.506,0.695,0.579,0.141,-7.776,0.645,124.941,0.0292,50,"chanson, ye ye",226740,Unknown,Michel Polnareff - LA POUPÉE QUI FAIT NON,11802
 The Kinks,SUNNY AFTERNOON,64,212946,Face to Face (Deluxe),0.553,0.194,0.519,0.0667,-8.056,0.474,123.695,0.0269,66,"album rock, art rock, british invasion, classic rock, folk rock, glam rock, protopunk, psychedelic rock, rock, singer-songwriter",2654897,Unknown,The Kinks - SUNNY AFTERNOON,11803
-Outsiders,LYING ALL THE TIME,26,194746,Golden Years Of Dutch Pop Music,0.442,7.16e-05,0.718,0.136,-3.543,0.336,131.595,0.03,24,nederpop,5462,Unknown,Outsiders - LYING ALL THE TIME,11804
+Outsiders,LYING ALL THE TIME,26,194746,Golden Years Of Dutch Pop Music,0.442,7.16E-05,0.718,0.136,-3.543,0.336,131.595,0.03,24,nederpop,5462,Unknown,Outsiders - LYING ALL THE TIME,11804
 Frank Sinatra,STRANGERS IN THE NIGHT,72,157866,Strangers In The Night (Expanded Edition),0.259,0.592,0.473,0.201,-8.275,0.539,90.348,0.0295,81,"adult standards, easy listening, lounge",7588549,Unknown,Frank Sinatra - STRANGERS IN THE NIGHT,11805
 The Hollies,BUS STOP,48,174640,Love Songs,0.601,0.103,0.698,0.0893,-8.708,0.787,136.263,0.0313,65,"album rock, british invasion, classic rock, folk rock, mellow gold, merseybeat, soft rock",1235373,Unknown,The Hollies - BUS STOP,11806
 Roy Orbison,LANA,37,137200,Crying,0.688,0.698,0.524,0.568,-10.485,0.917,94.604,0.0292,68,"adult standards, classic rock, folk rock, mellow gold, rock-and-roll, rockabilly, singer-songwriter, soft rock",2107954,Unknown,Roy Orbison - LANA,11807
@@ -12594,7 +12594,7 @@ Zig + Zag,THEM GIRLS THEM GIRLS,19,228733,Them Girls Them Girls,0.859,0.0117,0.7
 Juliane Werding & Maggie Reilly & Viktor Lazlo,ENGEL WIE DU,32,255573,Du Schaffst Es,0.403,0.176,0.581,0.223,-5.823,0.33,74.692,0.0262,50,"classic schlager, german country, schlager",157436,Unknown,Juliane Werding & Maggie Reilly & Viktor Lazlo - ENGEL WIE DU,12593
 Bit Machine feat. Daisy Dee,SOMEBODY REAL,17,205717,Somebody Real,0.655,0.0409,0.984,0.357,-3.74,0.669,129.342,0.0342,7,piano house,103,Unknown,Bit Machine feat. Daisy Dee - SOMEBODY REAL,12594
 Willeke & Willy Alberti,DE GLIMLACH VAN EEN KIND,24,178466,Hollandse Sterren Collectie,0.514,0.354,0.538,0.0986,-9.18,0.376,97.005,0.0272,44,"dutch pop, levenslied, nederpop, vintage dutch pop",22797,Unknown,Willeke & Willy Alberti - DE GLIMLACH VAN EEN KIND,12595
-Pato Banton feat. Ali and Robin Campbell of UB40,BABY COME BACK,42,233866,The Best Of Pato Banton,0.854,2.93e-05,0.797,0.0832,-6.004,0.817,124.879,0.0331,48,uk reggae,73562,Unknown,Pato Banton feat. Ali and Robin Campbell of UB40 - BABY COME BACK,12596
+Pato Banton feat. Ali and Robin Campbell of UB40,BABY COME BACK,42,233866,The Best Of Pato Banton,0.854,2.93E-05,0.797,0.0832,-6.004,0.817,124.879,0.0331,48,uk reggae,73562,Unknown,Pato Banton feat. Ali and Robin Campbell of UB40 - BABY COME BACK,12596
 2 Brothers On The 4th Floor feat. Des'ray & D-Rock,LET ME BE FREE,42,205000,Dreams,0.742,0.0475,0.783,0.253,-6.329,0.63,134.953,0.0348,55,"eurodance, hip house",116411,Unknown,2 Brothers On The 4th Floor feat. Des'ray & D-Rock - LET ME BE FREE,12597
 Twenty 4 Seven feat. Stay-C and Nance,OH BABY!,15,324066,I Wanna Show You,0.621,0.194,0.785,0.394,-9.608,0.437,96.001,0.0401,43,"eurodance, hip house",72864,Unknown,Twenty 4 Seven feat. Stay-C and Nance - OH BABY!,12598
 M-Beat feat. General Levy,INCREDIBLE,53,269866,Knowledge,0.807,0.211,0.903,0.0565,-11.09,0.94,165.034,0.113,44,,220,Unknown,M-Beat feat. General Levy - INCREDIBLE,12599
@@ -12658,7 +12658,7 @@ Kane feat. Ilse DeLange,HIGH PLACES,36,224573,Singles Only (Deluxe Edition),0.42
 Jochem Myjer,MIJN DAG!,15,155240,Mijn Dag,0.656,0.0498,0.879,0.111,-4.844,0.679,135.151,0.0769,43,dutch cabaret,39187,Unknown,Jochem Myjer - MIJN DAG!,12657
 Enrique Iglesias feat. Nicole Scherzinger,HEARTBEAT,54,256226,Euphoria,0.567,0.0228,0.888,0.279,-3.201,0.41,129.962,0.0993,79,"dance pop, latin pop, mexican pop",11243880,Unknown,Enrique Iglesias feat. Nicole Scherzinger - HEARTBEAT,12658
 Di-Rect,NATURAL HIGH,22,213586,This Is Who We Are,0.397,0.00682,0.92,0.0887,-4.23,0.527,147.025,0.0535,53,"dutch pop, dutch rock",177405,Unknown,Di-Rect - NATURAL HIGH,12659
-Mitch Crown,CRAZY,2,201444,Crazy,0.745,2.67e-05,0.717,0.0796,-6.31,0.262,125.962,0.0353,47,,2434,Unknown,Mitch Crown - CRAZY,12660
+Mitch Crown,CRAZY,2,201444,Crazy,0.745,2.67E-05,0.717,0.0796,-6.31,0.262,125.962,0.0353,47,,2434,Unknown,Mitch Crown - CRAZY,12660
 Avicii and Sebastien Drums,MY FEELINGS FOR YOU,56,224515,My Feelings For You (Mark Knight Remix),0.728,0.0055,0.95,0.33,-4.216,0.812,124.003,0.0977,81,"dance pop, edm, pop, pop dance",23121183,Unknown,Avicii and Sebastien Drums - MY FEELINGS FOR YOU,12661
 Yolanda Be Cool vs. Dcup,WE NO SPEAK AMERICANO!,61,157438,We No Speak Americano,0.902,0.0748,0.805,0.0914,-5.003,0.745,124.985,0.0468,54,"australian dance, australian house, bass house",53567,Unknown,Yolanda Be Cool vs. Dcup - WE NO SPEAK AMERICANO!,12662
 Jacqueline Govaert,OVERRATED,12,253386,Good Life,0.625,0.275,0.761,0.874,-4.685,0.643,119.981,0.0293,39,"dutch pop, dutch rock",33043,Unknown,Jacqueline Govaert - OVERRATED,12663
@@ -12716,7 +12716,7 @@ Bob Sinclar feat. Steve Edwards,TOGETHER,35,412483,Soundz of Freedom (My Ultimat
 Ian Oliver feat. Shantel,BUCOVINA,28,188217,Bucovina,0.811,0.0028,0.918,0.3,-4.305,0.648,124.988,0.0453,21,,522,Unknown,Ian Oliver feat. Shantel - BUCOVINA,12715
 Queen and Paul Rodgers,SAY IT'S NOT TRUE,20,241146,The Cosmos Rocks,0.207,0.326,0.46,0.297,-6.424,0.223,152.999,0.0336,86,"classic rock, glam rock, rock",52003288,Unknown,Queen and Paul Rodgers - SAY IT'S NOT TRUE,12716
 Jeroen Vanderboom,ÉÉN WERELD,29,234893,Het Beste Van,0.557,0.00148,0.839,0.239,-6.426,0.51,97.98,0.0327,42,"dutch pop, dutch rock",83730,Unknown,Jeroen Vanderboom - ÉÉN WERELD,12717
-Bart Claessen feat. Simon,FIRST LIGHT,15,196184,First Light,0.496,6.71e-05,0.983,0.109,-5.46,0.11,138.941,0.22,27,dutch trance,3665,Unknown,Bart Claessen feat. Simon - FIRST LIGHT,12718
+Bart Claessen feat. Simon,FIRST LIGHT,15,196184,First Light,0.496,6.71E-05,0.983,0.109,-5.46,0.11,138.941,0.22,27,dutch trance,3665,Unknown,Bart Claessen feat. Simon - FIRST LIGHT,12718
 Jeroen Vanderboom,JIJ BENT ZO,49,211453,Het Beste Van,0.607,0.0305,0.887,0.277,-5.956,0.823,129.031,0.0319,42,"dutch pop, dutch rock",83730,Unknown,Jeroen Vanderboom - JIJ BENT ZO,12719
 Orson,AIN'T NO PARTY,22,215253,Culture Vultures,0.554,0.000793,0.827,0.146,-4.727,0.839,126.077,0.0406,38,la indie,31934,Unknown,Orson - AIN'T NO PARTY,12720
 Axwell feat. Max'C,I FOUND U,47,174946,I Found U,0.663,0.062,0.963,0.402,-7.008,0.287,130.013,0.0774,65,"dutch house, edm, electro house, pop dance, progressive electro house, progressive house",1508081,Unknown,Axwell feat. Max'C - I FOUND U,12721
@@ -13008,7 +13008,7 @@ Paul De Senneville & Olivier Toussaint,DOLANNES MELODIE,1,197746,Trompeten-Impre
 Nat Gonella with Ted Easton's Jazzband,OH MONAH,12,208306,Dixie Party,0.573,0.677,0.687,0.961,-13.597,0.809,90.631,0.0439,4,,84,Unknown,Nat Gonella with Ted Easton's Jazzband - OH MONAH,13007
 Moments and Whatnauts,GIRLS,29,192493,Complete Stang Singles Collection,0.691,0.144,0.797,0.151,-8.879,0.742,102.749,0.0278,35,"classic soul, disco, funk, motown, quiet storm, soul, southern soul",171342,Unknown,Moments and Whatnauts - GIRLS,13008
 Roger Glover and Guests,LOVE IS ALL,47,194626,The Butterfly Ball and the Grasshopper's Feast,0.609,0.373,0.63,0.227,-9.39,0.818,111.922,0.0333,36,,22346,Unknown,Roger Glover and Guests - LOVE IS ALL,13009
-Duane Eddy and The Rebelettes,PLAY ME LIKE YOU PLAY YOUR GUITAR,21,197506,The Best Of Duane Eddy,0.582,5.39e-05,0.489,0.0339,-15.262,0.737,121.557,0.0416,44,"rock-and-roll, rockabilly, surf music",107634,Unknown,Duane Eddy and The Rebelettes - PLAY ME LIKE YOU PLAY YOUR GUITAR,13010
+Duane Eddy and The Rebelettes,PLAY ME LIKE YOU PLAY YOUR GUITAR,21,197506,The Best Of Duane Eddy,0.582,5.39E-05,0.489,0.0339,-15.262,0.737,121.557,0.0416,44,"rock-and-roll, rockabilly, surf music",107634,Unknown,Duane Eddy and The Rebelettes - PLAY ME LIKE YOU PLAY YOUR GUITAR,13010
 Jack Jersey and The Jordanaires,I WONDER,21,146720,His Greatest Hits & Asian Dreams,0.589,0.528,0.445,0.191,-9.075,0.883,121.842,0.0291,39,nederpop,12787,Unknown,Jack Jersey and The Jordanaires - I WONDER,13011
 Jack Jersey and The Jordanaires,RUB-IT IN,19,124751,I Wonder (Expanded Edition),0.677,0.456,0.764,0.117,-8.538,0.969,122.939,0.0327,39,nederpop,12787,Unknown,Jack Jersey and The Jordanaires - RUB-IT IN,13012
 John Lennon & The Plastic Ono Nuclear Band,WHATEVER GETS YOU THRU' THE NIGHT,48,207306,Walls And Bridges,0.574,0.531,0.853,0.543,-9.157,0.755,126.313,0.0763,73,"classic rock, rock",6243840,Unknown,John Lennon & The Plastic Ono Nuclear Band - WHATEVER GETS YOU THRU' THE NIGHT,13013

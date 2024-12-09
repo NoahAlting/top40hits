@@ -1,10 +1,10 @@
-const svg = d3.select("#circle") // Target the specific div
+const circle = d3.select("#circle") // Target the specific div
     .append("svg")
     .attr("width", 400)
     .attr("height", 400);
 
 // Add a circle
-svg.append("circle")
+circle.append("circle")
     .attr("cx", 200)
     .attr("cy", 200)
     .attr("r", 50)

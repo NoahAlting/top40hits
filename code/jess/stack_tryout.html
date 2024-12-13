@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3 Year and Week Selection</title>
+    <style>
+        /* Basic styling for the SVG containers */
+        #yearSelector, #weekSelector {
+            width: 100%;
+            height: 150px; /* Height of the year selection */
+            margin-top: 20px;
+        }
+
+        .brush .selection {
+            fill-opacity: .3;
+            shape-rendering: crispEdges;
+        }
+
+        .handle {
+            cursor: pointer;
+        }
+
+        /* Additional styling for the toggle button */
+        #modeToggle {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #modeToggle:hover {
+            background-color: #45a049;
+        }
+
+        /* Styling for the week selection */
+        #weekSelector {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Mode Toggle Button -->
+<button id="modeToggle" data-mode="aggregated">Switch to Distinct</button>
+
+<!-- Year Selection (Vertical) -->
+// <svg id="yearSelector" width="600" height="300"></svg>
+
+<!-- Week Selection (Horizontal) -->
+<svg id="weekSelector" width="600" height="50"></svg>
+
+<!-- Optionally, you can add a div for the slider or other elements -->
+<div id="slider-holder"></div>
+
+<!-- D3.js and Script -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="stack_selection.js"></script> <!-- Your D3 script file -->
+
+</body>
+</html>

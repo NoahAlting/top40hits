@@ -7,14 +7,14 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         body {
-            display: flex; /* Arrange content horizontally */
+            display: block; /* Arrange content horizontally */
             gap: 20px; /* Space between the circle and bar plot */
             justify-content: center; /* Center both horizontally */
             align-items: flex-start; /* Align items at the top */
         }
 
         .frame {
-            border: 1px solid black; /* Optional border for debugging layout */
+            border: 20px auto; /* Optional border for debugging layout */
             padding: 10px;
             box-sizing: border-box;
         }
@@ -30,6 +30,9 @@
             width: 500px;
             height: 500px;
         }
+        #scatterplot, #barchart {
+        margin-top: 20px; 
+    }
         
     </style>
 </head>
@@ -49,5 +52,17 @@
     <script src="circle.js"></script> -->
     <script src="barplot.js"></script> -->
     <script src="LineGraph_overTime.js"></script>
+    
+    <div class="longevity-section">
+        <h1>Longevity vs Features</h1>
+        <div id="feature-selector"></div>
+        <div id="year-slider"></div>
+        <div id="scatterplot"></div>
+        <div id="barchart"></div>
+    </div>
+
+  
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="scatterplot_longevity.js"></script>
 </body>
 </html>

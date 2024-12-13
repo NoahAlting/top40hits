@@ -1,9 +1,9 @@
-var selected_years = [1990, 1994, 2020]; 
+var selected_years = [1968, 2020, 2021]; 
 var selected_feature = "Acousticness"; 
-var selected_weeks = [1, 53];
+var selected_weeks = [1, 52];
 var colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
-var margin_lineGraph = {top: 30, right: 30, bottom: 70, left: 60},
+var margin_lineGraph = {top: 30, right: 30, bottom: 150, left: 60},
     width_lineGraph = 460 - margin_lineGraph.left - margin_lineGraph.right,
     height_lineGraph = 400 - margin_lineGraph.top - margin_lineGraph.bottom;
 
@@ -22,7 +22,7 @@ const linePlot = d3.select("#lineGraph_overTime")
             
                 d3.csv("../data/top40_with_ids.csv").then(function(data_top40) {
             
-                    // Merge the datasets by Song_ID
+                    // Merge the datasets by Song_ID, sort the data and calculate stddev and mean per week for the specified years
                     const mergedData = data_top40.filter(row => selected_years.includes(+row.Jaar))
                         .map(top40 => {
                             const songData = data_spotifySongs.find(song => song.Song_ID === top40.Song_ID);
@@ -36,9 +36,13 @@ const linePlot = d3.select("#lineGraph_overTime")
                             }
                             return null;
                         }).filter(row => row !== null);
-            
-                    // Calculate stddev and mean per week for the specified years
-                    const weeklyAverages = d3.rollup(mergedData, 
+                    const sortedData = mergedData.sort((a, b) => {
+                        if (a.Jaar !== b.Jaar) {
+                            return a.Jaar - b.Jaar; 
+                        }
+                        return a.Weeknr - b.Weeknr; 
+                    });
+                    const weeklyAverages = d3.rollup(sortedData, 
                         values => {
                             const mean_week = d3.mean(values, v => v.selected_feature_value);
                             const std_week = d3.deviation(values, v => v.selected_feature_value);
@@ -76,22 +80,24 @@ const linePlot = d3.select("#lineGraph_overTime")
                         .attr("transform", "translate(0," + height_lineGraph + ")")
                         .call(d3.axisBottom(x))
                         .append("text")
-                        .attr("text-anchor", "end")
-                        .attr("x", width_lineGraph * 0.6)
+                        .attr("text-anchor", "middle")
+                        .attr("x", width_lineGraph * 0.5)
                         .attr("y", 35)
                         .text("Weeknumber")
-                        .style("fill", "black");
+                        .style("fill", "black")
+                        .style("font-size", "12px");
                     
                     // Label y-axis
                     linePlot.append("g")
                         .call(d3.axisLeft(y))
                         .append("text")
-                        .attr("text-anchor", "end")
-                        .attr("x", - height_lineGraph * 0.4)
+                        .attr("text-anchor", "middle")
+                        .attr("x", - height_lineGraph * 0.5)
                         .attr("y", -35)
                         .attr("transform", "rotate(-90)")
                         .text(selected_feature)
-                        .style("fill", "black");
+                        .style("fill", "black")
+                        .style("font-size", "12px");
             
                     selected_years.forEach(year => {
                         const yearData = plotData.filter(d => d.year === year);
@@ -118,78 +124,89 @@ const linePlot = d3.select("#lineGraph_overTime")
                                 .y0(function(d) { return y(Math.max(0, d.avgValue - d.stdDev)) })
                                 .y1(function(d) { return y(Math.min(d.avgValue + d.stdDev, 1)) })
                             );
-            
-                        // Add label
-                        linePlot.append("text")
-                            .attr("x", width_lineGraph * 0.9)
-                            .attr("y", 0 + 20 * selected_years.indexOf(year))
-                            .attr("fill", colorScale(year))
-                            .text(year);
                     });
-            
-                    // Create interactivity: mouse line (vertical line)
-                    // https://stackoverflow.com/questions/29440455/how-to-as-mouseover-to-line-graph-interactive-in-d3
-                    linePlot.append("path")
-                        .attr("class", "mouseLine")
-                        .attr("fill", "none")
-                        .attr("stroke", "black") 
-                        .attr("stroke-width", 1.5)
-                        .style("opacity", 0); 
-                    linePlot.append('svg:rect')
-                        .attr('width', width_lineGraph)
-                        .attr('height', height_lineGraph)
-                        .attr('fill', 'none')
-                        .attr('pointer-events', 'all')
-                        .on('mouseout', function() {
-                            d3.select(".mouseLine")
-                                .style("opacity", "0");
-                            d3.selectAll(".mouseCircle circle")
-                                .style("opacity", "0");
-                            d3.selectAll(".mouseCircle text")
-                                .style("opacity", "0");
-                        })
-                        .on('mouseover', function() {
-                            d3.select(".mouseLine")
-                                .style("opacity", "1");
-                            d3.selectAll(".mouseCircle circle")
-                                .style("opacity", "1");
-                            d3.selectAll(".mouseCircle text")
-                                .style("opacity", "1");
-                        })
-                        .on('mousemove', function(event) {
-                            var xCoor = d3.pointer(event, this)[0]; 
-                            var xDate = x.invert(xCoor); 
-                            d3.select(".mouseLine")
-                                .attr("d", function() {
-                                    var yRange = y.range(); 
-                                    return `M${xCoor},${yRange[0]}L${xCoor},${yRange[1]}`;
-                                });
-                            mouseCircle.each(function(d) {
-                                var yearData = plotData.filter(p => p.year === d && p.week === Math.round(xDate)); 
-                                var yPos = yearData.length > 0 ? y(yearData[0].avgValue) : 0;
-                                d3.select(this).select("circle")
-                                    .attr("cx", xCoor)
-                                    .attr("cy", yPos);
-                                d3.select(this).select("text")
-                                    .attr("x", xCoor + 10)
-                                    .attr("y", yPos)
-                                    .text(function() {
-                                        return `${d}: ${yearData.length > 0 ? yearData[0].avgValue.toFixed(2) : "No data"}`; 
-                                    });
-                            });
-                        });
-                    var mouseCircle = linePlot.selectAll(".mouseCircle")
+                    
+                    // Add legend
+                    var legendGroup = linePlot.append("g")
+                        .attr("class", "legendGroup");
+                    var legendItems = legendGroup.selectAll(".legendItem")
                         .data(selected_years)
                         .enter()
                         .append("g")
-                        .attr("class", "mouseCircle");
-                    mouseCircle.append("circle")
-                        .attr("r", 7)
-                        .style("stroke", function(d) { return colorScale(d); })
-                        .style("fill", "none")
-                        .style("stroke-width", "1px");
-                    mouseCircle.append("text")
-                        .attr("transform", "translate(10,3)");
-                });
-            });
-            
+                        .attr("class", "legendItem")
+                        .attr("transform", (d, i) => `translate(${i * (margin_lineGraph.bottom / 2)}, 0)`);
+                    legendItems.append("rect")
+                        .attr("width", 10)
+                        .attr("height", 10)
+                        .attr("fill", d => colorScale(d))
+                        .attr("x", 0)
+                        .attr("y", 0);
+                    legendItems.append("text")
+                        .attr("x", 15) 
+                        .attr("y", 10)
+                        .text(d => d);
+                    var legendWidth = legendItems.size() * 75; 
+                    legendGroup.attr("transform", `translate(${(width_lineGraph - legendWidth) * 0.6}, ${height_lineGraph * 1.25})`);
+
+                    // Create interactivity: mouse line (vertical line) + Table to display the values below the legend
+                    // https://stackoverflow.com/questions/29440455/how-to-as-mouseover-to-line-graph-interactive-in-d3
+                            var tableContainer = d3.select("#lineGraph_overTime").append("div")
+                                .attr("class", "table-container")
+                                .style("margin-top", `${-margin_lineGraph.bottom/2}px`)
+                                .style("margin-bottom", "0px");
+                            var table = tableContainer.append("table")
+                                .attr("class", "value-table")
+                                .style("width", "100%")
+                                .style("border-collapse", "collapse");
+                            var header = table.append("thead").append("tr");
+                            header.append("th").text("Week").style("border", "1px solid black").style("padding", "5px");
+                            selected_years.forEach(year => {
+                                header.append("th").text(year).style("border", "1px solid black").style("padding", "5px");
+                            });
+                            var tbody = table.append("tbody");
+                            linePlot.append("path")
+                                .attr("class", "mouseLine")
+                                .attr("fill", "none")
+                                .attr("stroke", "black")
+                                .style("stroke-width", "1px")
+                                .style("opacity", 0);
+                            linePlot.append('svg:rect')
+                                .attr('width', width_lineGraph)
+                                .attr('height', height_lineGraph)
+                                .attr('fill', 'none')
+                                .attr('pointer-events', 'all')
+                                .on('mouseout', function() {
+                                    d3.select(".mouseLine")
+                                        .style("opacity", "0");
+                                    table.style("visibility", "hidden");
+                                })
+                                .on('mouseover', function() {
+                                    d3.select(".mouseLine")
+                                        .style("opacity", "1");
+                                    table.style("visibility", "visible");
+                                })
+                                .on('mousemove', function(event) {
+                                    var xCoor = d3.pointer(event, this)[0];
+                                    var xDate = x.invert(xCoor);
+                                    d3.select(".mouseLine")
+                                        .attr("d", function() {
+                                            var yRange = y.range();
+                                            return `M${xCoor},${yRange[0]}L${xCoor},${yRange[1]}`;
+                                        });
+                                    var weekData = plotData.filter(d => Math.abs(d.week - xDate) < 0.5);
+                                    if (weekData.length > 0) {
+                                        var rowData = weekData[0];
+                                        tbody.selectAll("tr").remove();
+                                        var row = tbody.append("tr");
+                                        row.append("td").text(rowData.week).style("border", "1px solid black").style("padding", "5px");
+                                        selected_years.forEach(year => {
+                                            var dataForYear = weekData.filter(d => d.year === year);
+                                            row.append("td").text(dataForYear.length > 0 ? 
+                                                `${dataForYear[0].avgValue.toFixed(2)} ± ${dataForYear[0].stdDev.toFixed(2)}` 
+                                                : "No data")
+                                                .style("border", "1px solid black").style("padding", "5px");
+                                        });
+                                    }
+                                });
+                        });
+                    });

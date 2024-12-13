@@ -30,3 +30,20 @@ svg {
 #slider-holder {
     margin-top: 50px;
 }
+
+#rangeContainer {
+    margin-top: 10px;
+}
+
+.range-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    background-color: #f0f0f0;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.range-item button {
+    margin-left: 10px;
+}

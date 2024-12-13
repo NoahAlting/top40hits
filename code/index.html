@@ -7,7 +7,8 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         body {
-            display: block; /* Arrange content horizontally */
+            display: grid; /* Arrange content horizontally */
+            grid-template-columns: repeat(2, auto);
             gap: 20px; /* Space between the circle and bar plot */
             justify-content: center; /* Center both horizontally */
             align-items: flex-start; /* Align items at the top */
@@ -19,13 +20,7 @@
             box-sizing: border-box;
         }
 
-        #circle {
-            width: 50%; /* Adjust width as needed */
-        }
 
-        #chart {
-            width: 50%; /* Adjust width as needed */
-        }
         #lineGraph_overTime {
             width: 500px;
             height: 500px;
@@ -37,20 +32,12 @@
     </style>
 </head>
 <body>
-    <div class="frame" id="circle">
-        <h1>Circle Test</h1>
-    </div>
-
-    <div class="frame" id="chart">
-        <h1>Bar Plot with D3</h1>
-    </div>
-
     <div class="frame" id="lineGraph_overTime">
         <h1>Linegraph</h1>
     </div>
 
-    <script src="circle.js"></script> -->
-    <script src="barplot.js"></script> -->
+    <!-- <script src="circle.js"></script> 
+    <script src="barplot.js"></script>  -->
     <script src="LineGraph_overTime.js"></script>
     
     <div class="longevity-section">

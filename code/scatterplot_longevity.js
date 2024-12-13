@@ -1,6 +1,7 @@
 // to do
 //show chosen dot in scatterplot
 // remove floating dots
+// just use the ids instead of connecting manually
 Promise.all([
     d3.csv("../data/spotify_songs.csv", d3.autoType),
     d3.tsv("../data/top40-noteringen.csv", d3.autoType) 

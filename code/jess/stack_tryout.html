@@ -6,9 +6,9 @@
     <title>D3 Year and Week Selection</title>
     <style>
         /* Basic styling for the SVG containers */
-        #yearSelector, #weekSelector {
+        #yearSelector {
             width: 100%;
-            height: 150px; /* Height of the year selection */
+            height: 600px; /* Height of the year selection */
             margin-top: 20px;
         }
 
@@ -44,17 +44,14 @@
 </head>
 <body>
 
-<!-- Mode Toggle Button -->
-<button id="modeToggle" data-mode="aggregated">Switch to Distinct</button>
 
 <!-- Year Selection (Vertical) -->
-// <svg id="yearSelector" width="600" height="300"></svg>
+// <svg id="yearSelector" width="100" height="300"></svg>
 
-<!-- Week Selection (Horizontal) -->
-<svg id="weekSelector" width="600" height="50"></svg>
-
-<!-- Optionally, you can add a div for the slider or other elements -->
-<div id="slider-holder"></div>
+<div id="controls">
+    <button id="addBrushButton">Add Range</button>
+</div>
+<div id="rangeContainer"></div>
 
 <!-- D3.js and Script -->
 <script src="https://d3js.org/d3.v7.min.js"></script>

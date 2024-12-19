@@ -247,104 +247,127 @@ function editRange(index) {
 // Event Listener for Adding New Brushes
 document.getElementById("addBrushButton").addEventListener("click", createBrush);
 
-const weekSelectorHeight = 20;
-const weekSelectorWidth = 500;
-const weeks = Array.from({ length: 52 }, (_, i) => i + 1); // Weeks 1 to 52
 
-const weekSelectorSvg = d3.select("#weekSelector")// Ensure you have an <svg> with id="weekSelector" in your HTML
-    .attr("width", weekSelectorWidth + margin.left + margin.right)
-    .attr("height", weekSelectorHeight + margin.top + margin.bottom);
+// WEEK SELECTOR
+const margin_week = { top: 10, right: 0, bottom: 20, left: 0 };
+const width_week = 600;
+const height_week = 80;
+const colors_week = ["#777099", "#AFCF9D", "#FFF7D4", "#FFD4A1"];  // Array of colors
 
-const weekSelectorGroup = weekSelectorSvg
-    .append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`);
+// Create an array representing 52 weeks
+const weeks = Array.from({ length: 52 }, (_, i) => i + 1);
 
-const yScale = d3
-    .scaleBand()
-    .domain(years) // Full list of years (1965 to 2023)
-    .range([0, years.length * yearHeight]) // Cover the entire SVG height
-    .padding(0.05);
+const xScale = d3.scaleBand()
+    .domain(weeks) // Use weeks array as the domain
+    .range([margin_week.left, width_week - margin_week.right])
+    .paddingInner(0.1) // Space between bars
+    .paddingOuter(0.05);
 
-svg_yearselect
-    .attr("height", years.length * yearHeight + margin.top + margin.bottom);
+const xAxis = g => g
+    .attr("transform", `translate(${xScale.bandwidth() / 2},${height_week - margin_week.bottom})`)
+    .call(d3.axisBottom(xScale)
+        .tickValues(weeks.filter(d => d % 4 === 0)) // Label every 4th week
+        .tickSize(-height_week + margin_week.top + margin_week.bottom))
+    .call(g => g.selectAll(".tick line")
+        .attr("stroke", "#FFFFFF")
+        .attr("stroke-width", 2)
+        .attr("stroke-opacity", 1))
+    .call(g => g.selectAll(".tick line")
+        .filter(d => d % 4 === 0)  // Apply thicker tick for every 4th week
+        .attr("stroke-width", 3))  // Thicker line for every 4th week
+    .call(g => g.selectAll(".tick text")
+        .attr("font-size", "12px")
+        .attr("fill", "#000"));
 
-// Scale for positioning week blocks horizontally
-const xScaleWeeks = d3
-    .scaleBand()
-    .domain(weeks) // Weeks from 1 to 52
-    .range([0, weeks.length * width]) // Cover the SVG width
-    .padding(0.05);
+const svg_weekselect = d3.select("#weekSelector")
+    .attr("viewBox", [0, 0, width_week, height_week]);
 
-// Draw rectangles for weeks
-weekSelectorGroup
+// Append rectangles for each week with correct colors
+svg_weekselect.append("g")
     .selectAll("rect")
     .data(weeks)
-    .enter()
-    .append("rect")
-    .attr("x", (d) => xScaleWeeks(d))
-    .attr("y", 0)
-    .attr("width", xScaleWeeks.bandwidth())
-    .attr("height", weekSelectorHeight)
-    .attr("fill", "#dedede")
-    .attr("stroke", "white")
-    .attr("stroke-width", 0.5)
-    .attr("class", "week-rect");
-
-// Add labels for weeks
-weekSelectorGroup
-    .selectAll("text")
-    .data(weeks.filter((d) => d % 5 === 0)) // Label every 5th week
-    .enter()
-    .append("text")
-    .attr("x", (d) => xScaleWeeks(d) + xScaleWeeks.bandwidth() / 2)
-    .attr("y", weekSelectorHeight / 2)
-    .attr("dy", "0.35em")
-    .attr("text-anchor", "middle")
-    .text((d) => `W${d}`) // Prefix with 'W' for weeks
-    .style("fill", "black")
-    .style("font-size", "8px");
-
-// Single-Range Brush for Week Selector
-const weekBrush = d3.brushX()
-    .extent([[0, 0], [width, weekSelectorHeight]]) // Brush covers the week selector area
-    .on("brush end", function (event) {
-        const selection = event.selection;
-
-        if (selection) {
-            const [x0, x1] = selection;
-
-            // Snap the selection to the nearest week blocks
-            const snappedX0 = snapToNearestWeek(x0);
-            const snappedX1 = snapToNearestWeek(x1);
-
-            const snappedSelection = [snappedX0, snappedX1];
-
-            // Move the brush to the snapped position
-            d3.select(this).call(weekBrush.move, snappedSelection);
-
-            // Highlight selected weeks
-            const selectedWeeks = weeks.filter((week) => {
-                const weekCenter = xScaleWeeks(week) + xScaleWeeks.bandwidth() / 2;
-                return weekCenter >= snappedX0 && weekCenter <= snappedX1;
-            });
-
-            highlightWeeks(selectedWeeks);
-        }
+    .join("rect")
+    .attr("x", d => xScale(d))
+    .attr("y", margin_week.top)
+    .attr("width", xScale.bandwidth())
+    .attr("height", height_week - margin_week.top - margin_week.bottom)
+    .attr("fill", (d) => {
+        // Color based on the week index (group by blocks of 13 weeks)
+        const blockIndex = Math.floor((d - 1) / 13);  // Group weeks into blocks of 13
+        return colors_week[blockIndex % colors_week.length];  // Cycle through the colors
     });
 
-// Append brush to week selector group
-weekSelectorGroup.append("g").call(weekBrush);
+// Append axis
+svg_weekselect.append("g")
+    .call(xAxis);
 
-// Snap brush to the nearest week
-function snapToNearestWeek(x) {
-    const weekCenters = weeks.map((week) => xScaleWeeks(week) + xScaleWeeks.bandwidth() / 2);
-    return weekCenters.reduce((closest, centerX) => {
-        return Math.abs(x - centerX) < Math.abs(x - closest) ? centerX : closest;
-    });
+// Define brush
+const brush = d3.brushX()
+    .extent([[margin_week.left, margin_week.top], [width_week - margin_week.right, height_week - margin_week.bottom]])  // Define the brushable area
+    .on("end", brushended)  // Attach an event listener for the end of the brushing
+
+svg_weekselect.append("g")
+    .call(brush)
+    .select(".overlay")  // Target the overlay element within the brush
+    .attr("fill", "#000")  // Set the fill color of the overlay (brushed area)
+    .attr("fill-opacity", 0.5);  // Optional: Set the opacity of the brushed area
+
+// Create an HTML element below the week selector to display the selected range
+const rangeDisplay = d3.select("#weekRangeDisplay")
+    .style("margin-top", "20px")  // Adjust the margin to space it out nicely
+    .style("font-size", "16px")
+    .style("font-weight", "bold")
+    .style("color", "#000");
+
+// Initialize the displayed range to show nothing selected
+rangeDisplay.text("Selected Range: None");
+
+// Brushing flag to track if brushing is happening
+let brushing = false;
+
+function brushended(event) {
+    const selection = event.selection;
+    if (!event.sourceEvent || !selection) return;
+
+    // Only proceed if brushing has ended and there is a selection
+    const x0 = selection[0];
+    const x1 = selection[1];
+
+    // Snap to the nearest week based on the x0 and x1 positions
+    const snappedStart = snapToNearestWeek(x0);
+    const snappedEnd = snapToNearestWeek(x1);
+
+    // Convert snapped weeks back to pixel positions
+    const snappedSelection = [
+        xScale(snappedStart),  // Get the pixel position of the snapped start week
+        xScale(snappedEnd) + xScale.bandwidth()  // Add bandwidth to snapped end to ensure the full range is covered
+    ];
+
+    // Ensure the brush stays within bounds (avoid going out of the SVG)
+    const brushSelection = [
+        Math.max(margin_week.left, Math.min(width_week - margin_week.right, snappedSelection[0])),
+        Math.max(margin_week.left, Math.min(width_week - margin_week.right, snappedSelection[1]))
+    ];
+
+    d3.select(this).transition().call(brush.move, brushSelection);
+
+    // Log the selected weeks
+    console.log(`Selected weeks: ${snappedStart} to ${snappedEnd}`);
+
+    // Update the week range display below the week selector
+    rangeDisplay.text(`Selected Range: Week ${snappedStart} to Week ${snappedEnd}`);
+
+    // Reset brushing flag to false after the selection
+    brushing = false;
 }
 
-// Highlight selected weeks
-function highlightWeeks(selectedWeeks) {
-    weekSelectorGroup.selectAll(".week-rect")
-        .attr("fill", (d) => (selectedWeeks.includes(d) ? "gold" : "#dedede"));
+function snapToNearestWeek(x) {
+    // Find the closest week index by comparing distances to the center of each week
+    const weekCenters = weeks.map((week) => xScale(week) + xScale.bandwidth() / 2);
+    const closestCenter = weekCenters.reduce((closest, centerX) => {
+        return Math.abs(x - centerX) < Math.abs(x - closest) ? centerX : closest;
+    });
+
+    // Find and return the week corresponding to the closest center
+    return weeks[weekCenters.indexOf(closestCenter)];
 }

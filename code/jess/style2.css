@@ -19,7 +19,7 @@ svg {
 }
 
 .year-rect {
-    transition: fill 0.06s;
+    transition: fill 0.0s;
 }
 
 .multi-brush {
@@ -45,10 +45,4 @@ svg {
 
 .range-item button {
     margin-left: 10px;
-}
-
-.multi-brush .selection {
-    fill: lightblue; /* Brush background color */
-    stroke: #ccc;
-    stroke-dasharray: 3, 3; /* Optional dashed borders */
 }

@@ -60,7 +60,7 @@ stackGroup
 // Add year labels
 stackGroup
     .selectAll("text")
-    .data(years)
+    .data(years.filter((d) => d % 5 === 0)) // Filter to include only years divisible by 5
     .enter()
     .append("text")
     .attr("x", 15)  // Position the text to the left of the SVG blocks
@@ -69,12 +69,12 @@ stackGroup
     .attr("text-anchor", "end")  // Align the text to the right
     .text((d) => d)
     .style("fill", "black")
-    .style("font-size", "6px")  // Make the text smaller by default
+    .style("font-size", "8px")  // Make the text smaller by default
     .on("mouseover", function(event, d) {
         d3.select(this).style("font-size", "12px"); // Increase font size on hover
     })
     .on("mouseout", function(event, d) {
-        d3.select(this).style("font-size", "6px"); // Reset font size on mouse out
+        d3.select(this).style("font-size", "8px"); // Reset font size on mouse out
     });
 
 
@@ -99,7 +99,6 @@ function resetYearColors() {
 
     // Apply transition to the year rectangles
     yearRects.transition()
-        .duration(40)  // 1 second duration for the color transition
         .attr("fill", (d) => highlightedYears[d] || basecolors[Math.floor((d - 1965) / 5) % basecolors.length]);
 }
 
@@ -247,3 +246,105 @@ function editRange(index) {
 
 // Event Listener for Adding New Brushes
 document.getElementById("addBrushButton").addEventListener("click", createBrush);
+
+const weekSelectorHeight = 20;
+const weekSelectorWidth = 500;
+const weeks = Array.from({ length: 52 }, (_, i) => i + 1); // Weeks 1 to 52
+
+const weekSelectorSvg = d3.select("#weekSelector")// Ensure you have an <svg> with id="weekSelector" in your HTML
+    .attr("width", weekSelectorWidth + margin.left + margin.right)
+    .attr("height", weekSelectorHeight + margin.top + margin.bottom);
+
+const weekSelectorGroup = weekSelectorSvg
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+const yScale = d3
+    .scaleBand()
+    .domain(years) // Full list of years (1965 to 2023)
+    .range([0, years.length * yearHeight]) // Cover the entire SVG height
+    .padding(0.05);
+
+svg_yearselect
+    .attr("height", years.length * yearHeight + margin.top + margin.bottom);
+
+// Scale for positioning week blocks horizontally
+const xScaleWeeks = d3
+    .scaleBand()
+    .domain(weeks) // Weeks from 1 to 52
+    .range([0, weeks.length * width]) // Cover the SVG width
+    .padding(0.05);
+
+// Draw rectangles for weeks
+weekSelectorGroup
+    .selectAll("rect")
+    .data(weeks)
+    .enter()
+    .append("rect")
+    .attr("x", (d) => xScaleWeeks(d))
+    .attr("y", 0)
+    .attr("width", xScaleWeeks.bandwidth())
+    .attr("height", weekSelectorHeight)
+    .attr("fill", "#dedede")
+    .attr("stroke", "white")
+    .attr("stroke-width", 0.5)
+    .attr("class", "week-rect");
+
+// Add labels for weeks
+weekSelectorGroup
+    .selectAll("text")
+    .data(weeks.filter((d) => d % 5 === 0)) // Label every 5th week
+    .enter()
+    .append("text")
+    .attr("x", (d) => xScaleWeeks(d) + xScaleWeeks.bandwidth() / 2)
+    .attr("y", weekSelectorHeight / 2)
+    .attr("dy", "0.35em")
+    .attr("text-anchor", "middle")
+    .text((d) => `W${d}`) // Prefix with 'W' for weeks
+    .style("fill", "black")
+    .style("font-size", "8px");
+
+// Single-Range Brush for Week Selector
+const weekBrush = d3.brushX()
+    .extent([[0, 0], [width, weekSelectorHeight]]) // Brush covers the week selector area
+    .on("brush end", function (event) {
+        const selection = event.selection;
+
+        if (selection) {
+            const [x0, x1] = selection;
+
+            // Snap the selection to the nearest week blocks
+            const snappedX0 = snapToNearestWeek(x0);
+            const snappedX1 = snapToNearestWeek(x1);
+
+            const snappedSelection = [snappedX0, snappedX1];
+
+            // Move the brush to the snapped position
+            d3.select(this).call(weekBrush.move, snappedSelection);
+
+            // Highlight selected weeks
+            const selectedWeeks = weeks.filter((week) => {
+                const weekCenter = xScaleWeeks(week) + xScaleWeeks.bandwidth() / 2;
+                return weekCenter >= snappedX0 && weekCenter <= snappedX1;
+            });
+
+            highlightWeeks(selectedWeeks);
+        }
+    });
+
+// Append brush to week selector group
+weekSelectorGroup.append("g").call(weekBrush);
+
+// Snap brush to the nearest week
+function snapToNearestWeek(x) {
+    const weekCenters = weeks.map((week) => xScaleWeeks(week) + xScaleWeeks.bandwidth() / 2);
+    return weekCenters.reduce((closest, centerX) => {
+        return Math.abs(x - centerX) < Math.abs(x - closest) ? centerX : closest;
+    });
+}
+
+// Highlight selected weeks
+function highlightWeeks(selectedWeeks) {
+    weekSelectorGroup.selectAll(".week-rect")
+        .attr("fill", (d) => (selectedWeeks.includes(d) ? "gold" : "#dedede"));
+}

@@ -15,12 +15,11 @@ button {
 }
 
 svg {
-    border: 0.5px solid #ccc;
     margin-top: 20px;
 }
 
 .year-rect {
-    transition: fill 0.3s;
+    transition: fill 0.06s;
 }
 
 .multi-brush {

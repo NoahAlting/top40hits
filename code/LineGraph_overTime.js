@@ -1,22 +1,30 @@
 genre_options = ["pop", "hip-hop", "rock", "edm", "r&b", "soul", "country", "latin", "jazz", "classical", "reggae", "other"];
 
-var selected_years = [1968, 2020, 2021]; 
-var selected_feature_or_genre = genre_options[0]; 
-var selected_weeks = [1, 52];
-var colorScale = d3.scaleOrdinal(d3.schemeCategory10);
-var selection_features = false;
-
+var selected_years = [1976, 1999, 2023]; 
+var selected_feature_or_genre = 'Danceability'; 
+var selected_weeks = [1, 53];
+var selection_features = true;
 var margin_lineGraph = {top: 30, right: 30, bottom: 150, left: 60},
     width_lineGraph = 460 - margin_lineGraph.left - margin_lineGraph.right,
     height_lineGraph = 400 - margin_lineGraph.top - margin_lineGraph.bottom;
 
+selected_years.sort((a, b) => a - b);
+
+function get_color(year) {
+    var colorScale = d3.scaleSequential(d3.interpolateViridis)
+        .domain([0, selected_years.length - 1]); 
+    let index = selected_years.indexOf(year); 
+    return colorScale(index);    
+}
+
 const linePlot = d3.select("#lineGraph_overTime")
     .append("svg")
-        .attr("width", width_lineGraph + margin_lineGraph.left + margin_lineGraph.right)
-        .attr("height", height_lineGraph + margin_lineGraph.top + margin_lineGraph.bottom)
+    .attr("width", width_lineGraph + margin_lineGraph.left + margin_lineGraph.right)
+    .attr("height", height_lineGraph + margin_lineGraph.top + margin_lineGraph.bottom)
     .append("g")
-        .attr("transform",
-            "translate(" + margin_lineGraph.left + "," + margin_lineGraph.top + ")");
+    .attr("transform", "translate(" + margin_lineGraph.left + "," + margin_lineGraph.top + ")");
+
+    
 
 if (selection_features == true){
     d3.csv("../data/spotify_songs_with_ids.csv").then(function(data_spotifySongs) {
@@ -102,7 +110,15 @@ if (selection_features == true){
                 .text(selected_feature_or_genre)
                 .style("fill", "black")
                 .style("font-size", "12px");
-    
+            
+            // Makes mouseline possible
+            linePlot.append("path")
+                .attr("class", "mouseLine")
+                .attr("fill", "none")
+                .attr("stroke", "black")
+                .style("stroke-width", "1px")
+                .style("opacity", 0);
+
             selected_years.forEach(year => {
                 const yearData = plotData.filter(d => d.year === year);
     
@@ -110,26 +126,26 @@ if (selection_features == true){
                 var line = linePlot.append("path")
                     .datum(yearData)
                     .attr("fill", "none")
-                    .attr("stroke", colorScale(year))
+                    .attr("stroke", get_color(year))
                     .attr("stroke-width", 1.5)
                     .attr("d", d3.line()
                         .x(d => x(d.week))
                         .y(d => y(d.avgValue))
                     );
-    
-                // Confidence interval line (stddev)
-                var area = linePlot.append("path")
-                    .datum(yearData)
-                    .attr("fill", colorScale(year))
-                    .attr("fill-opacity", 0.1)
-                    .attr("stroke", "none")
-                    .attr("d", d3.area()
-                        .x(function(d) { return x(d.week) })
-                        .y0(function(d) { return y(Math.max(0, d.avgValue - d.stdDev)) })
-                        .y1(function(d) { return y(Math.min(d.avgValue + d.stdDev, 1)) })
-                    );
             });
-            
+
+            // Area
+            // https://d3-graph-gallery.com/graph/line_cursor.html
+            var areaGenerator = d3.area()
+                .x(function(d) { return x(d.week); })
+                .y0(function(d) { return y(Math.max(0, d.avgValue - d.stdDev)); }) 
+                .y1(function(d) { return y(Math.min(d.avgValue + d.stdDev, 1)); }); 
+            var area_std = linePlot.append("path")
+                .join("path")
+                .attr("class", "area")
+                .attr("fill-opacity", 0.2)
+                .attr("stroke", "none");
+
             // Add legend
             var legendGroup = linePlot.append("g")
                 .attr("class", "legendGroup");
@@ -142,7 +158,7 @@ if (selection_features == true){
             legendItems.append("rect")
                 .attr("width", 10)
                 .attr("height", 10)
-                .attr("fill", d => colorScale(d))
+                .attr("fill", d => get_color(d))
                 .attr("x", 0)
                 .attr("y", 0);
             legendItems.append("text")
@@ -168,12 +184,7 @@ if (selection_features == true){
                 header.append("th").text(year).style("border", "1px solid black").style("padding", "5px");
             });
             var tbody = table.append("tbody");
-            linePlot.append("path")
-                .attr("class", "mouseLine")
-                .attr("fill", "none")
-                .attr("stroke", "black")
-                .style("stroke-width", "1px")
-                .style("opacity", 0);
+
             linePlot.append('svg:rect')
                 .attr('width', width_lineGraph)
                 .attr('height', height_lineGraph)
@@ -183,21 +194,49 @@ if (selection_features == true){
                     d3.select(".mouseLine")
                         .style("opacity", "0");
                     table.style("visibility", "hidden");
+                    area_std.style("visibility", "hidden");
+
                 })
                 .on('mouseover', function() {
                     d3.select(".mouseLine")
-                        .style("opacity", "1");
+                        .style("opacity", "1")
                     table.style("visibility", "visible");
+                    area_std.style("visibility", "visible");
                 })
                 .on('mousemove', function(event) {
                     var xCoor = d3.pointer(event, this)[0];
                     var xDate = x.invert(xCoor);
+                    var weekData = plotData.filter(d => Math.abs(d.week - xDate) < 0.5);
+                    var yCoor = d3.pointer(event, this)[1];
+                    var yDate = y.invert(yCoor);
+                        
+                    // Make standard deviation area interactive
+                    var closest_value = Infinity;
+                    var closest_year = 0;
+                    selected_years.forEach(year => {
+                        var dataForYear = weekData.filter(d => d.year === year);
+                        var distance = Math.abs(yDate - dataForYear[0].avgValue); 
+                        if (distance < Math.abs(yDate - closest_value)) {
+                            closest_value = dataForYear[0].avgValue; 
+                            closest_year = year;  
+                        }
+                    });
+                    linePlot.selectAll(".area")
+                        .data(selected_years.map(year => plotData.filter(d => d.year === closest_year)))
+                        .attr("fill", d => get_color(d[0]?.year))
+                        .attr("d", d => areaGenerator(d))
+                        .style("visibility", function(d) {
+                            return d[0]?.year === closest_year ? "visible" : "hidden";
+                        }); 
+                    
+                    // Make navigating vertical line interactive
                     d3.select(".mouseLine")
                         .attr("d", function() {
                             var yRange = y.range();
                             return `M${xCoor},${yRange[0]}L${xCoor},${yRange[1]}`;
                         });
-                    var weekData = plotData.filter(d => Math.abs(d.week - xDate) < 0.5);
+
+                    // Updating table with position mouse
                     if (weekData.length > 0) {
                         var rowData = weekData[0];
                         tbody.selectAll("tr").remove();
@@ -296,14 +335,12 @@ if (selection_features == false) {
                     return null;
                 }).filter(row => row !== null);
             const genres = genres_normalize(mergedData.map(data => data.genres).flat());
-            
             const sortedData = mergedData.sort((a, b) => {
                 if (a.Jaar !== b.Jaar) {
                     return a.Jaar - b.Jaar; 
                 }
                 return a.Weeknr - b.Weeknr; 
             });
-
             const weeklyAverages = d3.rollup(sortedData, 
                 values => {
                     const genres = genres_normalize(values.map(data => data.genres).flat());
@@ -365,7 +402,7 @@ if (selection_features == false) {
                 var line = linePlot.append("path")
                     .datum(yearData)
                     .attr("fill", "none")
-                    .attr("stroke", colorScale(year))
+                    .attr("stroke", get_color(year))
                     .attr("stroke-width", 1.5)
                     .attr("d", d3.line()
                         .x(d => x(d.week))
@@ -385,7 +422,7 @@ if (selection_features == false) {
             legendItems.append("rect")
                 .attr("width", 10)
                 .attr("height", 10)
-                .attr("fill", d => colorScale(d))
+                .attr("fill", d => get_color(d))
                 .attr("x", 0)
                 .attr("y", 0);
             legendItems.append("text")

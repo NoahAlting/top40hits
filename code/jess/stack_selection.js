@@ -234,6 +234,12 @@ function editRange(index) {
         }
     });
 
+    // Set the brush extent again before re-enabling it
+    brush.extent([
+        [22, 6],
+        [width + 22, years.length * yearHeight + 6]
+    ]);
+
     // Re-enable brush selection for the range
     group.call(
         brush.on("brush end", (event) => handleMultiBrush(event, brush)) // Attach the handler to the specific brush
@@ -250,8 +256,8 @@ document.getElementById("addBrushButton").addEventListener("click", createBrush)
 
 // WEEK SELECTOR
 const margin_week = { top: 10, right: 0, bottom: 20, left: 0 };
-const width_week = 600;
-const height_week = 80;
+const width_week = 200;
+const height_week = 50;
 const colors_week = ["#777099", "#AFCF9D", "#FFF7D4", "#FFD4A1"];  // Array of colors
 
 // Create an array representing 52 weeks
@@ -270,11 +276,11 @@ const xAxis = g => g
         .tickSize(-height_week + margin_week.top + margin_week.bottom))
     .call(g => g.selectAll(".tick line")
         .attr("stroke", "#FFFFFF")
-        .attr("stroke-width", 2)
+        .attr("stroke-width", 1)
         .attr("stroke-opacity", 1))
     .call(g => g.selectAll(".tick line")
         .filter(d => d % 4 === 0)  // Apply thicker tick for every 4th week
-        .attr("stroke-width", 3))  // Thicker line for every 4th week
+        .attr("stroke-width", 2))  // Thicker line for every 4th week
     .call(g => g.selectAll(".tick text")
         .attr("font-size", "12px")
         .attr("fill", "#000"));
@@ -300,50 +306,59 @@ svg_weekselect.append("g")
 // Append axis
 svg_weekselect.append("g")
     .call(xAxis);
-
-// Define brush
 const brush = d3.brushX()
-    .extent([[margin_week.left, margin_week.top], [width_week - margin_week.right, height_week - margin_week.bottom]])  // Define the brushable area
-    .on("end", brushended)  // Attach an event listener for the end of the brushing
+    .extent([[margin_week.left, margin_week.top], [width_week - margin_week.right, height_week - margin_week.bottom]]) // Define the brushable area
+    .on("brush", brushed) // Attach event listener for brushing
+    .on("end", brushended); // Attach event listener for brush end
 
 svg_weekselect.append("g")
     .call(brush)
-    .select(".overlay")  // Target the overlay element within the brush
-    .attr("fill", "#000")  // Set the fill color of the overlay (brushed area)
-    .attr("fill-opacity", 0.5);  // Optional: Set the opacity of the brushed area
+    .select(".selection") // Target the overlay element within the brush
+    .attr("fill", "#2CE9EC") // Set the fill color of the overlay (brushed area)
+    .attr("fill-opacity", 0.6); // Optional: Set the opacity of the brushed area
 
-// Create an HTML element below the week selector to display the selected range
-const rangeDisplay = d3.select("#weekRangeDisplay")
-    .style("margin-top", "20px")  // Adjust the margin to space it out nicely
-    .style("font-size", "16px")
-    .style("font-weight", "bold")
-    .style("color", "#000");
+let isProgrammaticMove2 = false;
 
-// Initialize the displayed range to show nothing selected
-rangeDisplay.text("Selected Range: None");
+function brushed(event) {
+    if (!event.selection || isProgrammaticMove2) return;
 
-// Brushing flag to track if brushing is happening
-let brushing = false;
-
-function brushended(event) {
     const selection = event.selection;
-    if (!event.sourceEvent || !selection) return;
-
-    // Only proceed if brushing has ended and there is a selection
     const x0 = selection[0];
     const x1 = selection[1];
 
-    // Snap to the nearest week based on the x0 and x1 positions
+    // Snap to nearest weeks
     const snappedStart = snapToNearestWeek(x0);
     const snappedEnd = snapToNearestWeek(x1);
 
     // Convert snapped weeks back to pixel positions
     const snappedSelection = [
-        xScale(snappedStart),  // Get the pixel position of the snapped start week
-        xScale(snappedEnd) + xScale.bandwidth()  // Add bandwidth to snapped end to ensure the full range is covered
+        xScale(snappedStart), // Get the pixel position of the snapped start week
+        xScale(snappedEnd) + xScale.bandwidth() // Add bandwidth to snapped end to ensure the full range is covered
     ];
 
-    // Ensure the brush stays within bounds (avoid going out of the SVG)
+    // Prevent recursion during programmatic move
+    isProgrammaticMove2 = true;
+    d3.select(this).call(brush.move, snappedSelection);
+    isProgrammaticMove2 = false;
+}
+function brushended(event) {
+    const selection = event.selection;
+    if (!event.sourceEvent || !selection) return;
+
+    const x0 = selection[0];
+    const x1 = selection[1];
+
+    // Snap to nearest weeks
+    const snappedStart = snapToNearestWeek(x0);
+    const snappedEnd = snapToNearestWeek(x1);
+
+    // Convert snapped weeks back to pixel positions
+    const snappedSelection = [
+        xScale(snappedStart), // Get the pixel position of the snapped start week
+        xScale(snappedEnd) + xScale.bandwidth() // Add bandwidth to snapped end to ensure the full range is covered
+    ];
+
+    // Ensure the brush stays within bounds
     const brushSelection = [
         Math.max(margin_week.left, Math.min(width_week - margin_week.right, snappedSelection[0])),
         Math.max(margin_week.left, Math.min(width_week - margin_week.right, snappedSelection[1]))
@@ -354,11 +369,8 @@ function brushended(event) {
     // Log the selected weeks
     console.log(`Selected weeks: ${snappedStart} to ${snappedEnd}`);
 
-    // Update the week range display below the week selector
-    rangeDisplay.text(`Selected Range: Week ${snappedStart} to Week ${snappedEnd}`);
-
-    // Reset brushing flag to false after the selection
-    brushing = false;
+    // Update the week range display
+    weekRangeContainer.innerHTML = `Week ${snappedStart} - ${snappedEnd}`;
 }
 
 function snapToNearestWeek(x) {
@@ -371,3 +383,5 @@ function snapToNearestWeek(x) {
     // Find and return the week corresponding to the closest center
     return weeks[weekCenters.indexOf(closestCenter)];
 }
+
+const weekRangeContainer = document.getElementById("weekRangeContainer");

@@ -215,20 +215,28 @@ if (selection_features == true){
                     var closest_year = 0;
                     selected_years.forEach(year => {
                         var dataForYear = weekData.filter(d => d.year === year);
-                        var distance = Math.abs(yDate - dataForYear[0].avgValue); 
-                        if (distance < Math.abs(yDate - closest_value)) {
-                            closest_value = dataForYear[0].avgValue; 
-                            closest_year = year;  
+                        if (dataForYear.length > 0){
+                            var distance = Math.abs(yDate - dataForYear[0].avgValue); 
+                            if (distance < Math.abs(yDate - closest_value)) {
+                                closest_value = dataForYear[0].avgValue; 
+                                closest_year = year;  
+                            }
                         }
+
                     });
-                    linePlot.selectAll(".area")
-                        .data(selected_years.map(year => plotData.filter(d => d.year === closest_year)))
-                        .attr("fill", d => get_color(d[0]?.year))
-                        .attr("d", d => areaGenerator(d))
-                        .style("visibility", function(d) {
-                            return d[0]?.year === closest_year ? "visible" : "hidden";
-                        }); 
-                    
+                    if (closest_year != 0){
+                        linePlot.selectAll(".area")
+                            .data(selected_years.map(year => plotData.filter(d => d.year === closest_year)))
+                            .attr("fill", d => get_color(d[0]?.year))
+                            .attr("d", d => areaGenerator(d))
+                            .style("visibility", function(d) {
+                                return d[0]?.year === closest_year ? "visible" : "hidden";
+                            }); 
+                    }
+                    else{
+                        area_std.style("visibility", "hidden");
+                    }
+
                     // Make navigating vertical line interactive
                     d3.select(".mouseLine")
                         .attr("d", function() {

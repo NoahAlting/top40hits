@@ -2,8 +2,8 @@
 // just use the ids instead of connecting manually
 // one week & one year possibility?
 
-const week_range = [10, 25]
-const year_range = [2010, 2013];
+var week_range = [10, 25]
+var year_range = [2010, 2013];
 const colorScale = d3
     .scaleSequential()
     .domain(year_range)
@@ -11,38 +11,32 @@ const colorScale = d3
 
 
 function updateLegend() {
-    // Clear the existing legend
     d3.select("#legend").selectAll("*").remove();
-
-    // Calculate dynamic height for the legend based on year range
     const legendHeight = (year_range[1] - year_range[0] + 1) * 15;
 
-    // Append a new SVG container for the legend
     const legend = d3
         .select("#legend")
         .append("svg")
         .attr("width", 150)
         .attr("height", legendHeight);
 
-    // Add color rectangles to the legend
     legend.selectAll("rect")
-        .data(d3.range(year_range[0], year_range[1] + 1)) // Generate year range
+        .data(d3.range(year_range[0], year_range[1] + 1)) 
         .enter()
         .append("rect")
         .attr("x", 0)
-        .attr("y", (d, i) => i * 15) // Position vertically
+        .attr("y", (d, i) => i * 15) 
         .attr("width", 20)
         .attr("height", 10)
-        .attr("fill", d => colorScale(d)); // Map years to colors
+        .attr("fill", d => colorScale(d)); 
 
-    // Add year labels to the legend
     legend.selectAll("text")
         .data(d3.range(year_range[0], year_range[1] + 1))
         .enter()
         .append("text")
-        .attr("x", 25) // Offset for text
-        .attr("y", (d, i) => i * 15 + 9) // Align vertically
-        .text(d => d) // Display the year
+        .attr("x", 25) 
+        .attr("y", (d, i) => i * 15 + 9) 
+        .text(d => d) 
         .style("font-size", "10px")
         .style("alignment-baseline", "middle");
 }

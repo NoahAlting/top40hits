@@ -1,3 +1,5 @@
+// to do - select jaar
+
 var selected_weeks = [1, 53];
 var selection_features = true;
 const features = ["Danceability", "Energy", "Valence", "Acousticness"];
@@ -35,9 +37,16 @@ function loadData() {
   
       const combinedData = [...data_spotifySongs, ...data_top40];
       console.log(combinedData);
-  
+    
+      const sortedData = combinedData.sort((a, b) => {
+        if (a.Jaar !== b.Jaar) {
+            return a.Jaar - b.Jaar; 
+        }
+        return a.Weeknr - b.Weeknr; 
+    });
+
       if (selection_features) {
-        const weeklyAverages = calculateWeeklyAverages(combinedData);
+        const weeklyAverages = calculateWeeklyAverages(sortedData);
         radialChart(weeklyAverages, features);
       }
     });
@@ -62,10 +71,13 @@ function calculateWeeklyAverages(data) {
 }
 
 function radialChart(data, features) {
-    const svg = d3.select("#radial-plot") // Select the #radial-plot container
-      .append("svg") // Append an SVG element
-      .attr("width", width) // Set the width of the SVG
-      .attr("height", height); // Set the height of the SVG
+    const svg = d3
+      .select("#radial-plot")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .append("g") 
+      .attr("transform", `translate(${width / 2}, ${height / 2})`); 
   
     const angles = d3
       .scaleLinear()

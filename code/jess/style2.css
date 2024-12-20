@@ -28,6 +28,9 @@ svg {
 
 #rangeContainer {
     margin-top: 10px;
+    width: 100px;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .range-item {
@@ -35,10 +38,28 @@ svg {
     justify-content: space-between;
     margin-bottom: 5px;
     background-color: #f0f0f0;
-    padding: 5px;
+    padding: 3px;
     border-radius: 4px;
+    font-size: 12px;
 }
 
 .range-item button {
-    margin-left: 10px;
+    margin-left: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.range-item button svg {
+    width: 16px;
+    height: 16px;
+    fill: #555;
+    transition: fill 0.2s;
+}
+
+.range-item button:hover svg {
+    fill: #000;
 }

@@ -17,7 +17,7 @@ const genreKeywords = {
     "jazz": ["jazz", "blues", "fusion"],
     "classical": ["classical", "opera", "symphony"],
     "reggae": ["reggae", "ska", "dancehall"]
-};
+};    
 
 selected_years.sort((a, b) => a - b);
 
@@ -27,16 +27,14 @@ const linePlot = d3.select("#lineGraph_overTime")
     .attr("height", height_lineGraph + margin_lineGraph.top + margin_lineGraph.bottom)
     .append("g")
     .attr("transform", "translate(" + margin_lineGraph.left + "," + margin_lineGraph.top + ")");
+function get_color_lineGraph(year) {
+        var colorScale = d3.scaleSequential(d3.interpolateViridis)
+            .domain([0, selected_years.length - 1]); 
+        let index = selected_years.indexOf(year); 
+        return colorScale(index);    
+    }
 
-function get_color(year) {
-    var colorScale = d3.scaleSequential(d3.interpolateViridis)
-        .domain([0, selected_years.length - 1]); 
-    let index = selected_years.indexOf(year); 
-    return colorScale(index);    
-}
-
-
-function loadData() {
+function loadDataLineGraph() {
     d3.csv("../data/spotify_songs_with_ids.csv").then(function(data_spotifySongs) {
         data_spotifySongs.forEach(row => {
             row[selected_feature_or_genre] = +row[selected_feature_or_genre];
@@ -44,51 +42,18 @@ function loadData() {
 
         d3.csv("../data/top40_with_ids.csv").then(function(data_top40) {
             if (selection_features == true){
-                const plotData = processFeaturesData(data_spotifySongs, data_top40);
-                createInteractiveGraphFeatures(plotData);
+                const plotData = processFeaturesDataLineGraph(data_spotifySongs, data_top40);
+                createInteractiveLineGraphFeatures(plotData);
             }
             else {
-                const plotData = processGenresData(data_spotifySongs, data_top40);
-                createInteractiveGraphGenres(plotData);
+                const plotData = processGenresDataLineGraph(data_spotifySongs, data_top40);
+                createInteractiveLineGraphGenres(plotData);
             }
         });
     });
 }
 
-const genres_normalize = function(lst_genres_week, genre_Keywords) {
-    let genreCounts = {};
-    for (const [broadGenre, keywords] of Object.entries(genre_Keywords)) {
-        genreCounts[broadGenre] = 0; 
-    }
-    genreCounts["other"] = 0;
-
-    lst_genres_week.forEach(genre => {
-        genre = genre.toLowerCase();
-        let genreMatched = false;
-        for (const [broadGenre, keywords] of Object.entries(genre_Keywords)) {
-            if (keywords.some(keyword => genre.includes(keyword))) {
-                genreCounts[broadGenre] += 1; 
-                genreMatched = true;
-                break; 
-            }
-        }
-        if (!genreMatched) {
-            genreCounts["other"] += 1;
-        }
-    });
-    const totalGenres = Object.values(genreCounts).reduce((acc, count) => acc + count, 0);
-    let genres_Normalized = {};
-    for (const [genre, count] of Object.entries(genreCounts)) {
-        if (totalGenres > 0) {
-            genres_Normalized[genre] = ((count / totalGenres) * 100).toFixed(2); 
-        } else {
-            genres_Normalized[genre] = 0; 
-        }
-    }
-    return genres_Normalized;
-};
-
-function processFeaturesData(spotifySongs, top40) {
+function processFeaturesDataLineGraph(spotifySongs, top40) {
     const mergedData = top40.filter(row => selected_years.includes(+row.Jaar))
         .map(top40 => {
             const songData = spotifySongs.find(song => song.Song_ID === top40.Song_ID);
@@ -129,7 +94,7 @@ function processFeaturesData(spotifySongs, top40) {
     return plotData;
 }
 
-function processGenresData(spotifySongs, top40) {
+function processGenresDataLineGraph(spotifySongs, top40) {
     const mergedData = top40.filter(row => selected_years.includes(+row.Jaar))
         .map(top40 => {
             const songData = spotifySongs.find(song => song.Song_ID === top40.Song_ID);
@@ -174,7 +139,7 @@ function processGenresData(spotifySongs, top40) {
     return plotData;
 }
 
-function createInteractiveGraphFeatures(plotData) {
+function createInteractiveLineGraphFeatures(plotData) {
     // Set domain and ranges for axes
     var x = d3.scaleLinear()
         .domain([selected_weeks[0], selected_weeks[1]])
@@ -216,7 +181,7 @@ function createInteractiveGraphFeatures(plotData) {
     legendItems.append("rect")
         .attr("width", 10)
         .attr("height", 10)
-        .attr("fill", d => get_color(d))
+        .attr("fill", d => get_color_lineGraph(d))
         .attr("x", 0)
         .attr("y", 0);
     legendItems.append("text")
@@ -233,7 +198,7 @@ function createInteractiveGraphFeatures(plotData) {
         var line = linePlot.append("path")
             .datum(yearData)
             .attr("fill", "none")
-            .attr("stroke", get_color(year))
+            .attr("stroke", get_color_lineGraph(year))
             .attr("stroke-width", 1.5)
             .attr("d", d3.line()
                 .x(d => x(d.week))
@@ -267,7 +232,7 @@ function createInteractiveGraphFeatures(plotData) {
     var tbody = table.append("tbody");
     // Navigation vertical line in graph
     // https://d3-graph-gallery.com/graph/line_cursor.html  
-    var navigationLine = linePlot.append('svg:rect')
+    linePlot.append('svg:rect')
         .attr('width', width_lineGraph)
         .attr('height', height_lineGraph)
         .attr('fill', 'none')
@@ -316,7 +281,7 @@ function createInteractiveGraphFeatures(plotData) {
             if (closest_year != 0) {
                 linePlot.selectAll(".area")
                     .data(selected_years.map(year => plotData.filter(d => d.year === closest_year)))
-                    .attr("fill", d => get_color(d[0]?.year))
+                    .attr("fill", d => get_color_lineGraph(d[0]?.year))
                     .attr("d", d => areaGenerator(d))
                     .style("visibility", function(d) {
                         return d[0]?.year === closest_year ? "visible" : "hidden";
@@ -345,7 +310,7 @@ function createInteractiveGraphFeatures(plotData) {
         });
 }
 
-function createInteractiveGraphGenres(plotData){
+function createInteractiveLineGraphGenres(plotData){
     /// Graph settings
     // Set domain and ranges for axes
     var x = d3.scaleLinear()
@@ -388,7 +353,7 @@ function createInteractiveGraphGenres(plotData){
     legendItems.append("rect")
         .attr("width", 10)
         .attr("height", 10)
-        .attr("fill", d => get_color(d))
+        .attr("fill", d => get_color_lineGraph(d))
         .attr("x", 0)
         .attr("y", 0);
     legendItems.append("text")
@@ -405,7 +370,7 @@ function createInteractiveGraphGenres(plotData){
         var line = linePlot.append("path")
             .datum(yearData)
             .attr("fill", "none")
-            .attr("stroke", get_color(year))
+            .attr("stroke", get_color_lineGraph(year))
             .attr("stroke-width", 1.5)
             .attr("d", d3.line()
                 .x(d => x(d.week))
@@ -479,4 +444,4 @@ function createInteractiveGraphGenres(plotData){
         });
 }
 
-loadData();
+loadDataLineGraph();

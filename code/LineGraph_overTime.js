@@ -21,6 +21,39 @@ const genreKeywords = {
 
 selected_years.sort((a, b) => a - b);
 
+const get_genre_stats_per_week = function(lst_genres_week, genre_Keywords) {
+    let genreCounts = {};
+    for (const [broadGenre, keywords] of Object.entries(genre_Keywords)) {
+        genreCounts[broadGenre] = 0; 
+    }
+    genreCounts["other"] = 0;
+
+    lst_genres_week.forEach(genre => {
+        genre = genre.toLowerCase();
+        let genreMatched = false;
+        for (const [broadGenre, keywords] of Object.entries(genre_Keywords)) {
+            if (keywords.some(keyword => genre.includes(keyword))) {
+                genreCounts[broadGenre] += 1; 
+                genreMatched = true;
+                break; 
+            }
+        }
+        if (!genreMatched) {
+            genreCounts["other"] += 1;
+        }
+    });
+    const totalGenres = Object.values(genreCounts).reduce((acc, count) => acc + count, 0);
+    let genres_stats_week = {};
+    for (const [genre, count] of Object.entries(genreCounts)) {
+        if (totalGenres > 0) {
+            genres_stats_week[genre] = ((count / totalGenres) * 100).toFixed(2); 
+        } else {
+            genres_stats_week[genre] = 0; 
+        }
+    }
+    return genres_stats_week;
+};
+
 const linePlot = d3.select("#lineGraph_overTime")
     .append("svg")
     .attr("width", width_lineGraph + margin_lineGraph.left + margin_lineGraph.right)
@@ -34,7 +67,7 @@ function get_color_lineGraph(year) {
         return colorScale(index);    
     }
 
-function loadDataLineGraph() {
+function loadData_and_Create_lineGraph() {
     d3.csv("../data/spotify_songs_with_ids.csv").then(function(data_spotifySongs) {
         data_spotifySongs.forEach(row => {
             row[selected_feature_or_genre] = +row[selected_feature_or_genre];
@@ -42,18 +75,18 @@ function loadDataLineGraph() {
 
         d3.csv("../data/top40_with_ids.csv").then(function(data_top40) {
             if (selection_features == true){
-                const plotData = processFeaturesDataLineGraph(data_spotifySongs, data_top40);
-                createInteractiveLineGraphFeatures(plotData);
+                const data = loadAndProcess_FeaturesData_LineGraph(data_spotifySongs, data_top40);
+                createInteractiveGraph_Features_LineGraph(data);
             }
             else {
-                const plotData = processGenresDataLineGraph(data_spotifySongs, data_top40);
-                createInteractiveLineGraphGenres(plotData);
+                const data = loadAndProcess_GenresData_LineGraph(data_spotifySongs, data_top40);
+                createInteractiveGraph_Genress_LineGraph(data);
             }
         });
     });
 }
 
-function processFeaturesDataLineGraph(spotifySongs, top40) {
+function loadAndProcess_FeaturesData_LineGraph(spotifySongs, top40) {
     const mergedData = top40.filter(row => selected_years.includes(+row.Jaar))
         .map(top40 => {
             const songData = spotifySongs.find(song => song.Song_ID === top40.Song_ID);
@@ -94,7 +127,7 @@ function processFeaturesDataLineGraph(spotifySongs, top40) {
     return plotData;
 }
 
-function processGenresDataLineGraph(spotifySongs, top40) {
+function loadAndProcess_GenresData_LineGraph(spotifySongs, top40) {
     const mergedData = top40.filter(row => selected_years.includes(+row.Jaar))
         .map(top40 => {
             const songData = spotifySongs.find(song => song.Song_ID === top40.Song_ID);
@@ -108,7 +141,7 @@ function processGenresDataLineGraph(spotifySongs, top40) {
             }
             return null;
         }).filter(row => row !== null);
-    const genres = genres_normalize(mergedData.map(data => data.genres).flat(), genreKeywords);
+    const genres = get_genre_stats_per_week(mergedData.map(data => data.genres).flat(), genreKeywords);
     const sortedData = mergedData.sort((a, b) => {
         if (a.Jaar !== b.Jaar) {
             return a.Jaar - b.Jaar; 
@@ -117,7 +150,7 @@ function processGenresDataLineGraph(spotifySongs, top40) {
     });
     const weeklyAverages = d3.rollup(sortedData, 
         values => {
-            const genres = genres_normalize(values.map(data => data.genres).flat(), genreKeywords);
+            const genres = get_genre_stats_per_week(values.map(data => data.genres).flat(), genreKeywords);
             return {
                 week_genres: genres
             };
@@ -139,7 +172,7 @@ function processGenresDataLineGraph(spotifySongs, top40) {
     return plotData;
 }
 
-function createInteractiveLineGraphFeatures(plotData) {
+function createInteractiveGraph_Features_LineGraph(plotData) {
     // Set domain and ranges for axes
     var x = d3.scaleLinear()
         .domain([selected_weeks[0], selected_weeks[1]])
@@ -310,7 +343,7 @@ function createInteractiveLineGraphFeatures(plotData) {
         });
 }
 
-function createInteractiveLineGraphGenres(plotData){
+function createInteractiveGraph_Genress_LineGraph(plotData){
     /// Graph settings
     // Set domain and ranges for axes
     var x = d3.scaleLinear()
@@ -444,4 +477,4 @@ function createInteractiveLineGraphGenres(plotData){
         });
 }
 
-loadDataLineGraph();
+loadData_and_Create_lineGraph();

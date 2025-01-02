@@ -1,12 +1,12 @@
-var selected_years = [1970, 1971, 1972];
+var selected_years = [1970, 1971];
 var selected_weeks = [1, 53];
 var selected_feature_or_genre = 'Acousticness'; 
 var selection_features = true;
 var margin_longevity_radialChart = {top: 30, right: 30, bottom: 150, left: 60},
     width_longevity_radialChart = 460 - margin_longevity_radialChart.left - margin_longevity_radialChart.right,
     height_longevity_radialChart = 400 - margin_longevity_radialChart.top - margin_longevity_radialChart.bottom;
-const innerRadius = 0;
-const outerRadius = 100;
+const innerRadius_longevity_radialChart = 30;
+const outerRadius_longevity_radialChart = 100;
 const features_songs = ["Danceability", "Acousticness", "Energy", "Liveness", "Valence", "Speechiness"];
 var categories = ["Short Hits", "Medium Hits", "Long Hits"];
     
@@ -179,13 +179,14 @@ function loadAndProcess_GenresData_longevityRadialChart(spotifySongs, top40) {
 function createInteractiveGraph_Features_longevityRadialChart(data) {
     const radiusScale = d3.scaleLinear()
         .domain([0, 1])  
-        .range([innerRadius, outerRadius]);
+        .range([innerRadius_longevity_radialChart, outerRadius_longevity_radialChart]);
 
-    const radialGrid = d3.range(innerRadius, outerRadius, (outerRadius - innerRadius) / 5);
+    const radialGrid = d3.range(innerRadius_longevity_radialChart, outerRadius_longevity_radialChart, 
+        (outerRadius_longevity_radialChart - innerRadius_longevity_radialChart) / 5);
     longevity_radialChart.selectAll(".grid")
         .data(radialGrid)
         .enter()
-        .append("circle")
+        .append("circle_radialChart")
         .attr("class", "grid")
         .attr("r", d => d)
         .attr("fill", "none")
@@ -209,8 +210,8 @@ function createInteractiveGraph_Features_longevityRadialChart(data) {
         .enter()
         .append("text")
         .attr("class", "label")
-        .attr("x", d => (outerRadius + 10) * Math.sin(d.angle))
-        .attr("y", d => -(outerRadius + 10) * Math.cos(d.angle))
+        .attr("x", d => (outerRadius_longevity_radialChart + 10) * Math.sin(d.angle))
+        .attr("y", d => -(outerRadius_longevity_radialChart + 10) * Math.cos(d.angle))
         .attr("text-anchor", d => {
             if (d.angle === 0 || d.angle === Math.PI) {
                 return "middle"; 

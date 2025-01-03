@@ -1,8 +1,8 @@
-var selected_years = [1990, 1991, 1992];
-var selected_weeks = [1, 53];
-var max_top = [1]; 
+var selected_years = [2020, 2021, 2022];
+var selected_weeks = [1, 10];
+var max_top = [5]; 
 var selected_feature_or_genre = "Acousticness";
-var selection_features = true;
+var selection_features = false;
 var margin_longevity_radialChart = {
     top: 30,
     right: 30,
@@ -16,8 +16,21 @@ const outerRadius_longevity_radialChart = 100;
 const features_songs = ["Danceability", "Acousticness", "Energy", "Liveness", "Valence", "Speechiness"];
 var categories = ["Short Hits", "Medium Hits", "Long Hits"];
 
-var threshold_shortHits = 5;
-var threshold_mediumHits = 10;
+const genreKeywords = {
+    "pop": ["pop"],
+    "hip-hop": ["hip-hop", "rap"],
+    "rock": ["rock", "metal", "punk", "alternative"],
+    "edm": ["edm", "house", "techno", "trance", "dubstep", "drum and bass"],
+    "r&b": ["r&b", "rhythm and blues", "soul", "funk"],
+    "soul": ["soul", "motown"],
+    "country": ["country", "bluegrass", "folk"],
+    "latin": ["latin", "salsa", "reggaeton", "bossa nova"],
+    "jazz": ["jazz", "blues", "fusion"],
+    "classical": ["classical", "opera", "symphony"],
+    "reggae": ["reggae", "ska", "dancehall"]
+};    
+
+let genres = Object.keys(genreKeywords);
 
 function get_color_longevityRadialChart(category) {
     var colorScale = d3.scaleSequential(d3.interpolateViridis).domain([0, 2]);
@@ -37,14 +50,6 @@ const longevity_radialChart = d3
     .attr("stroke-linejoin", "round")
     .attr("stroke-linecap", "round");
 
-const std_button = d3
-    .select("#std_button_id")
-    .append("label")
-    .text("add standard deviation area")
-    .append("input")
-    .attr("type", "checkbox")
-    .attr("id", "myCheckbox");
-
 function get_color_longevity_radialChart(year) {
     var colorScale = d3
         .scaleSequential(d3.interpolateViridis)
@@ -61,6 +66,13 @@ function loadData_and_Create_longevityRadialChart() {
 
         d3.csv("../data/top40_with_ids.csv").then(function (data_top40) {
             if (selection_features == true) {
+                const std_button = d3
+                    .select("#std_button_id")
+                    .append("label")
+                    .text("add standard deviation area")
+                    .append("input")
+                    .attr("type", "checkbox")
+                    .attr("id", "myCheckbox");
                 const data_processed = loadAndProcess_FeaturesData_longevityRadialChart(
                     data_spotifySongs, data_top40);
                 createInteractiveGraph_Features_longevityRadialChart(
@@ -68,7 +80,7 @@ function loadData_and_Create_longevityRadialChart() {
             } else {
                 const data_processed = loadAndProcess_GenresData_longevityRadialChart(
                     data_spotifySongs, data_top40);
-                createInteractiveGraph_Genres_longevityRadialChart(
+                createInteractiveGraph_GenresData_longevityRadialChart(
                     data_processed);
             }
         });
@@ -217,11 +229,137 @@ function loadAndProcess_FeaturesData_longevityRadialChart(spotifySongs, top40) {
         currentCategory.push(...group);
     });
     let stats_all = calculateStats([songs_shortHits, songs_mediumHits, songs_longHits]);
-    console.log([songs_shortHits, songs_mediumHits, songs_longHits]);
     return stats_all;
 }
 
-function loadAndProcess_GenresData_longevityRadialChart(spotifySongs, top40) {}
+function loadAndProcess_GenresData_longevityRadialChart(spotifySongs, top40) {
+    const mergedData = top40
+        .filter((row) => selected_years.includes(+row.Jaar))
+        .filter((row) => +row.Deze_week <= max_top)
+        .filter((row) => +row.Weeknr >= selected_weeks[0] && +row.Weeknr <= selected_weeks[1])
+        .map((top40Row) => {
+            const spotifyData = spotifySongs.find(
+                (song) => song.Song_ID === top40Row.Song_ID
+        );
+        if (spotifyData) {
+            return {
+                Song_ID: top40Row.Song_ID,
+                Jaar: parseInt(top40Row.Jaar),
+                Weeknr: parseInt(top40Row.Weeknr),
+                genres: spotifyData["Artist_Genres"] || null,
+            };
+        }
+        return {
+            Song_ID: top40Row.Song_ID,
+            Jaar: parseInt(top40Row.Jaar),
+            Weeknr: parseInt(top40Row.Weeknr),
+            genres: null,
+            };
+        });
+    mergedData.sort((a, b) => {
+        if (a.Jaar !== b.Jaar) {
+        return a.Jaar - b.Jaar;
+        }
+        return a.Weeknr - b.Weeknr;
+    });
+    const longevity_information = d3.rollup(
+        mergedData,
+        (values) => ({
+            maximum_amount_of_weeks: values.length,
+            genres: values[0].genres
+        }),
+        (d) => d.Song_ID
+    );
+
+    function calculateStats(songs_inCategories) {
+        var category_index = 0;
+        const plotData = [];
+        songs_inCategories.forEach((songs_inCategory) => {
+            var category_name = categories[category_index];
+            let genreStats = {};
+            var total_genres_divided = 0;
+            for (const [broadGenre, keywords] of Object.entries(genreKeywords)) {
+                genreStats[broadGenre] = 0; 
+            }
+            genreStats["other"] = 0;
+
+            songs_inCategory.forEach((song) => {
+                if (song.genres == null) {
+                    genreStats["other"] += 1;
+                    total_genres_divided += 1;
+                    return;  
+                }
+                let genre_oneSong = song.genres.toLowerCase();
+                let genreMatched = false;
+                for (const [broadGenre, keywords] of Object.entries(genreKeywords)) {
+                    if (keywords.some(keyword => genre_oneSong.includes(keyword))) {
+                        genreStats[broadGenre] += 1; 
+                        genreMatched = true;
+                        total_genres_divided += 1;
+                    }
+                    }
+                if (!genreMatched) {
+                    genreStats["other"] += 1;
+                    total_genres_divided += 1;
+                }
+            });
+
+            Object.keys(genreStats).forEach((genre, index) => {
+                plotData.push({
+                    category: category_name,
+                    genre: genre,
+                    count: genreStats[genre]/ total_genres_divided,
+                    angle: 2 * Math.PI * (index / (Object.keys(genreKeywords).length + 1)),
+                });
+            });
+            plotData.push({
+                categrory: category_name,
+                featureName: "total_songs",
+                amount: songs_inCategory.length,
+            });
+            category_index += 1;
+        });
+    return plotData;
+  }
+  const groupedByLongevity = d3.rollup(
+    Array.from(longevity_information.entries())
+        .map(([Song_ID, data]) => ({ Song_ID, ...data })),
+            group => group, 
+            d => d.maximum_amount_of_weeks
+    );
+    const sortedGroups = Array.from(groupedByLongevity.entries())
+        .sort((a, b) => a[0] - b[0]); 
+    const songs_shortHits = [];
+    const songs_mediumHits = [];
+    const songs_longHits = [];
+    let totalSongs = 0;
+    sortedGroups.forEach(group => {
+        totalSongs += group[1].length;
+    });
+    const maxWeeks = d3.max(sortedGroups, ([weeks]) => weeks);
+    let targetSize = Math.ceil(totalSongs / 3);
+    let currentCategory = songs_shortHits;
+    sortedGroups.forEach(([weeks, group]) => {
+        if (currentCategory.length > targetSize && currentCategory !== songs_longHits) {
+            if (currentCategory === songs_shortHits) {
+                currentCategory = songs_mediumHits;
+                targetSize = Math.ceil((totalSongs - songs_shortHits.length) / 2);
+            } 
+            else {
+                currentCategory = songs_longHits;
+            }
+        }
+        if (currentCategory == songs_shortHits && weeks == maxWeeks -1) {
+            currentCategory = songs_mediumHits;
+        }
+        if (currentCategory == songs_mediumHits && weeks == maxWeeks) {
+            currentCategory = songs_longHits;
+        }
+        currentCategory.push(...group);
+    });
+    let stats_all = calculateStats([songs_shortHits, songs_mediumHits, songs_longHits]);
+    return stats_all;
+}
 
 function createInteractiveGraph_Features_longevityRadialChart(data) {
     const radiusScale = d3
@@ -355,6 +493,110 @@ function createInteractiveGraph_Features_longevityRadialChart(data) {
     );
 }
 
-function createInteractiveGraph_GenresData_longevityRadialChart(data) {}
+function createInteractiveGraph_GenresData_longevityRadialChart(data) {
+    const maxCount = Math.max(...data.map(item => {
+        return typeof item.count === 'number' && !isNaN(item.count) ? item.count : -Infinity;
+    }));
+    const radiusScale = d3
+        .scaleLinear()
+        .domain([0, maxCount * 1.1])
+        .range([innerRadius_longevity_radialChart,outerRadius_longevity_radialChart]);
+    const radialGrid = d3.range(innerRadius_longevity_radialChart, outerRadius_longevity_radialChart,
+        (outerRadius_longevity_radialChart - innerRadius_longevity_radialChart) / 5);
+    longevity_radialChart
+        .selectAll(".grid")
+        .data(radialGrid)
+        .enter()
+        .append("circle_radialChart")
+        .attr("class", "grid")
+        .attr("r", (d) => d)
+        .attr("fill", "none")
+        .attr("stroke", "#ccc")
+        .attr("opacity", 0.3);
+    longevity_radialChart
+        .selectAll(".axis")
+        .data(data.filter((d) => d.category === categories[0]))
+        .enter()
+        .append("line")
+        .attr("class", "axis")
+        .attr("x1", (d) => radiusScale(0) * Math.sin(d.angle))
+        .attr("y1", (d) => -radiusScale(0) * Math.cos(d.angle))
+        .attr("x2", (d) => radiusScale(maxCount * 1.1) * Math.sin(d.angle))
+        .attr("y2", (d) => -radiusScale(maxCount * 1.1) * Math.cos(d.angle))
+        .attr("stroke", "#999")
+        .attr("opacity", 0.3);
+    longevity_radialChart
+        .selectAll(".label")
+        .data(data.filter((d) => d.category === categories[0]))
+        .enter()
+        .append("text")
+        .attr("class", "label")
+        .attr("x", (d) => (outerRadius_longevity_radialChart + 10) * Math.sin(d.angle))
+        .attr("y", (d) => -(outerRadius_longevity_radialChart + 10) * Math.cos(d.angle))
+        .attr("text-anchor", (d) => {
+        if (d.angle === 0 || d.angle === Math.PI) {
+            return "middle";
+        } else if (d.angle > Math.PI) {
+            return "end";
+        } else {
+            return "start";
+        }
+        })
+        .attr("alignment-baseline", "middle")
+        .style("font-size", "12px")
+        .style("font-weight", "bold")
+        .text((d) => d.genre);
+    
+    categories.forEach((category) => {
+        const filteredStats = data.filter((d) => d.category === category);
+        const radialLine = d3
+            .lineRadial()
+            .angle((d) => d.angle)
+            .radius((d) => radiusScale(d.count))
+            .curve(d3.curveLinearClosed);
+        longevity_radialChart
+            .append("path")
+            .datum(filteredStats)
+            .attr("d", radialLine)
+            .attr("stroke", get_color_longevityRadialChart(category))
+            .attr("fill", "none")
+            .attr("opacity", 0.8)
+            .attr("stroke-width", 2);
+    });
+
+    var legendGroup = longevity_radialChart
+        .append("g")
+        .attr("class", "legendGroup");
+
+    var legendItems = legendGroup
+        .selectAll(".legendItem")
+        .data(categories)
+        .enter()
+        .append("g")
+        .attr("class", "legendItem")
+        .attr("transform", (d, i) => `translate(${i * 110}, 0)`);
+
+    legendItems
+        .append("rect")
+        .attr("width", 10)
+        .attr("height", 10)
+        .attr("fill", (d) => get_color_longevityRadialChart(d))
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("stroke", "black");
+
+    legendItems
+        .append("text")
+        .attr("x", 15)
+        .attr("y", 10)
+        .text((d) => d);
+    var legendWidth = legendItems.size() * 110;
+    legendGroup.attr(
+        "transform",
+        `translate(${-(width_longevity_radialChart - legendWidth) * 4} , ${
+            height_longevity_radialChart * 0.6
+        })`
+    );
+}
 
 loadData_and_Create_longevityRadialChart();

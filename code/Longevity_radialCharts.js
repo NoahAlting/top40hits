@@ -20,73 +20,59 @@ var threshold_shortHits = 5;
 var threshold_mediumHits = 10;
 
 function get_color_longevityRadialChart(category) {
-  var colorScale = d3.scaleSequential(d3.interpolateViridis).domain([0, 2]);
-  let index = categories.indexOf(category);
-  return colorScale(index);
+    var colorScale = d3.scaleSequential(d3.interpolateViridis).domain([0, 2]);
+    let index = categories.indexOf(category);
+    return colorScale(index);
 }
 
 selected_years.sort((a, b) => a - b);
 
 const longevity_radialChart = d3
-  .select("#longevity_radialChart")
-  .append("svg")
-  .attr(
-    "width",
-    width_longevity_radialChart +
-      margin_longevity_radialChart.left +
-      margin_longevity_radialChart.right
-  )
-  .attr(
-    "height",
-    height_longevity_radialChart +
-      margin_longevity_radialChart.top +
-      margin_longevity_radialChart.bottom
-  )
-  .attr("viewBox", [
-    -width_longevity_radialChart / 2,
-    -height_longevity_radialChart / 2,
-    width_longevity_radialChart,
-    height_longevity_radialChart,
-  ])
-  .append("g")
-  .attr("stroke-linejoin", "round")
-  .attr("stroke-linecap", "round");
+    .select("#longevity_radialChart")
+    .append("svg")
+    .attr("width", width_longevity_radialChart + margin_longevity_radialChart.left + margin_longevity_radialChart.right)
+    .attr("height", height_longevity_radialChart + margin_longevity_radialChart.top + margin_longevity_radialChart.bottom)
+    .attr("viewBox", [-width_longevity_radialChart / 2, -height_longevity_radialChart / 2, width_longevity_radialChart, height_longevity_radialChart])
+    .append("g")
+    .attr("stroke-linejoin", "round")
+    .attr("stroke-linecap", "round");
+
+const std_button = d3
+    .select("#std_button_id")
+    .append("label")
+    .text("add standard deviation area")
+    .append("input")
+    .attr("type", "checkbox")
+    .attr("id", "myCheckbox");
 
 function get_color_longevity_radialChart(year) {
-  var colorScale = d3
-    .scaleSequential(d3.interpolateViridis)
-    .domain([0, selected_years.length - 1]);
-  let index = selected_years.indexOf(year);
-  return colorScale(index);
+    var colorScale = d3
+        .scaleSequential(d3.interpolateViridis)
+        .domain([0, selected_years.length - 1]);
+    let index = selected_years.indexOf(year);
+    return colorScale(index);
 }
 
 function loadData_and_Create_longevityRadialChart() {
-  d3.csv("../data/spotify_songs_with_ids.csv").then(function (
-    data_spotifySongs
-  ) {
-    data_spotifySongs.forEach((row) => {
-      row[selected_feature_or_genre] = +row[selected_feature_or_genre];
-    });
+    d3.csv("../data/spotify_songs_with_ids.csv").then(function(data_spotifySongs) {
+        data_spotifySongs.forEach((row) => {
+            row[selected_feature_or_genre] = +row[selected_feature_or_genre];
+        });
 
-    d3.csv("../data/top40_with_ids.csv").then(function (data_top40) {
-      if (selection_features == true) {
-        const data_processed = loadAndProcess_FeaturesData_longevityRadialChart(
-          data_spotifySongs,
-          data_top40
-        );
-        createInteractiveGraph_Features_longevityRadialChart(
-          data_processed,
-          categories
-        );
-      } else {
-        const data_processed = loadAndProcess_GenresData_longevityRadialChart(
-          data_spotifySongs,
-          data_top40
-        );
-        createInteractiveGraph_Genres_longevityRadialChart(data_processed);
-      }
+        d3.csv("../data/top40_with_ids.csv").then(function (data_top40) {
+            if (selection_features == true) {
+                const data_processed = loadAndProcess_FeaturesData_longevityRadialChart(
+                    data_spotifySongs, data_top40);
+                createInteractiveGraph_Features_longevityRadialChart(
+                    data_processed, categories);
+            } else {
+                const data_processed = loadAndProcess_GenresData_longevityRadialChart(
+                    data_spotifySongs, data_top40);
+                createInteractiveGraph_Genres_longevityRadialChart(
+                    data_processed);
+            }
+        });
     });
-  });
 }
 
 function loadAndProcess_FeaturesData_longevityRadialChart(spotifySongs, top40) {
@@ -197,8 +183,8 @@ function loadAndProcess_FeaturesData_longevityRadialChart(spotifySongs, top40) {
   const groupedByLongevity = d3.rollup(
     Array.from(longevity_information.entries())
         .map(([Song_ID, data]) => ({ Song_ID, ...data })),
-    group => group, 
-    d => d.maximum_amount_of_weeks
+            group => group, 
+            d => d.maximum_amount_of_weeks
     );
     const sortedGroups = Array.from(groupedByLongevity.entries())
         .sort((a, b) => a[0] - b[0]); 
@@ -241,15 +227,9 @@ function createInteractiveGraph_Features_longevityRadialChart(data) {
     const radiusScale = d3
         .scaleLinear()
         .domain([0, 1])
-        .range([
-        innerRadius_longevity_radialChart,
-        outerRadius_longevity_radialChart,
-        ]);
-    const radialGrid = d3.range(
-        innerRadius_longevity_radialChart,
-        outerRadius_longevity_radialChart,
-        (outerRadius_longevity_radialChart - innerRadius_longevity_radialChart) / 5
-    );
+        .range([innerRadius_longevity_radialChart,outerRadius_longevity_radialChart]);
+    const radialGrid = d3.range(innerRadius_longevity_radialChart, outerRadius_longevity_radialChart,
+        (outerRadius_longevity_radialChart - innerRadius_longevity_radialChart) / 5);
     longevity_radialChart
         .selectAll(".grid")
         .data(radialGrid)
@@ -278,14 +258,8 @@ function createInteractiveGraph_Features_longevityRadialChart(data) {
         .enter()
         .append("text")
         .attr("class", "label")
-        .attr(
-        "x",
-        (d) => (outerRadius_longevity_radialChart + 10) * Math.sin(d.angle)
-        )
-        .attr(
-        "y",
-        (d) => -(outerRadius_longevity_radialChart + 10) * Math.cos(d.angle)
-        )
+        .attr("x", (d) => (outerRadius_longevity_radialChart + 10) * Math.sin(d.angle))
+        .attr("y", (d) => -(outerRadius_longevity_radialChart + 10) * Math.cos(d.angle))
         .attr("text-anchor", (d) => {
         if (d.angle === 0 || d.angle === Math.PI) {
             return "middle";
@@ -299,6 +273,7 @@ function createInteractiveGraph_Features_longevityRadialChart(data) {
         .style("font-size", "12px")
         .style("font-weight", "bold")
         .text((d) => d.feature);
+    
     categories.forEach((category) => {
         const filteredStats = data.filter((d) => d.category === category);
         const radialLine = d3
@@ -314,19 +289,37 @@ function createInteractiveGraph_Features_longevityRadialChart(data) {
         .attr("fill", "none")
         .attr("opacity", 0.8)
         .attr("stroke-width", 2);
-    const radialArea = d3
-        .areaRadial()
-        .angle((d) => d.angle)
-        .innerRadius((d) => radiusScale(d.min))
-        .outerRadius((d) => radiusScale(d.max))
-        .curve(d3.curveCardinalClosed);
-    longevity_radialChart
-        .append("path")
-        .datum(filteredStats)
-        .attr("d", radialArea)
-        .attr("fill", get_color_longevityRadialChart(category))
-        .attr("opacity", 0.2);
     });
+
+    function activateStdArea(event){
+        const isChecked = event.target.checked;
+        categories.forEach((category) => {
+            const filteredStats = data.filter((d) => d.category === category);
+            var areaGenerator_raidalchart = d3
+                .areaRadial()
+                .angle((d) => d.angle)
+                .innerRadius((d) => radiusScale(d.min))
+                .outerRadius((d) => radiusScale(d.max))
+                .curve(d3.curveCardinalClosed);
+            var std_radialArea = longevity_radialChart
+                .append("path")
+                .attr("class", "area_radial");
+            if (isChecked) {
+                std_radialArea
+                    .datum(filteredStats)
+                    .attr("d", areaGenerator_raidalchart)
+                    .attr("opacity", 0.2)
+                    .attr("fill", get_color_longevityRadialChart(category));
+            } else {
+                longevity_radialChart.selectAll(".area_radial")
+                    .remove();
+            }
+        });
+
+    }
+    d3.select("#myCheckbox").on("change", activateStdArea);
+
+
     var legendGroup = longevity_radialChart
         .append("g")
         .attr("class", "legendGroup");

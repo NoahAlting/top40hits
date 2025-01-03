@@ -1,6 +1,7 @@
-var selected_years = [1980, 1990, 1981, 2021]; 
-var selected_feature_or_genre = 'Acousticness'; 
+var selected_years = [1990, 1991, 1992];
 var selected_weeks = [1, 53];
+var max_top = [5]; 
+var selected_feature_or_genre = "Acousticness";
 var selection_features = true;
 var margin_lineGraph = {top: 30, right: 30, bottom: 150, left: 60},
     width_lineGraph = 460 - margin_lineGraph.left - margin_lineGraph.right,
@@ -87,7 +88,9 @@ function loadData_and_Create_lineGraph() {
 }
 
 function loadAndProcess_FeaturesData_LineGraph(spotifySongs, top40) {
-    const mergedData = top40.filter(row => selected_years.includes(+row.Jaar))
+    const mergedData = top40
+        .filter(row => selected_years.includes(+row.Jaar))
+        .filter((row) => +row.Deze_week <= max_top)
         .map(top40 => {
             const songData = spotifySongs.find(song => song.Song_ID === top40.Song_ID);
             return songData ? {
@@ -128,7 +131,9 @@ function loadAndProcess_FeaturesData_LineGraph(spotifySongs, top40) {
 }
 
 function loadAndProcess_GenresData_LineGraph(spotifySongs, top40) {
-    const mergedData = top40.filter(row => selected_years.includes(+row.Jaar))
+    const mergedData = top40
+        .filter(row => selected_years.includes(+row.Jaar))
+        .filter((row) => +row.Deze_week <= max_top)
         .map(top40 => {
             const songData = spotifySongs.find(song => song.Song_ID === top40.Song_ID);
             if (songData) {

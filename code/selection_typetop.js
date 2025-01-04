@@ -5,12 +5,12 @@ function dispatchCustomEvent(eventName, detail = {}) {
 
 // toggle_featgenre from buttonstrip: https://www.cssscript.com/inline-toggle-button-buttonstrip/
 
-function Toggle_featgenre(options) {
+function buttonstrip(options) {
     this.id = options.id;
     this.buttons = [];
 }
 
-Toggle_featgenre.prototype.addButton = function(pName, pActive, pType, pCallback) {
+buttonstrip.prototype.addButton = function(pName, pActive, pType, pCallback) {
     this.buttons.push({
         name: pName,
         active: pActive,
@@ -21,7 +21,7 @@ Toggle_featgenre.prototype.addButton = function(pName, pActive, pType, pCallback
     });
 }
 
-Toggle_featgenre.prototype.append = function(element) {
+buttonstrip.prototype.append = function(element) {
     var rootDiv = document.createElement('div');
     rootDiv.classList.add('button-strip');
     rootDiv.id = this.id;
@@ -59,7 +59,7 @@ Toggle_featgenre.prototype.append = function(element) {
 
 // =================================== Own code for global variable ========================================
 document.addEventListener("DOMContentLoaded", () => {
-    const buttonStrip = document.getElementById("toggleButtonStrip");
+    const buttonStrip = document.getElementById("toggleType");
 
     buttonStrip.addEventListener("click", (event) => {
         if (event.target.tagName === "BUTTON") {
@@ -72,6 +72,29 @@ document.addEventListener("DOMContentLoaded", () => {
             window.selectedType = clickedButton.getAttribute("data-toggle");
             console.log("Selected Option (global):", window.selectedType);
             dispatchCustomEvent('typeUpdated', { type: selectedType });
+        }
+    });
+});
+
+// ============================================ Top SELECTOR =================================================
+// ============================================ Top SELECTOR =================================================
+document.addEventListener("DOMContentLoaded", () => {
+    const buttonStripTop = document.getElementById("toggleTop");
+
+    buttonStripTop.addEventListener("click", (event) => {
+        if (event.target.tagName === "BUTTON") {
+            const buttons = buttonStripTop.querySelectorAll("button");
+            buttons.forEach((button) => button.classList.remove("active"));
+
+            const clickedButton = event.target;
+            clickedButton.classList.add("active");
+
+            // Update the global selectedTop value
+            window.selectedTop = parseInt(clickedButton.getAttribute("data-toggle").replace("top", ""));
+            console.log("Selected Top (global):", window.selectedTop);
+
+            // Dispatch a custom event for selectedTop update
+            dispatchCustomEvent('topUpdated', { top: window.selectedTop });
         }
     });
 });

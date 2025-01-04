@@ -22,6 +22,7 @@
     <div id="globalDisplay">
         <h2>Current Global Variables</h2>
         <p><strong>Selected Type:</strong> <span id="selectedTypeValue">Loading...</span></p>
+        <p><strong>Selected Top:</strong> <span id="selectedTopValue">Loading...</span></p>
         <p><strong>Selected Year Range:</strong> <span id="selectedYearRangesValue">Loading...</span></p>
         <p><strong>Selected Week Range:</strong> <span id="selectedWeekRangeValue">Loading...</span></p>
     </div>
@@ -30,7 +31,16 @@
 <!-- Selector Dashboard in the Middle -->
 <div id="selectorDashboard">
     <h1>Selector Dashboard</h1>
-    <div class="buttonstrip" id="toggleButtonStrip">
+    <div class="buttonstrip" id="toggleTop">
+        <button data-toggle="top1">1</button>
+        <button data-toggle="top3">3</button>
+        <button data-toggle="top5">5</button>
+        <button data-toggle="top10">10</button>
+        <button data-toggle="top20">20</button>
+        <button data-toggle="top40" class="active">40</button>
+    </div>
+
+    <div class="buttonstrip" id="toggleType">
         <button data-toggle="genres">Genres</button>
         <button data-toggle="features" class="active">Features</button>
     </div>
@@ -57,14 +67,15 @@
 <!--Global variables-->
 <script>
     window.selectedType = "features";
+    window.selectedTop = 40;
     window.selectedYearRanges = [[1965, 2023]];
     window.selectedWeekRange = [1,52];
 </script>
 
 <!--Scripts-->
 <script src="https://d3js.org/d3.v7.min.js"></script>
-<script src="stack_selection2.js"></script>
-<script src="toggle_featgenre.js"></script>
+<script src="selection_yearweek.js"></script>
+<script src="selection_typetop.js"></script>
 <script src="scatterplot_longevity.js"></script>
 <script src="Longevity_radialCharts.js"></script>
 <script src="LineGraph_overTime.js"></script>

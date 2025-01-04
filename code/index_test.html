@@ -19,14 +19,20 @@
 <div id="lineGraphContainer">
     <h1>Linegraph</h1>
     <div id="lineGraph_overTime"></div>
+    <div id="globalDisplay">
+        <h2>Current Global Variables</h2>
+        <p><strong>Selected Type:</strong> <span id="selectedTypeValue">Loading...</span></p>
+        <p><strong>Selected Year Range:</strong> <span id="selectedYearRangesValue">Loading...</span></p>
+        <p><strong>Selected Week Range:</strong> <span id="selectedWeekRangeValue">Loading...</span></p>
+    </div>
 </div>
 
 <!-- Selector Dashboard in the Middle -->
 <div id="selectorDashboard">
     <h1>Selector Dashboard</h1>
     <div class="buttonstrip" id="toggleButtonStrip">
-        <button data-toggle="genres" class="active">Genres</button>
-        <button data-toggle="features">Features</button>
+        <button data-toggle="genres">Genres</button>
+        <button data-toggle="features" class="active">Features</button>
     </div>
     <div id="yearselectordashboard">
         <svg id="yearSelector"></svg>
@@ -57,12 +63,13 @@
 
 <!--Scripts-->
 <script src="https://d3js.org/d3.v7.min.js"></script>
-<script src="toggle_featgenre.js"></script>
-<script src=""></script>
 <script src="stack_selection2.js"></script>
+<script src="toggle_featgenre.js"></script>
 <script src="scatterplot_longevity.js"></script>
 <script src="Longevity_radialCharts.js"></script>
 <script src="LineGraph_overTime.js"></script>
+<script src="example_globalvariable.js"></script>
+
 
 </body>
 </html>

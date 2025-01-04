@@ -1,11 +1,16 @@
+function dispatchCustomEvent(eventName, detail = {}) {
+    const event = new CustomEvent(eventName, { detail });
+    window.dispatchEvent(event);
+}
+
 // toggle_featgenre from buttonstrip: https://www.cssscript.com/inline-toggle-button-buttonstrip/
 
-function ButtonStrip(options) {
+function Toggle_featgenre(options) {
     this.id = options.id;
     this.buttons = [];
 }
 
-ButtonStrip.prototype.addButton = function(pName, pActive, pType, pCallback) {
+Toggle_featgenre.prototype.addButton = function(pName, pActive, pType, pCallback) {
     this.buttons.push({
         name: pName,
         active: pActive,
@@ -16,7 +21,7 @@ ButtonStrip.prototype.addButton = function(pName, pActive, pType, pCallback) {
     });
 }
 
-ButtonStrip.prototype.append = function(element) {
+Toggle_featgenre.prototype.append = function(element) {
     var rootDiv = document.createElement('div');
     rootDiv.classList.add('button-strip');
     rootDiv.id = this.id;
@@ -53,25 +58,20 @@ ButtonStrip.prototype.append = function(element) {
 
 
 // =================================== Own code for global variable ========================================
-window.selectedOption = "genres"; // Default to "genres"
-
-// Wait for the DOM to load
 document.addEventListener("DOMContentLoaded", () => {
     const buttonStrip = document.getElementById("toggleButtonStrip");
 
     buttonStrip.addEventListener("click", (event) => {
         if (event.target.tagName === "BUTTON") {
-            // Remove the active class from all buttons
             const buttons = buttonStrip.querySelectorAll("button");
             buttons.forEach((button) => button.classList.remove("active"));
 
-            // Add the active class to the clicked button
             const clickedButton = event.target;
             clickedButton.classList.add("active");
 
-            // Update the global selected option
-            window.selectedOption = clickedButton.getAttribute("data-toggle");
-            console.log("Selected Option (global):", window.selectedOption);
+            window.selectedType = clickedButton.getAttribute("data-toggle");
+            console.log("Selected Option (global):", window.selectedType);
+            dispatchCustomEvent('typeUpdated', { type: selectedType });
         }
     });
 });

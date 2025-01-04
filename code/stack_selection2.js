@@ -2,6 +2,13 @@
 // ludwig schubert 2016 multiple brush https://github.com/ludwigschubert/d3-brush-multiple
 // brush snapping https://observablehq.com/@d3/brush-snapping
 
+// ========================================= UPDATING PLOTS =================================================
+// Create and dispatch a custom event
+function dispatchCustomEvent(eventName, detail = {}) {
+    const event = new CustomEvent(eventName, { detail });
+    window.dispatchEvent(event);
+}
+
 // ============================================ YEAR SELECTOR =================================================
 // mapfn -> transforming indices to correspond with years
 const years = Array.from({ length: 59 }, (_, i) => 1965 + i);
@@ -113,6 +120,9 @@ function removeRange(index) {
     multiBrushes.splice(index, 1);
 
     renderRanges();
+    console.log("selected ranges after deletion", selectedRanges);
+    window.selectedYearRanges = selectedRanges.map(r => r.range);
+    dispatchCustomEvent('yearRangeUpdated', { ranges: selectedRanges });
     resetYearColors();
 }
 
@@ -129,7 +139,8 @@ function createBrush() {
             multiBrush.call(this, event, newBrush);
         })
         .on("end", function (event) {
-            multiBrush.call(this, event, newBrush);
+            console.log(selectedRanges);
+            dispatchCustomEvent('yearRangeUpdated', { ranges: selectedRanges });
         });
 
     const brushGroup = svg_yearselect
@@ -214,6 +225,7 @@ function updateRanges(brush, range) {
     }
     window.selectedYearRanges = selectedRanges.map(r => r.range);
     renderRanges();
+
 }
 
 // Function to disable the add brush button when 5 ranges are selected (max)
@@ -259,7 +271,6 @@ function renderRanges() {
     });
 
     updateAddBrushButton();
-    console.log(selectedRanges);
 }
 
 // Function to edit the range of a previous created year range
@@ -421,6 +432,7 @@ function brushended(event) {
 
     window.selectedWeekRange = [snappedStart, snappedEnd];
     console.log(`Selected weeks: ${snappedStart} to ${snappedEnd}`);
+    dispatchCustomEvent('weekRangeUpdated', { ranges: selectedWeekRange });
     weekRangeContainer.innerHTML = `Week ${snappedStart} - ${snappedEnd}`;
 }
 

@@ -216,6 +216,16 @@ function updateRanges(brush, range) {
     renderRanges();
 }
 
+// Function to disable the add brush button when 5 ranges are selected (max)
+function updateAddBrushButton() {
+    const addBrushButton = document.getElementById("addBrushButton");
+    if (selectedRanges.length >= 5) {
+        addBrushButton.disabled = true;
+    } else {
+        addBrushButton.disabled = false;
+    }
+}
+
 // Function to show the selected year ranges on the dashboard, & remove & edit them
 function renderRanges() {
     const rangeContainer = document.getElementById("rangeContainer");
@@ -231,7 +241,10 @@ function renderRanges() {
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path d="M3 6l3 16h12l3-16H3zm16 14H5L4.5 8h15l-.5 12zM9 10h2v8H9zm4 0h2v8h-2zM15 4l-1-1h-4l-1 1H5v2h14V4z"/>
             </svg>`;
-        removeButton.onclick = () => removeRange(index);
+        removeButton.onclick = () => {
+            removeRange(index);
+            updateAddBrushButton();
+        };
 
         const editButton = document.createElement("button");
         editButton.innerHTML = `
@@ -244,8 +257,11 @@ function renderRanges() {
         rangeDiv.appendChild(editButton);
         rangeContainer.appendChild(rangeDiv);
     });
+
+    updateAddBrushButton();
     console.log(selectedRanges);
 }
+
 // Function to edit the range of a previous created year range
 function editRange(index) {
     const { range, group: oldGroup } = selectedRanges[index];

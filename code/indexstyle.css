@@ -140,3 +140,40 @@ svg {
 .range-item button:hover svg {
     fill: #000;
 }
+
+/* ================================ Feat genre toggle ====================================== */
+.buttonstrip {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.buttonstrip button {
+    flex: 1;
+    padding: 0;
+    margin: 0;
+    height: 20px;
+    width: 60px;
+    border: none;
+    font-size: 12px;
+    color: black;
+    background-color: #f4f4f4;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+}
+
+.buttonstrip button.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.buttonstrip button:not(.active):hover {
+    background-color: #e7e7e7;
+}

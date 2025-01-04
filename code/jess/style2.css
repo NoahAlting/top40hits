@@ -15,11 +15,11 @@ body {
 }
 
 
-button {
-    padding: 10px;
-    font-size: 14px;
-    cursor: pointer;
-}
+/*button {*/
+/*    padding: 10px;*/
+/*    font-size: 14px;*/
+/*    cursor: pointer;*/
+/*}*/
 
 svg {
     margin-top: 10px;
@@ -84,4 +84,37 @@ svg {
 
 .range-item button:hover svg {
     fill: #000;
+}
+
+.buttonstrip {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.buttonstrip button {
+    flex: 1;
+    padding: 0; /* Remove padding to make it tight */
+    margin: 0;  /* Remove margin to make sure the buttons fill the space */
+    height: 30px; /* Set a fixed height for buttons */
+    border: none;
+    color: black; /* Explicitly set text color to black */
+    background-color: #f4f4f4;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center; /* Vertically center the text */
+    justify-content: center; /* Horizontally center the text */
+}
+
+.buttonstrip button.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.buttonstrip button:not(.active):hover {
+    background-color: #e7e7e7;
 }

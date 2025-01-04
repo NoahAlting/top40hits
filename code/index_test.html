@@ -24,6 +24,10 @@
 <!-- Selector Dashboard in the Middle -->
 <div id="selectorDashboard">
     <h1>Selector Dashboard</h1>
+    <div class="buttonstrip" id="toggleButtonStrip">
+        <button data-toggle="genres" class="active">Genres</button>
+        <button data-toggle="features">Features</button>
+    </div>
     <div id="yearselectordashboard">
         <svg id="yearSelector"></svg>
         <div>
@@ -44,7 +48,16 @@
     <div id="barchart"></div>
 </div>
 
+<!--Global variables-->
+<script>
+    window.selectedType = "features";
+    window.selectedYearRanges = [[1965, 2023]];
+    window.selectedWeekRange = [1,52];
+</script>
+
+<!--Scripts-->
 <script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="toggle_featgenre.js"></script>
 <script src=""></script>
 <script src="stack_selection2.js"></script>
 <script src="scatterplot_longevity.js"></script>

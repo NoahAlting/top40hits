@@ -2,6 +2,23 @@
 // just use the ids instead of connecting manually
 // one week & one year possibility?
 
+window.addEventListener('yearRangeUpdated', function (event) {
+    var year_ranges = window.selectedYearRanges
+});
+
+window.addEventListener('weekRangeUpdated', function (event) {
+    var week_ranges = window.selectedWeekRange
+});
+
+window.addEventListener('typeUpdated', function (event) {
+   var type = window.selectedType
+});
+
+window.addEventListener('topUpdated', function (event) {
+    var top = window.selectedTop
+});
+
+
 var week_range = [10, 25]
 var year_range = [2010, 2013];
 const colorScale = d3
@@ -308,3 +325,28 @@ Promise.all([
 
 });
 
+// ==================================== GENRES ==========================================
+var selected_years = [2020, 2021, 2022];
+var selected_weeks = [1, 10];
+var max_top = [5];
+var width_genrehis = 300;
+var height_genrehis = 200;
+
+const genreKeywords = {
+    "pop": ["pop"],
+    "hip-hop": ["hip-hop", "rap"],
+    "rock": ["rock", "metal", "punk", "alternative"],
+    "edm": ["edm", "house", "techno", "trance", "dubstep", "drum and bass"],
+    "r&b": ["r&b", "rhythm and blues", "soul", "funk"],
+    "soul": ["soul", "motown"],
+    "country": ["country", "bluegrass", "folk"],
+    "latin": ["latin", "salsa", "reggaeton", "bossa nova"],
+    "jazz": ["jazz", "blues", "fusion"],
+    "classical": ["classical", "opera", "symphony"],
+    "reggae": ["reggae", "ska", "dancehall"]
+};
+
+let genres = Object.keys(genreKeywords);
+
+const svg_longhis = d3.select("#longevity_histogram")
+    .attr("viewBox", [0, 0, width_genrehis, height_genrehis]);

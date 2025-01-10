@@ -3,55 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style2.css">
     <title>D3 Year and Week Selection</title>
-    <style>
-        /* Basic styling for the SVG containers */
-        #yearSelector {
-            width: 100%;
-            height: 600px; /* Height of the year selection */
-            margin-top: 20px;
-        }
-
-        .brush .selection {
-            fill-opacity: .3;
-            shape-rendering: crispEdges;
-        }
-
-        .handle {
-            cursor: pointer;
-        }
-
-        /* Additional styling for the toggle button */
-        #modeToggle {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        #modeToggle:hover {
-            background-color: #45a049;
-        }
-
-        /* Styling for the week selection */
-        #weekSelector {
-            margin-top: 30px;
-        }
-    </style>
 </head>
 <body>
 
 
-<!-- Year Selection (Vertical) -->
-// <svg id="yearSelector" width="600" height="300"></svg>
+<div id = "selectorDashboard">
+    <!-- Year Selection (Vertical) -->
+    <div id="yearselectordashboard">
+        <svg id="yearSelector"></svg>
+        <div>
+            <button id="addBrushButton">Add Range</button>
+            <div id="rangeContainer"></div>
+        </div>
+    </div>
 
-<div id="controls">
-    <button id="addBrushButton">Add Range</button>
+    <svg id="weekSelector" width="250" height="50"></svg>
+    <div id="weekRangeContainer"></div>
 </div>
-<div id="rangeContainer"></div>
+
+<div class="buttonstrip" id="toggleButtonStrip">
+    <button data-toggle="genres" class="active">Genres</button>
+    <button data-toggle="features">Features</button>
+</div>
+
+<!--week and year ranges-->
+<script>
+    // Define global variables in the global scope (window object)
+    window.selectedType = "features";
+    window.selectedYearRanges = [[1965, 2023]];
+    window.selectedWeekRange = [1,52];
+</script>
 
 <!-- D3.js and Script -->
 <script src="https://d3js.org/d3.v7.min.js"></script>

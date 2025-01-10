@@ -1,10 +1,67 @@
 // to do
-//show chosen dot in scatterplot
-// remove floating dots
 // just use the ids instead of connecting manually
+// one week & one year possibility?
+
+window.addEventListener('yearRangeUpdated', function (event) {
+    var year_ranges = window.selectedYearRanges
+});
+
+window.addEventListener('weekRangeUpdated', function (event) {
+    var week_ranges = window.selectedWeekRange
+});
+
+window.addEventListener('typeUpdated', function (event) {
+   var type = window.selectedType
+});
+
+window.addEventListener('topUpdated', function (event) {
+    var top = window.selectedTop
+});
+
+
+var week_range = [10, 25]
+var year_range = [2010, 2013];
+const colorScale = d3
+    .scaleSequential()
+    .domain(year_range)
+    .interpolator(d3.interpolateCool);
+
+
+function updateLegend() {
+    d3.select("#legend").selectAll("*").remove();
+    const legendHeight = (year_range[1] - year_range[0] + 1) * 15;
+
+    const legend = d3
+        .select("#legend")
+        .append("svg")
+        .attr("width", 150)
+        .attr("height", legendHeight);
+
+    legend.selectAll("rect")
+        .data(d3.range(year_range[0], year_range[1] + 1)) 
+        .enter()
+        .append("rect")
+        .attr("x", 0)
+        .attr("y", (d, i) => i * 15) 
+        .attr("width", 20)
+        .attr("height", 10)
+        .attr("fill", d => colorScale(d)); 
+
+    legend.selectAll("text")
+        .data(d3.range(year_range[0], year_range[1] + 1))
+        .enter()
+        .append("text")
+        .attr("x", 25) 
+        .attr("y", (d, i) => i * 15 + 9) 
+        .text(d => d) 
+        .style("font-size", "10px")
+        .style("alignment-baseline", "middle");
+}
+
+
 Promise.all([
     d3.csv("../data/spotify_songs.csv", d3.autoType),
-    d3.tsv("../data/top40-noteringen.csv", d3.autoType) 
+    d3.tsv("../data/top40-noteringen.csv", d3.autoType)
 ]).then(([spotifyData, top40Data]) => {
     let mergedData = top40Data.map(song => {
         const spotifyMatch = spotifyData.find(
@@ -17,8 +74,8 @@ Promise.all([
             ...song,
             ...spotifyMatch,
             // and properties from the top 40
-            Longevity: song.Aantal_weken, 
-            Jaar: song.Jaar 
+            Longevity: song.Aantal_weken,
+            Jaar: song.Jaar
         };
     });
 
@@ -70,19 +127,19 @@ Promise.all([
         .text(d => d);
 
     // year slider
-    const slider = d3
-        .select("#year-slider")
-        .append("input")
-        .attr("type", "range")
-        .attr("min", minYear)
-        .attr("max", maxYear)
-        .attr("value", minYear)
-        .attr("step", 1);
+    // const slider = d3
+    //     .select("#year-slider")
+    //     .append("input")
+    //     .attr("type", "range")
+    //     .attr("min", minYear)
+    //     .attr("max", maxYear)
+    //     .attr("value", minYear)
+    //     .attr("step", 1);
 
-    const sliderLabel = d3
-        .select("#year-slider")
-        .append("span")
-        .text(minYear);
+    // const sliderLabel = d3
+    //     .select("#year-slider")
+    //     .append("span")
+    //     .text(minYear);
 
     const width = 800;
     const height = 400;
@@ -101,22 +158,31 @@ Promise.all([
         .attr("height", height);
 
     // scatterplot
-    function showScatterplot(feature, year) {
-        const filteredSongs = maxLongevity.filter(d => d.Jaar === year);
-    
+    function showScatterplot(feature) {
+        const filteredSongs = maxLongevity.filter(
+            // what about one year & one week?
+            d =>
+                d.Weeknr >= week_range[0] && 
+                d.Weeknr <= week_range[1] &&
+                d.Jaar >= year_range[0] &&
+                d.Jaar <= year_range[1] &&
+                d[feature] !== null &&
+                d[feature] !== undefined
+        );
+
         const xScale = d3
             .scaleLinear()
-            .domain(longevityRange) 
+            .domain(longevityRange)
             .range([margin.left, width - margin.right]);
-    
+
         const yScale = d3
             .scaleLinear()
-            .domain(featureRanges[feature]) 
+            .domain(featureRanges[feature])
             .range([height - margin.bottom, margin.top]);
-    
-        
+
+
         // clear previous plot
-        svg.selectAll("*").remove(); 
+        svg.selectAll("*").remove();
 
         svg.append("g")
             .attr("transform", `translate(0, ${height - margin.bottom})`)
@@ -124,7 +190,7 @@ Promise.all([
         svg.append("g")
             .attr("transform", `translate(${margin.left}, 0)`)
             .call(d3.axisLeft(yScale));
-    
+
         svg.selectAll("circle")
             .data(filteredSongs)
             .enter()
@@ -132,46 +198,73 @@ Promise.all([
             .attr("cx", d => xScale(d.Longevity))
             .attr("cy", d => (d[feature] ? yScale(d[feature]) : null))
             .attr("r", 5)
-            .attr("fill", "darkseagreen")
+            .attr("fill", d => colorScale(d.Jaar))
+            // .attr("opacity", 0.5)
             // when the dot is clicked, render the bar chart
-            .on("click", (event, d) => showBarChart(d, feature)); 
-    
+            .on("click", (event, d) => {
+                d3.selectAll("circle").attr("r", 5); 
+                d3.selectAll("circle").attr("stroke", "none")
+                d3.selectAll("circle").attr("fill", d => colorScale(d.Jaar))
+                // make clear when selecting 
+                d3.select(event.target)
+                    .transition()
+                    .duration(200)
+                    .attr("r", 8) 
+                    .attr("fill", "orange")
+                    .attr("stroke", "black")
+                    .attr("stroke-width", 0.8)
+                showBarChart(d, feature);
+            })
+            .on("mouseover", (event, d) => {
+                d3.select(event.target)
+                    .attr("r", 8) 
+                    .transition()
+                    .duration(200)
+            })
+            .on("mouseout", (event, d) => {
+                if (!d3.select(event.target).classed("selected")) {
+                    d3.select(event.target)
+                        .attr("r", 5) 
+                }})
+
         // Labels
         svg.append("text")
             .attr("x", width / 2)
             .attr("y", height - 10)
             .attr("text-anchor", "middle")
             .text("Longevity (weeks)");
-    
-        svg.append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("x", -height / 2)
-            .attr("y", 15)
-            .attr("text-anchor", "middle")
-            .text(feature);
+
+
+        // legend
+        updateLegend();
+
     }
-    
+
+
     // barchart
     function showBarChart(song, selectedFeature) {
         // only show these features, the others are not witin 0-1, could also do but normalise
         const selectedFeatures = ['Danceability', 'Acousticness', 'Energy', 'Liveness', 'Valence', 'Speechiness'];
         const featureData = selectedFeatures
             .map(feature => ({ feature, value: song[feature] }))
-            .filter(d => d.value != null); 
-    
+            .filter(d => 
+                d.value != null &&
+                d.value != undefined
+            );
+
         // console.log("Selected Feature:", selectedFeature);  
-    
+
         const xScale = d3
             .scaleBand()
             .domain(featureData.map(d => d.feature))
             .range([margin.left, width - margin.right])
             .padding(0.1);
-    
+
         const yScale = d3
             .scaleLinear()
-            .domain([0, 1]) 
+            .domain([0, 1])
             .range([height - margin.bottom, margin.top]);
-    
+
         barChart.selectAll("*").remove();
 
         barChart.append("g")
@@ -180,11 +273,11 @@ Promise.all([
             .selectAll("text")
             .attr("transform", "rotate(-45)")
             .style("text-anchor", "end");
-    
+
         barChart.append("g")
             .attr("transform", `translate(${margin.left}, 0)`)
             .call(d3.axisLeft(yScale));
-    
+
         // Add bars
         barChart.selectAll("rect")
             .data(featureData)
@@ -196,9 +289,9 @@ Promise.all([
             .attr("height", d => height - margin.bottom - yScale(d.value))
             // colour the feature that is in the scatterplot
             .attr("fill", d => {
-                return d.feature === selectedFeature ? "darkseagreen" : "darkslateblue"; 
+                return d.feature === selectedFeature ? "orange" : "darkslateblue";
             });
-    
+
         // show the artist & title too
         barChart.append("text")
             .attr("x", width / 2)
@@ -207,27 +300,53 @@ Promise.all([
             .style("font-size", "14px")
             .text(`${song.Artist}: ${song.Title}`);
     }
-    
+
     // initial render scatterplot
     showScatterplot(features[0], minYear);
-    
+
     // update when feature is changed
     dropdown.on("change", function () {
         // get the feature value that is selected
         const selectedFeature = this.value;
-        // get the year value from the slider (+ = to num)
-        const selectedYear = +slider.property("value");
-        showScatterplot(selectedFeature, selectedYear);
+        // // get the year value from the slider (+ = to num)
+        // need to turn this back on to register changes from the year menu
+        // const selectedYear = +slider.property("value");
+        showScatterplot(selectedFeature);
     });
-    
-    // update when year is changed
-    slider.on("input", function () {
-        const selectedYear = +this.value;
-        // update label
-        sliderLabel.text(selectedYear);
-        const selectedFeature = dropdown.property("value");
-        showScatterplot(selectedFeature, selectedYear);
-    });
+
+    // // update when year is changed
+    // slider.on("input", function () {
+    //     const selectedYear = +this.value;
+    //     // update label
+    //     sliderLabel.text(selectedYear);
+    //     const selectedFeature = dropdown.property("value");
+    //     showScatterplot(selectedFeature, selectedYear);
+    // });
 
 });
 
+// ==================================== GENRES ==========================================
+var selected_years = [2020, 2021, 2022];
+var selected_weeks = [1, 10];
+var max_top = [5];
+var width_genrehis = 300;
+var height_genrehis = 200;
+
+const genreKeywords = {
+    "pop": ["pop"],
+    "hip-hop": ["hip-hop", "rap"],
+    "rock": ["rock", "metal", "punk", "alternative"],
+    "edm": ["edm", "house", "techno", "trance", "dubstep", "drum and bass"],
+    "r&b": ["r&b", "rhythm and blues", "soul", "funk"],
+    "soul": ["soul", "motown"],
+    "country": ["country", "bluegrass", "folk"],
+    "latin": ["latin", "salsa", "reggaeton", "bossa nova"],
+    "jazz": ["jazz", "blues", "fusion"],
+    "classical": ["classical", "opera", "symphony"],
+    "reggae": ["reggae", "ska", "dancehall"]
+};
+
+let genres = Object.keys(genreKeywords);
+
+const svg_longhis = d3.select("#longevity_histogram")
+    .attr("viewBox", [0, 0, width_genrehis, height_genrehis]);

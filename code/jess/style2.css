@@ -8,19 +8,21 @@ body {
     margin-bottom: 20px;
 }
 
-button {
-    padding: 10px;
-    font-size: 14px;
-    cursor: pointer;
+#yearselectordashboard {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
 }
+
+
+/*button {*/
+/*    padding: 10px;*/
+/*    font-size: 14px;*/
+/*    cursor: pointer;*/
+/*}*/
 
 svg {
-    border: 1px solid #ccc;
-    margin-top: 20px;
-}
-
-.year-rect {
-    transition: fill 0.3s;
+    margin-top: 10px;
 }
 
 .multi-brush {
@@ -31,8 +33,26 @@ svg {
     margin-top: 50px;
 }
 
+#addBrushButton {
+    padding: 5px 10px; /* Smaller button size */
+    font-size: 12px; /* Smaller text */
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+#addBrushButton:hover {
+    background-color: #0056b3;
+}
+
 #rangeContainer {
     margin-top: 10px;
+    width: 100px;
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .range-item {
@@ -40,10 +60,61 @@ svg {
     justify-content: space-between;
     margin-bottom: 5px;
     background-color: #f0f0f0;
-    padding: 5px;
+    padding: 3px;
     border-radius: 4px;
+    font-size: 12px;
 }
 
 .range-item button {
-    margin-left: 10px;
+    margin-left: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.range-item button svg {
+    width: 16px;
+    height: 16px;
+    fill: #555;
+    transition: fill 0.2s;
+}
+
+.range-item button:hover svg {
+    fill: #000;
+}
+
+.buttonstrip {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.buttonstrip button {
+    flex: 1;
+    padding: 0; /* Remove padding to make it tight */
+    margin: 0;  /* Remove margin to make sure the buttons fill the space */
+    height: 30px; /* Set a fixed height for buttons */
+    border: none;
+    color: black; /* Explicitly set text color to black */
+    background-color: #f4f4f4;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center; /* Vertically center the text */
+    justify-content: center; /* Horizontally center the text */
+}
+
+.buttonstrip button.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.buttonstrip button:not(.active):hover {
+    background-color: #e7e7e7;
 }

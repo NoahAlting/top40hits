@@ -1,59 +1,20 @@
-var selected_years = [1990, 1991, 1992];
-var selected_weeks = [1, 53];
-var max_top = [5]; 
-var selected_feature_or_genre = "Acousticness";
-var selection_features = true;
+// const genreKeywords = {
+//     "pop": ["pop"],
+//     "hip-hop": ["hip-hop", "rap"],
+//     "rock": ["rock", "metal", "punk", "alternative"],
+//     "edm": ["edm", "house", "techno", "trance", "dubstep", "drum and bass"],
+//     "r&b": ["r&b", "rhythm and blues", "soul", "funk"],
+//     "country": ["country", "bluegrass", "folk"],
+//     "latin": ["latin", "salsa", "reggaeton", "bossa nova"],
+//     "jazz": ["jazz", "blues", "fusion"],
+//     "classical": ["classical", "opera", "symphony"],
+//     "reggae": ["reggae", "ska", "dancehall"]
+// };   
+// let genres = Object.keys(genreKeywords);
+
 var margin_lineGraph = {top: 30, right: 30, bottom: 150, left: 60},
     width_lineGraph = 460 - margin_lineGraph.left - margin_lineGraph.right,
     height_lineGraph = 400 - margin_lineGraph.top - margin_lineGraph.bottom;
-const genreKeywords = {
-    "pop": ["pop"],
-    "hip-hop": ["hip-hop", "rap"],
-    "rock": ["rock", "metal", "punk", "alternative"],
-    "edm": ["edm", "house", "techno", "trance", "dubstep", "drum and bass"],
-    "r&b": ["r&b", "rhythm and blues", "soul", "funk"],
-    "soul": ["soul", "motown"],
-    "country": ["country", "bluegrass", "folk"],
-    "latin": ["latin", "salsa", "reggaeton", "bossa nova"],
-    "jazz": ["jazz", "blues", "fusion"],
-    "classical": ["classical", "opera", "symphony"],
-    "reggae": ["reggae", "ska", "dancehall"]
-};    
-
-selected_years.sort((a, b) => a - b);
-
-const get_genre_stats_per_week = function(lst_genres_week, genre_Keywords) {
-    let genreCounts = {};
-    for (const [broadGenre, keywords] of Object.entries(genre_Keywords)) {
-        genreCounts[broadGenre] = 0; 
-    }
-    genreCounts["other"] = 0;
-
-    lst_genres_week.forEach(genre => {
-        genre = genre.toLowerCase();
-        let genreMatched = false;
-        for (const [broadGenre, keywords] of Object.entries(genre_Keywords)) {
-            if (keywords.some(keyword => genre.includes(keyword))) {
-                genreCounts[broadGenre] += 1; 
-                genreMatched = true;
-                break; 
-            }
-        }
-        if (!genreMatched) {
-            genreCounts["other"] += 1;
-        }
-    });
-    const totalGenres = Object.values(genreCounts).reduce((acc, count) => acc + count, 0);
-    let genres_stats_week = {};
-    for (const [genre, count] of Object.entries(genreCounts)) {
-        if (totalGenres > 0) {
-            genres_stats_week[genre] = ((count / totalGenres) * 100).toFixed(2); 
-        } else {
-            genres_stats_week[genre] = 0; 
-        }
-    }
-    return genres_stats_week;
-};
 
 const linePlot = d3.select("#lineGraph_overTime")
     .append("svg")
@@ -61,123 +22,120 @@ const linePlot = d3.select("#lineGraph_overTime")
     .attr("height", height_lineGraph + margin_lineGraph.top + margin_lineGraph.bottom)
     .append("g")
     .attr("transform", "translate(" + margin_lineGraph.left + "," + margin_lineGraph.top + ")");
-function get_color_lineGraph(year) {
-        var colorScale = d3.scaleSequential(d3.interpolateViridis)
-            .domain([0, selected_years.length - 1]); 
-        let index = selected_years.indexOf(year); 
-        return colorScale(index);    
-    }
 
-function loadData_and_Create_lineGraph() {
-    d3.csv("../data/spotify_songs_with_ids.csv").then(function(data_spotifySongs) {
-        data_spotifySongs.forEach(row => {
-            row[selected_feature_or_genre] = +row[selected_feature_or_genre];
-        });
+var tableContainer = d3.select("#lineGraph_overTime")
+    .append("div")
+    .attr("class", "table-container")
+    .style("margin-top", `${-margin_lineGraph.bottom/2}px`)
+    .style("margin-bottom", "0px");
+var table = tableContainer.append("table")
+    .attr("class", "value-table")
+    .style("width", "100%")
+    .style("border-collapse", "collapse");
 
-        d3.csv("../data/top40_with_ids.csv").then(function(data_top40) {
-            if (selection_features == true){
-                const data = loadAndProcess_FeaturesData_LineGraph(data_spotifySongs, data_top40);
-                createInteractiveGraph_Features_LineGraph(data);
-            }
-            else {
-                const data = loadAndProcess_GenresData_LineGraph(data_spotifySongs, data_top40);
-                createInteractiveGraph_Genress_LineGraph(data);
-            }
-        });
-    });
+function get_color_lineGraph(year_or_range, selected_years) {
+    var total = selected_years.length;
+    var index = selected_years.findIndex(item => 
+        item.length === year_or_range.length && item.every((val, i) => val === year_or_range[i])
+    );        
+    var colorScale = d3.scaleSequential(d3.interpolateViridis)
+        .domain([0, total -1]); 
+    return colorScale(index);    
 }
 
-function loadAndProcess_FeaturesData_LineGraph(spotifySongs, top40) {
-    const mergedData = top40
-        .filter(row => selected_years.includes(+row.Jaar))
-        .filter((row) => +row.Deze_week <= max_top)
-        .map(top40 => {
-            const songData = spotifySongs.find(song => song.Song_ID === top40.Song_ID);
-            return songData ? {
-                Song_ID: top40.Song_ID,
-                Jaar: +top40.Jaar,
-                Weeknr: +top40.Weeknr,
-                selected_feature_value: songData[selected_feature_or_genre]
-            } : null;
-        }).filter(row => row !== null);
-    const sortedData = mergedData.sort((a, b) => {
-            if (a.Jaar !== b.Jaar) {
-                return a.Jaar - b.Jaar; 
-            }
-            return a.Weeknr - b.Weeknr; 
-        });
-    const weeklyAverages = d3.rollup(mergedData, 
-        values => ({
-            mean_week: d3.mean(values, v => v.selected_feature_value),
-            std_week: d3.deviation(values, v => v.selected_feature_value)
-        }),
-        d => d.Jaar, 
-        d => d.Weeknr
-    );
+function loadAndProcess_FeaturesData_LineGraph(spotifySongs, top40, selected_years, selected_weeks, max_top, selected_feature_or_genre) {
     const plotData = [];
-    selected_years.forEach(year => {
-        const yearData = weeklyAverages.get(year) || new Map();
-        yearData.forEach((values, week) => {
+    selected_years.forEach(range_years=>{
+        const mergedData = top40
+            .filter((row) => +row.Jaar >= range_years[0] && +row.Jaar <= range_years[1] || +row.Jaar == range_years[0])            
+            .filter((row) => +row.Deze_week <= max_top)
+            .map(top40 => {
+                const songData = spotifySongs.find(song => song.Song_ID === top40.Song_ID);
+                return songData ? {
+                    Song_ID: top40.Song_ID,
+                    Jaar: +top40.Jaar,
+                    Weeknr: +top40.Weeknr,
+                    selected_feature_value: songData[selected_feature_or_genre]
+                } : null;
+            }).filter(row => row !== null);
+            const weeklyAverages = d3.rollup(
+                mergedData, 
+                values => {
+                    const mean = d3.mean(values, v => v.selected_feature_value);
+                    let std = d3.deviation(values, v => v.selected_feature_value);
+                    std = Math.min(std || 0, max_top); 
+                    return {
+                        mean_week: mean,
+                        std_week: std
+                    };
+                },
+                d => d.Weeknr
+            );
+        weeklyAverages.forEach((values, week) => {
             plotData.push({
-                year: year,
+                year_range: range_years,
                 week: week,
                 avgValue: values.mean_week,
                 stdDev: values.std_week
+                });
             });
-        });
+    });
+    plotData.sort((a, b) => {
+        if (a.year_range[0] !== b.year_range[0]) {
+            return a.year_range[0] - b.year_range[0];
+        }
+        return a.week - b.week;
     });
 
     return plotData;
 }
 
-function loadAndProcess_GenresData_LineGraph(spotifySongs, top40) {
-    const mergedData = top40
-        .filter(row => selected_years.includes(+row.Jaar))
-        .filter((row) => +row.Deze_week <= max_top)
-        .map(top40 => {
-            const songData = spotifySongs.find(song => song.Song_ID === top40.Song_ID);
-            if (songData) {
-                return {
-                    Song_ID: top40.Song_ID,
-                    Jaar: +top40.Jaar,
-                    Weeknr: +top40.Weeknr,
-                    genres: songData['Artist_Genres'].split(', ')
-                };
-            }
-            return null;
-        }).filter(row => row !== null);
-    const genres = get_genre_stats_per_week(mergedData.map(data => data.genres).flat(), genreKeywords);
-    const sortedData = mergedData.sort((a, b) => {
-        if (a.Jaar !== b.Jaar) {
-            return a.Jaar - b.Jaar; 
-        }
-        return a.Weeknr - b.Weeknr; 
-    });
-    const weeklyAverages = d3.rollup(sortedData, 
-        values => {
-            const genres = get_genre_stats_per_week(values.map(data => data.genres).flat(), genreKeywords);
-            return {
-                week_genres: genres
-            };
-        },
-        d => d.Jaar,
-        d => d.Weeknr
-    );
+function loadAndProcess_GenresData_LineGraph(spotifySongs, top40, selected_years, selected_weeks, max_top, selected_feature_or_genre) {
     const plotData = [];
-    selected_years.forEach(year => {    
-        const yearData = weeklyAverages.get(year) || new Map();
-        yearData.forEach((values, week) => {
+    selected_years.forEach(range_years=>{
+        const mergedData = top40
+        .filter((row) => +row.Jaar >= range_years[0] && +row.Jaar <= range_years[1] || +row.Jaar == range_years[0])            
+        .filter((row) => +row.Deze_week <= max_top)
+            .map(top40 => {
+                const songData = spotifySongs.find(song => song.Song_ID === top40.Song_ID);
+                if (songData) {
+                    return {
+                        Song_ID: top40.Song_ID,
+                        Jaar: +top40.Jaar,
+                        Weeknr: +top40.Weeknr,
+                        genres: songData['Artist_Genres'].split(', ')
+                    };
+                }
+                return null;
+            }).filter(row => row !== null);
+        const genres = get_genre_stats_per_week(mergedData.map(data => data.genres).flat(), genreKeywords);
+        const weeklyAverages = d3.rollup(mergedData, 
+            values => {
+                const genres = get_genre_stats_per_week(values.map(data => data.genres).flat(), genreKeywords);
+                return {
+                    week_genres: genres
+                };
+            },
+            d => d.Weeknr
+        );  
+        weeklyAverages.forEach((values, week) => {
             plotData.push({
-                year: year,
+                year_range: range_years,
                 week: week,
                 genre_percentage: values.week_genres[selected_feature_or_genre]
             });
         });
     });
+    plotData.sort((a, b) => {
+        if (a.year_range[0] !== b.year_range[0]) {
+            return a.year_range[0] - b.year_range[0];
+        }
+        return a.week - b.week;
+    });
     return plotData;
 }
 
-function createInteractiveGraph_Features_LineGraph(plotData) {
+function createInteractiveGraph_Features_LineGraph(plotData, selected_years, selected_weeks, max_top, selected_feature_or_genre) {
     // Set domain and ranges for axes
     var x = d3.scaleLinear()
         .domain([selected_weeks[0], selected_weeks[1]])
@@ -208,35 +166,43 @@ function createInteractiveGraph_Features_LineGraph(plotData) {
         .style("fill", "black")
         .style("font-size", "12px");
     // Add legend
+    const legendLabels = selected_years.map(range => 
+        range.length > 1
+            ? `${range[0]}-${range[1]}` 
+            : `${range[0]}` 
+    );
+    const numLegendItems = legendLabels.length;
+    const legendItemSpacing = width_lineGraph * 0.2; 
+    const totalLegendWidth = numLegendItems * legendItemSpacing;
+    const centerPosition = (width_lineGraph - totalLegendWidth) / 2;
     var legendGroup = linePlot.append("g")
         .attr("class", "legendGroup");
     var legendItems = legendGroup.selectAll(".legendItem")
-        .data(selected_years)
+        .data(legendLabels)
         .enter()
         .append("g")
         .attr("class", "legendItem")
-        .attr("transform", (d, i) => `translate(${i * (margin_lineGraph.bottom / 2)}, 0)`);
+        .attr("transform", (d, i) => `translate(${i * legendItemSpacing}, 0)`);
     legendItems.append("rect")
         .attr("width", 10)
         .attr("height", 10)
-        .attr("fill", d => get_color_lineGraph(d))
+        .attr("fill", (d, i) => get_color_lineGraph(selected_years[i], selected_years))
         .attr("x", 0)
         .attr("y", 0);
     legendItems.append("text")
-        .attr("x", 15) 
-        .attr("y", 10)
-        .text(d => d);
-    var legendWidth = legendItems.size() * 75; 
-    legendGroup.attr("transform", `translate(${(width_lineGraph - legendWidth) * 0.6}, ${height_lineGraph * 1.25})`);
-
+        .attr("x", 12)
+        .attr("y", 9)
+        .text(d => d)
+        .style("font-size", "12px");
+    legendGroup.attr("transform", `translate(${centerPosition}, ${height_lineGraph * 1.25})`);
     /// Create all graphs/ parts
     // Average line in graph
-    selected_years.forEach(year => {
-        const yearData = plotData.filter(d => d.year === year);
+    selected_years.forEach(year_range => {
+        const yearData = plotData.filter(d => d.year_range === year_range);
         var line = linePlot.append("path")
             .datum(yearData)
             .attr("fill", "none")
-            .attr("stroke", get_color_lineGraph(year))
+            .attr("stroke", get_color_lineGraph(year_range, selected_years))
             .attr("stroke-width", 1.5)
             .attr("d", d3.line()
                 .x(d => x(d.week))
@@ -254,23 +220,16 @@ function createInteractiveGraph_Features_LineGraph(plotData) {
         .attr("fill-opacity", 0.2)
         .attr("stroke", "none");
     // Table below linegraph
-    var tableContainer = d3.select("#lineGraph_overTime").append("div")
-        .attr("class", "table-container")
-        .style("margin-top", `${-margin_lineGraph.bottom/2}px`)
-        .style("margin-bottom", "0px");
-    var table = tableContainer.append("table")
-        .attr("class", "value-table")
-        .style("width", "100%")
-        .style("border-collapse", "collapse");
+    table.style("border-collapse", "collapse");
     var header = table.append("thead").append("tr");
     header.append("th").text("Week").style("border", "1px solid black").style("padding", "5px");
-    selected_years.forEach(year => {
-        header.append("th").text(year).style("border", "1px solid black").style("padding", "5px");
+    legendLabels.forEach(year_range => {
+        header.append("th").text(year_range).style("border", "1px solid black").style("padding", "5px");
     });
     var tbody = table.append("tbody");
     // Navigation vertical line in graph
     // https://d3-graph-gallery.com/graph/line_cursor.html  
-    linePlot.append('svg:rect')
+    var navigationLine = linePlot.append('svg:rect')
         .attr('width', width_lineGraph)
         .attr('height', height_lineGraph)
         .attr('fill', 'none')
@@ -287,7 +246,7 @@ function createInteractiveGraph_Features_LineGraph(plotData) {
     linePlot
         .on('mouseout', function() {
             d3.select(".mouseLine").style("opacity", "0");
-            table.style("visibility", "hidden");
+            table.style("visibility", "visible");
             area_std.style("visibility", "hidden");
         })
         .on('mouseover', function() {
@@ -306,23 +265,23 @@ function createInteractiveGraph_Features_LineGraph(plotData) {
             // Make standard deviation area interactive
             var closest_value = Infinity;
             var closest_year = 0;
-            selected_years.forEach(year => {
-                var dataForYear = weekData.filter(d => d.year === year);
+            selected_years.forEach(year_range => {
+                var dataForYear = weekData.filter(d => d.year_range === year_range);
                 if (dataForYear.length > 0) {
                     var distance = Math.abs(yDate - dataForYear[0].avgValue); 
                     if (distance < Math.abs(yDate - closest_value)) {
                         closest_value = dataForYear[0].avgValue;
-                        closest_year = year; 
+                        closest_year = year_range; 
                     }
                 }
             });
             if (closest_year != 0) {
                 linePlot.selectAll(".area")
-                    .data(selected_years.map(year => plotData.filter(d => d.year === closest_year)))
-                    .attr("fill", d => get_color_lineGraph(d[0]?.year))
+                    .data(selected_years.map(year => plotData.filter(d => d.year_range === closest_year)))
+                    .attr("fill", d => get_color_lineGraph(d[0]?.year_range, selected_years))
                     .attr("d", d => areaGenerator(d))
                     .style("visibility", function(d) {
-                        return d[0]?.year === closest_year ? "visible" : "hidden";
+                        return d[0]?.year_range === closest_year ? "visible" : "hidden";
                     });
             } else {
                 area_std.style("visibility", "hidden"); 
@@ -337,8 +296,8 @@ function createInteractiveGraph_Features_LineGraph(plotData) {
                 tbody.selectAll("tr").remove();
                 var row = tbody.append("tr");
                 row.append("td").text(rowData.week).style("border", "1px solid black").style("padding", "5px");
-                selected_years.forEach(year => {
-                    var dataForYear = weekData.filter(d => d.year === year);
+                selected_years.forEach(year_range => {
+                    var dataForYear = weekData.filter(d => d.year_range === year_range);
                     row.append("td").text(dataForYear.length > 0 ? 
                         `${dataForYear[0].avgValue.toFixed(2)} ± ${dataForYear[0].stdDev.toFixed(2)}` 
                         : "No data")
@@ -348,7 +307,7 @@ function createInteractiveGraph_Features_LineGraph(plotData) {
         });
 }
 
-function createInteractiveGraph_Genress_LineGraph(plotData){
+function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, selected_weeks, max_top, selected_feature_or_genre){
     /// Graph settings
     // Set domain and ranges for axes
     var x = d3.scaleLinear()
@@ -380,35 +339,43 @@ function createInteractiveGraph_Genress_LineGraph(plotData){
         .style("fill", "black")
         .style("font-size", "12px");
     // Add legend
+    const legendLabels = selected_years.map(range => 
+        range.length > 1
+            ? `${range[0]}-${range[1]}` 
+            : `${range[0]}` 
+    );
+    const numLegendItems = legendLabels.length;
+    const legendItemSpacing = width_lineGraph * 0.2; 
+    const totalLegendWidth = numLegendItems * legendItemSpacing;
+    const centerPosition = (width_lineGraph - totalLegendWidth) / 2;
     var legendGroup = linePlot.append("g")
         .attr("class", "legendGroup");
     var legendItems = legendGroup.selectAll(".legendItem")
-        .data(selected_years)
+        .data(legendLabels)
         .enter()
         .append("g")
         .attr("class", "legendItem")
-        .attr("transform", (d, i) => `translate(${i * (margin_lineGraph.bottom / 2)}, 0)`);
+        .attr("transform", (d, i) => `translate(${i * legendItemSpacing}, 0)`);
     legendItems.append("rect")
         .attr("width", 10)
         .attr("height", 10)
-        .attr("fill", d => get_color_lineGraph(d))
+        .attr("fill", (d, i) => get_color_lineGraph(selected_years[i], selected_years))
         .attr("x", 0)
         .attr("y", 0);
     legendItems.append("text")
-        .attr("x", 15) 
-        .attr("y", 10)
-        .text(d => d);
-    var legendWidth = legendItems.size() * 75; 
-    legendGroup.attr("transform", `translate(${(width_lineGraph - legendWidth) * 0.6}, ${height_lineGraph * 1.25})`);
-    
+        .attr("x", 12)
+        .attr("y", 9)
+        .text(d => d)
+        .style("font-size", "12px");
+    legendGroup.attr("transform", `translate(${centerPosition}, ${height_lineGraph * 1.25})`);
     /// Create all graphs/ parts
     // Average line in graph
-    selected_years.forEach(year => {
-        const yearData = plotData.filter(d => d.year === year);
+    selected_years.forEach(year_range => {
+        const yearData = plotData.filter(d => d.year_range === year_range);
         var line = linePlot.append("path")
             .datum(yearData)
             .attr("fill", "none")
-            .attr("stroke", get_color_lineGraph(year))
+            .attr("stroke", get_color_lineGraph(year_range, selected_years))
             .attr("stroke-width", 1.5)
             .attr("d", d3.line()
                 .x(d => x(d.week))
@@ -416,18 +383,11 @@ function createInteractiveGraph_Genress_LineGraph(plotData){
             );
     });
     // Table below linegraph
-    var tableContainer = d3.select("#lineGraph_overTime").append("div")
-        .attr("class", "table-container")
-        .style("margin-top", `${-margin_lineGraph.bottom/2}px`)
-        .style("margin-bottom", "0px");
-    var table = tableContainer.append("table")
-        .attr("class", "value-table")
-        .style("width", "100%")
-        .style("border-collapse", "collapse");
+    table.style("border-collapse", "collapse");
     var header = table.append("thead").append("tr");
     header.append("th").text("Week").style("border", "1px solid black").style("padding", "5px");
-    selected_years.forEach(year => {
-        header.append("th").text(year).style("border", "1px solid black").style("padding", "5px");
+    legendLabels.forEach(year_range => {
+        header.append("th").text(year_range).style("border", "1px solid black").style("padding", "5px");
     });
     var tbody = table.append("tbody");
     // Navigation vertical line in graph
@@ -471,10 +431,10 @@ function createInteractiveGraph_Genress_LineGraph(plotData){
                 tbody.selectAll("tr").remove();
                 var row = tbody.append("tr");
                 row.append("td").text(rowData.week).style("border", "1px solid black").style("padding", "5px");
-                selected_years.forEach(year => {
-                    var dataForYear = weekData.filter(d => d.year === year);
+                selected_years.forEach(year_range => {
+                    var dataForYear = weekData.filter(d => d.year_range === year_range);
                     row.append("td").text(dataForYear.length > 0 ? 
-                        `${dataForYear[0].genre_percentage}` 
+                        `${dataForYear[0].genre_percentage} %` 
                         : "No data")
                         .style("border", "1px solid black").style("padding", "5px");
                 });
@@ -482,4 +442,91 @@ function createInteractiveGraph_Genress_LineGraph(plotData){
         });
 }
 
-loadData_and_Create_lineGraph();
+function updateGraph() {
+    linePlot.selectAll("*")
+        .transition()
+        .duration(500)
+        .style("opacity", 0)
+        .remove();
+    table.selectAll("*")
+        .transition()
+        .duration(500)
+        .style("opacity", 0)
+        .remove();
+    const selected_years = window.selectedYearRanges.sort((a, b) => a[0] - b[0])
+        .map(range => range[0] === range[1] ? [range[0]] : range);
+    
+    const selected_weeks = window.selectedWeekRange;
+    const max_top = window.selectedTop;
+    const selection_features = window.selectedType;
+    const selected_feature_or_genre = "Energy";
+    d3.csv("../data/spotify_songs_with_ids.csv").then(function(data_spotifySongs) {
+        data_spotifySongs.forEach(row => {
+            row[selected_feature_or_genre] = +row[selected_feature_or_genre];
+        });
+
+        d3.csv("../data/top40_with_ids.csv").then(function(data_top40) {
+            if (selection_features == "features"){
+                const data = loadAndProcess_FeaturesData_LineGraph(data_spotifySongs, data_top40, selected_years, selected_weeks, max_top, selected_feature_or_genre);
+                createInteractiveGraph_Features_LineGraph(data, selected_years, selected_weeks, max_top, selected_feature_or_genre);
+            }
+            else {
+                const data = loadAndProcess_GenresData_LineGraph(data_spotifySongs, data_top40, selected_years, selected_weeks, max_top, selected_feature_or_genre);
+                createInteractiveGraph_Genress_LineGraph(data, selected_years, selected_weeks, max_top, selected_feature_or_genre);
+            }
+        });
+    });
+}
+
+window.addEventListener('yearRangeUpdated', function () {
+    document.getElementById("selectedYearRangesValue").innerText = JSON.stringify(window.selectedYearRanges);
+    updateGraph();
+});
+
+window.addEventListener('weekRangeUpdated', function () {
+    document.getElementById("selectedWeekRangeValue").innerText = JSON.stringify(window.selectedWeekRange);
+    updateGraph();
+});
+
+window.addEventListener('typeUpdated', function () {
+    document.getElementById("selectedTypeValue").innerText = window.selectedType;
+    updateGraph();
+});
+
+window.addEventListener('topUpdated', function () {
+    document.getElementById("selectedTopValue").innerText = window.selectedTop;
+    updateGraph();
+});
+
+// const get_genre_stats_per_week = function(lst_genres_week, genre_Keywords) {
+//     let genreCounts = {};
+//     for (const [broadGenre, keywords] of Object.entries(genre_Keywords)) {
+//         genreCounts[broadGenre] = 0; 
+//     }
+//     genreCounts["other"] = 0;
+
+//     lst_genres_week.forEach(genre => {
+//         genre = genre.toLowerCase();
+//         let genreMatched = false;
+//         for (const [broadGenre, keywords] of Object.entries(genre_Keywords)) {
+//             if (keywords.some(keyword => genre.includes(keyword))) {
+//                 genreCounts[broadGenre] += 1; 
+//                 genreMatched = true;
+//                 break; 
+//             }
+//         }
+//         if (!genreMatched) {
+//             genreCounts["other"] += 1;
+//         }
+//     });
+//     const totalGenres = Object.values(genreCounts).reduce((acc, count) => acc + count, 0);
+//     let genres_stats_week = {};
+//     for (const [genre, count] of Object.entries(genreCounts)) {
+//         if (totalGenres > 0) {
+//             genres_stats_week[genre] = ((count / totalGenres) * 100).toFixed(2); 
+//         } else {
+//             genres_stats_week[genre] = 0; 
+//         }
+//     }
+//     return genres_stats_week;
+// };

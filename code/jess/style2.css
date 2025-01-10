@@ -29,6 +29,92 @@ svg {
     cursor: pointer;
 }
 
+body {
+    display: grid;
+    grid-template-areas:
+        "lineGraph selectorDashboard longevityRadial"
+        "lineGraph selectorDashboard longevityCharts";
+    grid-template-columns: 1fr 2fr 1fr; /* Divide into three vertical sections */
+    grid-template-rows: auto auto; /* Two rows: one for radial plots, one for charts */
+    gap: 20px;
+    justify-content: center;
+    align-items: start;
+    padding: 20px; /* Add padding around the layout */
+}
+
+#radialPlots {
+    grid-area: longevityRadial; /* Assign radial plots to the top-right section */
+    text-align: center;
+}
+
+#lineGraphContainer {
+    grid-area: lineGraph;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#selectorDashboard {
+    grid-area: selectorDashboard;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+#longevityCharts {
+    grid-area: longevityCharts;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Adjust container sizes */
+#yearSelector,
+#longevity_radialChart {
+    max-width: 100%;
+}
+
+button {
+    padding: 5px 10px;
+    font-size: 12px;
+    margin: 10px 0;
+    cursor: pointer;
+    border-radius: 4px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+#dashboard {
+    margin-bottom: 20px;
+}
+
+#yearselectordashboard {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+
+button {
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+svg {
+    margin-top: 10px;
+}
+
+.multi-brush {
+    cursor: pointer;
+}
+
 #slider-holder {
     margin-top: 50px;
 }
@@ -86,7 +172,8 @@ svg {
     fill: #000;
 }
 
-.buttonstrip {
+/* ================================ Feat genre toggle ====================================== */
+#toggleType {
     display: flex;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -95,26 +182,66 @@ svg {
     padding: 0;
 }
 
-.buttonstrip button {
+#toggleType button {
     flex: 1;
-    padding: 0; /* Remove padding to make it tight */
-    margin: 0;  /* Remove margin to make sure the buttons fill the space */
-    height: 30px; /* Set a fixed height for buttons */
+    padding: 0;
+    margin: 0;
+    height: 20px;
+    width: 60px;
     border: none;
-    color: black; /* Explicitly set text color to black */
+    font-size: 12px;
+    color: black;
     background-color: #f4f4f4;
     cursor: pointer;
     transition: background-color 0.3s;
     display: flex;
-    align-items: center; /* Vertically center the text */
-    justify-content: center; /* Horizontally center the text */
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
 }
 
-.buttonstrip button.active {
+#toggleType button.active {
     background-color: #007bff;
     color: white;
 }
 
-.buttonstrip button:not(.active):hover {
+#toggleType button:not(.active):hover {
+    background-color: #e7e7e7;
+}
+
+/* ================================ Top selector buttons ====================================== */
+#toggleTop {
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+#toggleTop button {
+    flex: 1;
+    padding: 0;
+    margin: 0;
+    height: 20px;
+    width: 20px;
+    border: none;
+    font-size: 12px;
+    color: black;
+    background-color: #f4f4f4;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0;
+}
+
+#toggleTop button.active {
+    background-color: #ff0015;
+    color: white;
+}
+
+#toggleTop button:not(.active):hover {
     background-color: #e7e7e7;
 }

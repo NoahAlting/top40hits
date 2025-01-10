@@ -326,6 +326,11 @@ Promise.all([
 });
 
 // ==================================== GENRES ==========================================
+window.addEventListener('genreUpdated', function (event) {
+    document.getElementById("selectedTopValue").innerText = window.selectedTop;
+    console.log("updating top value", window.selectedTop)
+});
+
 var selected_years = [2020, 2021, 2022];
 var selected_weeks = [1, 10];
 var max_top = [5];

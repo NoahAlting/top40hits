@@ -1,4 +1,3 @@
-// Genre keywords mapping
 const genreKeywords = {
     "pop": ["pop"],
     "hip-hop": ["hip-hop", "rap"],
@@ -13,153 +12,270 @@ const genreKeywords = {
     "reggae": ["reggae", "ska", "dancehall"]
 };
 
+// Global variables
 let genres = Object.keys(genreKeywords);
+let cachedGenreFilteredData = [];
+let smoothingEnabled = false;
+let activeYearRange = null;
 
-// Load Data and Create Histogram
-async function loadData_create_histogram() {
-    try {
-        // Load both datasets asynchronously
-        const data_spotifySongs = await d3.csv("../../data/spotify_songs_with_ids.csv", d3.autoType);
-        const data_top40 = await d3.csv("../../data/top40_with_ids.csv", d3.autoType);
+async function filterByGenre(selectedGenre) {
+    const data_spotifySongs = await d3.csv("../../data/spotify_songs_with_ids.csv", d3.autoType);
+    const data_top40 = await d3.csv("../../data/top40_with_ids.csv", d3.autoType);
 
-        const genre = "pop"; // Replace with selected genre
-
-        // Process data to generate histogram data
-        const histogramData = loadAndProcess_HistogramData_byGenre(data_spotifySongs, data_top40, genre);
-
-        // Check if histogramData is non-empty before proceeding
-        if (histogramData.length > 0) {
-            console.log("Histogram data loaded:", histogramData);  // Log data for debugging
-            createHistogram(histogramData);
-        } else {
-            console.error("No data available to create a histogram.");
-        }
-    } catch (error) {
-        console.error("Error loading or processing data:", error);
-    }
-}
-
-// Process Data for Histogram
-function loadAndProcess_HistogramData_byGenre(spotifySongs, top40, selectedGenre) {
-    // Get the genre keywords for the selected genre
     const genreKeywordsList = genreKeywords[selectedGenre.toLowerCase()];
 
-    // Step 1: Filter Spotify data based on the selected genre
-    const filteredSpotifySongs = spotifySongs.filter((row) => {
+    cachedGenreFilteredData = data_spotifySongs.filter((row) => {
         if (row.Artist_Genres && typeof row.Artist_Genres === "string") {
             return genreKeywordsList.some((keyword) => row.Artist_Genres.toLowerCase().includes(keyword));
-        } else {
-            console.warn(`No valid Artist_Genres for Song_ID: ${row.Song_ID}`);
-            return false;
         }
-    });
+        return false;
+    }).map((spotifyRow) => {
+        const top40Row = data_top40.find((song) => song.Song_ID === spotifyRow.Song_ID);
 
-    if (filteredSpotifySongs.length === 0) {
-        console.warn(`No songs found for genre: ${selectedGenre}`);
-        return [];
-    }
-
-    // Step 2: Merge filtered Spotify data with Top 40 data
-    const mergedData = filteredSpotifySongs.map((spotifyRow) => {
-        const top40Row = top40.find((song) => song.Song_ID === spotifyRow.Song_ID);
-
-        if (!top40Row) {
-            console.warn(`No matching top40 data found for Song_ID: ${spotifyRow.Song_ID}`);
-            return null;
-        }
+        if (!top40Row) return null;
 
         return {
             Song_ID: spotifyRow.Song_ID,
             Jaar: parseInt(top40Row.Jaar),
+            Weeknr: parseInt(top40Row.Weeknr),
             Longevity: parseInt(top40Row.Aantal_weken),
+            Deze_week: parseInt(top40Row.Deze_week),
             ...spotifyRow,
         };
-    }).filter((row) => row !== null); // Remove any null entries
+    }).filter((row) => row !== null);
 
-    // Step 3: Group by longevity (weeks) and count frequencies
-    const longevityCounts = d3.rollup(
-        mergedData,
+    console.log("Genre-filtered data cached:", cachedGenreFilteredData);
+}
+
+function fillMissingWeeks(data, maxWeeks = 20) {
+    const weekMap = new Map(data.map(d => [d.weeks, d.frequency]));
+    const filledData = [];
+    for (let week = 1; week <= maxWeeks; week++) {
+        filledData.push({
+            weeks: week,
+            frequency: weekMap.get(week) || 0
+        });
+    }
+    return filledData;
+}
+
+function smoothData(data, windowSize = 3) {
+    return data.map((d, i, arr) => {
+        const start = Math.max(0, i - Math.floor(windowSize / 2));
+        const end = Math.min(arr.length, i + Math.ceil(windowSize / 2));
+        const window = arr.slice(start, end);
+        const average = d3.mean(window, w => w.frequency);
+        return { ...d, frequency: average };
+    });
+}
+
+// Apply dynamic filters
+function applyDynamicFilters() {
+    const yearRanges = window.selectedYearRanges;
+    const weekRange = window.selectedWeekRange;
+    const selectedTop = window.selectedTop;
+
+    const dynamicallyFilteredData = cachedGenreFilteredData.filter((row) => {
+        const inYearRange = yearRanges.some(([start, end]) => row.Jaar >= start && row.Jaar <= end);
+        const inWeekRange = row.Weeknr >= weekRange[0] && row.Weeknr <= weekRange[1];
+        const inTopSelection = row.Deze_week <= selectedTop;
+
+        return inYearRange && inWeekRange && inTopSelection;
+    });
+
+    console.log("Dynamically filtered data:", dynamicallyFilteredData);
+
+    const histogramData = d3.rollup(
+        dynamicallyFilteredData,
         (songs) => songs.length,
         (song) => song.Longevity
     );
 
-    // Step 4: Convert the Map into an array for plotting
-    const histogramData = Array.from(longevityCounts, ([weeks, frequency]) => ({
-        weeks: +weeks, // Ensure weeks is treated as a number
-        frequency: +frequency, // Ensure frequency is treated as a number
-    }));
+    const formattedData = fillMissingWeeks(
+        Array.from(histogramData, ([weeks, frequency]) => ({
+            weeks: +weeks,
+            frequency: +frequency,
+        })).sort((a, b) => a.weeks - b.weeks)
+    );
 
-    // Step 5: Sort data by longevity (weeks)
-    histogramData.sort((a, b) => a.weeks - b.weeks);
-
-    console.log("Processed histogram data:", histogramData);
-    return histogramData;
+    createVisualization(formattedData, dynamicallyFilteredData, yearRanges);
 }
 
-// Create Histogram Visualization
-function createHistogram(histogramData) {
-    const svg_genrehis = d3.select("#longevity_histogram")
-        .attr("width", 800)
-        .attr("height", 400);
+// Create combined visualization
+function createVisualization(histogramData, dynamicallyFilteredData, yearRanges) {
+    const svg = d3.select("#longevity_histogram").attr("width", 800).attr("height", 400);
+    const width = +svg.attr("width");
+    const height = +svg.attr("height");
+    const margin = { top: 20, right: 50, bottom: 40, left: 50 };
 
-    const width = +svg_genrehis.attr("width");
-    const height = +svg_genrehis.attr("height");
-    const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+    svg.selectAll("*").remove();
 
-    // Check if the SVG container has valid dimensions
-    console.log("SVG Width:", width, "SVG Height:", height);
-
-    // Clear previous content (if any)
-    svg_genrehis.selectAll("*").remove();
-
-    // Set up scales
     const x = d3.scaleBand()
         .domain(histogramData.map((d) => d.weeks))
         .range([margin.left, width - margin.right])
         .padding(0.1);
 
-    const y = d3.scaleLinear()
+    const yLeft = d3.scaleLinear()
         .domain([0, d3.max(histogramData, (d) => d.frequency)]).nice()
         .range([height - margin.bottom, margin.top]);
 
-    // Check if the data is being properly scaled
-    console.log("X Domain:", x.domain(), "Y Domain:", y.domain());
+    const yRight = d3.scaleLinear()
+        .domain([0, 1])
+        .range([height - margin.bottom, margin.top]);
 
-    // Create axes
-    svg_genrehis.append("g")
-        .attr("transform", `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(x).tickFormat((d) => `${d} weeks`));
+    svg.append("g").attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(x));
+    svg.append("g").attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(yLeft));
+    svg.append("g").attr("transform", `translate(${width - margin.right},0)`).call(d3.axisRight(yRight));
 
-    svg_genrehis.append("g")
-        .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y));
+    // If only one year range is selected, show the histogram directly
+    if (yearRanges.length === 1) {
+        renderHistogram(svg, x, yLeft, histogramData, "lightgrey");
+    }
+    else {
+    // Group data for multiple year ranges
+    const groupedData = yearRanges.map(([start, end]) => {
+        const rangeKey = `${start}-${end}`;
+        const filtered = dynamicallyFilteredData.filter(row => row.Jaar >= start && row.Jaar <= end);
 
-    // Draw bars
-    svg_genrehis.selectAll(".bar")
-        .data(histogramData)
-        .enter()
-        .append("rect")
-        .attr("class", "bar")
-        .attr("x", (d) => x(d.weeks))
-        .attr("y", (d) => y(d.frequency))
-        .attr("width", x.bandwidth())
-        .attr("height", (d) => y(0) - y(d.frequency))
-        .attr("fill", "steelblue");
+        const longevityCounts = d3.rollup(
+            filtered,
+            (songs) => songs.length,
+            (song) => song.Longevity
+        );
 
-    // Add labels
-    svg_genrehis.append("text")
-        .attr("x", width / 2)
-        .attr("y", height - 5)
-        .attr("text-anchor", "middle")
-        .text("Maximum Longevity (Weeks)");
+        const filledData = fillMissingWeeks(
+            Array.from(longevityCounts, ([weeks, frequency]) => ({
+                weeks: +weeks,
+                frequency: frequency / filtered.length // Normalize
+            })).sort((a, b) => a.weeks - b.weeks)
+        );
 
-    svg_genrehis.append("text")
-        .attr("x", -height / 2)
-        .attr("y", 15)
-        .attr("transform", "rotate(-90)")
-        .attr("text-anchor", "middle")
-        .text("Frequency");
+        return {
+            range: rangeKey,
+            data: smoothingEnabled ? smoothData(filledData) : filledData
+        };
+    });
+
+    const colorScale = d3.scaleOrdinal()
+        .domain(groupedData.map(d => d.range))
+        .range(d3.schemeCategory10);
+
+    renderLinePlot(svg, x, yRight, groupedData, colorScale, width, height, margin, yLeft, dynamicallyFilteredData);
+    }
 }
 
-// Execute the Function
-loadData_create_histogram();
+
+// Render line plot for normalized data
+function renderLinePlot(svg, x, yRight, groupedData, colorScale, width, height, margin, yLeft, dynamicallyFilteredData) {
+    const line = d3.line()
+        .x(d => x(d.weeks) + x.bandwidth() / 2)
+        .y(d => yRight(d.frequency)); // Use the right y-axis for normalized values
+
+    groupedData.forEach(({ range, data }, index) => {
+        const path = svg.append("path")
+            .datum(data)
+            .attr("fill", "none")
+            .attr("stroke", colorScale(range))
+            .attr("stroke-width", 2)
+            .attr("d", line)
+            .on("click", function () {
+                // Filter the data corresponding to the clicked year range
+                const rangeParts = range.split('-');
+                const startYear = +rangeParts[0];
+                const endYear = +rangeParts[1];
+
+                // Filter the dynamically filtered data based on the selected range
+                const filteredDataForRange = dynamicallyFilteredData.filter((row) => {
+                    return row.Jaar >= startYear && row.Jaar <= endYear;
+                });
+
+                // Create histogram data for the selected range
+                const histogramDataForRange = d3.rollup(
+                    filteredDataForRange,
+                    (songs) => songs.length,
+                    (song) => song.Longevity
+                );
+
+                // Format the histogram data
+                const formattedData = fillMissingWeeks(
+                    Array.from(histogramDataForRange, ([weeks, frequency]) => ({
+                        weeks: +weeks,
+                        frequency: +frequency,
+                    })).sort((a, b) => a.weeks - b.weeks)
+                );
+
+                renderHistogram(svg, x, yLeft, formattedData, colorScale(range), true);
+            });
+
+        svg.append("text")
+            .attr("x", width - margin.right)
+            .attr("y", margin.top + index * 20)
+            .attr("fill", colorScale(range))
+            .style("font-size", "12px")
+            .text(range);
+    });
+
+}
+
+// Render bar plot
+function renderHistogram(svg, x, y, data, color,  isFromLinePlot = false) {
+    svg.selectAll(".bar").remove();
+    svg.selectAll(".bar").data(data).enter().append("rect")
+        .attr("x", d => x(d.weeks))
+        .attr("y", d => y(d.frequency))
+        .attr("width", x.bandwidth())
+        .attr("height", d => y(0) - y(d.frequency))
+        .attr("fill", color)
+        .attr("opacity", function() {
+            if (isFromLinePlot) {
+                return 0.5
+            }
+            return 1;
+        })
+        .attr("class", "bar");
+}
+
+// Create genre dropdown menu
+function createGenreMenu(genres) {
+    const menuContainer = d3.select("#genre_menu");
+    menuContainer.selectAll("*").remove();
+
+    const dropdown = menuContainer.append("select")
+        .attr("id", "genre_dropdown")
+        .on("change", async function () {
+            const selectedGenre = d3.select(this).property("value");
+            window.selectedGenre = selectedGenre;
+            await filterByGenre(selectedGenre);
+            applyDynamicFilters();
+        });
+
+    dropdown.selectAll("option").data(genres).enter().append("option")
+        .attr("value", (d) => d)
+        .text((d) => d[0].toUpperCase() + d.slice(1));
+}
+
+// Smoothing toggle
+function createSmoothingToggle() {
+    const container = d3.select("#controls");
+    container.append("label").text("Smoothing:");
+    container.append("input")
+        .attr("type", "checkbox")
+        .on("change", function () {
+            smoothingEnabled = this.checked;
+            applyDynamicFilters();
+        });
+}
+
+// Event listeners
+window.addEventListener('yearRangeUpdated', applyDynamicFilters);
+window.addEventListener('weekRangeUpdated', applyDynamicFilters);
+window.addEventListener('topUpdated', applyDynamicFilters);
+
+// Initialize
+(async function initialize() {
+    createGenreMenu(genres);
+    createSmoothingToggle();
+    const defaultGenre = genres[0];
+    await filterByGenre(defaultGenre);
+    applyDynamicFilters();
+})();

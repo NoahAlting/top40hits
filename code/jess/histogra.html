@@ -4,8 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Process Song Data Test</title>
+  <link rel="stylesheet" href="style2.css">
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="histogramtryout.js" defer></script>
+  <script src="../selection_yearweek.js"></script>
+  <script src="../selection_typetop.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -21,6 +24,47 @@
 </head>
 <body>
 <h1>Process Song Data Test</h1>
-<div id="longevity_histogram" style="width: 800px; height: 400px;"></div>
+<div id="menu-container">
+  <label for="genre_dropdown">Select Genre: </label>
+  <div id="genre_menu"></div>
+</div>
+<div id="selectorDashboard">
+  <h1>Selector Dashboard</h1>
+  <div class="buttonstrip" id="toggleTop">
+    <button data-toggle="top1">1</button>
+    <button data-toggle="top3">3</button>
+    <button data-toggle="top5">5</button>
+    <button data-toggle="top10">10</button>
+    <button data-toggle="top20">20</button>
+    <button data-toggle="top40" class="active">40</button>
+  </div>
+
+  <div class="buttonstrip" id="toggleType">
+    <button data-toggle="genres">Genres</button>
+    <button data-toggle="features" class="active">Features</button>
+  </div>
+  <div id="yearselectordashboard">
+    <svg id="yearSelector"></svg>
+    <div>
+      <button id="addBrushButton">Add Range</button>
+      <div id="rangeContainer"></div>
+    </div>
+  </div>
+  <svg id="weekSelector" width="250" height="50"></svg>
+  <div id="weekRangeContainer"></div>
+</div>
+
+<!--Global variables-->
+<script>
+  window.selectedType = "features";
+  window.selectedTop = 40;
+  window.selectedYearRanges = [[1965, 2023]];
+  window.selectedWeekRange = [1,52];
+  window.selectedGenre = "pop"
+</script>
+
+<div id="histogram-container">
+  <svg id="longevity_histogram"></svg>
+</div>
 </body>
 </html>

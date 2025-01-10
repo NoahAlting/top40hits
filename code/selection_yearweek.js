@@ -318,7 +318,14 @@ function editRange(index) {
 }
 
 // Event Listener for new brushes
-document.getElementById("addBrushButton").addEventListener("click", createBrush);
+document.addEventListener("DOMContentLoaded", () => {
+    const addBrushButton = document.getElementById("addBrushButton");
+    if (addBrushButton) {
+        addBrushButton.addEventListener("click", createBrush);
+    } else {
+        console.error("Element with ID 'addBrushButton' not found");
+    }
+});
 
 
 // ============================================ WEEK SELECTOR =================================================

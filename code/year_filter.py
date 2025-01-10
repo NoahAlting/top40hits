@@ -141,7 +141,7 @@ def create_multi_attribute_radar_plot(df: pd.DataFrame, column_names: list, titl
 def create_yearly_dataframes(df: pd.DataFrame, start_year: int, end_year: int, step: int):
 
         dfs = {}
-        for year in tqdm(range(start_year, end_year, step)):
+        for year in tqdm(range(start_year, end_year, step), desc='year interval'):
             range_end = min(year + step - 1, end_year)  # Avoid overshooting the end year
             label = f"{year}-{range_end}"
             dfs[label] = get_data_for_year_range(df, year, range_end)
@@ -155,11 +155,7 @@ if __name__ == "__main__":
 
     df = merge_features_with_top40(songs_csv, top40_csv)
     
-    df_filtered = get_data_for_year_range(df, 1970, 2020)
-
-
-    print(df_filtered.info())
-    plot_data_per_week(df_filtered, 'Danceability')
+    # plot_data_per_week(df_filtered, 'Danceability')
 
     attr_list = ['Danceability', 'Energy', 'Valence']
     # create_multi_attribute_radar_plot(df_filtered, attr_list)
@@ -173,10 +169,30 @@ if __name__ == "__main__":
     
 
     # Example usage
-    dfs = create_yearly_dataframes(df, start_year=1965, end_year=2020, step=5)
+    # dfs = create_yearly_dataframes(df, start_year=1965, end_year=2020, step=5)
+
 
     # Call the function with the column you want to plot
-    plot_data_per_week_multiple_dfs(dfs, column_name="Energy")
-    plot_data_per_week_multiple_dfs(dfs, column_name="Acousticness")
-    plot_data_per_week_multiple_dfs(dfs, column_name="Valence")
+    # plot_data_per_week_multiple_dfs(dfs, column_name="Energy")
+    # plot_data_per_week_multiple_dfs(dfs, column_name="Acousticness")
+    # plot_data_per_week_multiple_dfs(dfs, column_name="Valence")
+
+    year = 1970
+    df_filtered = get_data_for_year_range(df, year, year+1)
+
+
+    print(f'amount of songs between {year}-{year+1}:\t{len(df_filtered)}')
+    
+    df_song_features = df_filtered[['Danceability', 
+                            'Acousticness', 
+                            'Energy', 
+                            'Liveness', 
+                            'Loudness', 
+                            'Valence', 
+                            'Speechiness']]
+
+    # Export to JSON
+    df_song_features.to_json(os.path.join('code', 'noah', "filtered_song_features.json"), orient="records")
+
+
     

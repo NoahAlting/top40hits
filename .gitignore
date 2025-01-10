@@ -2,3 +2,4 @@
 # Noah's poetry
 *.toml
 *.lock
+API/scripts/__pychace__/*

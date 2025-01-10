@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grouped Histogram</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #controls {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        select {
+            margin: 0 10px;
+            padding: 5px;
+        }
+        button {
+            padding: 5px 10px;
+        }
+        #feedback {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+            color: green;
+        }
+        #feedback.error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Feature Histogram</h1>
+    <div id="controls">
+        <select id="year1"></select>
+        <select id="year2"></select>
+        <button id="submitButton">Submit</button>
+    </div>
+    <div id="feedback"></div>
+    <div id="histogram"></div>
+
+    <script>
+        // Populate dropdowns with years from 1965 to 2023 (only once)
+        const yearRange = Array.from({ length: 2023 - 1965 + 1 }, (_, i) => 1965 + i);
+        const year1Dropdown = document.getElementById('year1');
+        const year2Dropdown = document.getElementById('year2');
+        const feedbackDiv = document.getElementById('feedback');
+
+        // Populate the dropdowns
+        function populateDropdowns() {
+            yearRange.forEach(year => {
+                const option1 = document.createElement('option');
+                const option2 = document.createElement('option');
+                option1.value = option2.value = year;
+                option1.textContent = option2.textContent = year;
+                year1Dropdown.appendChild(option1);
+                year2Dropdown.appendChild(option2);
+            });
+        }
+
+        // Call the function once on page load
+        populateDropdowns();
+
+        // Handle button click
+        document.getElementById('submitButton').addEventListener('click', () => {
+            const year1 = parseInt(year1Dropdown.value, 10);
+            const year2 = parseInt(year2Dropdown.value, 10);
+
+            // Clear previous feedback
+            feedbackDiv.textContent = '';
+            feedbackDiv.classList.remove('error');
+
+            // Send tuple to server
+            fetch('http://127.0.0.1:8000/song_features_interval', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ years: [year1, year2] })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Response from server:', data);
+                feedbackDiv.textContent = `Data for ${year1}-${year2} loaded successfully.`;
+                // Update the plot with the new data
+                updateHistogram(data); // Assuming updateHistogram is defined in feature_histogram.js
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+                feedbackDiv.textContent = 'An error occurred while sending the request.';
+                feedbackDiv.classList.add('error');
+            });
+        });
+
+        // Placeholder function for updating the histogram
+        function updateHistogram(data) {
+            console.log('Update histogram with data:', data);
+            // Implementation to update your D3.js plot goes here
+        }
+    </script>
+
+    <script src="feature_histogram.js"></script>
+</body>
+</html>

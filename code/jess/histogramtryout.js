@@ -71,7 +71,7 @@ function smoothData(data, windowSize = 3) {
 
 // Apply dynamic filters
 function applyDynamicFilters() {
-    const yearRanges = window.selectedYearRanges;
+    const yearRanges = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
     const weekRange = window.selectedWeekRange;
     const selectedTop = window.selectedTop;
 
@@ -127,13 +127,15 @@ function createVisualization(histogramData, dynamicallyFilteredData, yearRanges)
     svg.append("g").attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(yLeft));
     svg.append("g").attr("transform", `translate(${width - margin.right},0)`).call(d3.axisRight(yRight));
 
+    const colorScale = d3.scaleSequential(d3.interpolateViridis).domain([0, 4]);
+
     // If only one year range is selected, show the histogram directly
     if (yearRanges.length === 1) {
         renderHistogram(svg, x, yLeft, histogramData, "lightgrey");
     }
     else {
     // Group data for multiple year ranges
-    const groupedData = yearRanges.map(([start, end]) => {
+    const groupedData = yearRanges.map(([start, end], index) => {
         const rangeKey = `${start}-${end}`;
         const filtered = dynamicallyFilteredData.filter(row => row.Jaar >= start && row.Jaar <= end);
 
@@ -152,13 +154,10 @@ function createVisualization(histogramData, dynamicallyFilteredData, yearRanges)
 
         return {
             range: rangeKey,
-            data: smoothingEnabled ? smoothData(filledData) : filledData
+            data: smoothingEnabled ? smoothData(filledData) : filledData,
+            color: colorScale(index)
         };
     });
-
-    const colorScale = d3.scaleOrdinal()
-        .domain(groupedData.map(d => d.range))
-        .range(d3.schemeCategory10);
 
     renderLinePlot(svg, x, yRight, groupedData, colorScale, width, height, margin, yLeft, dynamicallyFilteredData);
     }
@@ -166,16 +165,16 @@ function createVisualization(histogramData, dynamicallyFilteredData, yearRanges)
 
 
 // Render line plot for normalized data
-function renderLinePlot(svg, x, yRight, groupedData, colorScale, width, height, margin, yLeft, dynamicallyFilteredData) {
+function renderLinePlot(svg, x, yRight, groupedData, width, height, margin, yLeft, dynamicallyFilteredData) {
     const line = d3.line()
         .x(d => x(d.weeks) + x.bandwidth() / 2)
         .y(d => yRight(d.frequency)); // Use the right y-axis for normalized values
 
-    groupedData.forEach(({ range, data }, index) => {
+    groupedData.forEach(({ range, data, color }, index) => {
         const path = svg.append("path")
             .datum(data)
             .attr("fill", "none")
-            .attr("stroke", colorScale(range))
+            .attr("stroke", color)
             .attr("stroke-width", 2)
             .attr("d", line)
             .on("click", function () {
@@ -206,13 +205,6 @@ function renderLinePlot(svg, x, yRight, groupedData, colorScale, width, height, 
 
                 renderHistogram(svg, x, yLeft, formattedData, colorScale(range), true);
             });
-
-        svg.append("text")
-            .attr("x", width - margin.right)
-            .attr("y", margin.top + index * 20)
-            .attr("fill", colorScale(range))
-            .style("font-size", "12px")
-            .text(range);
     });
 
 }
@@ -228,7 +220,7 @@ function renderHistogram(svg, x, y, data, color,  isFromLinePlot = false) {
         .attr("fill", color)
         .attr("opacity", function() {
             if (isFromLinePlot) {
-                return 0.5
+                return 0.2
             }
             return 1;
         })

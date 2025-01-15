@@ -94,19 +94,27 @@ stackGroup
 const selectedRanges = [];
 const multiBrushes = [];
 
-// Function to highlight selected years
+// Function to highlight selected years sorted oldest - newest
 function resetYearColors() {
-    const colors = ["gold", "orange", "lightgreen", "skyblue", "red"];
+    const viridisScale = d3.scaleSequential(d3.interpolateViridis).domain([0, 4]);
+
+    const sortedRanges = selectedRanges
+        .map((r) => r.range)
+        .sort((a, b) => a[0] - b[0]);
+
+    const rangeColors = sortedRanges.map((_, i) => viridisScale(i));
+
     const highlightedYears = {};
 
-    selectedRanges.forEach((r, i) => {
-        const [start, end] = r.range;
+    sortedRanges.forEach((range, i) => {
+        const [start, end] = range;
         years.filter((d) => d >= start && d <= end).forEach((year) => {
-            highlightedYears[year] = colors[i % colors.length];
+            highlightedYears[year] = rangeColors[i];
         });
     });
 
     yearRects.transition()
+        .duration(10)
         .attr("fill", (d) => highlightedYears[d] || basecolors[Math.floor((d - 1965) / 5) % basecolors.length]);
 }
 
@@ -206,9 +214,6 @@ function updateRanges(brush, range) {
 
     if (existingIndex !== -1) {
         // Ensure the group exists
-        if (!selectedRanges[existingIndex].group) {
-            console.error("Group is missing in selectedRanges at index:", existingIndex);
-        }
 
         selectedRanges[existingIndex].range = range;
     } else {
@@ -216,7 +221,6 @@ function updateRanges(brush, range) {
         const associatedGroup = multiBrushes.find((b) => b.brush === brush)?.group;
 
         if (!associatedGroup) {
-            console.error("Could not find associated group for brush:", brush);
             return;
         }
 
@@ -292,6 +296,8 @@ function editRange(index) {
         })
         .on("end", function (event) {
             multiBrush.call(this, event, newBrush);
+            dispatchCustomEvent('yearRangeUpdated', { ranges: selectedRanges });
+            console.log("Dispatched Event:", 'yearRangeUpdated', { ranges: selectedRanges });
         });
 
     const newGroup = svg_yearselect

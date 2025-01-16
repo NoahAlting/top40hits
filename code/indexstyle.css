@@ -2,13 +2,21 @@ body {
     display: grid;
     grid-template-areas:
         "lineGraph selectorDashboard longevityRadial"
-        "lineGraph selectorDashboard longevityCharts";
+        "scatterPlot selectorDashboard radialFeatures";
     grid-template-columns: 1fr 2fr 1fr; /* Divide into three vertical sections */
     grid-template-rows: auto auto; /* Two rows: one for radial plots, one for charts */
     gap: 20px;
     justify-content: center;
     align-items: start;
     padding: 20px; /* Add padding around the layout */
+}
+
+#radial_plots {
+    grid-area: radialFeatures; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
 }
 
 #radialPlots {
@@ -32,7 +40,7 @@ body {
 }
 
 #longevityCharts {
-    grid-area: longevityCharts;
+    grid-area: scatterPlot;
     display: flex;
     flex-direction: column;
     align-items: center;

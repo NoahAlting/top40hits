@@ -17,10 +17,6 @@
 
 <!-- Line Graph on the Left -->
 <div id="lineGraphContainer">
-    <div id="menu-container">
-        <label for="genre_feature_dropdown">Select: </label>
-        <div id="genre_feature_menu"></div>
-    </div>
     <h1>Linegraph</h1>
     <div id="lineGraph_overTime"></div>
     <div id="globalDisplay">
@@ -44,6 +40,11 @@
         <button data-toggle="top40" class="active">40</button>
     </div>
 
+    <div id="menu-container">
+        <label for="genre_feature_dropdown">Select: </label>
+        <div id="genre_feature_menu"></div>
+    </div>
+
     <div class="buttonstrip" id="toggleType">
         <button data-toggle="genres">Genres</button>
         <button data-toggle="features" class="active">Features</button>
@@ -60,14 +61,14 @@
 </div>
 
 <!-- Longevity Charts on the Right -->
-<div id="longevityCharts">
+<!-- <div id="longevityCharts">
     <h1>Longevity vs Features</h1>
     <div id="feature-selector"></div>
     <div id="scatterplot"></div>
     <div id="legend"></div>
     <div id="barchart"></div>
     <div id="longevity_histogram"></div>
-</div>
+</div> -->
 
 <!--Global variables-->
 <script>
@@ -75,7 +76,7 @@
     window.selectedTop = 40;
     window.selectedYearRanges = [[1965, 2023]];
     window.selectedWeekRange = [1,52];
-    window.selectedGenre = "pop"
+    window.selectedGenre = "Danceability"
 </script>
 
 <!--Scripts-->
@@ -83,7 +84,7 @@
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="selection_yearweek.js"></script>
 <script src="selection_typetop.js"></script>
-<script src="scatterplot_longevity.js"></script>
+<!-- <script src="scatterplot_longevity.js"></script> -->
 <script src="Longevity_radialCharts.js"></script>
 <script src="LineGraph_overTime.js"></script>
 <script src="example_globalvariable.js"></script>

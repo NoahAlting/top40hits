@@ -1,19 +1,11 @@
-var categories = ["Short Hits", "Medium Hits", "Long Hits"];
-var margin_longevity_radialChart = {
-    top: 30,
-    right: 30,
-    bottom: 150,
-    left: 60,
-  },
-  width_longevity_radialChart =
-    460 -
-    margin_longevity_radialChart.left -
-    margin_longevity_radialChart.right,
-  height_longevity_radialChart =
-    400 -
-    margin_longevity_radialChart.top -
-    margin_longevity_radialChart.bottom;
+var margin_longevity_radialChart = {top: 30, right: 30, bottom: 150, left: 60,},
+  width_longevity_radialChart = 460 - margin_longevity_radialChart.left - margin_longevity_radialChart.right,
+  height_longevity_radialChart = 400 - margin_longevity_radialChart.top - margin_longevity_radialChart.bottom;
 
+const innerRadius_longevity_radialChart = 5;
+const outerRadius_longevity_radialChart = 100;
+
+var categories = ["Short Hits", "Medium Hits", "Long Hits"];
 function get_color_categories(label, labels) {
   var colorScale = d3
     .scaleSequential(d3.interpolateWarm)
@@ -22,49 +14,27 @@ function get_color_categories(label, labels) {
   return colorScale(index);
 }
 
-const innerRadius_longevity_radialChart = 5;
-const outerRadius_longevity_radialChart = 100;
-
 function loadAndProcess_FeaturesData_longevityRadialChart(
-  spotifySongs,
-  top40,
-  selected_years,
-  selected_weeks,
-  max_top,
-  selected_feature_or_genre
+  filtered_data_input,
+  selected_years
 ) {
   const all_stats = [];
   selected_years.forEach((range_years) => {
-    const mergedData = top40
+    const mergedData = filtered_data_input
       .filter((row) => (+row.Jaar >= range_years[0] && +row.Jaar <= range_years[1]) || +row.Jaar == range_years[0])
-      .filter((row) => +row.Deze_week <= max_top)
-      .filter((row) => +row.Weeknr >= selected_weeks[0] && +row.Weeknr <= selected_weeks[1])
-      .map((top40Row) => {
-        const spotifyData = spotifySongs.find(
-          (song) => song.Song_ID === top40Row.Song_ID
-        );
-        if (spotifyData) {
+      .map((row) => {
           let featureData = {};
           possible_features_songs.forEach((feature) => {
-            featureData[feature] = parseFloat(spotifyData[feature]) || null;
+            const featureValue = row[feature];
+            featureData[feature] = featureValue !== undefined ? parseFloat(featureValue) || null : null;
           });
           return {
-            Song_ID: top40Row.Song_ID,
-            Jaar: parseInt(top40Row.Jaar),
-            Weeknr: parseInt(top40Row.Weeknr),
-            ...featureData,
+            Song_ID: row.Song_ID,
+            Jaar: parseInt(row.Jaar),
+            Weeknr: parseInt(row.Weeknr),
+            featureData: featureData,
           };
-        }
-        return {
-          Song_ID: top40Row.Song_ID,
-          Jaar: parseInt(top40Row.Jaar),
-          Weeknr: parseInt(top40Row.Weeknr),
-          ...Object.fromEntries(
-            possible_features_songs.map((feature) => [feature, null])
-          ),
-        };
-      });
-
+        });
     const longevity_information = d3.rollup(
       mergedData,
       (values) => ({
@@ -72,13 +42,13 @@ function loadAndProcess_FeaturesData_longevityRadialChart(
         features: Object.fromEntries(
           possible_features_songs.map((feature) => [
             feature,
-            values.length > 0 ? values[0][feature] : null,
+            values.length > 0 ? values[0].featureData[feature] : null, 
           ])
         ),
       }),
       (d) => d.Song_ID
     );
-
+    
     function calculateStats(songs_inCategory, category_name) {
       const featureStats = {};
       possible_features_songs.forEach((feature) => {
@@ -117,12 +87,6 @@ function loadAndProcess_FeaturesData_longevityRadialChart(
           });
         }
       });
-
-      // stats.push({
-      //     category: category_name,
-      //     featureName: "total_songs",
-      //     amount: songs_inCategory.length,
-      // });
       return stats;
     }
 
@@ -177,37 +141,20 @@ function loadAndProcess_FeaturesData_longevityRadialChart(
 }
 
 function loadAndProcess_GenresData_longevityRadialChart(
-  spotifySongs,
-  top40,
-  selected_years,
-  selected_weeks,
-  max_top,
-  selected_feature_or_genre
+  filtered_data_input,
+  selected_years
 ) {
   const stats_all = [];
   selected_years.forEach((range_years) => {
-    const mergedData = top40
+    const mergedData = filtered_data_input
       .filter((row) => (+row.Jaar >= range_years[0] && +row.Jaar <= range_years[1]) || +row.Jaar == range_years[0])
-      .filter((row) => +row.Deze_week <= max_top)
-      .filter((row) => +row.Weeknr >= selected_weeks[0] && +row.Weeknr <= selected_weeks[1])
-      .map((top40Row) => {
-        const spotifyData = spotifySongs.find(
-          (song) => song.Song_ID === top40Row.Song_ID
-        );
-        if (spotifyData) {
+      .map((row) => {
           return {
-            Song_ID: top40Row.Song_ID,
-            Jaar: parseInt(top40Row.Jaar),
-            Weeknr: parseInt(top40Row.Weeknr),
-            genres: spotifyData["Artist_Genres"] || null,
+            Song_ID: row.Song_ID,
+            Jaar: parseInt(row.Jaar),
+            Weeknr: parseInt(row.Weeknr),
+            genres: row["Artist_Genres"] || null,
           };
-        }
-        return {
-          Song_ID: top40Row.Song_ID,
-          Jaar: parseInt(top40Row.Jaar),
-          Weeknr: parseInt(top40Row.Weeknr),
-          genres: null,
-        };
       });
     const longevity_information = d3.rollup(
       mergedData,
@@ -424,40 +371,6 @@ function createInteractiveGraph_Features_longevityRadialChart(
   d3.select("#myCheckbox").on("change", activateStdArea);
 }
 
-function add_legend(chartContainer, labels) {
-  var legendGroup = chartContainer.append("g").attr("class", "legendGroup");
-
-  var legendItems = legendGroup
-    .selectAll(".legendItem")
-    .data(labels)
-    .enter()
-    .append("g")
-    .attr("class", "legendItem")
-    .attr("transform", (d, i) => `translate(${i * 110}, 0)`);
-
-  legendItems
-    .append("rect")
-    .attr("width", 10)
-    .attr("height", 10)
-    .attr("fill", (d) => get_color_categories(d, labels))
-    .attr("x", 0)
-    .attr("y", 0)
-    .attr("stroke", "black");
-
-  legendItems
-    .append("text")
-    .attr("x", 12)
-    .attr("y", 10)
-    .text((d) => d);
-  var legendWidth = legendItems.size();
-  legendGroup.attr(
-    "transform",
-    `translate(${
-      -(width_longevity_radialChart - legendWidth) * (labels.length / 7)
-    } , ${height_longevity_radialChart * 0.6})`
-  );
-}
-
 function createInteractiveGraph_GenresData_longevityRadialChart(
   data,
   chartContainer,
@@ -548,332 +461,324 @@ function createInteractiveGraph_GenresData_longevityRadialChart(
 
 }
 
-function update_LonegivtyRadialGraph() {
+function add_legend(chartContainer, labels) {
+  var legendGroup = chartContainer.append("g").attr("class", "legendGroup");
+
+  var legendItems = legendGroup
+    .selectAll(".legendItem")
+    .data(labels)
+    .enter()
+    .append("g")
+    .attr("class", "legendItem")
+    .attr("transform", (d, i) => `translate(${i * 110}, 0)`);
+
+  legendItems
+    .append("rect")
+    .attr("width", 10)
+    .attr("height", 10)
+    .attr("fill", (d) => get_color_categories(d, labels))
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("stroke", "black");
+
+  legendItems
+    .append("text")
+    .attr("x", 12)
+    .attr("y", 10)
+    .text((d) => d);
+  var legendWidth = legendItems.size();
+  legendGroup.attr(
+    "transform",
+    `translate(${
+      -(width_longevity_radialChart - legendWidth) * (labels.length / 7)
+    } , ${height_longevity_radialChart * 0.6})`
+  );
+}
+
+function update_LongevityRadialGraph(filtered_data_input) {
   // Clear the entire chart container to allow for new charts
-  d3.select("#longevity_radialChart").selectAll("*").remove();
+  d3.select("#longevity_radialChart").selectAll("*")
+    .transition()
+    .duration(100)
+    .style("opacity", 0)
+    .remove();
   const stdButtonContainer = d3.select("#std_button_id");
   stdButtonContainer.selectAll("*").remove();
 
   const selected_years = window.selectedYearRanges
     .sort((a, b) => a[0] - b[0])
     .map((range) => (range[0] === range[1] ? [range[0]] : range));
-  const selected_weeks = window.selectedWeekRange;
-  const max_top = window.selectedTop;
   const selection_features = window.selectedType;
-  const selected_feature_or_genre = "Energy";
-
   const singleRange = selected_years.length === 1;
   const numCharts = singleRange ? 1 : 3;
 
   const chartContainers = []; 
 
-  d3.csv("../data/spotify_songs_with_ids.csv").then(function(
-    data_spotifySongs
-  ){
-    data_spotifySongs.forEach((row) => {
-      row[selected_feature_or_genre] = +row[selected_feature_or_genre];
-    });
+  if (selection_features === "features") {
+    const radiusScale = d3
+      .scaleLinear()
+      .domain([0, 1])
+      .range([
+        innerRadius_longevity_radialChart,
+        outerRadius_longevity_radialChart,
+      ]);
 
-    d3.csv("../data/top40_with_ids.csv").then(function (data_top40) {
-      if (selection_features === "features") {
-        const radiusScale = d3
-          .scaleLinear()
-          .domain([0, 1])
-          .range([
-            innerRadius_longevity_radialChart,
-            outerRadius_longevity_radialChart,
-          ]);
+    const stdButtonContainer = d3.select("#std_button_id");
+    stdButtonContainer.selectAll("*").remove();
+    const stdButton = stdButtonContainer
+      .append("label")
+      .text("add standard deviation area")
+      .append("input")
+      .attr("type", "checkbox")
+      .attr("id", "myCheckbox");
 
-        const stdButtonContainer = d3.select("#std_button_id");
-        stdButtonContainer.selectAll("*").remove();
-        const stdButton = stdButtonContainer
-          .append("label")
-          .text("add standard deviation area")
-          .append("input")
-          .attr("type", "checkbox")
-          .attr("id", "myCheckbox");
+    const data = loadAndProcess_FeaturesData_longevityRadialChart(
+      filtered_data_input,
+      selected_years
+    );
 
-        const data = loadAndProcess_FeaturesData_longevityRadialChart(
-          data_spotifySongs,
-          data_top40,
-          selected_years,
-          selected_weeks,
-          max_top,
-          selected_feature_or_genre
-        );
-
-        for (let i = 0; i < numCharts; i++) {
-          let indexed_data = {};
-          let labels = [];
-          function_colors = [];
-          let size_graph = 0;
-          if (numCharts === 3) {
-            data.forEach((stat) => {
-              if (!indexed_data[stat.range]) {
-                indexed_data[stat.range] = [];
-              }
-              stat[categories[i]].forEach((featureData) => {
-                indexed_data[stat.range].push({
-                  category: featureData.category,
-                  feature: featureData.feature,
-                  avg: featureData.avg,
-                  min: featureData.min,
-                  max: featureData.max,
-                  angle: featureData.angle,
-                });
-              });
-            });
-            labels = selected_years;
-            function_colors = get_color_yearRange;
-            size_graph = 0.65;
-          } else {
-            let stat = data[0];
-            categories.forEach((hitType) => {
-              indexed_data[hitType] = [];
-              stat[hitType].forEach((featureData) => {
-                indexed_data[hitType].push({
-                  category: featureData.category,
-                  feature: featureData.feature,
-                  avg: featureData.avg,
-                  min: featureData.min,
-                  max: featureData.max,
-                  angle: featureData.angle,
-                });
-              });
-            });
-            labels = categories;
-            function_colors = get_color_categories;
-            size_graph = 1;
+    for (let i = 0; i < numCharts; i++) {
+      let indexed_data = {};
+      let labels = [];
+      function_colors = [];
+      let size_graph = 0;
+      if (numCharts === 3) {
+        data.forEach((stat) => {
+          if (!indexed_data[stat.range]) {
+            indexed_data[stat.range] = [];
           }
-
-          const svgContainer = d3
-            .select("#longevity_radialChart")
-            .append("svg")
-            .attr(
-              "width",
-              (width_longevity_radialChart +
-                margin_longevity_radialChart.left +
-                margin_longevity_radialChart.right) *
-                size_graph
-            )
-            .attr(
-              "height",
-              (height_longevity_radialChart +
-                margin_longevity_radialChart.top +
-                margin_longevity_radialChart.bottom) *
-                size_graph
-            )
-            .attr("viewBox", [
-              -width_longevity_radialChart / 2,
-              -height_longevity_radialChart / 2,
-              width_longevity_radialChart,
-              height_longevity_radialChart,
-            ]);
-
-          svgContainer
-            .append("text")
-            .attr("x", 0)
-            .attr("y", -height_longevity_radialChart / 2 - 20)
-            .attr("text-anchor", "middle")
-            .style("font-size", "16px")
-            .style("font-weight", "bold")
-            .text(
-              `Chart for ${
-                singleRange ? selected_years[0].join(" - ") : categories[i]
-              }`
-            );
-
-          const chartContainer = svgContainer
-            .append("g")
-            .attr("stroke-linejoin", "round")
-            .attr("stroke-linecap", "round");
-
-          createInteractiveGraph_Features_longevityRadialChart(
-            indexed_data,
-            chartContainer,
-            labels,
-            radiusScale,
-            function_colors
-          );
-
-          if (numCharts == 1) {
-            add_legend(chartContainer, labels);
-          }
-
-          chartContainers.push({
-            data: indexed_data,
-            container: chartContainer,
-            labels,
-          });
-        }
-
-        // Centralize the event listener for the checkbox
-        d3.select("#myCheckbox").on("change", function (event) {
-          const isChecked = event.target.checked;
-          chartContainers.forEach(({ data, container, labels }) => {
-            container.selectAll(".area_radial").remove();
-            if (isChecked) {
-              labels.forEach((label) => {
-                const filteredStats = data[label];
-                const areaGenerator = d3
-                  .areaRadial()
-                  .angle((d) => d.angle)
-                  .innerRadius((d) => radiusScale(d.min))
-                  .outerRadius((d) => radiusScale(d.max))
-                  .curve(d3.curveCardinalClosed);
-                container
-                  .append("path")
-                  .datum(filteredStats)
-                  .attr("d", areaGenerator)
-                  .attr("class", "area_radial")
-                  .attr("opacity", 0.2)
-                  .attr("fill", function_colors(label, labels));
-              });
-            }
+          stat[categories[i]].forEach((featureData) => {
+            indexed_data[stat.range].push({
+              category: featureData.category,
+              feature: featureData.feature,
+              avg: featureData.avg,
+              min: featureData.min,
+              max: featureData.max,
+              angle: featureData.angle,
+            });
           });
         });
+        labels = selected_years;
+        function_colors = get_color_yearRange;
+        size_graph = 0.65;
       } else {
-        const data = loadAndProcess_GenresData_longevityRadialChart(
-          data_spotifySongs,
-          data_top40,
-          selected_years,
-          selected_weeks,
-          max_top,
-          selected_feature_or_genre
-        );
-        
-        for (let i = 0; i < numCharts; i++) {
-          let indexed_data = {};
-          let labels = [];
-          function_colors = [];
-          let size_graph = 0;
-          let max_count = 0;
-          if (numCharts === 3) {
-            data.forEach((stat) => {
-              if (!indexed_data[stat.range]) {
-                indexed_data[stat.range] = [];
-              }
-              stat[categories[i]].forEach((genreData) => {
-                indexed_data[stat.range].push({
-                  category: genreData.category,
-                  genre: genreData.genre,
-                  count: genreData.count,
-                  angle: genreData.angle,
-                });
-                if (typeof genreData.count === "number" && genreData.count > max_count) {
-                  max_count = genreData.count;
-              }
-              });
+        let stat = data[0];
+        categories.forEach((hitType) => {
+          indexed_data[hitType] = [];
+          stat[hitType].forEach((featureData) => {
+            indexed_data[hitType].push({
+              category: featureData.category,
+              feature: featureData.feature,
+              avg: featureData.avg,
+              min: featureData.min,
+              max: featureData.max,
+              angle: featureData.angle,
             });
-            labels = selected_years;
-            function_colors = get_color_yearRange;
-            size_graph = 0.65;
-          } else {
-            let stat = data[0];
-            categories.forEach((hitType) => {
-              indexed_data[hitType] = [];
-              stat[hitType].forEach((genreData) => {
-                indexed_data[hitType].push({
-                  category: genreData.category,
-                  genre: genreData.genre,
-                  count: genreData.count,
-                  angle: genreData.angle,
-                });
-                if (typeof genreData.count === "number" && genreData.count > max_count) {
-                  max_count = genreData.count;
-              }
-              });
-            });
-            labels = categories;
-            function_colors = get_color_categories;
-            size_graph = 1;
-          }
-        const radiusScale = d3
-          .scaleLinear()
-          .domain([0, max_count * 1.1])
-          .range([
-            innerRadius_longevity_radialChart,
-            outerRadius_longevity_radialChart,
-          ]);
+          });
+        });
+        labels = categories;
+        function_colors = get_color_categories;
+        size_graph = 1;
+      }
 
-        const svgContainer = d3
-            .select("#longevity_radialChart")
-            .append("svg")
-            .attr(
-              "width",
-              (width_longevity_radialChart +
-                margin_longevity_radialChart.left +
-                margin_longevity_radialChart.right) *
-                size_graph
-            )
-            .attr(
-              "height",
-              (height_longevity_radialChart +
-                margin_longevity_radialChart.top +
-                margin_longevity_radialChart.bottom) *
-                size_graph
-            )
-            .attr("viewBox", [
-              -width_longevity_radialChart / 2,
-              -height_longevity_radialChart / 2,
-              width_longevity_radialChart,
-              height_longevity_radialChart,
-            ]);
+      const svgContainer = d3
+        .select("#longevity_radialChart")
+        .append("svg")
+        .attr(
+          "width",
+          (width_longevity_radialChart +
+            margin_longevity_radialChart.left +
+            margin_longevity_radialChart.right) *
+            size_graph
+        )
+        .attr(
+          "height",
+          (height_longevity_radialChart +
+            margin_longevity_radialChart.top +
+            margin_longevity_radialChart.bottom) *
+            size_graph
+        )
+        .attr("viewBox", [
+          -width_longevity_radialChart / 2,
+          -height_longevity_radialChart / 2,
+          width_longevity_radialChart,
+          height_longevity_radialChart,
+        ]);
 
-          svgContainer
-            .append("text")
-            .attr("x", 0)
-            .attr("y", -height_longevity_radialChart / 2 - 20)
-            .attr("text-anchor", "middle")
-            .style("font-size", "16px")
-            .style("font-weight", "bold")
-            .text(
-              `Chart for ${
-                singleRange ? selected_years[0].join(" - ") : categories[i]
-              }`
-            );
-
-          const chartContainer = svgContainer
-            .append("g")
-            .attr("stroke-linejoin", "round")
-            .attr("stroke-linecap", "round");
-        createInteractiveGraph_GenresData_longevityRadialChart(
-          indexed_data,
-          chartContainer,
-          labels,
-          radiusScale,
-          function_colors,
-          max_count
+      svgContainer
+        .append("text")
+        .attr("x", 0)
+        .attr("y", -height_longevity_radialChart / 2 - 20)
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("font-weight", "bold")
+        .text(
+          `Chart for ${
+            singleRange ? selected_years[0].join(" - ") : categories[i]
+          }`
         );
-        if (numCharts == 1) {
-          add_legend(chartContainer, labels);
+
+      const chartContainer = svgContainer
+        .append("g")
+        .attr("stroke-linejoin", "round")
+        .attr("stroke-linecap", "round");
+
+      createInteractiveGraph_Features_longevityRadialChart(
+        indexed_data,
+        chartContainer,
+        labels,
+        radiusScale,
+        function_colors
+      );
+
+      if (numCharts == 1) {
+        add_legend(chartContainer, labels);
+      }
+
+      chartContainers.push({
+        data: indexed_data,
+        container: chartContainer,
+        labels,
+      });
+    }
+
+    // Centralize the event listener for the checkbox
+    d3.select("#myCheckbox").on("change", function (event) {
+      const isChecked = event.target.checked;
+      chartContainers.forEach(({ data, container, labels }) => {
+        container.selectAll(".area_radial").remove();
+        if (isChecked) {
+          labels.forEach((label) => {
+            const filteredStats = data[label];
+            const areaGenerator = d3
+              .areaRadial()
+              .angle((d) => d.angle)
+              .innerRadius((d) => radiusScale(d.min))
+              .outerRadius((d) => radiusScale(d.max))
+              .curve(d3.curveCardinalClosed);
+            container
+              .append("path")
+              .datum(filteredStats)
+              .attr("d", areaGenerator)
+              .attr("class", "area_radial")
+              .attr("opacity", 0.2)
+              .attr("fill", function_colors(label, labels));
+          });
         }
-      }
-      }
+      });
     });
-  });
+  } else {
+    const data = loadAndProcess_GenresData_longevityRadialChart(
+      filtered_data_input,
+      selected_years
+    );
+    
+    for (let i = 0; i < numCharts; i++) {
+      let indexed_data = {};
+      let labels = [];
+      function_colors = [];
+      let size_graph = 0;
+      let max_count = 0;
+      if (numCharts === 3) {
+        data.forEach((stat) => {
+          if (!indexed_data[stat.range]) {
+            indexed_data[stat.range] = [];
+          }
+          stat[categories[i]].forEach((genreData) => {
+            indexed_data[stat.range].push({
+              category: genreData.category,
+              genre: genreData.genre,
+              count: genreData.count,
+              angle: genreData.angle,
+            });
+            if (typeof genreData.count === "number" && genreData.count > max_count) {
+              max_count = genreData.count;
+          }
+          });
+        });
+        labels = selected_years;
+        function_colors = get_color_yearRange;
+        size_graph = 0.65;
+      } else {
+        let stat = data[0];
+        categories.forEach((hitType) => {
+          indexed_data[hitType] = [];
+          stat[hitType].forEach((genreData) => {
+            indexed_data[hitType].push({
+              category: genreData.category,
+              genre: genreData.genre,
+              count: genreData.count,
+              angle: genreData.angle,
+            });
+            if (typeof genreData.count === "number" && genreData.count > max_count) {
+              max_count = genreData.count;
+          }
+          });
+        });
+        labels = categories;
+        function_colors = get_color_categories;
+        size_graph = 1;
+      }
+    const radiusScale = d3
+      .scaleLinear()
+      .domain([0, max_count * 1.1])
+      .range([
+        innerRadius_longevity_radialChart,
+        outerRadius_longevity_radialChart,
+      ]);
+
+    const svgContainer = d3
+        .select("#longevity_radialChart")
+        .append("svg")
+        .attr(
+          "width",
+          (width_longevity_radialChart +
+            margin_longevity_radialChart.left +
+            margin_longevity_radialChart.right) *
+            size_graph
+        )
+        .attr(
+          "height",
+          (height_longevity_radialChart +
+            margin_longevity_radialChart.top +
+            margin_longevity_radialChart.bottom) *
+            size_graph
+        )
+        .attr("viewBox", [
+          -width_longevity_radialChart / 2,
+          -height_longevity_radialChart / 2,
+          width_longevity_radialChart,
+          height_longevity_radialChart,
+        ]);
+
+      svgContainer
+        .append("text")
+        .attr("x", 0)
+        .attr("y", -height_longevity_radialChart / 2 - 20)
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("font-weight", "bold")
+        .text(
+          `Chart for ${
+            singleRange ? selected_years[0].join(" - ") : categories[i]
+          }`
+        );
+
+      const chartContainer = svgContainer
+        .append("g")
+        .attr("stroke-linejoin", "round")
+        .attr("stroke-linecap", "round");
+    createInteractiveGraph_GenresData_longevityRadialChart(
+      indexed_data,
+      chartContainer,
+      labels,
+      radiusScale,
+      function_colors,
+      max_count
+    );
+    if (numCharts == 1) {
+      add_legend(chartContainer, labels);
+      }
+    }
+  }
 }
-
-window.addEventListener("yearRangeUpdated", function () {
-  document.getElementById("selectedYearRangesValue").innerText = JSON.stringify(
-    window.selectedYearRanges
-  );
-  update_LonegivtyRadialGraph();
-});
-
-window.addEventListener("weekRangeUpdated", function () {
-  document.getElementById("selectedWeekRangeValue").innerText = JSON.stringify(
-    window.selectedWeekRange
-  );
-  update_LonegivtyRadialGraph();
-});
-
-window.addEventListener("typeUpdated", function () {
-  document.getElementById("selectedTypeValue").innerText = window.selectedType;
-  update_LonegivtyRadialGraph();
-});
-
-window.addEventListener("topUpdated", function () {
-  document.getElementById("selectedTopValue").innerText = window.selectedTop;
-  update_LonegivtyRadialGraph();
-});

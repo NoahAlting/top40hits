@@ -131,7 +131,7 @@ function createVisualization(histogramData, dynamicallyFilteredData, yearRanges)
 
     // If only one year range is selected, show the histogram directly
     if (yearRanges.length === 1) {
-        renderHistogram(svg, x, yLeft, histogramData, "lightgrey");
+        singleLinePlot(svg, x, yLeft, histogramData, colorScale(0));
     }
     else {
     // Group data for multiple year ranges
@@ -178,53 +178,54 @@ function renderLinePlot(svg, x, yRight, groupedData, width, height, margin, yLef
             .attr("stroke-width", 2)
             .attr("d", line)
             .on("click", function () {
-                // Filter the data corresponding to the clicked year range
-                const rangeParts = range.split('-');
-                const startYear = +rangeParts[0];
-                const endYear = +rangeParts[1];
-
-                // Filter the dynamically filtered data based on the selected range
-                const filteredDataForRange = dynamicallyFilteredData.filter((row) => {
-                    return row.Jaar >= startYear && row.Jaar <= endYear;
-                });
-
-                // Create histogram data for the selected range
-                const histogramDataForRange = d3.rollup(
-                    filteredDataForRange,
-                    (songs) => songs.length,
-                    (song) => song.Longevity
-                );
-
-                // Format the histogram data
-                const formattedData = fillMissingWeeks(
-                    Array.from(histogramDataForRange, ([weeks, frequency]) => ({
-                        weeks: +weeks,
-                        frequency: +frequency,
-                    })).sort((a, b) => a.weeks - b.weeks)
-                );
-
-                renderHistogram(svg, x, yLeft, formattedData, colorScale(range), true);
             });
     });
 
 }
 
 // Render bar plot
-function renderHistogram(svg, x, y, data, color,  isFromLinePlot = false) {
-    svg.selectAll(".bar").remove();
-    svg.selectAll(".bar").data(data).enter().append("rect")
-        .attr("x", d => x(d.weeks))
-        .attr("y", d => y(d.frequency))
-        .attr("width", x.bandwidth())
-        .attr("height", d => y(0) - y(d.frequency))
-        .attr("fill", color)
-        .attr("opacity", function() {
-            if (isFromLinePlot) {
-                return 0.2
-            }
-            return 1;
-        })
-        .attr("class", "bar");
+function singleLinePlot(svg, x, y, data, color) {
+    // svg.selectAll(".line").remove();
+    svg.selectAll(".area").remove();
+    svg.selectAll(".point").remove();
+
+    // Define the line generator function
+    const line = d3.line()
+        .x(d => x(d.weeks))  // Mapping x axis data
+        .y(d => y(d.frequency));  // Mapping y axis data
+
+    // Define the area generator function
+    const area = d3.area()
+        .x(d => x(d.weeks) + x.bandwidth() / 2)  // Mapping x axis data
+        .y0(y(0))  // The bottom of the area (on the x-axis)
+        .y1(d => y(d.frequency));  // The top of the area (based on the frequency)
+
+    // Append the area element (filled beneath the line)
+    svg.append("path")
+        .data([data])  // Pass the data as an array
+        .attr("class", "area")
+        .attr("d", area)  // Define the area using the area generator
+        .attr("fill", color)  // Set the area fill color
+        .attr("fill-opacity", 0.8);  // Set the opacity to 40%
+
+    // // Create the line element
+    // svg.append("path")
+    //     .data([data])  // Pass the data as an array
+    //     .attr("class", "line")
+    //     .attr("d", line)  // Define the path using the line generator
+    //     .attr("fill", "none")  // No fill for the line itself
+    //     .attr("stroke", color)  // Set the line color
+    //     .attr("stroke-width", 2);  // Set the line width
+
+//     svg.selectAll(".point")
+//         .data(data)
+//         .enter().append("circle")
+//         .attr("class", "point")
+//         .attr("cx", d => x(d.weeks) + x.bandwidth() / 2)  // Set x position
+//         .attr("cy", d => y(d.frequency))  // Set y position
+//         .attr("r", 2)  // Set point radius
+//         .attr("fill", color)
+//         .attr("opacity", 0.8);
 }
 
 // Create genre dropdown menu

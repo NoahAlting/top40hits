@@ -204,14 +204,14 @@ function processData(selected_ranges, selected_weeks, max_top, selectedGenre, da
 
 // All functions to graphs that take all features or genres as input
 function update_graphs_all_FeaturesGenres(filtered_data){
-  // update_LongevityRadialGraph(filtered_data);
+  update_LongevityRadialGraph(filtered_data);
 }
 
 // All functions to graphs that take one genre or one feature as input
 function update_graphs_selected_FeatureGenre(filtered_data, type){
-  // updateLineGraph(filtered_data);
+  updateLineGraph(filtered_data);
     if (type === "features"){
-        // renderFeaturePlot();
+        renderFeaturePlot();
     }
     else{
         renderGenrePlot(filtered_data, selectedGenre);
@@ -257,7 +257,7 @@ window.addEventListener("typeUpdated", function () {
   else{
     createFeatureGenreMenu(possible_genres, true);
   }
-  // updateLongevityChartContent()
+  updateLongevityChartContent()
   filter_data().then(output_filtered_data => {
     update_graphs_all_FeaturesGenres(output_filtered_data);
     update_graphs_selected_FeatureGenre(output_filtered_data, window.selectedType);

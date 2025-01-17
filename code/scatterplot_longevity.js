@@ -352,8 +352,6 @@ const labels = dotGroup
     // Pass the selectedYearRange when attaching event handlers
     d3.select("#next").on("click", () => nextYearRange(window.selectedYearRanges));
     d3.select("#prev").on("click", () => prevYearRange(window.selectedYearRanges));
-    console.log(document.getElementById('prev'));
-    console.log(document.getElementById('next'));
 
     updatePlot();
 

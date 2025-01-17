@@ -113,30 +113,27 @@ function applyDynamicFilters() {
 
     console.log("Song longevity (dynamically calculated):", songLongevity);
 
-    // Create histogram data
     const longevityCounts = d3.rollup(
         songLongevity,
         (songs) => songs.length,
         (song) => song.longevity
     );
 
-    const histogramData = fillMissingWeeks(
+    const frequencyData = fillMissingWeeks(
         Array.from(longevityCounts, ([weeks, frequency]) => ({
             weeks: +weeks,
             frequency: +frequency,
         })).sort((a, b) => a.weeks - b.weeks)
     );
 
-    console.log("Histogram data:", histogramData);
+    console.log("frequency data:", frequencyData);
 
-    // Apply smoothing if enabled
-    const finalData = smoothingEnabled ? smoothData(histogramData) : histogramData;
+    const finalData = smoothingEnabled ? smoothData(frequencyData) : frequencyData;
 
-    // Call visualization function
     createVisualization(finalData, dynamicallyFilteredData, yearRanges);
 }
 
-function createVisualization(histogramData, dynamicallyFilteredData, yearRanges) {
+function createVisualization(freqData, dynamicallyFilteredData, yearRanges) {
     const svg = d3.select("#longevity_histogram").attr("width", 800).attr("height", 400);
     const width = +svg.attr("width");
     const height = +svg.attr("height");
@@ -145,12 +142,12 @@ function createVisualization(histogramData, dynamicallyFilteredData, yearRanges)
     svg.selectAll("*").remove();
 
     const x = d3.scaleBand()
-        .domain(histogramData.map((d) => d.weeks))
+        .domain(freqData.map((d) => d.weeks))
         .range([margin.left, width - margin.right])
         .padding(0.1);
 
     const yLeft = d3.scaleLinear()
-        .domain([0, d3.max(histogramData, (d) => d.frequency)]).nice()
+        .domain([0, d3.max(freqData, (d) => d.frequency)]).nice()
         .range([height - margin.bottom, margin.top]);
 
     const yRight = d3.scaleLinear()
@@ -164,7 +161,7 @@ function createVisualization(histogramData, dynamicallyFilteredData, yearRanges)
     const colorScale = d3.scaleSequential(d3.interpolateViridis).domain([0, yearRanges.length]);
 
     if (yearRanges.length === 1) {
-        singleLinePlot(svg, x, yLeft, histogramData, colorScale(0));
+        singleLinePlot(svg, x, yLeft, freqData, colorScale(0));
     } else {
         const groupedData = yearRanges.map(([start, end], index) => {
             const rangeKey = `${start}-${end}`;

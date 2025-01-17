@@ -15,14 +15,14 @@ function calculateWeeklyAverages(data) {
     return weeklyAverages;
 }
 
-function radialChart(divId, data, features, title) {
+function radialChart(divId, data, features) {
     const svg = d3
         .select(divId)
         .append("svg")
-        .attr("width", width + 100)
-        .attr("height", height + 100)
+        .attr("width", width + 200)
+        .attr("height", height + 200)
         .append("g")
-        .attr("transform", `translate(${width / 2}, ${height / 2})`);
+        .attr("transform", `translate(${width / 2}, ${height / 1.5})`);
 
     
     svg.append("circle")
@@ -44,6 +44,19 @@ function radialChart(divId, data, features, title) {
         .scaleOrdinal()
         .domain(features)
         .range(d3.schemeDark2);
+
+        const grid = feature_range.ticks(5);
+    svg.selectAll(".grid-circle")
+        .data(grid)
+        .enter()
+        .append("circle")
+        .classed("grid-circle", true)
+        .attr("cx", 0)
+        .attr("cy", 0)
+        .attr("r", d => feature_range(d))
+        .attr("fill", "none")
+        .attr("stroke", "#ccc")
+        .attr("stroke-dasharray", "2,2");
 
     features.forEach(feature => {
         const featureLines = d3
@@ -70,29 +83,16 @@ function radialChart(divId, data, features, title) {
             .attr("fill", colorScale(feature));
     });
 
- 
-    const grid = feature_range.ticks(5);
-    svg.selectAll(".grid-circle")
-        .data(grid)
-        .enter()
-        .append("circle")
-        .classed("grid-circle", true)
-        .attr("cx", 0)
-        .attr("cy", 0)
-        .attr("r", d => feature_range(d))
-        .attr("fill", "none")
-        .attr("stroke", "#ccc")
-        .attr("stroke-dasharray", "2,2");
 
-  
+
     const weeks = d3.range(0, 52);
     svg.selectAll(".week-label")
         .data(weeks)
         .enter()
         .append("text")
         .classed("week-label", true)
-        .attr("x", d => feature_range(1) * Math.sin(angles(d)))
-        .attr("y", d => -feature_range(1) * Math.cos(angles(d)))
+        .attr("x", d => 1.05 *feature_range(1) * Math.sin(angles(d)))
+        .attr("y", d => -1.05 *feature_range(1) * Math.cos(angles(d)))
         .attr("dy", "0.3em")
         .attr("text-anchor", "middle")
         .text(d => d + 1)
@@ -100,6 +100,7 @@ function radialChart(divId, data, features, title) {
         .style("fill", "#666");
 
 
+    // season lines and labels
     const seasons = [
         { name: "Spring", start: 11.5, end: 21.5 },
         { name: "Summer", start: 21.5, end: 35.5 },
@@ -119,7 +120,6 @@ function radialChart(divId, data, features, title) {
             middleAngle = (startAngle + endAngle) / 2;
         }
     
-        // Draw season start and end lines
         [startAngle, endAngle].forEach(angle => {
             svg.append("line")
                 .attr("x1", 0)
@@ -131,10 +131,9 @@ function radialChart(divId, data, features, title) {
                 .attr("stroke-dasharray", "5,5");
         });
     
-        // Draw season labels
         svg.append("text")
-            .attr("x", (outerRadius + 25) * Math.sin(middleAngle))
-            .attr("y", -(outerRadius + 25) * Math.cos(middleAngle))
+            .attr("x", (1.08*outerRadius + 25) * Math.sin(middleAngle))
+            .attr("y", -(1.08*outerRadius + 25) * Math.cos(middleAngle))
             .attr("text-anchor", "middle")
             .style("font-size", "12px")
             .style("fill", "black")
@@ -145,20 +144,13 @@ function radialChart(divId, data, features, title) {
     .attr("r", innerRadius)
     .style("fill", "white");
 
-    // Add title
-    svg.append("text")
-        .attr("x", 0)
-        .attr("y", -outerRadius - 20)
-        .attr("text-anchor", "middle")
-        .style("font-size", "16px")
-        .style("font-weight", "bold")
-        .text(title);
 }
 
 
 
 var selectedYearRanges = window.selectedYearRanges; 
 var selectedWeekRange = window.selectedWeekRange; 
+
 // TO DO: check welke features we willen
 const features = ["Danceability", "Energy", "Valence", "Acousticness"];
 const innerRadius = 100;
@@ -210,12 +202,11 @@ function updatePlot() {
 
         const weeklyAverages = calculateWeeklyAverages(filteredDataYears);
 
-        // clear previous
         d3.select(`#radial-plot`).html(""); 
 
-        // title
-        radialChart(`#radial-plot`, weeklyAverages, features, 
-            `Radial Chart: Years ${yearRange[0]} - ${yearRange[1]} Weeks ${selectedWeekRange[0]} - ${selectedWeekRange[1]}`);
+        radialChart(`#radial-plot`, weeklyAverages, features);
+        const yearRangeText = `${yearRange[0]} - ${yearRange[1]}`;
+        d3.select("#year-range-display-radial").text(`Year Range: ${yearRangeText}`);
     });
 }
 

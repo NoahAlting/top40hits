@@ -18,35 +18,49 @@ let cachedGenreFilteredData = [];
 let smoothingEnabled = false;
 let activeYearRange = null;
 
+let cachedSpotifySongs = null;
+let cachedTop40Songs = null;
+
+async function loadData() {
+    if (!cachedSpotifySongs) {
+        cachedSpotifySongs = await d3.csv("../../data/spotify_songs_with_ids.csv", d3.autoType);
+    }
+    if (!cachedTop40Songs) {
+        cachedTop40Songs = await d3.csv("../../data/top40_with_ids.csv", d3.autoType);
+    }
+}
+
 async function filterByGenre(selectedGenre) {
-    const data_spotifySongs = await d3.csv("../../data/spotify_songs_with_ids.csv", d3.autoType);
-    const data_top40 = await d3.csv("../../data/top40_with_ids.csv", d3.autoType);
+    // Ensure data is loaded and cached
+    await loadData();
 
     const genreKeywordsList = genreKeywords[selectedGenre.toLowerCase()];
 
-    cachedGenreFilteredData = data_spotifySongs.filter((row) => {
+    // Filter Spotify songs by genre keywords
+    const genreFilteredSongs = cachedSpotifySongs.filter((row) => {
         if (row.Artist_Genres && typeof row.Artist_Genres === "string") {
             return genreKeywordsList.some((keyword) => row.Artist_Genres.toLowerCase().includes(keyword));
         }
         return false;
-    }).map((spotifyRow) => {
-        const top40Row = data_top40.find((song) => song.Song_ID === spotifyRow.Song_ID);
+    });
 
-        if (!top40Row) return null;
+    // Map the filtered songs to individual appearances in the Top40 dataset
+    cachedGenreFilteredData = genreFilteredSongs.flatMap((spotifyRow) => {
+        // Find all appearances of this song in the Top40 dataset
+        const top40Entries = cachedTop40Songs.filter((song) => song.Song_ID === spotifyRow.Song_ID);
 
-        return {
+        // Create individual entries for each appearance
+        return top40Entries.map((top40Row) => ({
             Song_ID: spotifyRow.Song_ID,
             Jaar: parseInt(top40Row.Jaar),
             Weeknr: parseInt(top40Row.Weeknr),
-            Longevity: parseInt(top40Row.Aantal_weken),
             Deze_week: parseInt(top40Row.Deze_week),
-            ...spotifyRow,
-        };
-    }).filter((row) => row !== null);
+            ...spotifyRow, // Include other Spotify song data
+        }));
+    });
 
     console.log("Genre-filtered data cached:", cachedGenreFilteredData);
 }
-
 function fillMissingWeeks(data, maxWeeks = 20) {
     const weekMap = new Map(data.map(d => [d.weeks, d.frequency]));
     const filledData = [];
@@ -75,6 +89,7 @@ function applyDynamicFilters() {
     const weekRange = window.selectedWeekRange;
     const selectedTop = window.selectedTop;
 
+    // Filter cached genre data based on year, week, and top range
     const dynamicallyFilteredData = cachedGenreFilteredData.filter((row) => {
         const inYearRange = yearRanges.some(([start, end]) => row.Jaar >= start && row.Jaar <= end);
         const inWeekRange = row.Weeknr >= weekRange[0] && row.Weeknr <= weekRange[1];
@@ -85,23 +100,42 @@ function applyDynamicFilters() {
 
     console.log("Dynamically filtered data:", dynamicallyFilteredData);
 
-    const histogramData = d3.rollup(
-        dynamicallyFilteredData,
+    // Calculate longevity (number of unique weeks) for each song
+    const groupedBySong = d3.group(dynamicallyFilteredData, (song) => song.Song_ID);
+
+    const songLongevity = Array.from(groupedBySong, ([Song_ID, appearances]) => {
+        const uniqueWeeks = new Set(appearances.map((entry) => entry.Weeknr));
+        return {
+            Song_ID,
+            longevity: uniqueWeeks.size,
+        };
+    });
+
+    console.log("Song longevity (dynamically calculated):", songLongevity);
+
+    // Create histogram data
+    const longevityCounts = d3.rollup(
+        songLongevity,
         (songs) => songs.length,
-        (song) => song.Longevity
+        (song) => song.longevity
     );
 
-    const formattedData = fillMissingWeeks(
-        Array.from(histogramData, ([weeks, frequency]) => ({
+    const histogramData = fillMissingWeeks(
+        Array.from(longevityCounts, ([weeks, frequency]) => ({
             weeks: +weeks,
             frequency: +frequency,
         })).sort((a, b) => a.weeks - b.weeks)
     );
 
-    createVisualization(formattedData, dynamicallyFilteredData, yearRanges);
+    console.log("Histogram data:", histogramData);
+
+    // Apply smoothing if enabled
+    const finalData = smoothingEnabled ? smoothData(histogramData) : histogramData;
+
+    // Call visualization function
+    createVisualization(finalData, dynamicallyFilteredData, yearRanges);
 }
 
-// Create combined visualization
 function createVisualization(histogramData, dynamicallyFilteredData, yearRanges) {
     const svg = d3.select("#longevity_histogram").attr("width", 800).attr("height", 400);
     const width = +svg.attr("width");
@@ -127,39 +161,48 @@ function createVisualization(histogramData, dynamicallyFilteredData, yearRanges)
     svg.append("g").attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(yLeft));
     svg.append("g").attr("transform", `translate(${width - margin.right},0)`).call(d3.axisRight(yRight));
 
-    const colorScale = d3.scaleSequential(d3.interpolateViridis).domain([0, 4]);
+    const colorScale = d3.scaleSequential(d3.interpolateViridis).domain([0, yearRanges.length]);
 
-    // If only one year range is selected, show the histogram directly
     if (yearRanges.length === 1) {
         singleLinePlot(svg, x, yLeft, histogramData, colorScale(0));
-    }
-    else {
-    // Group data for multiple year ranges
-    const groupedData = yearRanges.map(([start, end], index) => {
-        const rangeKey = `${start}-${end}`;
-        const filtered = dynamicallyFilteredData.filter(row => row.Jaar >= start && row.Jaar <= end);
+    } else {
+        const groupedData = yearRanges.map(([start, end], index) => {
+            const rangeKey = `${start}-${end}`;
+            const filtered = dynamicallyFilteredData.filter(row => row.Jaar >= start && row.Jaar <= end);
 
-        const longevityCounts = d3.rollup(
-            filtered,
-            (songs) => songs.length,
-            (song) => song.Longevity
-        );
+            // Get the count of unique songs in the filtered data
+            const uniqueSongsCount = new Set(filtered.map(row => row.Song_ID)).size;
 
-        const filledData = fillMissingWeeks(
-            Array.from(longevityCounts, ([weeks, frequency]) => ({
-                weeks: +weeks,
-                frequency: frequency / filtered.length // Normalize
-            })).sort((a, b) => a.weeks - b.weeks)
-        );
+            // Group by Song_ID and calculate longevity (number of unique weeks)
+            const groupedBySong = d3.group(filtered, (song) => song.Song_ID);
+            const songLongevity = Array.from(groupedBySong, ([Song_ID, appearances]) => {
+                const uniqueWeeks = new Set(appearances.map((entry) => entry.Weeknr));
+                return { Song_ID, longevity: uniqueWeeks.size };
+            });
 
-        return {
-            range: rangeKey,
-            data: smoothingEnabled ? smoothData(filledData) : filledData,
-            color: colorScale(index)
-        };
-    });
+            // Count the frequency of each longevity value
+            const longevityCounts = d3.rollup(
+                songLongevity,
+                (songs) => songs.length,
+                (song) => song.longevity
+            );
 
-    renderLinePlot(svg, x, yRight, groupedData, colorScale, width, height, margin, yLeft, dynamicallyFilteredData);
+            // Normalize by the unique song count in the filtered data
+            const filledData = fillMissingWeeks(
+                Array.from(longevityCounts, ([weeks, frequency]) => ({
+                    weeks: +weeks,
+                    frequency: frequency / uniqueSongsCount, // Normalize by the unique song count
+                })).sort((a, b) => a.weeks - b.weeks)
+            );
+
+            return {
+                range: rangeKey,
+                data: smoothingEnabled ? smoothData(filledData) : filledData,
+                color: colorScale(index),
+            };
+        });
+
+        renderLinePlot(svg, x, yRight, groupedData, colorScale, width, height, margin, yLeft);
     }
 }
 

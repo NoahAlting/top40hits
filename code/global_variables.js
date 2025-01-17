@@ -65,7 +65,85 @@ function createFeatureGenreMenu(options_drop_down, switched_type=false) {
 }
 
 // ============================================ Filter data and update graphs ============================================
-// Function that filter data on years, weeks and max_top. Also removes unnecessary columns
+
+// NEW PROPOSED FUNCTION WHERE CSV IS LOADED IN
+// let cachedSpotifySongs = null;
+// let cachedTop40Songs = null;
+//
+// async function loadData() {
+//     if (!cachedSpotifySongs) {
+//         cachedSpotifySongs = await d3.csv("../data/spotify_songs_with_ids.csv", d3.autoType);
+//     }
+//     if (!cachedTop40Songs) {
+//         cachedTop40Songs = await d3.csv("../data/top40_with_ids.csv", d3.autoType);
+//     }
+// }
+//
+// function filter_data() {
+//     if (window.selectedType == "features") {
+//         createFeatureGenreMenu(possible_features_songs);
+//     } else {
+//         createFeatureGenreMenu(possible_genres);
+//     }
+//
+//     return new Promise(async (resolve, reject) => {
+//         try {
+//             // Ensure data is loaded and cached
+//             await loadData();
+//
+//             // Use cached data
+//             const data_spotifySongs = cachedSpotifySongs;
+//             const data_top40 = cachedTop40Songs;
+//
+//             let filtered_data = [];
+//             const selected_weeks = window.selectedWeekRange;
+//             const max_top = window.selectedTop;
+//             const selectedType = window.selectedType;
+//             const selectedGenre = window.selectedGenre;
+//             const selected_ranges = window.selectedYearRanges
+//                 .sort((a, b) => a[0] - b[0])
+//                 .map(range => (range[0] === range[1] ? [range[0]] : range));
+//
+//             // Data processing
+//             data_spotifySongs.forEach(row => {
+//                 row[selectedGenre] = +row[selectedGenre];
+//             });
+//
+//             selected_ranges.forEach(range_years => {
+//                 const yearRange_data = data_top40
+//                     .filter(row => (+row.Jaar >= range_years[0] && +row.Jaar <= range_years[1]) || +row.Jaar === range_years[0])
+//                     .filter(row => +row.Weeknr >= selected_weeks[0] && +row.Weeknr <= selected_weeks[1])
+//                     .filter(row => +row.Deze_week <= max_top)
+//                     .map(data_top40_row => {
+//                         const songData = data_spotifySongs.find(song => song.Song_ID === data_top40_row.Song_ID);
+//                         if (songData) {
+//                             const mergedRow = {
+//                                 ...data_top40_row,
+//                                 ...songData,
+//                             };
+//                             // Remove unwanted columns
+//                             const excludedFields = [
+//                                 'Album', 'Artiest', 'Artist', 'Artist_Country',
+//                                 'Artist_Followers', 'Artist_Popularity', 'Artist_Song',
+//                                 'Title', 'Titel', 'Status', 'Vorige_week', 'undefined', 'Aantal_weken',
+//                             ];
+//                             excludedFields.forEach(field => delete mergedRow[field]);
+//                             return mergedRow;
+//                         }
+//                         return null;
+//                     })
+//                     .filter(row => row !== null);
+//                 filtered_data.push(...yearRange_data);
+//             });
+//
+//             resolve(filtered_data);
+//         } catch (err) {
+//             console.error("Error loading data:", err);
+//             reject(err);
+//         }
+//     });
+// }
+// // Function that filter data on years, weeks and max_top. Also removes unnecessary columns
 function filter_data() {
   if (window.selectedType == "features"){
     createFeatureGenreMenu(possible_features_songs);

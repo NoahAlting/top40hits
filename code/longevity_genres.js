@@ -1,66 +1,61 @@
-const genreKeywords = {
-    "pop": ["pop"],
-    "hip-hop": ["hip-hop", "rap"],
-    "rock": ["rock", "metal", "punk", "alternative"],
-    "edm": ["edm", "house", "techno", "trance", "dubstep", "drum and bass"],
-    "r&b": ["r&b", "rhythm and blues", "soul", "funk"],
-    "soul": ["soul", "motown"],
-    "country": ["country", "bluegrass", "folk"],
-    "latin": ["latin", "salsa", "reggaeton", "bossa nova"],
-    "jazz": ["jazz", "blues", "fusion"],
-    "classical": ["classical", "opera", "symphony"],
-    "reggae": ["reggae", "ska", "dancehall"]
-};
+// const genreKeywords = {
+//     "pop": ["pop"],
+//     "hip-hop": ["hip-hop", "rap"],
+//     "rock": ["rock", "metal", "punk", "alternative"],
+//     "edm": ["edm", "house", "techno", "trance", "dubstep", "drum and bass"],
+//     "r&b": ["r&b", "rhythm and blues", "soul", "funk"],
+//     "soul": ["soul", "motown"],
+//     "country": ["country", "bluegrass", "folk"],
+//     "latin": ["latin", "salsa", "reggaeton", "bossa nova"],
+//     "jazz": ["jazz", "blues", "fusion"],
+//     "classical": ["classical", "opera", "symphony"],
+//     "reggae": ["reggae", "ska", "dancehall"]
+// };
+//
+// // Global variables
+// let genres = Object.keys(genreKeywords);
+// let cachedGenreFilteredData = [];
 
-// Global variables
-let genres = Object.keys(genreKeywords);
-let cachedGenreFilteredData = [];
+// let activeYearRange = null;
+//
+// let cachedSpotifySongs = null;
+// let cachedTop40Songs = null;
+
+//
+// async function filterByGenre(selectedGenre) {
+//     // Ensure data is loaded and cached
+//     await loadData();
+//
+//     const genreKeywordsList = genreKeywords[selectedGenre.toLowerCase()];
+//
+//     // Filter Spotify songs by genre keywords
+//     const genreFilteredSongs = cachedSpotifySongs.filter((row) => {
+//         if (row.Artist_Genres && typeof row.Artist_Genres === "string") {
+//             return genreKeywordsList.some((keyword) => row.Artist_Genres.toLowerCase().includes(keyword));
+//         }
+//         return false;
+//     });
+//
+//     // Map the filtered songs to individual appearances in the Top40 dataset
+//     cachedGenreFilteredData = genreFilteredSongs.flatMap((spotifyRow) => {
+//         // Find all appearances of this song in the Top40 dataset
+//         const top40Entries = cachedTop40Songs.filter((song) => song.Song_ID === spotifyRow.Song_ID);
+//
+//         // Create individual entries for each appearance
+//         return top40Entries.map((top40Row) => ({
+//             Song_ID: spotifyRow.Song_ID,
+//             Jaar: parseInt(top40Row.Jaar),
+//             Weeknr: parseInt(top40Row.Weeknr),
+//             Deze_week: parseInt(top40Row.Deze_week),
+//             ...spotifyRow, // Include other Spotify song data
+//         }));
+//     });
+//
+//     console.log("Genre-filtered data cached:", cachedGenreFilteredData);
+// }
+
 let smoothingEnabled = false;
-let activeYearRange = null;
 
-let cachedSpotifySongs = null;
-let cachedTop40Songs = null;
-
-async function loadData() {
-    if (!cachedSpotifySongs) {
-        cachedSpotifySongs = await d3.csv("../../data/spotify_songs_with_ids.csv", d3.autoType);
-    }
-    if (!cachedTop40Songs) {
-        cachedTop40Songs = await d3.csv("../../data/top40_with_ids.csv", d3.autoType);
-    }
-}
-
-async function filterByGenre(selectedGenre) {
-    // Ensure data is loaded and cached
-    await loadData();
-
-    const genreKeywordsList = genreKeywords[selectedGenre.toLowerCase()];
-
-    // Filter Spotify songs by genre keywords
-    const genreFilteredSongs = cachedSpotifySongs.filter((row) => {
-        if (row.Artist_Genres && typeof row.Artist_Genres === "string") {
-            return genreKeywordsList.some((keyword) => row.Artist_Genres.toLowerCase().includes(keyword));
-        }
-        return false;
-    });
-
-    // Map the filtered songs to individual appearances in the Top40 dataset
-    cachedGenreFilteredData = genreFilteredSongs.flatMap((spotifyRow) => {
-        // Find all appearances of this song in the Top40 dataset
-        const top40Entries = cachedTop40Songs.filter((song) => song.Song_ID === spotifyRow.Song_ID);
-
-        // Create individual entries for each appearance
-        return top40Entries.map((top40Row) => ({
-            Song_ID: spotifyRow.Song_ID,
-            Jaar: parseInt(top40Row.Jaar),
-            Weeknr: parseInt(top40Row.Weeknr),
-            Deze_week: parseInt(top40Row.Deze_week),
-            ...spotifyRow, // Include other Spotify song data
-        }));
-    });
-
-    console.log("Genre-filtered data cached:", cachedGenreFilteredData);
-}
 function fillMissingWeeks(data, maxWeeks = 20) {
     const weekMap = new Map(data.map(d => [d.weeks, d.frequency]));
     const filledData = [];
@@ -84,53 +79,42 @@ function smoothData(data, windowSize = 3) {
 }
 
 // Apply dynamic filters
-function applyDynamicFilters() {
+function applyDynamicFilters(filtered_data) {
+    console.log(filtered_data)
     const yearRanges = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
-    const weekRange = window.selectedWeekRange;
-    const selectedTop = window.selectedTop;
 
-    // Filter cached genre data based on year, week, and top range
-    const dynamicallyFilteredData = cachedGenreFilteredData.filter((row) => {
-        const inYearRange = yearRanges.some(([start, end]) => row.Jaar >= start && row.Jaar <= end);
-        const inWeekRange = row.Weeknr >= weekRange[0] && row.Weeknr <= weekRange[1];
-        const inTopSelection = row.Deze_week <= selectedTop;
+        // Calculate longevity (number of unique weeks) for each song
+        const groupedBySong = d3.group(filtered_data, (song) => song.Song_ID);
 
-        return inYearRange && inWeekRange && inTopSelection;
-    });
+        const songLongevity = Array.from(groupedBySong, ([Song_ID, appearances]) => {
+            const uniqueWeeks = new Set(appearances.map((entry) => entry.Weeknr));
+            return {
+                Song_ID,
+                longevity: uniqueWeeks.size,
+            };
+        });
 
-    console.log("Dynamically filtered data:", dynamicallyFilteredData);
+        console.log("Song longevity (dynamically calculated):", songLongevity);
 
-    // Calculate longevity (number of unique weeks) for each song
-    const groupedBySong = d3.group(dynamicallyFilteredData, (song) => song.Song_ID);
+        const longevityCounts = d3.rollup(
+            songLongevity,
+            (songs) => songs.length,
+            (song) => song.longevity
+        );
 
-    const songLongevity = Array.from(groupedBySong, ([Song_ID, appearances]) => {
-        const uniqueWeeks = new Set(appearances.map((entry) => entry.Weeknr));
-        return {
-            Song_ID,
-            longevity: uniqueWeeks.size,
-        };
-    });
+        const frequencyData = fillMissingWeeks(
+            Array.from(longevityCounts, ([weeks, frequency]) => ({
+                weeks: +weeks,
+                frequency: +frequency,
+            })).sort((a, b) => a.weeks - b.weeks)
+        );
 
-    console.log("Song longevity (dynamically calculated):", songLongevity);
+        console.log("frequency data:", frequencyData);
 
-    const longevityCounts = d3.rollup(
-        songLongevity,
-        (songs) => songs.length,
-        (song) => song.longevity
-    );
+        const finalData = smoothingEnabled ? smoothData(frequencyData) : frequencyData;
 
-    const frequencyData = fillMissingWeeks(
-        Array.from(longevityCounts, ([weeks, frequency]) => ({
-            weeks: +weeks,
-            frequency: +frequency,
-        })).sort((a, b) => a.weeks - b.weeks)
-    );
 
-    console.log("frequency data:", frequencyData);
-
-    const finalData = smoothingEnabled ? smoothData(frequencyData) : frequencyData;
-
-    createVisualization(finalData, dynamicallyFilteredData, yearRanges);
+    createVisualization(finalData, filtered_data, yearRanges);
 }
 
 function createVisualization(freqData, dynamicallyFilteredData, yearRanges) {
@@ -268,25 +252,6 @@ function singleLinePlot(svg, x, y, data, color) {
 //         .attr("opacity", 0.8);
 }
 
-// Create genre dropdown menu
-function createGenreMenu(genres) {
-    const menuContainer = d3.select("#genre_menu");
-    menuContainer.selectAll("*").remove();
-
-    const dropdown = menuContainer.append("select")
-        .attr("id", "genre_dropdown")
-        .on("change", async function () {
-            const selectedGenre = d3.select(this).property("value");
-            window.selectedGenre = selectedGenre;
-            await filterByGenre(selectedGenre);
-            applyDynamicFilters();
-        });
-
-    dropdown.selectAll("option").data(genres).enter().append("option")
-        .attr("value", (d) => d)
-        .text((d) => d[0].toUpperCase() + d.slice(1));
-}
-
 // Smoothing toggle
 function createSmoothingToggle() {
     const container = d3.select("#controls");
@@ -299,16 +264,8 @@ function createSmoothingToggle() {
         });
 }
 
-// Event listeners
-window.addEventListener('yearRangeUpdated', applyDynamicFilters);
-window.addEventListener('weekRangeUpdated', applyDynamicFilters);
-window.addEventListener('topUpdated', applyDynamicFilters);
-
 // Initialize
-(async function initialize() {
-    createGenreMenu(genres);
-    createSmoothingToggle();
-    const defaultGenre = genres[0];
-    await filterByGenre(defaultGenre);
-    applyDynamicFilters();
-})();
+// (async function initialize() {
+//     createSmoothingToggle();
+//     applyDynamicFilters();
+// })();

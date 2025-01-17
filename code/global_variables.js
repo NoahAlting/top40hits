@@ -157,11 +157,14 @@ function update_graphs_all_FeaturesGenres(filtered_data){
 }
 
 // All functions to graphs that take one genre or one feature as input
-function update_graphs_selected_FeatureGenre(filtered_data){ 
+function update_graphs_selected_FeatureGenre(filtered_data, type){
   updateLineGraph(filtered_data);
-  applyDynamicFilters(filtered_data);
-  console.log('apply dynamic filters', filtered_data)
-
+    if (type === "features"){
+        renderFeaturePlot();
+    }
+    else{
+        renderGenrePlot(filtered_data);
+    }
 }
 
 // ============================================ Event functions, if one of the global variables has changed ============================================
@@ -203,9 +206,10 @@ window.addEventListener("typeUpdated", function () {
   else{
     createFeatureGenreMenu(possible_genres, true);
   }
+  updateLongevityChartContent()
   filter_data().then(output_filtered_data => {
     update_graphs_all_FeaturesGenres(output_filtered_data);
-    update_graphs_selected_FeatureGenre(output_filtered_data);
+    update_graphs_selected_FeatureGenre(output_filtered_data, window.selectedType);
   }).catch(err => {
     console.error("Error filtering data:", err);
   });

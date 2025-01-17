@@ -66,22 +66,22 @@ function fillMissingWeeks(data, maxWeeks = 20) {
         });
     }
     return filledData;
-}
+        }
 
-function smoothData(data, windowSize = 3) {
-    return data.map((d, i, arr) => {
-        const start = Math.max(0, i - Math.floor(windowSize / 2));
-        const end = Math.min(arr.length, i + Math.ceil(windowSize / 2));
-        const window = arr.slice(start, end);
-        const average = d3.mean(window, w => w.frequency);
-        return { ...d, frequency: average };
-    });
-}
+    function smoothData(data, windowSize = 3) {
+        return data.map((d, i, arr) => {
+            const start = Math.max(0, i - Math.floor(windowSize / 2));
+            const end = Math.min(arr.length, i + Math.ceil(windowSize / 2));
+            const window = arr.slice(start, end);
+            const average = d3.mean(window, w => w.frequency);
+            return { ...d, frequency: average };
+        });
+    }
 
 // Apply dynamic filters
-function applyDynamicFilters(filtered_data) {
-    console.log(filtered_data)
-    const yearRanges = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
+    function applyDynamicFilters(filtered_data) {
+        console.log(filtered_data)
+        const yearRanges = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
 
         // Calculate longevity (number of unique weeks) for each song
         const groupedBySong = d3.group(filtered_data, (song) => song.Song_ID);

@@ -136,7 +136,13 @@ Promise.all([
         .attr("height", d => height - margin.bottom - yScale(d.value));
 }
 
-
+function showTooltip(event, d) {
+    const tooltip = d3.select("#tooltip");
+    tooltip.style("left", event.pageX + "px")
+           .style("top", event.pageY + "px")
+           .style("opacity", 1)
+           .html(`<strong>Artist:</strong> ${d.Artist}<br><strong>Title:</strong> ${d.Title}`);
+}
 
     function showScatterplot(feature, year_range, week_range) {
         console.log("showScatterplot", feature, year_range, week_range);
@@ -187,11 +193,12 @@ const contours = d3.contourDensity()
     .thresholds(12) 
     (filteredSongs);
 
+    selected_years = window.selectedYearRanges
 
 svg.append("g")
-    .attr("fill", "steelblue")
+    .attr("fill", get_color_yearRange(year_range, selected_years))
     .attr("fill-opacity", 0.3)
-    .attr("stroke", "steelblue")
+    .attr("stroke", get_color_yearRange(year_range, selected_years))
     .attr("stroke-linejoin", "round")
     .selectAll("path")
     .data(contours)
@@ -206,8 +213,7 @@ svg.append("g")
 const dotGroup = svg.append("g")
     .attr("clip-path", "url(#clip)");
 
-
-const dots = dotGroup
+    const dots = dotGroup
     .selectAll(".dot-scatter")
     .data(filteredSongs)
     .enter()
@@ -217,48 +223,32 @@ const dots = dotGroup
     .attr("cy", d => yScale(d[feature]))
     .attr("r", 8)
     .attr("opacity", 0)
-    .style("fill", "steelblue")
+    .style("fill", get_color_yearRange(year_range, selected_years))
     .on("click", (event, d) => {
         const dot = d3.select(event.target);
-
-        // Animate the dot to drop to the x-axis
         dot.transition()
             .duration(500)
-            .attr("cy", height) // Move the dot to the x-axis position
+            .attr("cy", height)
             .attr("opacity", 1)
             .on("end", function() {
                 dot.attr("opacity", 0);
-                // Once the dot reaches the x-axis, trigger the bar chart
                 showBarChart(d, feature);
-                
+                showTooltip(event, d); // Pass event to showTooltip
             });
     })
-      .on("mouseover", (event, d) => {
+    .on("mouseover", (event, d) => {
         d3.select(event.target)
-          .attr("r", 10)
-          .transition()
-          .duration(200);
-      })
-      .on("mouseout", (event, d) => {
+            .attr("r", 10)
+            .transition()
+            .duration(200);
+    })
+    .on("mouseout", (event, d) => {
         if (!d3.select(event.target).classed("selected")) {
-          d3.select(event.target).attr("r", 8);
+            d3.select(event.target).attr("r", 8);
         }
-      });
+    });
 
-const labels = dotGroup
-    .selectAll(".label")
-    .data(filteredSongs)
-    .enter()
-    .append("text")
-    .attr("class", "label")
-    .attr("x", d => xScale(d.Longevity))
-    .attr("y", d => yScale(d[feature]))
-    .attr("dy", "-1em")
-    .attr("text-anchor", "middle")
-    .attr("opacity", 0)
-    .style("font-size", "12px")
-    .style("clip-path", "url(#clip)")
-    .text(d => `${d.Artist}: ${d.Title}`)
+
 
     const background = svg.append("rect")
     .attr("width", width)
@@ -298,18 +288,18 @@ const labels = dotGroup
                                 ? "visible" : "hidden";
                     });}
                 
-                if (filteredSongs.length < 5000) {
-                labels
-                    .attr("x", d => newXScale(d.Longevity))
-                    .attr("y", d => newYScale(d[feature]) - 6 / event.transform.k)
-                    .attr("opacity", d => {
-                        const inBounds =
-                            d.Longevity >= newXScale.domain()[0] &&
-                            d.Longevity <= newXScale.domain()[1] &&
-                            d[feature] >= newYScale.domain()[0] &&
-                            d[feature] <= newYScale.domain()[1];
-                        return inBounds && event.transform.k > 6 ? 1 : 0;
-                    });}
+                // if (filteredSongs.length < 5000) {
+                // labels
+                //     .attr("x", d => newXScale(d.Longevity))
+                //     .attr("y", d => newYScale(d[feature]) - 6 / event.transform.k)
+                //     .attr("opacity", d => {
+                //         const inBounds =
+                //             d.Longevity >= newXScale.domain()[0] &&
+                //             d.Longevity <= newXScale.domain()[1] &&
+                //             d[feature] >= newYScale.domain()[0] &&
+                //             d[feature] <= newYScale.domain()[1];
+                //         return inBounds && event.transform.k > 6 ? 1 : 0;
+                //     });}
         
                 svg.selectAll(".contour-path")
                     .attr("transform", event.transform.toString())
@@ -329,7 +319,6 @@ const labels = dotGroup
         const selectedYearRange = window.selectedYearRanges; 
         const selectedWeekRange = window.selectedWeekRange; 
         const selectedTop = window.selectedTop; 
-        console.log("updatePlot", selectedFeature, selectedYearRange, selectedWeekRange);
         
 
         const yearRange = selectedYearRange[current_year_index];
@@ -339,7 +328,6 @@ const labels = dotGroup
     }
 
     function nextYearRange(selectedYearRange) {
-        console.log("nextYearRange", selectedYearRange);
         current_year_index = (current_year_index + 1) % selectedYearRange.length;
         updatePlot();
     }
@@ -352,6 +340,7 @@ const labels = dotGroup
     // Pass the selectedYearRange when attaching event handlers
     d3.select("#next").on("click", () => nextYearRange(window.selectedYearRanges));
     d3.select("#prev").on("click", () => prevYearRange(window.selectedYearRanges));
+
 
     updatePlot();
 

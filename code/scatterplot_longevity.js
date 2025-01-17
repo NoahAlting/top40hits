@@ -1,22 +1,57 @@
+function hideAllElements() {
+    const elementsToHide = document.querySelectorAll('#barchart, #scatterplot, #feature-selector, #tooltip, #prev, #next, #year-range-display, #clip, #h1');
+    elementsToHide.forEach(element => {
+        element.style.display = 'none';
+    });
+}
+
 function updateLongevityChartContent() {
     const selectedFeatureElement = document.getElementById('selected_feature_long');
     const selectedGenreElement = document.getElementById('selected_genre_long');
 
-    // Check the selectedType and show the appropriate element
     if (window.selectedType === 'features') {
         selectedFeatureElement.style.display = 'block';
         selectedGenreElement.style.display = 'none';
+        
+        let headerElement = document.getElementById('longevityHeader_2');
+        if (!headerElement) {
+            headerElement = document.createElement("h1");
+            headerElement.id = "longevityHeader_2";
+            headerElement.textContent = "Longevity vs Features";
+            const longevityChartsContainer = document.getElementById("longevityCharts");
+            longevityChartsContainer.insertBefore(headerElement, longevityChartsContainer.firstChild);
+        }
+
+        const elementsToHide = document.querySelectorAll('#barchart, #scatterplot, #feature-selector, #tooltip, #prev, #next, #year-range-display, #clip');
+        elementsToHide.forEach(element => {
+            element.style.display = 'block';
+        });
+        
     } else if (window.selectedType === 'genres') {
         selectedFeatureElement.style.display = 'none';
         selectedGenreElement.style.display = 'block';
+        hideAllElements();
+        
+        const headerElement = document.getElementById('longevityHeader_2');
+        if (headerElement) {
+            headerElement.remove();
+        }
     }
 }
+
+const header = document.createElement("h1");
+header.textContent = "Longevity vs Features";
+header.id = "longevityHeader_2";  // Add the id
+const longevityChartsContainer = document.getElementById("longevityCharts");
+longevityChartsContainer.insertBefore(header, longevityChartsContainer.firstChild);
+
+const allWeeks = [];
 const margin = {top: 20, right: 20, bottom: 50, left: 50};
 const width = 800 - margin.left - margin.right;
 const height = 500 - margin.top - margin.bottom;
 const week_ranges = window.selectedWeekRange;
 
-const allWeeks = [];
+
 
 function renderFeaturePlot() {
 
@@ -105,7 +140,7 @@ function renderFeaturePlot() {
         .attr("value", d => d)
         .text(d => d);
 
-        function showBarChart(song, selectedFeature) {
+        function showBarChart(year_range, selected_years, song, selectedFeature) {
             // Only show these features (they are within 0-1 range)
             const selectedFeatures = ['Danceability', 'Acousticness', 'Energy', 'Liveness', 'Valence', 'Speechiness'];
             const featureData = selectedFeatures
@@ -144,7 +179,7 @@ function renderFeaturePlot() {
         .attr("y", yScale(0))  // Start from 0 for animation
         .attr("width", xScale.bandwidth())
         .attr("height", 0)  // Start with 0 height for animation
-        .attr("fill", d => d.feature === selectedFeature ? "steelblue" : "darkgrey")
+        .attr("fill", d => d.feature === selectedFeature ?  get_color_yearRange(year_range, selected_years) : "darkgrey")
         .transition()
         .duration(500)
         .attr("y", d => yScale(d.value))
@@ -180,6 +215,8 @@ function showTooltip(event, d) {
             .append("g")
             .attr("transform", `translate(${margin.left},${margin.top})`);
 
+           
+        
 
         const xScale = d3.scaleLinear().domain(longevityRange) .range([margin.left, width - margin.right]);
         const yScale = d3.scaleLinear().domain([0, 1]).range([height, 0]); 
@@ -247,8 +284,8 @@ const dotGroup = svg.append("g")
             .attr("opacity", 1)
             .on("end", function() {
                 dot.attr("opacity", 0);
-                showBarChart(d, feature);
-                showTooltip(event, d); // Pass event to showTooltip
+                showBarChart(year_range, selected_years, d, feature);
+                showTooltip(event, d); 
             });
     })
     .on("mouseover", (event, d) => {

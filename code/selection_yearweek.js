@@ -129,6 +129,7 @@ function removeRange(index) {
 
     renderRanges();
     console.log("selected ranges after deletion", selectedRanges);
+    window.previousYearLength = selectedRanges.length + 1;
     window.selectedYearRanges = selectedRanges.map(r => r.range);
     dispatchCustomEvent('yearRangeUpdated', { ranges: selectedRanges });
     resetYearColors();
@@ -297,6 +298,7 @@ function editRange(index) {
         .on("end", function (event) {
             multiBrush.call(this, event, newBrush);
             dispatchCustomEvent('yearRangeUpdated', { ranges: selectedRanges });
+            window.previousYearLength = selectedRanges.length - 1;
             console.log("Dispatched Event:", 'yearRangeUpdated', { ranges: selectedRanges });
         });
 

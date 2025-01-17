@@ -80,7 +80,6 @@ function fillMissingWeeks(data, maxWeeks = 20) {
 
 // Apply dynamic filters
     function applyDynamicFilters(filtered_data) {
-        console.log(filtered_data)
         const yearRanges = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
 
         // Calculate longevity (number of unique weeks) for each song
@@ -93,8 +92,6 @@ function fillMissingWeeks(data, maxWeeks = 20) {
                 longevity: uniqueWeeks.size,
             };
         });
-
-        console.log("Song longevity (dynamically calculated):", songLongevity);
 
         const longevityCounts = d3.rollup(
             songLongevity,
@@ -109,7 +106,6 @@ function fillMissingWeeks(data, maxWeeks = 20) {
             })).sort((a, b) => a.weeks - b.weeks)
         );
 
-        console.log("frequency data:", frequencyData);
 
         const finalData = smoothingEnabled ? smoothData(frequencyData) : frequencyData;
 

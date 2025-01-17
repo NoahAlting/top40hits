@@ -424,12 +424,16 @@ const dotGroup = svg.append("g")
 // =========================================== Genre Selected ========================================================
 let smoothingEnabled = false;
 
-function renderGenrePlot(filtered_data) {
-    console.log(filtered_data)
+function renderGenrePlot(filtered_data, selectedType) {
+    console.log('render genre plot', filtered_data)
+
+    const genreData = filtered_data[selectedType] || [];
+
+    console.log(genreData)
     const yearRanges = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
 
     // Calculate longevity (number of unique weeks) for each song
-    const groupedBySong = d3.group(filtered_data, (song) => song.Song_ID);
+    const groupedBySong = d3.group(genreData, (song) => song.Song_ID);
 
     const songLongevity = Array.from(groupedBySong, ([Song_ID, appearances]) => {
         const uniqueWeeks = new Set(appearances.map((entry) => entry.Weeknr));
@@ -438,8 +442,6 @@ function renderGenrePlot(filtered_data) {
             longevity: uniqueWeeks.size,
         };
     });
-
-    console.log("Song longevity (dynamically calculated):", songLongevity);
 
     const longevityCounts = d3.rollup(
         songLongevity,
@@ -454,12 +456,11 @@ function renderGenrePlot(filtered_data) {
         })).sort((a, b) => a.weeks - b.weeks)
     );
 
-    console.log("frequency data:", frequencyData);
 
     const finalData = smoothingEnabled ? smoothData(frequencyData) : frequencyData;
 
 
-    createVisualization(finalData, filtered_data, yearRanges);
+    createVisualization(finalData, genreData, yearRanges);
 }
 
 function fillMissingWeeks(data, maxWeeks = 20) {

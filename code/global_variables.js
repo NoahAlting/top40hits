@@ -22,7 +22,8 @@ const genreKeywords = {
     "classical": ["classical", "opera", "symphony"],
     "reggae": ["reggae", "ska", "dancehall"]
 };
-let possible_genres = Object.keys(genreKeywords); 
+let possible_genres = Object.keys(genreKeywords);
+
 
 // ============================================ Functions ============================================
 // This function determined the coloring of the year ranges
@@ -71,57 +72,107 @@ function createFeatureGenreMenu(options_drop_down, switched_type=false) {
 let cachedSpotifySongs = null;
 let cachedTop40Data = null;
 
+let cachedGenreData = {}; // Cache for filtered genre data by genre
+
 function filter_data() {
-    // Initialize genre menu
+    // Initialize genre or feature menu
     if (window.selectedType == "features") {
         createFeatureGenreMenu(possible_features_songs);
     } else {
         createFeatureGenreMenu(possible_genres);
     }
+    console.log("Filtering data...");
 
     return new Promise((resolve, reject) => {
-        let filtered_data = [];
         const selected_weeks = window.selectedWeekRange;
         const max_top = window.selectedTop;
-        const selectedType = window.selectedType;
-        const selectedGenre = window.selectedGenre;
+        const selectedType = window.selectedType; // "genres" or "features"
         const selected_ranges = window.selectedYearRanges
             .sort((a, b) => a[0] - b[0])
             .map(range => (range[0] === range[1] ? [range[0]] : range));
 
-        // Check if data is already cached, if not load from CSV
+        // Load and cache the original datasets if not already cached
         if (!cachedSpotifySongs || !cachedTop40Data) {
+            console.log("Loading datasets...");
             Promise.all([
                 d3.csv("../data/spotify_songs_with_ids.csv"),
                 d3.csv("../data/top40_with_ids.csv"),
             ]).then(([data_spotifySongs, data_top40]) => {
-                // Cache the entire original datasets
+                // Cache the original datasets
                 cachedSpotifySongs = data_spotifySongs;
                 cachedTop40Data = data_top40;
 
-                // Process the data
-                processData(selected_ranges, selected_weeks, max_top, selectedGenre, cachedSpotifySongs, cachedTop40Data, filtered_data);
+                if (selectedType === "genres") {
+                    // Filter by genre if type is "genres"
+                    const genreDataByGenre = processAllGenresFilter(cachedSpotifySongs);
 
-                // Resolve the promise
-                resolve(filtered_data);
+                    // Process the data for each genre separately
+                    const dataByGenre = {};
+                    possible_genres.forEach(genre => {
+                        const genreData = genreDataByGenre[genre] || [];
+                        const filtered_data = [];
+                        processData(selected_ranges, selected_weeks, max_top, genre, genreData, cachedTop40Data, filtered_data);
+                        dataByGenre[genre] = filtered_data;
+                    });
+
+                    resolve(dataByGenre); // Return data grouped by genre
+                } else {
+                    // Process the data for features
+                    const filtered_data = [];
+                    processData(selected_ranges, selected_weeks, max_top, null, cachedSpotifySongs, cachedTop40Data, filtered_data);
+                    resolve(filtered_data); // Return a single array of filtered data
+                }
             }).catch(err => {
                 console.error("Error loading data:", err);
                 reject(err);
             });
         } else {
-            // If data is cached, process it directly
-            processData(selected_ranges, selected_weeks, max_top, selectedGenre, cachedSpotifySongs, cachedTop40Data, filtered_data);
-            resolve(filtered_data);
+            console.log("Using cached datasets...");
+            console.log("cached: ", cachedGenreData)
+            if (selectedType === "genres") {
+                // Filter and cache all genres
+                const genreDataByGenre = processAllGenresFilter(cachedSpotifySongs);
+
+                // Process the data for each genre separately
+                const dataByGenre = {};
+                possible_genres.forEach(genre => {
+                    const genreData = genreDataByGenre[genre] || [];
+                    const filtered_data = [];
+                    processData(selected_ranges, selected_weeks, max_top, genre, genreData, cachedTop40Data, filtered_data);
+                    dataByGenre[genre] = filtered_data;
+                });
+
+                resolve(dataByGenre); // Return data grouped by genre
+            } else {
+                // Process the data for features
+                const filtered_data = [];
+                processData(selected_ranges, selected_weeks, max_top, null, cachedSpotifySongs, cachedTop40Data, filtered_data);
+                resolve(filtered_data); // Return a single array of filtered data
+            }
         }
-        console.log('filtered data', filtered_data)
     });
 }
 
-// Separate function to process the data
-function processData(selected_ranges, selected_weeks, max_top, selectedGenre, data_spotifySongs, data_top40, filtered_data) {
-    data_spotifySongs.forEach(row => {
-        row[selectedGenre] = +row[selectedGenre];
+// Separate function to filter and cache genre data
+function processAllGenresFilter(data_spotifySongs) {
+    possible_genres.forEach(genre => {
+        if (!cachedGenreData[genre]) {
+            const genreKeywordsList = genreKeywords[genre.toLowerCase()] || [];
+            cachedGenreData[genre] = data_spotifySongs.filter(row => {
+                if (row.Artist_Genres && typeof row.Artist_Genres === "string") {
+                    return genreKeywordsList.some(keyword => row.Artist_Genres.toLowerCase().includes(keyword));
+                }
+                return false;
+            });
+        }
     });
+    return cachedGenreData;
+}
+
+// Updated processData to use cached genre data or the full dataset as needed
+function processData(selected_ranges, selected_weeks, max_top, selectedGenre, data_spotifySongs, data_top40, filtered_data) {
+    // Use a Map for faster lookups instead of .find() on large datasets
+    const spotifySongsMap = new Map(data_spotifySongs.map(song => [song.Song_ID, song]));
 
     selected_ranges.forEach(range_years => {
         const yearRange_data = data_top40
@@ -129,7 +180,7 @@ function processData(selected_ranges, selected_weeks, max_top, selectedGenre, da
             .filter(row => +row.Weeknr >= selected_weeks[0] && +row.Weeknr <= selected_weeks[1])
             .filter(row => +row.Deze_week <= max_top)
             .map(data_top40_row => {
-                const songData = data_spotifySongs.find(song => song.Song_ID === data_top40_row.Song_ID);
+                const songData = spotifySongsMap.get(data_top40_row.Song_ID);
                 if (songData) {
                     const mergedRow = {
                         ...data_top40_row,
@@ -153,17 +204,17 @@ function processData(selected_ranges, selected_weeks, max_top, selectedGenre, da
 
 // All functions to graphs that take all features or genres as input
 function update_graphs_all_FeaturesGenres(filtered_data){
-  update_LongevityRadialGraph(filtered_data);
+  // update_LongevityRadialGraph(filtered_data);
 }
 
 // All functions to graphs that take one genre or one feature as input
 function update_graphs_selected_FeatureGenre(filtered_data, type){
-  updateLineGraph(filtered_data);
+  // updateLineGraph(filtered_data);
     if (type === "features"){
-        renderFeaturePlot();
+        // renderFeaturePlot();
     }
     else{
-        renderGenrePlot(filtered_data);
+        renderGenrePlot(filtered_data, selectedGenre);
     }
 }
 
@@ -206,7 +257,7 @@ window.addEventListener("typeUpdated", function () {
   else{
     createFeatureGenreMenu(possible_genres, true);
   }
-  updateLongevityChartContent()
+  // updateLongevityChartContent()
   filter_data().then(output_filtered_data => {
     update_graphs_all_FeaturesGenres(output_filtered_data);
     update_graphs_selected_FeatureGenre(output_filtered_data, window.selectedType);

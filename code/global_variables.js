@@ -11,18 +11,19 @@ const possible_features_songs = [
   
 // Keywords for the genres
 const genreKeywords = {
-    "pop": ["pop"],
-    "hip-hop": ["hip-hop", "rap"],
-    "rock": ["rock", "metal", "punk", "alternative"],
-    "edm": ["edm", "house", "techno", "trance", "dubstep", "drum and bass"],
-    "r&b": ["r&b", "rhythm and blues", "soul", "funk"],
-    "country": ["country", "bluegrass", "folk"],
-    "latin": ["latin", "salsa", "reggaeton", "bossa nova"],
-    "jazz": ["jazz", "blues", "fusion"],
-    "classical": ["classical", "opera", "symphony"],
-    "reggae": ["reggae", "ska", "dancehall"]
+  "pop": ["pop", "boy band", "girl group", "bubblegum dance", "british invasion", "beatlesque", "disco", "hi-nrg", "a cappella", "synthesizer", "disco, post-disco", "disco, motown", "deep disco", "boogie", "itolo disco", "new italo disco", "vintage french electronic", "super eurobeat", "rare groove", "adult standards", "easy listening", "chanson", "chanson, ye ye", "chanson, chanson paillarde", "vintage chanson", "vintage chanson, ye ye", "ballroom, easy listening", "easy listening, lounge", "deep adult standards", "novelty", "novelty, outsider", "british invasion, merseybeat", "british invasion, vaudeville", "british comedy", "comedy musical", "workout product"],
+  "hip-hop": ["hip-hop", "rap", "hip hop", "grime", "afroswing", "perreo", "old school nederhop", "freestyle", "miami bass", "atlanta bass, miami bass", "uk garage", "breakbeat, nu skool breaks", "uk garage, 2-step", "new beat", "new beat, rave"],
+  "rock": ["rock", "metal", "punk", "alternative", "indie", "alternative rock", "garage rock", "gothic rock", "post-punk", "dark clubbing", "shoegaze", "nu metal", "neo-singer-songwriter", "stomp and holler", "grunge", "madchester", "punk rock", "hard rock", "classic rock"],
+  "edm": ["edm", "house", "techno", "trance", "dubstep", "drum and bass", "bassline", "big beat", "big room", "deep house", "progressive house", "trap", "psytrance", "hardstyle", "tekno", "rave", "tech house", "electronica", "downtempo", "dubstep, drum and bass", "big beat, breakbeat", "big beat, downtempo, electronica, trip hop", "breakbeat", "breakbeat, trip hop", "deep talent show", "electronica, trip hop", "deep eurodance", "belgian dance", "belgian dance, euphoric hardstyle", "eurodance", "swedish eurodance", "italo dance", "german dance", "basshall", "hands up", "jumpstyle", "gabber", "happy hardcore", "gabber, happy hardcore", "jumpstyle", "big beat, soundtrack", "big beat, trip hop", "freestyle, miami bass", "big beat, electronica", "freestyle, post-disco"],
+  "r&b": ["r&b", "rhythm and blues", "soul", "funk", "new jack swing", "quiet storm", "afrobeats", "neo mellow", "neo mellow, singer-songwriter", "adult contemporary", "lilith", "alt z", "idol", "british singer-songwriter", "black thrash", "vocal harmony group", "gospel", "soul music", "classic sierreno, musica sonorense", "smooth jazz"],
+  "country": ["country", "bluegrass", "folk", "americana", "alt-country", "bluegrass, americana", "old country", "honky-tonk", "celtic", "bush ballad", "cowboy western", "nashville sound", "dutch americana", "friese muziek", "german americana"],
+  "latin": ["latin", "salsa", "reggaeton", "bossa nova", "mambo", "merengue", "tropical", "soca, vincy soca", "sega, sega mauricien", "musique guadeloupe, zouk", "zouk", "bossa nova", "salsa, reggaeton", "canzone napoletana, italian romanticism, post-romantic era", "flamenco, rumba, world", "rumba, rumba catalana", "flamenco electronica", "german soundtrack, orchestral soundtrack, scorecore, soundtrack"],
+  "jazz": ["jazz", "blues", "fusion", "smooth jazz", "neo-soul", "funk jazz", "vintage jazz", "free jazz", "bebop", "dixieland", "swing", "latin jazz", "electro swing"],
+  "classical": ["classical", "opera", "symphony", "baroque", "chamber music", "early romantic era", "german romanticism", "orchestral soundtrack", "scorecore", "classic soundtrack", "vintage italian soundtrack", "orchestral", "french classical music", "musical advocacy"],
+  "reggae": ["reggae", "ska", "dancehall", "rocksteady", "dub", "roots reggae", "reggae fusion", "dubstep", "reggae dub", "mento", "afroswing"]
 };
 let possible_genres = Object.keys(genreKeywords);
+const remaining_genres = "other";
 
 
 // ============================================ Functions ============================================
@@ -79,7 +80,7 @@ function filter_data() {
     if (window.selectedType == "features") {
         createFeatureGenreMenu(possible_features_songs);
     } else {
-        createFeatureGenreMenu(possible_genres);
+        createFeatureGenreMenu(possible_genres.concat(remaining_genres));
     }
     console.log("Filtering data...");
 
@@ -108,7 +109,7 @@ function filter_data() {
 
                     // Process the data for each genre separately
                     const dataByGenre = {};
-                    possible_genres.forEach(genre => {
+                    possible_genres.concat(remaining_genres).forEach(genre => {
                         const genreData = genreDataByGenre[genre] || [];
                         const filtered_data = [];
                         processData(selected_ranges, selected_weeks, max_top, genre, genreData, cachedTop40Data, filtered_data);
@@ -122,6 +123,7 @@ function filter_data() {
                     processData(selected_ranges, selected_weeks, max_top, null, cachedSpotifySongs, cachedTop40Data, filtered_data);
                     resolve(filtered_data); // Return a single array of filtered data
                 }
+                
             }).catch(err => {
                 console.error("Error loading data:", err);
                 reject(err);
@@ -135,7 +137,7 @@ function filter_data() {
 
                 // Process the data for each genre separately
                 const dataByGenre = {};
-                possible_genres.forEach(genre => {
+                possible_genres.concat(remaining_genres).forEach(genre => {
                     const genreData = genreDataByGenre[genre] || [];
                     const filtered_data = [];
                     processData(selected_ranges, selected_weeks, max_top, genre, genreData, cachedTop40Data, filtered_data);
@@ -166,6 +168,22 @@ function processAllGenresFilter(data_spotifySongs) {
             });
         }
     });
+
+    cachedGenreData[remaining_genres] = data_spotifySongs.filter(row => {
+      if (row.Artist_Genres && typeof row.Artist_Genres === "string") {
+          let isMatched = false;
+          for (const genre of possible_genres) {
+              const genreKeywordsList = genreKeywords[genre.toLowerCase()] || [];
+              if (genreKeywordsList.some(keyword => row.Artist_Genres.toLowerCase().includes(keyword))) {
+                  isMatched = true;
+                  break;
+              }
+          }
+          return !isMatched;
+      }
+      return false;
+  });
+
     return cachedGenreData;
 }
 
@@ -255,7 +273,7 @@ window.addEventListener("typeUpdated", function () {
     createFeatureGenreMenu(possible_features_songs, true)
   }
   else{
-    createFeatureGenreMenu(possible_genres, true);
+    createFeatureGenreMenu(possible_genres.concat(remaining_genres), true);
   }
   updateLongevityChartContent()
   filter_data().then(output_filtered_data => {

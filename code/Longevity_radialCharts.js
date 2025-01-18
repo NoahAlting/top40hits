@@ -14,10 +14,7 @@ function get_color_categories(label, labels) {
   return colorScale(index);
 }
 
-function loadAndProcess_FeaturesData_longevityRadialChart(
-  filtered_data_input,
-  selected_years
-) {
+function loadAndProcess_FeaturesData_longevityRadialChart(filtered_data_input, selected_years) {
   const all_stats = [];
   selected_years.forEach((range_years) => {
     const mergedData = filtered_data_input
@@ -146,84 +143,57 @@ function loadAndProcess_GenresData_longevityRadialChart(
 ) {
   const stats_all = [];
   selected_years.forEach((range_years) => {
-    const mergedData = filtered_data_input
-      .filter((row) => (+row.Jaar >= range_years[0] && +row.Jaar <= range_years[1]) || +row.Jaar == range_years[0])
-      .map((row) => {
-          return {
-            Song_ID: row.Song_ID,
-            Jaar: parseInt(row.Jaar),
-            Weeknr: parseInt(row.Weeknr),
-            genres: row["Artist_Genres"] || null,
-          };
+    let range_year_data = [];
+    possible_genres.concat(remaining_genres).forEach((genre) => {
+      let genre_data = filtered_data_input[genre];
+      let genre_data_year_range = genre_data.filter(obj => 
+          (+obj.Jaar >= range_years[0] && +obj.Jaar <= range_years[1]) || +obj.Jaar == range_years[0]
+      );
+      
+      let songCounts = {};
+      genre_data_year_range.forEach(song => {
+          let songID = song.Song_ID;
+          if (!songCounts[songID]) {
+              songCounts[songID] = {songID, maximum_amount_of_weeks: 0, genre };
+          }
+          songCounts[songID].maximum_amount_of_weeks++;
       });
-    const longevity_information = d3.rollup(
-      mergedData,
-      (values) => ({
-        maximum_amount_of_weeks: values.length,
-        genres: values[0].genres,
-      }),
-      (d) => d.Song_ID
-    );
-
+  
+      range_year_data.push(...Object.values(songCounts));
+  });   
     function calculateStats(songs_inCategories, category_name) {
-      const genresStats = {};
-      var total_genres_divided = 0;
-      for (const [broadGenre, keywords] of Object.entries(genreKeywords)) {
-        genresStats[broadGenre] = 0;
-      }
-      genresStats["other"] = 0;
-      songs_inCategories.forEach((song) => {
-        if (song.genres == null) {
-          genresStats["other"] += 1;
-          total_genres_divided += 1;
-          return;
+      var stats = [];
+      let total_songs_in_category = songs_inCategories.length;
+      possible_genres.concat(remaining_genres).forEach((genre, index) => {
+        let genre_songs = songs_inCategories.filter(obj => obj.genre === genre);
+        let percentage = genre_songs.length / total_songs_in_category * 100;
+        if (genre_songs.length != 0){
+          stats.push({
+            category: category_name,
+            genre: genre,
+            count: percentage,
+            angle: 2 * Math.PI * (index / (possible_genres.concat(remaining_genres).length)),
+          });
         }
-        let genre_oneSong = song.genres.toLowerCase();
-          let genreMatched = false;
-          for (const [broadGenre, keywords] of Object.entries(genreKeywords)) {
-            if (keywords.some((keyword) => genre_oneSong.includes(keyword))) {
-              genresStats[broadGenre] += 1;
-              genreMatched = true;
-              total_genres_divided += 1;
-            }
-          }
-          if (!genreMatched) {
-            genresStats["other"] += 1;
-            total_genres_divided += 1;
-          }
-        });
-        const stats = [];
-        Object.keys(genresStats).forEach((genre, index) => {
-          let genre_counted = genresStats[genre];
-          if (genre_counted > 0) {
-            const percentage = genre_counted/ total_genres_divided * 100;
-            stats.push({
-              category: category_name,
-              genre: genre,
-              count: percentage,
-              angle: 2 * Math.PI * (index / (possible_genres.length + 1)),
-            });
-          }
-          else{
-            stats.push({
-              category: category_name,
-              genre: genre,
-              count: 0,
-              angle: 2 * Math.PI * (index / (possible_genres.length + 1)),
-            });
-          }
-        });
+        else{
+          stats.push({
+            category: category_name,
+            genre: genre,
+            count: 0,
+            angle: 2 * Math.PI * (index / (possible_genres.concat(remaining_genres).length)),
+          });
+        }
+
+      })
       return stats;
     }
     
     const groupedByLongevity = d3.rollup(
-      Array.from(longevity_information.entries()).map(([Song_ID, data]) => ({
-        Song_ID,
-        ...data,
-      })),
-      (group) => group,
-      (d) => d.maximum_amount_of_weeks
+      range_year_data, 
+      (group) => group, 
+      (d) => d.maximum_amount_of_weeks 
     );
+
     const sortedGroups = Array.from(groupedByLongevity.entries()).sort(
       (a, b) => a[0] - b[0]
     );
@@ -499,7 +469,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
   // Clear the entire chart container to allow for new charts
   d3.select("#longevity_radialChart").selectAll("*")
     .transition()
-    .duration(100)
+    .duration(50)
     .style("opacity", 0)
     .remove();
   const stdButtonContainer = d3.select("#std_button_id");

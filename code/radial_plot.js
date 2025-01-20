@@ -27,7 +27,7 @@ function radialChart(divId, data, features) {
     
     svg.append("circle")
         .attr("r", outerRadius)
-        .style("fill", "darkgrey");
+        .style("fill", "darkslategrey");
 
 
     const angles = d3
@@ -43,7 +43,7 @@ function radialChart(divId, data, features) {
     const colorScale = d3
         .scaleOrdinal()
         .domain(features)
-        .range(d3.schemeDark2);
+        .range(d3.schemeTableau10);
 
         const grid = feature_range.ticks(5);
     svg.selectAll(".grid-circle")
@@ -140,9 +140,30 @@ function radialChart(divId, data, features) {
             .text(season.name);
     });
 
+
     svg.append("circle")
     .attr("r", innerRadius)
     .style("fill", "white");
+
+    
+    const legend = svg.append("g")
+        .attr("transform", `translate(${-width / 4 + 130}, ${-height / 4 + 50 })`);
+
+    features.forEach((feature, index) => {
+        const legendItem = legend.append("g")
+            .attr("transform", `translate(0, ${index * 20})`);
+
+        legendItem.append("circle")
+            .attr("r", 8)
+            .attr("fill", colorScale(feature));
+
+        legendItem.append("text")
+            .attr("x", 10)
+            .attr("y", 5)
+            .text(feature)
+            .style("font-size", "16px")
+            .attr("alignment-baseline", "middle");
+    });
 
 }
 
@@ -152,7 +173,7 @@ var selectedYearRanges = window.selectedYearRanges;
 var selectedWeekRange = window.selectedWeekRange; 
 
 // TO DO: check welke features we willen
-const features = ["Danceability", "Energy", "Valence", "Acousticness"];
+const features = ["Danceability", "Energy", "Valence", "Acousticness", "Liveness"];
 const innerRadius = 100;
 const outerRadius = 250;
 

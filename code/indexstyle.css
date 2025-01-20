@@ -12,11 +12,11 @@ body {
 }
 
 #radial_plots {
-    grid-area: radialFeatures; 
+    grid-area: radialFeatures;
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: 100%;
+    gap: 20px;
 }
 
 #radialPlots {
@@ -51,6 +51,11 @@ body {
 #longevity_radialChart {
     max-width: 100%;
 }
+
+#selected_genre_long{
+    grid-area: scatterPlot;
+}
+
 
 button {
     padding: 5px 10px;

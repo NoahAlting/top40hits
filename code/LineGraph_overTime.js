@@ -100,32 +100,38 @@ function loadAndProcess_FeaturesData_LineGraph(filtered_data_input, selected_yea
 
 function loadAndProcess_GenresData_LineGraph(filtered_data_input, selected_years, selectedGenre, max_top) {
     const plotData = [];
-    selected_years.forEach(range_years=>{
-        const mergedData = filtered_data_input
-            .filter((row) => +row.Jaar >= range_years[0] && +row.Jaar <= range_years[1] || +row.Jaar == range_years[0]) 
-            .map((row) => {
+
+    selected_years.forEach((range_years) => {
+        const mergedData = Object.entries(filtered_data_input)
+            .flatMap(([genre, songs]) => 
+                songs
+                    .filter((row) => +row.Jaar >= range_years[0] && +row.Jaar <= range_years[1])
+                    .map((row) => ({
+                        Song_ID: row.Song_ID,
+                        Jaar: +row.Jaar,
+                        Weeknr: +row.Weeknr,
+                        genre: genre 
+                    }))
+            );
+
+        const weeklyAverages = d3.rollup(
+            mergedData,
+            (values) => {
+                const genresThisWeek = values.map((d) => d.genre);
+                const selectedGenre_count = genresThisWeek.filter(genre => genre.toLowerCase() === selectedGenre).length;
+    
                 return {
-                    Song_ID: row.Song_ID,
-                    Jaar: +row.Jaar,
-                    Weeknr: +row.Weeknr,
-                    genres: row['Artist_Genres'].split(', ')
-                };
-            });
-        const genres = get_genre_stats_per_week(mergedData.map(data => data.genres).flat(), genreKeywords);
-        const weeklyAverages = d3.rollup(mergedData, 
-            values => {
-                const genres = get_genre_stats_per_week(values.map(data => data.genres).flat(), genreKeywords);
-                return {
-                    week_genres: genres
+                    week_genres: (selectedGenre_count / genresThisWeek.length * 100).toFixed(2)
                 };
             },
-            d => d.Weeknr
-        );  
+            (d) => d.Weeknr
+        );
+
         weeklyAverages.forEach((values, week) => {
             plotData.push({
                 year_range: range_years,
                 week: week,
-                genre_percentage: values.week_genres[selectedGenre]
+                genre_percentage: values.week_genres 
             });
         });
     });
@@ -398,7 +404,7 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
 function updateLineGraph(filtered_data_input) {
     linePlot.selectAll("*")
         .transition()
-        .duration(1500)
+        .duration(500)
         .style("opacity", 0)
         .remove();
     table.selectAll("*")
@@ -412,19 +418,12 @@ function updateLineGraph(filtered_data_input) {
     const selectedGenre = window.selectedGenre;
     const max_top = window.selectedTop;
     const selected_weeks = window.selectedWeekRange;
-    d3.csv("../data/spotify_songs_with_ids.csv").then(function(data_spotifySongs) {
-        d3.csv("../data/top40_with_ids.csv").then(function(data_top40) {
-            data_spotifySongs.forEach(row => {
-                row[selectedGenre] = +row[selectedGenre];
-            });
-            if (selectedType == "features"){
-                const data = loadAndProcess_FeaturesData_LineGraph(filtered_data_input, selected_years, selectedGenre, max_top);
-                createInteractiveGraph_Features_LineGraph(data, selected_years, selected_weeks, max_top, selectedGenre);
-            }
-            else {
-                const data = loadAndProcess_GenresData_LineGraph(filtered_data_input, selected_years, selectedGenre, max_top);
-                createInteractiveGraph_Genress_LineGraph(data, selected_years, selected_weeks, max_top, selectedGenre);
-            }
-        });
-    });
+    if (selectedType == "features"){
+        const data = loadAndProcess_FeaturesData_LineGraph(filtered_data_input, selected_years, selectedGenre, max_top);
+        createInteractiveGraph_Features_LineGraph(data, selected_years, selected_weeks, max_top, selectedGenre);
+    }
+    else {
+        const data = loadAndProcess_GenresData_LineGraph(filtered_data_input, selected_years, selectedGenre, max_top);
+        createInteractiveGraph_Genress_LineGraph(data, selected_years, selected_weeks, max_top, selectedGenre);
+    }
 }

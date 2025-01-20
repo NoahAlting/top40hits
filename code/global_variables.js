@@ -11,17 +11,18 @@ const possible_features_songs = [
   
 // Keywords for the genres
 const genreKeywords = {
-    "pop": ["pop"],
-    "hip-hop": ["hip-hop", "rap"],
-    "rock": ["rock", "metal", "punk", "alternative"],
-    "edm": ["edm", "house", "techno", "trance", "dubstep", "drum and bass"],
-    "r&b": ["r&b", "rhythm and blues", "soul", "funk"],
-    "country": ["country", "bluegrass", "folk"],
-    "latin": ["latin", "salsa", "reggaeton", "bossa nova"],
-    "jazz": ["jazz", "blues", "fusion"],
-    "classical": ["classical", "opera", "symphony"],
-    "reggae": ["reggae", "ska", "dancehall"]
+  "classical": ["classical", "opera", "symphony"],
+  "country": ["country", "bluegrass", "folk"],
+  "edm": ["edm", "house", "techno", "trance", "dubstep", "drum and bass"],
+  "hiphop": ["hip-hop", "rap"],
+  "jazz": ["jazz", "blues", "fusion"],
+  "latin": ["latin", "salsa", "reggaeton", "bossa nova"],
+  "pop": ["pop"],
+  "r&b": ["r&b", "rhythm and blues", "soul", "funk"],
+  "reggae": ["reggae", "ska", "dancehall"],
+  "rock": ["rock", "metal", "punk", "alternative"]
 };
+
 let possible_genres = Object.keys(genreKeywords); 
 
 // ============================================ Functions ============================================

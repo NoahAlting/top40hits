@@ -7,7 +7,11 @@ const possible_features_songs = [
     "Liveness",
     "Valence",
     "Speechiness",
+    "Normalized_Loudness", 
+    "Normalized_Popularity", 
+    "Normalized_Tempo",
   ];
+
   
 // Keywords for the genres
 const genreKeywords = {
@@ -82,7 +86,7 @@ function filter_data() {
     } else {
         createFeatureGenreMenu(possible_genres.concat(remaining_genres));
     }
-    console.log("Filtering data...");
+    // console.log("Filtering data...");
 
     return new Promise((resolve, reject) => {
         const selected_weeks = window.selectedWeekRange;
@@ -96,7 +100,7 @@ function filter_data() {
         if (!cachedSpotifySongs || !cachedTop40Data) {
             console.log("Loading datasets...");
             Promise.all([
-                d3.csv("../data/spotify_songs_with_ids.csv"),
+                d3.csv("../data/spotify_songs_with_ids_norm.csv"),
                 d3.csv("../data/top40_with_ids.csv"),
             ]).then(([data_spotifySongs, data_top40]) => {
                 // Cache the original datasets
@@ -129,8 +133,8 @@ function filter_data() {
                 reject(err);
             });
         } else {
-            console.log("Using cached datasets...");
-            console.log("cached: ", cachedGenreData)
+            // console.log("Using cached datasets...");
+            // console.log("cached: ", cachedGenreData)
             if (selectedType === "genres") {
                 // Filter and cache all genres
                 const genreDataByGenre = processAllGenresFilter(cachedSpotifySongs);

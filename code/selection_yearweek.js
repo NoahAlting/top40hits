@@ -15,7 +15,7 @@ const years = Array.from({ length: 59 }, (_, i) => 1965 + i);
 const margin_year = { top: 6, bottom: 6, left: 4, right: 4 };
 const width_year = 100;
 const height_year = 360;
-const basecolors = ["#dedede", "#cccccc"]
+const basecolors = ["#c5c4c4", "#9d9c9c"]
 
 const svg_yearselect = d3.select("#yearSelector")
     .attr("viewBox", [0, 0, width_year, height_year]);
@@ -52,7 +52,7 @@ const yearRects = stackGroup
         const blockIndex = Math.floor((d - 1965) / 5);
         return basecolors[blockIndex % basecolors.length];
     })
-    .attr("stroke", "white")
+    .attr("stroke", "#929090")
     .attr("stroke-width", 0.5)
 
 // Draw the strokes between the years
@@ -65,7 +65,7 @@ stackGroup
     .attr("x2", 112)
     .attr("y1", (d) => yScale(d) + yScale.bandwidth())
     .attr("y2", (d) => yScale(d) + yScale.bandwidth())
-    .attr("stroke", "white")
+    .attr("stroke", "#5d5c5c")
     .attr("stroke-width", (d) => (d % 5 === 0 ? 1.5 : 0))
     .attr("transform", "translate(0, -5.75)");
 
@@ -80,7 +80,7 @@ stackGroup
     .attr("dy", "0.35em")
     .attr("text-anchor", "end")
     .text((d) => d)
-    .style("fill", "black")
+    .style("fill", "#ffffff")
     .style("font-size", "8px")
     // make years bigger when hovering over
     .on("mouseover", function(event, d) {
@@ -96,13 +96,13 @@ const multiBrushes = [];
 
 // Function to highlight selected years sorted oldest - newest
 function resetYearColors() {
-    const viridisScale = d3.scaleSequential(d3.interpolateViridis).domain([0, 4]);
+    const viridisScale = d3.scaleSequential(d3.interpolateCool).domain([0, 5]);
 
     const sortedRanges = selectedRanges
         .map((r) => r.range)
         .sort((a, b) => a[0] - b[0]);
 
-    const rangeColors = sortedRanges.map((_, i) => viridisScale(i));
+    const rangeColors = sortedRanges.map((_, i) => viridisScale(i+1));
 
     const highlightedYears = {};
 
@@ -354,18 +354,18 @@ const xScale = d3.scaleBand()
 const xAxis = g => g
     .attr("transform", `translate(${xScale.bandwidth() / 2},${height_week - margin_week.bottom})`)
     .call(d3.axisBottom(xScale)
-        .tickValues(weeks.filter(d => d % 4 === 0))
+        .tickValues(weeks.filter(d => d % 8 === 0))
         .tickSize(-height_week + margin_week.top + margin_week.bottom))
     .call(g => g.selectAll(".tick line")
         .attr("stroke", "#FFFFFF")
         .attr("stroke-width", 1)
         .attr("stroke-opacity", 1))
     .call(g => g.selectAll(".tick line")
-        .filter(d => d % 4 === 0)
+        .filter(d => d % 8 === 0)
         .attr("stroke-width", 2))
     .call(g => g.selectAll(".tick text")
         .attr("font-size", "12px")
-        .attr("fill", "#000"));
+        .attr("fill", "#ffffff"));
 
 const svg_weekselect = d3.select("#weekSelector")
     .attr("viewBox", [0, 0, width_week, height_week]);

@@ -11,7 +11,7 @@
 <!-- Radial Plots -->
 
 
-<div class="radial_plots">
+<div id="radial_plots">
     <h1>Radial Chart Features</h1>
     <div id="radial-plot" class="chart"></div>
     <button id="prev-radial">Previous</button>
@@ -20,8 +20,10 @@
 
 <!-- Line Graph on the Left -->
 <div id="lineGraphContainer">
-    <h1>Linegraph</h1>
-    <div id="lineGraph_overTime"></div>
+    <div class="heading-container">
+        <h1>Linegraph</h1>
+    </div>
+    <div id="lineGraph_overTime" class="chart"></div>
 </div>
 
 <!-- Selector Dashboard in the Middle -->
@@ -58,11 +60,14 @@
 
 <!-- Longevity Charts on the Right -->
 
-<div id="radialPlots">
-    <h1>Radial Plots</h1>
-    <div id="std_button_id"></div>
-    <div id="longevity_radialChart"></div>
+<div id="longevityradialPlotContainer">
+    <div class="heading-container">
+        <h1>Radial Plots</h1>
+        <div id="std_button_id"></div>
+    </div>
+    <div id="longevity_radialChart" class="chart"></div>
 </div>
+
 
 <div id="longevityCharts">
     <h1>Longevity vs Features</h1>
@@ -74,11 +79,11 @@
         <button id="next">Next</button>
         <div id="year-range-display"> </div>
         <div id="tooltip"> </div>
-        <div id="barchart"></div>
+        <div id="barchart" class="chart"></div>></div>
     </div>
 
     <div id="selected_genre_long">
-        <svg id="longevity_histogram"></svg>
+        <svg id="longevity_histogram" class="chart"></svg>></svg>
         <div id="controls"></div>
     </div>
 

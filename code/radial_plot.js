@@ -1,3 +1,14 @@
+var width_radialplot_container = document.getElementById("radial_plots").clientWidth;
+var height_radialplot_container = document.getElementById("radial_plots").clientHeight;
+var margin_radialplot = {top: height_radialplot_container*0.55, right: width_radialplot_container*0.1, bottom: height_radialplot_container*0.1, left: width_radialplot_container*0.1};
+var width_radialplot = width_radialplot_container - margin_radialplot.left - margin_radialplot.right;
+var height_radialplot = height_radialplot_container - margin_radialplot.top - margin_radialplot.bottom;
+
+// var linegraph_containerWidth = document.getElementById("lineGraphContainer").clientWidth;
+// var linegraph_containerHeight = document.getElementById("lineGraphContainer").clientHeight;
+// var margin_lineGraph = {top: linegraph_containerHeight*0.1, right: linegraph_containerWidth*0.1, bottom: linegraph_containerHeight*0.2, left: linegraph_containerWidth*0.1};
+// var width_lineGraph = linegraph_containerWidth - margin_lineGraph.left - margin_lineGraph.right;
+// var height_lineGraph = linegraph_containerHeight - margin_lineGraph.top - margin_lineGraph.bottom;
 
 function calculateWeeklyAverages(data) {
     const groupedByWeek = d3.group(data, d => d.Weeknr);
@@ -19,10 +30,11 @@ function radialChart(divId, data, features) {
     const svg = d3
         .select(divId)
         .append("svg")
-        .attr("width", width + 200)
-        .attr("height", height + 200)
+        .attr("width", width_radialplot)
+        .attr("height", height_radialplot * 2.5)
+        .attr("viewBox", "0 0 800 600")
         .append("g")
-        .attr("transform", `translate(${width / 2}, ${height / 1.5})`);
+        .attr("transform", `translate(${width_radialplot / 1.5}, ${height_radialplot / 1.2})`);
 
     
     svg.append("circle")
@@ -147,7 +159,7 @@ function radialChart(divId, data, features) {
 
     
     const legend = svg.append("g")
-        .attr("transform", `translate(${-width / 4 + 130}, ${-height / 4 + 50 })`);
+        .attr("transform", `translate(${-width_radialplot / 14}, ${-height_radialplot / 6 })`);
 
     features.forEach((feature, index) => {
         const legendItem = legend.append("g")

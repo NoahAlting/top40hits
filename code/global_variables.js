@@ -34,10 +34,10 @@ const remaining_genres = "other";
 // This function determined the coloring of the year ranges
 function get_color_yearRange(selected_range, all_ranges) {
   var colorScale = d3
-    .scaleSequential(d3.interpolateViridis)
-    .domain([0, 4]);
+    .scaleSequential(d3.interpolateCool)
+    .domain([0, 5]);
   let index = all_ranges.indexOf(selected_range);
-  return colorScale(index);
+  return colorScale(index+1);
 }
 
 // Selection menu to select one genre or one feature
@@ -287,4 +287,13 @@ window.addEventListener("typeUpdated", function () {
     console.error("Error filtering data:", err);
   });
   
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  filter_data()
+     .then(output_filtered_data => {
+      update_graphs_all_FeaturesGenres(output_filtered_data);
+      update_graphs_selected_FeatureGenre(output_filtered_data, window.selectedType);
+     })
+     .catch(err => console.error("Error initializing chart:", err));
 });

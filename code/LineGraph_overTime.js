@@ -76,7 +76,7 @@ function loadAndProcess_GenresData_LineGraph(filtered_data_input, selected_years
         const mergedData = Object.entries(filtered_data_input)
             .flatMap(([genre, songs]) => 
                 songs
-                    .filter((row) => +row.Jaar >= range_years[0] && +row.Jaar <= range_years[1])
+                    .filter((row) => +row.Jaar >= range_years[0] && +row.Jaar <= range_years[1] || +row.Jaar == range_years[0]) 
                     .map((row) => ({
                         Song_ID: row.Song_ID,
                         Jaar: +row.Jaar,

@@ -275,7 +275,6 @@ window.addEventListener("typeUpdated", function () {
   else{
     createFeatureGenreMenu(possible_genres.concat(remaining_genres), true);
   }
-  updateLongevityChartContent()
   filter_data().then(output_filtered_data => {
     update_graphs_all_FeaturesGenres(output_filtered_data);
     update_graphs_selected_FeatureGenre(output_filtered_data, window.selectedType);

@@ -222,6 +222,7 @@ function processData(selected_ranges, selected_weeks, max_top, selectedGenre, da
 
 // All functions to graphs that take all features or genres as input
 function update_graphs_all_FeaturesGenres(filtered_data){
+  update_radial_features(filtered_data)
   update_LongevityRadialGraph(filtered_data);
 }
 

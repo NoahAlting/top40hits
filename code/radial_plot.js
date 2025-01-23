@@ -10,31 +10,15 @@ var height_radialplot = height_radialplot_container - margin_radialplot.top - ma
 // var width_lineGraph = linegraph_containerWidth - margin_lineGraph.left - margin_lineGraph.right;
 // var height_lineGraph = linegraph_containerHeight - margin_lineGraph.top - margin_lineGraph.bottom;
 
-function calculateWeeklyAverages(data) {
-    const groupedByWeek = d3.group(data, d => d.Weeknr);
-
-    const weeklyAverages = [];
-    groupedByWeek.forEach((values, week) => {
-        const averages = { Weeknr: week };
-        features.forEach(feature => {
-            const featureValues = values.map(d => d[feature]);
-            const avg = d3.mean(featureValues);
-            averages[feature] = avg;
-        });
-        weeklyAverages.push(averages);
-    });
-    return weeklyAverages;
-}
-
-function radialChart(divId, data, features) {
+function createInteractiveGraph_Features_radial(divId, data, features) {
     const svg = d3
         .select(divId)
         .append("svg")
         .attr("width", width_radialplot)
-        .attr("height", height_radialplot * 2.5)
+        .attr("height", height_radialplot * 1.8)
         .attr("viewBox", "0 0 800 600")
         .append("g")
-        .attr("transform", `translate(${width_radialplot / 1.5}, ${height_radialplot / 1.2})`);
+        .attr("transform", `translate(${width_radialplot / 2.1}, ${height_radialplot / 0.8})`);
 
     
     svg.append("circle")
@@ -70,31 +54,32 @@ function radialChart(divId, data, features) {
         .attr("stroke", "#ccc")
         .attr("stroke-dasharray", "2,2");
 
-    features.forEach(feature => {
-        const featureLines = d3
-            .lineRadial()
-            .angle(d => angles(d.Weeknr - 1))
-            .radius(d => feature_range(d[feature]))
-            .curve(d3.curveCardinal);
-
-        svg.append("path")
-            .datum(data)
-            .attr("fill", "none")
-            .attr("stroke", colorScale(feature))
-            .attr("stroke-width", 2)
-            .attr("d", featureLines);
-
-        svg.selectAll(`.dot-${feature}`)
-            .data(data)
-            .enter()
-            .append("circle")
-            .attr("class", `dot dot-${feature}`)
-            .attr("cx", d => feature_range(d[feature]) * Math.sin(angles(d.Weeknr - 1)))
-            .attr("cy", d => -feature_range(d[feature]) * Math.cos(angles(d.Weeknr - 1)))
-            .attr("r", 3)
-            .attr("fill", colorScale(feature));
-    });
-
+        features.forEach(feature => {
+            const featureData = data.filter(d => d.feature === feature);
+        
+            const featureLines = d3
+                .lineRadial()
+                .angle(d => angles(d.week - 1)) 
+                .radius(d => feature_range(d.avgValue)) 
+                .curve(d3.curveCardinal);
+        
+            svg.append("path")
+                .datum(featureData) 
+                .attr("fill", "none")
+                .attr("stroke", colorScale(feature)) 
+                .attr("stroke-width", 2)
+                .attr("d", featureLines);
+        
+            svg.selectAll(`.dot-${feature}`)
+                .data(featureData) 
+                .enter()
+                .append("circle")
+                .attr("class", `dot dot-${feature}`)
+                .attr("cx", d => feature_range(d.avgValue) * Math.sin(angles(d.week - 1)))
+                .attr("cy", d => -feature_range(d.avgValue) * Math.cos(angles(d.week - 1)))
+                .attr("r", 3)
+                .attr("fill", colorScale(feature));
+        });
 
 
     const weeks = d3.range(0, 52);
@@ -109,10 +94,10 @@ function radialChart(divId, data, features) {
         .attr("text-anchor", "middle")
         .text(d => d + 1)
         .style("font-size", "10px")
-        .style("fill", "#666");
+        .style("fill", "#c4c4c4");
 
 
-    // season lines and labels
+    // season lines and labels, check with jess
     const seasons = [
         { name: "Spring", start: 11.5, end: 21.5 },
         { name: "Summer", start: 21.5, end: 35.5 },
@@ -125,7 +110,6 @@ function radialChart(divId, data, features) {
         const endAngle = angles(season.end % 52);
         let middleAngle;
     
-        // Special handling for Winter to ensure correct positioning
         if (season.name === "Winter") {
             middleAngle = angles((season.start + 52 + season.end) / 2 % 52);
         } else {
@@ -138,28 +122,28 @@ function radialChart(divId, data, features) {
                 .attr("y1", 0)
                 .attr("x2", outerRadius * Math.sin(angle))
                 .attr("y2", -outerRadius * Math.cos(angle))
-                .attr("stroke", "black")
+                .attr("stroke", "#ccc")
                 .attr("stroke-width", 1)
                 .attr("stroke-dasharray", "5,5");
         });
     
         svg.append("text")
-            .attr("x", (1.08*outerRadius + 25) * Math.sin(middleAngle))
-            .attr("y", -(1.08*outerRadius + 25) * Math.cos(middleAngle))
+            .attr("x", (1.1*outerRadius + 25) * Math.sin(middleAngle))
+            .attr("y", -(1.1*outerRadius + 25) * Math.cos(middleAngle))
             .attr("text-anchor", "middle")
-            .style("font-size", "12px")
-            .style("fill", "black")
+            .style("font-size", "16px")
+            .style("fill", "#c4c4c4")
             .text(season.name);
     });
 
 
     svg.append("circle")
     .attr("r", innerRadius)
-    .style("fill", "white");
+    .style("fill", "#2c2c3c");
 
     
     const legend = svg.append("g")
-        .attr("transform", `translate(${-width_radialplot / 14}, ${-height_radialplot / 6 })`);
+        .attr("transform", `translate(${-width / 4 + 130}, ${-height / 4 + 50 })`);
 
     features.forEach((feature, index) => {
         const legendItem = legend.append("g")
@@ -170,11 +154,11 @@ function radialChart(divId, data, features) {
             .attr("fill", colorScale(feature));
 
         legendItem.append("text")
+            .attr("class", "legend-text")
             .attr("x", 10)
             .attr("y", 5)
             .text(feature)
             .style("font-size", "16px")
-            .attr("alignment-baseline", "middle");
     });
 
 }
@@ -191,77 +175,89 @@ const outerRadius = 250;
 
 let globalData = [];
 
-function loadData() {
-    Promise.all([
-        d3.csv('../data/top40_with_ids.csv'),
-        d3.csv('../data/spotify_songs_with_ids.csv')
-    ]).then(function([data_top40, data_spotifySongs]) {
 
-        let spotifyMap = new Map();
-        data_spotifySongs.forEach(d => {
-            features.forEach(feature => {
-                d[feature] = +d[feature];
+function loadAndProcess_FeaturesData_radial(filtered_data_input, range_years, selectedGenre, possible_features_songs) {
+    const plotData = [];
+
+    possible_features_songs.forEach(feature => {
+
+        // Filter and map the data for the given year range
+        const mergedData = filtered_data_input
+            .filter(row => +row.Jaar >= range_years[0] && +row.Jaar <= range_years[1])
+            .map(row => {
+                return {
+                    Song_ID: row.Song_ID,
+                    Jaar: +row.Jaar,
+                    Weeknr: +row.Weeknr,
+                    feature_value: row[feature],
+                    feature: feature
+                };
             });
-            spotifyMap.set(d.Song_ID, d);
-        });
 
-        data_top40.forEach(row => {
-            row.Weeknr = +row.Weeknr;
-            features.forEach(feature => {
-                let spotifySong = spotifyMap.get(row.Song_ID);
-                if (spotifySong) {
-                    row[feature] = +spotifySong[feature];
-                } else {
-                    row[feature] = NaN;
-                }
-            });
-        });
 
-        globalData = [...data_spotifySongs, ...data_top40];
-        globalData.sort((a, b) => a.Jaar - b.Jaar || a.Weeknr - b.Weeknr);
-
-        updatePlot();
-    });
-}
-
-function updatePlot() {
-    selectedYearRanges.forEach((yearRange, idx) => {
-        const filteredDataYears = globalData.filter(d =>
-            d.Weeknr >= selectedWeekRange[0] && 
-            d.Weeknr <= selectedWeekRange[1] && 
-            d.Jaar >= yearRange[0] && 
-            d.Jaar <= yearRange[1]
+        const weeklyAverages = d3.rollup(
+            mergedData,
+            values => {
+                const mean = d3.mean(values, v => v.feature_value);
+                return { mean_week: mean };
+            },
+            d => d.Weeknr 
         );
 
-        const weeklyAverages = calculateWeeklyAverages(filteredDataYears);
-
-        d3.select(`#radial-plot`).html(""); 
-
-        radialChart(`#radial-plot`, weeklyAverages, features);
-        const yearRangeText = `${yearRange[0]} - ${yearRange[1]}`;
-        d3.select("#year-range-display-radial").text(`Year Range: ${yearRangeText}`);
+        weeklyAverages.forEach((values, week) => {
+            plotData.push({
+                year_range: range_years,
+                week: week,
+                avgValue: values.mean_week,
+                feature: feature 
+            });
+        });
     });
+
+    plotData.sort((a, b) => {
+        if (a.year_range[0] !== b.year_range[0]) {
+            return a.year_range[0] - b.year_range[0];
+        }
+        if (a.feature !== b.feature) {
+            return a.feature.localeCompare(b.feature);
+        }
+        return a.week - b.week;
+    });
+
+    return plotData;
 }
 
-// update when editing year & weeks
-window.addEventListener('yearRangeUpdated', function () {
-    document.getElementById("selectedYearRangesValue").innerText = JSON.stringify(window.selectedYearRanges);
-    updatePlot();
+let currentYearRangeIndex = 0;
+let global_data = []
+const sortedYearRanges = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
+
+function update_radial_features(filtered_data_input) {
+    global_data = filtered_data_input;
+    const selectedYearRanges = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
+    const currentYearRange = selectedYearRanges[currentYearRangeIndex];
+    const selectedGenre = window.selectedGenre;
+    
+    const data = loadAndProcess_FeaturesData_radial(filtered_data_input, currentYearRange, selectedGenre, possible_features_songs);
+    const yearRangeText = `${currentYearRange[0]} - ${currentYearRange[1]}`;
+
+    const yearRangeColor = get_color_yearRange(currentYearRange, selectedYearRanges);
+    d3.select("#year-range-display-radial")
+        .text(`Year Range: ${yearRangeText}`)
+        .style("background-color",yearRangeColor ) 
+    d3.select("#radial-plot").html(""); 
+    createInteractiveGraph_Features_radial("#radial-plot", data, possible_features_songs);
+    
+}
+
+document.getElementById("prev-radial").addEventListener("click", function () {
+    const totalRanges = window.selectedYearRanges.length;
+    currentYearRangeIndex = (currentYearRangeIndex - 1 + totalRanges) % totalRanges; 
+    update_radial_features(global_data); 
 });
 
-window.addEventListener('weekRangeUpdated', function () {
-    document.getElementById("selectedWeekRangeValue").innerText = JSON.stringify(window.selectedWeekRange);
-    updatePlot();
+document.getElementById("next-radial").addEventListener("click", function () {
+    const totalRanges = window.selectedYearRanges.length;
+    currentYearRangeIndex = (currentYearRangeIndex + 1) % totalRanges; 
+    update_radial_features(global_data); 
 });
 
-d3.select("#next-radial").on("click", () => {
-    window.selectedYearRanges.push(window.selectedYearRanges.shift()); 
-    updatePlot();
-});
-
-d3.select("#prev-radial").on("click", () => {
-    window.selectedYearRanges.unshift(window.selectedYearRanges.pop()); 
-    updatePlot();
-});
-
-loadData();

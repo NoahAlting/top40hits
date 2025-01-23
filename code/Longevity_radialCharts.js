@@ -1,6 +1,9 @@
-var margin_longevity_radialChart = {top: 30, right: 30, bottom: 150, left: 60,},
-  width_longevity_radialChart = 460 - margin_longevity_radialChart.left - margin_longevity_radialChart.right,
-  height_longevity_radialChart = 400 - margin_longevity_radialChart.top - margin_longevity_radialChart.bottom;
+var longevity_radialChart_container = document.getElementById("longevityradialPlotContainer");
+var width_longevity_radialChartContainer = longevity_radialChart_container.clientWidth;
+var height_longevity_radialChartContainer = longevity_radialChart_container.clientHeight;
+var margin_longevity_radialChart = {top: height_longevity_radialChartContainer*0.1, right: width_longevity_radialChartContainer*0.1, bottom: height_longevity_radialChartContainer*0.1, left: width_longevity_radialChartContainer*0.1,}
+var width_longevity_radialChart = width_longevity_radialChartContainer - margin_longevity_radialChart.left - margin_longevity_radialChart.right;
+var height_longevity_radialChart = height_longevity_radialChartContainer - margin_longevity_radialChart.top - margin_longevity_radialChart.bottom;
 
 const innerRadius_longevity_radialChart = 5;
 const outerRadius_longevity_radialChart = 100;
@@ -240,7 +243,8 @@ function createInteractiveGraph_Features_longevityRadialChart(
   chartContainer,
   labels,
   radiusScale,
-  function_colors
+  function_colors,
+  font_size
 ) {
   const radialGrid = d3.range(
     innerRadius_longevity_radialChart,
@@ -262,19 +266,18 @@ function createInteractiveGraph_Features_longevityRadialChart(
     .data(data[labels[0]])
     .enter()
     .append("line")
-    .attr("class", "axis")
+    .attr("class", "graph-axis")
     .attr("x1", (d) => radiusScale(0) * Math.sin(d.angle))
     .attr("y1", (d) => -radiusScale(0) * Math.cos(d.angle))
     .attr("x2", (d) => radiusScale(1) * Math.sin(d.angle))
-    .attr("y2", (d) => -radiusScale(1) * Math.cos(d.angle))
-    .attr("stroke", "#999")
-    .attr("opacity", 0.3);
+    .attr("y2", (d) => -radiusScale(1) * Math.cos(d.angle));
   chartContainer
     .selectAll(".label")
     .data(data[labels[0]])
     .enter()
     .append("text")
-    .attr("class", "label")
+    .attr("class", "label-text")
+    .style("font-size", `${12 + font_size}px`)
     .attr(
       "x",
       (d) => (outerRadius_longevity_radialChart + 10) * Math.sin(d.angle)
@@ -293,8 +296,6 @@ function createInteractiveGraph_Features_longevityRadialChart(
       }
     })
     .attr("alignment-baseline", "middle")
-    .style("font-size", "12px")
-    .style("font-weight", "bold")
     .text((d) => d.feature);
 
   labels.forEach((label) => {
@@ -347,7 +348,8 @@ function createInteractiveGraph_GenresData_longevityRadialChart(
   labels,
   radiusScale,
   function_colors,
-  maxCount
+  maxCount,
+  font_size
   ) {
   // const maxCount = Math.max(
   //   ...data.map((item) => {
@@ -377,19 +379,18 @@ function createInteractiveGraph_GenresData_longevityRadialChart(
     .data(data[labels[0]])
     .enter()
     .append("line")
-    .attr("class", "axis")
+    .attr("class", "graph-axis")
     .attr("x1", (d) => radiusScale(0) * Math.sin(d.angle))
     .attr("y1", (d) => -radiusScale(0) * Math.cos(d.angle))
     .attr("x2", (d) => radiusScale(maxCount * 1.1) * Math.sin(d.angle))
-    .attr("y2", (d) => -radiusScale(maxCount * 1.1) * Math.cos(d.angle))
-    .attr("stroke", "#999")
-    .attr("opacity", 0.3);
+    .attr("y2", (d) => -radiusScale(maxCount * 1.1) * Math.cos(d.angle));
   chartContainer
     .selectAll(".label")
     .data(data[labels[0]])
     .enter()
     .append("text")
-    .attr("class", "label")
+    .attr("class", "label-text")
+    .style("font-size", `${12 + font_size}px`)
     .attr(
       "x",
       (d) => (outerRadius_longevity_radialChart + 10) * Math.sin(d.angle)
@@ -408,8 +409,6 @@ function createInteractiveGraph_GenresData_longevityRadialChart(
       }
     })
     .attr("alignment-baseline", "middle")
-    .style("font-size", "12px")
-    .style("font-weight", "bold")
     .text((d) => d.genre);
 
   labels.forEach((label) => {
@@ -453,6 +452,7 @@ function add_legend(chartContainer, labels) {
 
   legendItems
     .append("text")
+    .attr("class", "legend-text")
     .attr("x", 12)
     .attr("y", 10)
     .text((d) => d);
@@ -460,8 +460,8 @@ function add_legend(chartContainer, labels) {
   legendGroup.attr(
     "transform",
     `translate(${
-      -(width_longevity_radialChart - legendWidth) * (labels.length / 7)
-    } , ${height_longevity_radialChart * 0.6})`
+      -(width_longevity_radialChart - legendWidth) * 0.25
+    } , ${height_longevity_radialChart * 0.3})`
   );
 }
 
@@ -492,12 +492,10 @@ function update_LongevityRadialGraph(filtered_data_input) {
         innerRadius_longevity_radialChart,
         outerRadius_longevity_radialChart,
       ]);
-
-    const stdButtonContainer = d3.select("#std_button_id");
-    stdButtonContainer.selectAll("*").remove();
     const stdButton = stdButtonContainer
       .append("label")
       .text("add standard deviation area")
+      .style("font-size", "12px")
       .append("input")
       .attr("type", "checkbox")
       .attr("id", "myCheckbox");
@@ -506,12 +504,24 @@ function update_LongevityRadialGraph(filtered_data_input) {
       filtered_data_input,
       selected_years
     );
+    
+    // const stdButtonContainer = d3.select("#longevityradialPlotContainer")
+    //   .append("div")
+    //   .attr("id", "std_button_id"); 
+
+    // const stdButton = stdButtonContainer
+    //   .append("label")
+    //   .text("Add standard deviation area")
+    //   .append("input")
+    //   .attr("type", "checkbox")
+    //   .attr("id", "myCheckbox");
 
     for (let i = 0; i < numCharts; i++) {
       let indexed_data = {};
       let labels = [];
       function_colors = [];
       let size_graph = 0;
+      let font_size = 0;
       if (numCharts === 3) {
         data.forEach((stat) => {
           if (!indexed_data[stat.range]) {
@@ -530,7 +540,8 @@ function update_LongevityRadialGraph(filtered_data_input) {
         });
         labels = selected_years;
         function_colors = get_color_yearRange;
-        size_graph = 0.65;
+        size_graph = 0.5;
+        font_size = 4;
       } else {
         let stat = data[0];
         categories.forEach((hitType) => {
@@ -549,44 +560,35 @@ function update_LongevityRadialGraph(filtered_data_input) {
         labels = categories;
         function_colors = get_color_categories;
         size_graph = 1;
+        font_size = 0;
       }
 
       const svgContainer = d3
         .select("#longevity_radialChart")
         .append("svg")
-        .attr(
-          "width",
-          (width_longevity_radialChart +
-            margin_longevity_radialChart.left +
-            margin_longevity_radialChart.right) *
-            size_graph
-        )
-        .attr(
-          "height",
-          (height_longevity_radialChart +
-            margin_longevity_radialChart.top +
-            margin_longevity_radialChart.bottom) *
-            size_graph
-        )
+        .attr("width", (width_longevity_radialChart) * size_graph)
+        .attr("height", (height_longevity_radialChart) * size_graph)
         .attr("viewBox", [
-          -width_longevity_radialChart / 2,
-          -height_longevity_radialChart / 2,
-          width_longevity_radialChart,
-          height_longevity_radialChart,
+          -width_longevity_radialChart / 2.5,
+          -height_longevity_radialChart / 3,
+          width_longevity_radialChart * 0.8,
+          height_longevity_radialChart * 0.8,
         ]);
 
       svgContainer
         .append("text")
         .attr("x", 0)
-        .attr("y", -height_longevity_radialChart / 2 - 20)
+        .attr("y", -height_longevity_radialChart * size_graph * 0.6)
         .attr("text-anchor", "middle")
-        .style("font-size", "16px")
+        .style("font-size", "20px")
+        .style("fill", "white")
         .style("font-weight", "bold")
         .text(
           `Chart for ${
             singleRange ? selected_years[0].join(" - ") : categories[i]
           }`
         );
+        
 
       const chartContainer = svgContainer
         .append("g")
@@ -598,7 +600,8 @@ function update_LongevityRadialGraph(filtered_data_input) {
         chartContainer,
         labels,
         radiusScale,
-        function_colors
+        function_colors,
+        font_size
       );
 
       if (numCharts == 1) {
@@ -611,9 +614,11 @@ function update_LongevityRadialGraph(filtered_data_input) {
         labels,
       });
     }
-
     // Centralize the event listener for the checkbox
-    d3.select("#myCheckbox").on("change", function (event) {
+    d3.select("#myCheckbox")
+      .style("width", "10px")
+      .style("height", "10px")
+      .on("change", function (event) {
       const isChecked = event.target.checked;
       chartContainers.forEach(({ data, container, labels }) => {
         container.selectAll(".area_radial").remove();
@@ -648,6 +653,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
       let labels = [];
       function_colors = [];
       let size_graph = 0;
+      let font_size = 0;
       let max_count = 0;
       if (numCharts === 3) {
         data.forEach((stat) => {
@@ -668,7 +674,8 @@ function update_LongevityRadialGraph(filtered_data_input) {
         });
         labels = selected_years;
         function_colors = get_color_yearRange;
-        size_graph = 0.65;
+        size_graph = 0.5;
+        font_size = 4;
       } else {
         let stat = data[0];
         categories.forEach((hitType) => {
@@ -688,6 +695,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
         labels = categories;
         function_colors = get_color_categories;
         size_graph = 1;
+        font_size = 0;
       }
     const radiusScale = d3
       .scaleLinear()
@@ -702,38 +710,34 @@ function update_LongevityRadialGraph(filtered_data_input) {
         .append("svg")
         .attr(
           "width",
-          (width_longevity_radialChart +
-            margin_longevity_radialChart.left +
-            margin_longevity_radialChart.right) *
+          (width_longevity_radialChart) *
             size_graph
         )
         .attr(
           "height",
-          (height_longevity_radialChart +
-            margin_longevity_radialChart.top +
-            margin_longevity_radialChart.bottom) *
+          (height_longevity_radialChart) *
             size_graph
         )
         .attr("viewBox", [
-          -width_longevity_radialChart / 2,
-          -height_longevity_radialChart / 2,
-          width_longevity_radialChart,
-          height_longevity_radialChart,
+          -width_longevity_radialChart / 2.5,
+          -height_longevity_radialChart / 3,
+          width_longevity_radialChart * 0.8,
+          height_longevity_radialChart * 0.8,
         ]);
 
-      svgContainer
+        svgContainer
         .append("text")
         .attr("x", 0)
-        .attr("y", -height_longevity_radialChart / 2 - 20)
+        .attr("y", -height_longevity_radialChart * size_graph * 0.6)
         .attr("text-anchor", "middle")
-        .style("font-size", "16px")
+        .style("font-size", "20px")
+        .style("fill", "white")
         .style("font-weight", "bold")
         .text(
           `Chart for ${
             singleRange ? selected_years[0].join(" - ") : categories[i]
           }`
         );
-
       const chartContainer = svgContainer
         .append("g")
         .attr("stroke-linejoin", "round")
@@ -744,7 +748,8 @@ function update_LongevityRadialGraph(filtered_data_input) {
       labels,
       radiusScale,
       function_colors,
-      max_count
+      max_count,
+      font_size
     );
     if (numCharts == 1) {
       add_legend(chartContainer, labels);

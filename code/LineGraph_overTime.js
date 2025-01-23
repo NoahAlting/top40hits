@@ -1,52 +1,23 @@
-const get_genre_stats_per_week = function(lst_genres_week, genre_Keywords) {
-    let genreCounts = {};
-    for (const [broadGenre, keywords] of Object.entries(genre_Keywords)) {
-        genreCounts[broadGenre] = 0; 
-    }
-    genreCounts["other"] = 0;
-
-    lst_genres_week.forEach(genre => {
-        genre = genre.toLowerCase();
-        let genreMatched = false;
-        for (const [broadGenre, keywords] of Object.entries(genre_Keywords)) {
-            if (keywords.some(keyword => genre.includes(keyword))) {
-                genreCounts[broadGenre] += 1; 
-                genreMatched = true;
-                break; 
-            }
-        }
-        if (!genreMatched) {
-            genreCounts["other"] += 1;
-        }
-    });
-    const totalGenres = Object.values(genreCounts).reduce((acc, count) => acc + count, 0);
-    let genres_stats_week = {};
-    for (const [genre, count] of Object.entries(genreCounts)) {
-        if (totalGenres > 0) {
-            genres_stats_week[genre] = ((count / totalGenres) * 100).toFixed(2); 
-        } else {
-            genres_stats_week[genre] = 0; 
-        }
-    }
-    return genres_stats_week;
-};
-
-var margin_lineGraph = {top: 30, right: 30, bottom: 150, left: 60},
-    width_lineGraph = 460 - margin_lineGraph.left - margin_lineGraph.right,
-    height_lineGraph = 400 - margin_lineGraph.top - margin_lineGraph.bottom;
+var linegraph_containerWidth = document.getElementById("lineGraphContainer").clientWidth;
+var linegraph_containerHeight = document.getElementById("lineGraphContainer").clientHeight;
+var margin_lineGraph = {top: linegraph_containerHeight*0.1, right: linegraph_containerWidth*0.1, bottom: linegraph_containerHeight*0.2, left: linegraph_containerWidth*0.1};
+var width_lineGraph = linegraph_containerWidth - margin_lineGraph.left - margin_lineGraph.right;
+var height_lineGraph = linegraph_containerHeight - margin_lineGraph.top - margin_lineGraph.bottom;
 
 const linePlot = d3.select("#lineGraph_overTime")
     .append("svg")
-    .attr("width", width_lineGraph + margin_lineGraph.left + margin_lineGraph.right)
-    .attr("height", height_lineGraph + margin_lineGraph.top + margin_lineGraph.bottom)
+    .attr("width", width_lineGraph*0.9)
+    .attr("height", height_lineGraph*0.9)
+    .attr("viewBox", `0 0 ${width_lineGraph*1.2} ${height_lineGraph*1.4}`)
     .append("g")
     .attr("transform", "translate(" + margin_lineGraph.left + "," + margin_lineGraph.top + ")");
 
 var tableContainer = d3.select("#lineGraph_overTime")
     .append("div")
     .attr("class", "table-container")
-    .style("margin-top", `${-margin_lineGraph.bottom/2}px`)
-    .style("margin-bottom", "0px");
+    .style("margin-top", "5px")
+    .style("margin-bottom", "0px")
+    .style("width", `${linegraph_containerWidth*0.8}px`); 
 var table = tableContainer.append("table")
     .attr("class", "value-table")
     .style("width", "100%")
@@ -154,26 +125,37 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
         .range([height_lineGraph, 0]);
     // Label x-axis
     linePlot.append("g")
-        .attr("transform", "translate(0," + height_lineGraph + ")")
-        .call(d3.axisBottom(x))
-        .append("text")
+    .attr("transform", "translate(0," + height_lineGraph + ")")
+    .attr("class", "axis-group")
+    .call(d3.axisBottom(x)
+        .ticks(5)
+        .tickFormat(d => `${d}`)) 
+    .selectAll("text") 
+    .style("font-size", "18px"); 
+    linePlot.append("text")
+        .attr("class", "label-text")
+        .style("font-size", "22px")
         .attr("text-anchor", "middle")
         .attr("x", width_lineGraph * 0.5)
-        .attr("y", 35)
-        .text("Weeknumber")
-        .style("fill", "black")
-        .style("font-size", "12px");
+        .attr("y", height_lineGraph + 60) 
+        .text("Weeknumber");
     // Label y-axis
     linePlot.append("g")
-        .call(d3.axisLeft(y))
-        .append("text")
+        .attr("class", "axis-group")
+        .call(d3.axisLeft(y)
+            .ticks(5)
+            .tickFormat(d3.format(".2f"))) 
+        .selectAll("text")
+        .style("font-size", "18px"); 
+    linePlot.append("text")
+        .attr("class", "label-text")
+        .style("font-size", "22px")
         .attr("text-anchor", "middle")
-        .attr("x", - height_lineGraph * 0.5)
-        .attr("y", -35)
-        .attr("transform", "rotate(-90)")
-        .text(selectedGenre)
-        .style("fill", "black")
-        .style("font-size", "12px");    
+        .attr("transform", "rotate(-90)") 
+        .attr("x", -height_lineGraph * 0.5) 
+        .attr("y", -70)
+        .text(`Weekly average for ${selectedGenre}`);
+ 
     /// Create all graphs/ parts
     // Average line in graph
     selected_years.forEach(year_range => {
@@ -206,9 +188,9 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
     );
     table.style("border-collapse", "collapse");
     var header = table.append("thead").append("tr");
-    header.append("th").text("Week").style("border", "1px solid black").style("padding", "5px");
+    header.append("th").text("Week").style("border", "1px solid white").style("padding", "5px");
     legendLabels.forEach(year_range => {
-        header.append("th").text(year_range).style("border", "1px solid black").style("padding", "5px");
+        header.append("th").text(year_range).style("border", "1px solid white").style("padding", "5px");
     });
     var tbody = table.append("tbody");
     // Navigation vertical line in graph
@@ -224,7 +206,7 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
     linePlot.append("path")
         .attr("class", "mouseLine")
         .attr("fill", "none")
-        .attr("stroke", "black")
+        .attr("stroke", "white")
         .style("stroke-width", "1px")
         .style("opacity", 0);         
     linePlot
@@ -279,13 +261,13 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
                 var rowData = weekData[0]; 
                 tbody.selectAll("tr").remove();
                 var row = tbody.append("tr");
-                row.append("td").text(rowData.week).style("border", "1px solid black").style("padding", "5px");
+                row.append("td").text(rowData.week).style("border", "1px solid white").style("padding", "5px");
                 selected_years.forEach(year_range => {
                     var dataForYear = weekData.filter(d => d.year_range === year_range);
                     row.append("td").text(dataForYear.length > 0 ? 
                         `${dataForYear[0].avgValue.toFixed(2)} ± ${dataForYear[0].stdDev.toFixed(2)}` 
                         : "No data")
-                        .style("border", "1px solid black").style("padding", "5px");
+                        .style("border", "1px solid white").style("padding", "5px");
                 });
             }
         });
@@ -303,25 +285,35 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
     // Label x-axis
     linePlot.append("g")
         .attr("transform", "translate(0," + height_lineGraph + ")")
-        .call(d3.axisBottom(x))
-        .append("text")
+        .attr("class", "axis-group")
+        .call(d3.axisBottom(x)
+            .ticks(5)
+            .tickFormat(d => `${d}`)) 
+        .selectAll("text") 
+        .style("font-size", "18px"); 
+    linePlot.append("text")
+        .attr("class", "label-text")
+        .style("font-size", "22px")
         .attr("text-anchor", "middle")
         .attr("x", width_lineGraph * 0.5)
-        .attr("y", 35)
-        .text("Weeknumber")
-        .style("fill", "black")
-        .style("font-size", "12px");
+        .attr("y", height_lineGraph + 60) 
+        .text("Weeknumber");
     // Label y-axis
     linePlot.append("g")
-        .call(d3.axisLeft(y))
-        .append("text")
+        .attr("class", "axis-group")
+        .call(d3.axisLeft(y)
+            .ticks(5)
+            .tickFormat(d3.format(".0f"))) 
+        .selectAll("text")
+        .style("font-size", "18px"); 
+    linePlot.append("text")
+        .attr("class", "label-text")
+        .style("font-size", "22px")
         .attr("text-anchor", "middle")
-        .attr("x", - height_lineGraph * 0.5)
-        .attr("y", -35)
-        .attr("transform", "rotate(-90)")
-        .text("Percentage " + selectedGenre + " (%)" )
-        .style("fill", "black")
-        .style("font-size", "12px");
+        .attr("transform", "rotate(-90)") 
+        .attr("x", -height_lineGraph * 0.5) 
+        .attr("y", -70)
+        .text(`Amount of ${selectedGenre} songs per week (%)`);
     /// Create all graphs/ parts
     // Average line in graph
     selected_years.forEach(year_range => {
@@ -344,9 +336,9 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
     );
     table.style("border-collapse", "collapse");
     var header = table.append("thead").append("tr");
-    header.append("th").text("Week").style("border", "1px solid black").style("padding", "5px");
+    header.append("th").text("Week").style("border", "1px solid white").style("padding", "5px");
     legendLabels.forEach(year_range => {
-        header.append("th").text(year_range).style("border", "1px solid black").style("padding", "5px");
+        header.append("th").text(year_range).style("border", "1px solid white").style("padding", "5px");
     });
     var tbody = table.append("tbody");
     // Navigation vertical line in graph
@@ -362,7 +354,7 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
     linePlot.append("path")
         .attr("class", "mouseLine")
         .attr("fill", "none")
-        .attr("stroke", "black")
+        .attr("stroke", "white")
         .style("stroke-width", "1px")
         .style("opacity", 0);
     linePlot
@@ -389,13 +381,13 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
                 var rowData = weekData[0];
                 tbody.selectAll("tr").remove();
                 var row = tbody.append("tr");
-                row.append("td").text(rowData.week).style("border", "1px solid black").style("padding", "5px");
+                row.append("td").text(rowData.week).style("border", "1px solid white").style("padding", "5px");
                 selected_years.forEach(year_range => {
                     var dataForYear = weekData.filter(d => d.year_range === year_range);
                     row.append("td").text(dataForYear.length > 0 ? 
                         `${dataForYear[0].genre_percentage} %` 
                         : "No data")
-                        .style("border", "1px solid black").style("padding", "5px");
+                        .style("border", "1px solid white").style("padding", "5px");
                 });
             }
         });
@@ -409,7 +401,7 @@ function updateLineGraph(filtered_data_input) {
         .remove();
     table.selectAll("*")
         .transition()
-        .duration(1000)
+        .duration(500)
         .style("opacity", 0)
         .remove();
     const selected_years = window.selectedYearRanges.sort((a, b) => a[0] - b[0])

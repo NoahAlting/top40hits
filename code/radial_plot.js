@@ -15,10 +15,10 @@ function createInteractiveGraph_Features_radial(divId, data, features) {
         .select(divId)
         .append("svg")
         .attr("width", width_radialplot)
-        .attr("height", height_radialplot * 1.8)
+        .attr("height", height_radialplot * 2)
         .attr("viewBox", "0 0 800 600")
         .append("g")
-        .attr("transform", `translate(${width_radialplot / 2.1}, ${height_radialplot / 0.8})`);
+        .attr("transform", `translate(${width_radialplot * 0.8}, ${height_radialplot / 0.45})`);
 
     
     svg.append("circle")
@@ -143,7 +143,7 @@ function createInteractiveGraph_Features_radial(divId, data, features) {
 
     
     const legend = svg.append("g")
-        .attr("transform", `translate(${-width / 4 + 130}, ${-height / 4 + 50 })`);
+        .attr("transform", `translate(${-width_radialplot / 10}, ${-height_radialplot / 2.8 })`);
 
     features.forEach((feature, index) => {
         const legendItem = legend.append("g")

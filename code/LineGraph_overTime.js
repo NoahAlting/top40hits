@@ -164,7 +164,7 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
             .datum(yearData)
             .attr("fill", "none")
             .attr("stroke", get_color_yearRange(year_range, selected_years))
-            .attr("stroke-width", 1.5)
+            .attr("stroke-width", 3)
             .attr("d", d3.line()
                 .x(d => x(d.week))
                 .y(d => y(d.avgValue))
@@ -207,7 +207,7 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
         .attr("class", "mouseLine")
         .attr("fill", "none")
         .attr("stroke", "white")
-        .style("stroke-width", "1px")
+        .style("stroke-width", "2px")
         .style("opacity", 0);         
     linePlot
         .on('mouseout', function() {
@@ -324,7 +324,7 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
             .datum(yearData)
             .attr("fill", "none")
             .attr("stroke", get_color_yearRange(year_range, selected_years))
-            .attr("stroke-width", 1.5)
+            .attr("stroke-width", 3)
             .attr("d", d3.line()
                 .x(d => x(d.week))
                 .y(d => y(d.genre_percentage))
@@ -357,7 +357,7 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
         .attr("class", "mouseLine")
         .attr("fill", "none")
         .attr("stroke", "white")
-        .style("stroke-width", "1px")
+        .style("stroke-width", "2px")
         .style("opacity", 0);
     linePlot
         .on('mouseout', function() {

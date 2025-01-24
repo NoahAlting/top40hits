@@ -1,3 +1,14 @@
+createInfoButtonWithTooltip(
+    "lineGraphContainer", 
+    "Title", 
+    "what are you looking at, info info info", 
+    "x ax", 
+    "y ax", 
+    "marks", 
+    "what can you do with it",
+    "right"
+);
+
 var linegraph_containerWidth = document.getElementById("lineGraphContainer").clientWidth;
 var linegraph_containerHeight = document.getElementById("lineGraphContainer").clientHeight;
 var margin_lineGraph = {top: linegraph_containerHeight * 0.15, right: linegraph_containerWidth * 0.05, bottom: linegraph_containerHeight * 0.2, left: linegraph_containerWidth * 0.05};

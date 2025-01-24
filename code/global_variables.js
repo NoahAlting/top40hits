@@ -239,6 +239,84 @@ function update_graphs_selected_FeatureGenre(filtered_data){
     }
 }
 
+
+const dragHandleLeft = document.getElementById("drag-handle-left");
+const root1 = document.documentElement;
+
+// Initial column sizes
+let initialLineGraphWidth = 2; // Represents 2fr
+let initialSelectorWidth = 1; // Represents 1fr
+
+dragHandleLeft.addEventListener("mousedown", (e) => {
+    const startX = e.clientX;
+
+    const onMouseMove = (event) => {
+        const delta = event.clientX - startX;
+
+        // Adjust column sizes based on the drag delta
+        const totalWidth = initialLineGraphWidth + initialSelectorWidth;
+        const newLineGraphWidth = Math.max(0.5, initialLineGraphWidth + delta / window.innerWidth * totalWidth);
+        const newSelectorWidth = totalWidth - newLineGraphWidth;
+
+        // Update CSS variables
+        root1.style.setProperty("--linegraph-width", `${newLineGraphWidth}fr`);
+        root1.style.setProperty("--selector-width", `${newSelectorWidth}fr`);
+    };
+
+    const onMouseUp = () => {
+        // Remove listeners when the drag ends
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+        // Update initial sizes
+        initialLineGraphWidth = parseFloat(root1.style.getPropertyValue("--linegraph-width") || initialLineGraphWidth);
+        initialSelectorWidth = parseFloat(root1.style.getPropertyValue("--selector-width") || initialSelectorWidth);
+    };
+
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+});
+
+
+
+const dragHandleRight = document.getElementById("drag-handle-right");
+const root2 = document.documentElement;
+
+let initialLongevityWidth = 2; // Represents 2fr
+let initialScatterWidth = 2; // Represents 2fr
+
+dragHandleRight.addEventListener("mousedown", (e) => {
+    const startX = e.clientX;
+
+    const onMouseMove = (event) => {
+        const delta = event.clientX - startX;
+
+        // Adjust column sizes based on the drag delta
+        const totalWidth = initialLongevityWidth + initialScatterWidth;
+        const newLongevityWidth = Math.max(0.5, initialLongevityWidth - delta / window.innerWidth * totalWidth);
+        const newScatterWidth = totalWidth - initialLongevityWidth;
+        const newSelectorWidth = totalWidth - newLongevityWidth;
+
+        // Update CSS variables
+        root2.style.setProperty("--longevity-width", `${newLongevityWidth}fr`);
+        root1.style.setProperty("--selector-width", `${newSelectorWidth}fr`);
+    };
+
+    const onMouseUp = () => {
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+      initialLongevityWidth = parseFloat(root2.style.getPropertyValue("--longevity-width") || initialLongevityWidth);
+      initialScatterWidth = parseFloat(root2.style.getPropertyValue("--scatter-width") || initialScatterWidth);
+  };
+
+
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+});
+
+
+
+
+
 // ============================================ Event functions, if one of the global variables has changed ============================================
 // When top is updated
 window.addEventListener("topUpdated", function () {

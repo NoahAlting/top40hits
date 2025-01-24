@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="indexstyle.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
+
+
 <body>
 
 <div id="introduction" class="intro-container" >
@@ -16,8 +18,10 @@
     </p>
 </div>
 <!-- Radial Plots -->
+<!-- <div class="drag-handle" data-resize="1"></div> -->
 
 
+<div id="grid-container"></div>
 <div id="radial_plots" class="chart_container">
     <h1>Radial Chart Features</h1>
     <div id="radial_plot_year_content">
@@ -38,6 +42,8 @@
         <table id="value-table" class="value-table"></table>
     </div>
 </div>
+
+<div class="drag-handle" id="drag-handle-left"></div>
 
 <!-- Selector Dashboard in the Middle -->
 <div id="selectorDashboard">
@@ -71,6 +77,8 @@
     <div id="weekRangeContainer"></div>
 </div>
 
+
+
 <!-- Longevity Charts on the Right -->
 
 <div id="longevityradialPlotContainer"  class="chart_container">
@@ -96,6 +104,12 @@
         <svg id="longevity_histogram" class="chart"></svg></svg>
         <div id="controls"></div>
     </div>
+    
+
+<!-- <div class="drag-handle" id="drag-handle-right" data-resize="2"></div> -->
+<div class="drag-handle" id="drag-handle-right"></div>
+
+</div>
 </div>
 
 <!--Global variables-->

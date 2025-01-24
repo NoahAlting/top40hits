@@ -335,7 +335,7 @@ let global_data_scat = []
 let selected_genre = ""
 const sortedYearRanges_scat = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
 
-function update_scat_features(filtered_data_input, selectedGenre_scat) {
+function update_scat_features(filtered_data_input, selectedGenre_scat) {    
     global_data_scat = filtered_data_input;
     selected_genre = selectedGenre_scat;
     console.log("Selected Genre:", selected_genre);
@@ -434,29 +434,29 @@ function smoothData(data, windowSize = 3) {
 // Apply dynamic filters
 
 function createVisualization(freqData, dynamicallyFilteredData, yearRanges) {
-    const svg = d3.select("#longevity_histogram").attr("width", 800).attr("height", 400);
-    const width = +svg.attr("width");
-    const height = +svg.attr("height");
-    const margin = { top: 20, right: 50, bottom: 40, left: 50 };
+    const svg = d3.select("#longevity_histogram").attr("width", width_scatterplot_container).attr("height", height_scatterplot_container);
+    const width_longevityHistogram = +svg.attr("width");
+    const height_longevityHistogram = +svg.attr("height");
+    const margin_longevityHistogram = { top: height_scatterplot_container*0.1, right: width_scatterplot_container*0.1, bottom: height_scatterplot_container*0.3, left: width_scatterplot_container*0.1 };
 
     svg.selectAll("*").remove();
 
     const x = d3.scaleBand()
         .domain(freqData.map((d) => d.weeks))
-        .range([margin.left, width - margin.right])
+        .range([margin_longevityHistogram.left, width_longevityHistogram - margin_longevityHistogram.right])
         .padding(0.1);
 
     const yLeft = d3.scaleLinear()
         .domain([0, d3.max(freqData, (d) => d.frequency)]).nice()
-        .range([height - margin.bottom, margin.top]);
+        .range([height_longevityHistogram - margin_longevityHistogram.bottom, margin_longevityHistogram.top]);
 
     const yRight = d3.scaleLinear()
         .domain([0, 1])
-        .range([height - margin.bottom, margin.top]);
+        .range([height_longevityHistogram - margin_longevityHistogram.bottom, margin_longevityHistogram.top]);
 
-    svg.append("g").attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(x));
-    svg.append("g").attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(yLeft));
-    svg.append("g").attr("transform", `translate(${width - margin.right},0)`).call(d3.axisRight(yRight));
+    svg.append("g").attr("transform", `translate(0,${height_longevityHistogram - margin_longevityHistogram.bottom})`).call(d3.axisBottom(x));
+    svg.append("g").attr("transform", `translate(${margin_longevityHistogram.left},0)`).call(d3.axisLeft(yLeft));
+    svg.append("g").attr("transform", `translate(${width_longevityHistogram - margin_longevityHistogram.right},0)`).call(d3.axisRight(yRight));
 
     const colorScale = d3.scaleSequential(d3.interpolateViridis).domain([0, yearRanges.length]);
 
@@ -499,13 +499,13 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges) {
             };
         });
 
-        renderLinePlot(svg, x, yRight, groupedData, colorScale, width, height, margin, yLeft);
+        renderLinePlot(svg, x, yRight, groupedData, colorScale, width_longevityHistogram, height_longevityHistogram, margin_longevityHistogram, yLeft);
     }
 }
 
 
 // Render line plot for normalized data
-function renderLinePlot(svg, x, yRight, groupedData, width, height, margin, yLeft, dynamicallyFilteredData) {
+function renderLinePlot(svg, x, yRight, groupedData, width_longevityHistogram, height_longevityHistogram, margin_longevityHistogram, yLeft, dynamicallyFilteredData) {
     const line = d3.line()
         .x(d => x(d.weeks) + x.bandwidth() / 2)
         .y(d => yRight(d.frequency)); // Use the right y-axis for normalized values

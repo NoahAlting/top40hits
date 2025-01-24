@@ -222,16 +222,17 @@ function processData(selected_ranges, selected_weeks, max_top, selectedGenre, da
 
 // All functions to graphs that take all features or genres as input
 function update_graphs_all_FeaturesGenres(filtered_data){
-  update_radial_features(filtered_data)
+  if (window.selectedType === "features"){
+    update_radial_features(filtered_data);
+  }
   update_LongevityRadialGraph(filtered_data);
 }
 
 // All functions to graphs that take one genre or one feature as input
-function update_graphs_selected_FeatureGenre(filtered_data, type){
-  update_scat_features(filtered_data, selectedGenre)
+function update_graphs_selected_FeatureGenre(filtered_data){
   updateLineGraph(filtered_data);
-    if (type === "features"){
-      ;
+    if (window.selectedType === "features"){
+      update_scat_features(filtered_data, selectedGenre);
     }
     else{
         renderGenrePlot(filtered_data, selectedGenre);
@@ -271,15 +272,19 @@ window.addEventListener("weekRangeUpdated", function () {
 
 // When type (genres/ featres) is updated
 window.addEventListener("typeUpdated", function () {
+  const selectedRadialPlot = document.getElementById('radial_plot_year_content');
   if (window.selectedType == "features"){
+    selectedRadialPlot.style.display = 'block';
     createFeatureGenreMenu(possible_features_songs, true)
   }
   else{
+    selectedRadialPlot.style.display = 'none';
     createFeatureGenreMenu(possible_genres.concat(remaining_genres), true);
   }
+  updateLongevityChartContent();
   filter_data().then(output_filtered_data => {
     update_graphs_all_FeaturesGenres(output_filtered_data);
-    update_graphs_selected_FeatureGenre(output_filtered_data, window.selectedType);
+    update_graphs_selected_FeatureGenre(output_filtered_data);
   }).catch(err => {
     console.error("Error filtering data:", err);
   });
@@ -290,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
   filter_data()
      .then(output_filtered_data => {
       update_graphs_all_FeaturesGenres(output_filtered_data);
-      update_graphs_selected_FeatureGenre(output_filtered_data, window.selectedType);
+      update_graphs_selected_FeatureGenre(output_filtered_data);
      })
      .catch(err => console.error("Error initializing chart:", err));
 });

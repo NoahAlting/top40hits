@@ -8,22 +8,33 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
+
+<div id="introduction" class="intro-container" >
+    <h1>Interactive Data Visualization Dashboard</h1>
+    <p>
+        Description
+    </p>
+</div>
 <!-- Radial Plots -->
 
 
-<div id="radial_plots">
+<div id="radial_plots" class="chart_container">
     <h1>Radial Chart Features</h1>
+    <div id="year-range-display-radial"> </div>
     <div id="radial-plot" class="chart"></div>
     <button id="prev-radial">Previous</button>
     <button id="next-radial">Next</button>
 </div>
 
 <!-- Line Graph on the Left -->
-<div id="lineGraphContainer">
+<div id="lineGraphContainer" class="chart_container">
     <div class="heading-container">
         <h1>Linegraph</h1>
     </div>
-    <div id="lineGraph_overTime" class="chart"></div>
+    <div id="lineGraph_overTime"></div>
+    <div id="table-container">
+        <table id="value-table" class="value-table"></table>
+    </div>
 </div>
 
 <!-- Selector Dashboard in the Middle -->
@@ -60,7 +71,7 @@
 
 <!-- Longevity Charts on the Right -->
 
-<div id="longevityradialPlotContainer">
+<div id="longevityradialPlotContainer"  class="chart_container">
     <div class="heading-container">
         <h1>Radial Plots</h1>
         <div id="std_button_id"></div>
@@ -69,17 +80,14 @@
 </div>
 
 
-<div id="longevityCharts">
-    <h1>Longevity vs Features</h1>
-
-    <div id="selected_feature_long"></div>
-        <div id="feature-selector"></div>
-        <div id="scatterplot"></div>
+<div id="longevityCharts"  class="chart_container">
+    <div id="h1"></div> 
+    <div id="year-range-display"> </div>
+        <div id="scatterplot" class="chart"></div>
         <button id="prev">Previous</button>
         <button id="next">Next</button>
-        <div id="year-range-display"> </div>
         <div id="tooltip"> </div>
-        <div id="barchart" class="chart"></div>></div>
+        <div id="barchart" class="chart"></div>
     </div>
 
     <div id="selected_genre_long">

@@ -1,23 +1,21 @@
 var linegraph_containerWidth = document.getElementById("lineGraphContainer").clientWidth;
 var linegraph_containerHeight = document.getElementById("lineGraphContainer").clientHeight;
-var margin_lineGraph = {top: linegraph_containerHeight*0.1, right: linegraph_containerWidth*0.1, bottom: linegraph_containerHeight*0.2, left: linegraph_containerWidth*0.1};
+var margin_lineGraph = {top: linegraph_containerHeight * 0.15, right: linegraph_containerWidth * 0.05, bottom: linegraph_containerHeight * 0.2, left: linegraph_containerWidth * 0.05};
 var width_lineGraph = linegraph_containerWidth - margin_lineGraph.left - margin_lineGraph.right;
 var height_lineGraph = linegraph_containerHeight - margin_lineGraph.top - margin_lineGraph.bottom;
-
 const linePlot = d3.select("#lineGraph_overTime")
     .append("svg")
-    .attr("width", width_lineGraph*0.9)
-    .attr("height", height_lineGraph*0.9)
-    .attr("viewBox", `0 0 ${width_lineGraph*1.2} ${height_lineGraph*1.4}`)
+    .attr("width", width_lineGraph) 
+    .attr("height", height_lineGraph) 
+    .attr("viewBox", `0 0 ${linegraph_containerWidth} ${linegraph_containerHeight}`) 
+    .attr("preserveAspectRatio", "xMidYMid meet") 
     .append("g")
-    .attr("transform", "translate(" + margin_lineGraph.left + "," + margin_lineGraph.top + ")");
-
+    .attr("transform", `translate(${margin_lineGraph.left}, ${margin_lineGraph.top})`)  
+    .style("overflow", "visible"); 
 var tableContainer = d3.select("#lineGraph_overTime")
     .append("div")
     .attr("class", "table-container")
-    .style("margin-top", "5px")
-    .style("margin-bottom", "0px")
-    .style("width", `${linegraph_containerWidth*0.8}px`); 
+    .style("width", `${width_lineGraph}px`);
 var table = tableContainer.append("table")
     .attr("class", "value-table")
     .style("width", "100%")
@@ -76,7 +74,7 @@ function loadAndProcess_GenresData_LineGraph(filtered_data_input, selected_years
         const mergedData = Object.entries(filtered_data_input)
             .flatMap(([genre, songs]) => 
                 songs
-                    .filter((row) => +row.Jaar >= range_years[0] && +row.Jaar <= range_years[1])
+                    .filter((row) => +row.Jaar >= range_years[0] && +row.Jaar <= range_years[1] || +row.Jaar == range_years[0]) 
                     .map((row) => ({
                         Song_ID: row.Song_ID,
                         Jaar: +row.Jaar,
@@ -119,10 +117,12 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
     // Set domain and ranges for axes
     var x = d3.scaleLinear()
         .domain([selected_weeks[0], selected_weeks[1]])
-        .range([0, width_lineGraph]);
+        .range([0, width_lineGraph])
+        .clamp(true);
     var y = d3.scaleLinear()
         .domain([0, 1])
-        .range([height_lineGraph, 0]);
+        .range([height_lineGraph, 0])
+        .clamp(true);
     // Label x-axis
     linePlot.append("g")
     .attr("transform", "translate(0," + height_lineGraph + ")")
@@ -137,7 +137,7 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
         .style("font-size", "22px")
         .attr("text-anchor", "middle")
         .attr("x", width_lineGraph * 0.5)
-        .attr("y", height_lineGraph + 60) 
+        .attr("y", height_lineGraph * 1.2) 
         .text("Weeknumber");
     // Label y-axis
     linePlot.append("g")
@@ -278,10 +278,12 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
     // Set domain and ranges for axes
     var x = d3.scaleLinear()
         .domain([selected_weeks[0], selected_weeks[1]])
-        .range([0, width_lineGraph]);
+        .range([0, width_lineGraph])
+        .clamp(true);
     var y = d3.scaleLinear()
         .domain([0, 100])
-        .range([height_lineGraph, 0]);
+        .range([height_lineGraph, 0])
+        .clamp(true);
     // Label x-axis
     linePlot.append("g")
         .attr("transform", "translate(0," + height_lineGraph + ")")
@@ -296,7 +298,7 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
         .style("font-size", "22px")
         .attr("text-anchor", "middle")
         .attr("x", width_lineGraph * 0.5)
-        .attr("y", height_lineGraph + 60) 
+        .attr("y", height_lineGraph * 1.2) 
         .text("Weeknumber");
     // Label y-axis
     linePlot.append("g")

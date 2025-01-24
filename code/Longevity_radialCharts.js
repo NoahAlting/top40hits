@@ -460,8 +460,8 @@ function add_legend(chartContainer, labels) {
   legendGroup.attr(
     "transform",
     `translate(${
-      -(width_longevity_radialChart - legendWidth) * 0.25
-    } , ${height_longevity_radialChart * 0.3})`
+      -(width_longevity_radialChart - legendWidth) * 0.3
+    } , ${height_longevity_radialChart * 0.4})`
   );
 }
 
@@ -566,19 +566,20 @@ function update_LongevityRadialGraph(filtered_data_input) {
       const svgContainer = d3
         .select("#longevity_radialChart")
         .append("svg")
-        .attr("width", (width_longevity_radialChart) * size_graph)
+        .attr("width", 0.75 * (width_longevity_radialChart) * size_graph)
         .attr("height", (height_longevity_radialChart) * size_graph)
         .attr("viewBox", [
           -width_longevity_radialChart / 2.5,
           -height_longevity_radialChart / 3,
           width_longevity_radialChart * 0.8,
           height_longevity_radialChart * 0.8,
-        ]);
+        ])
+        .attr("transform", `translate(${0}, ${margin_longevity_radialChart.top / 2})`);
 
       svgContainer
         .append("text")
         .attr("x", 0)
-        .attr("y", -height_longevity_radialChart * size_graph * 0.6)
+        .attr("y", -height_longevity_radialChart * size_graph * 0.8)
         .attr("text-anchor", "middle")
         .style("font-size", "20px")
         .style("fill", "white")
@@ -710,7 +711,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
         .append("svg")
         .attr(
           "width",
-          (width_longevity_radialChart) *
+          0.75 *  (width_longevity_radialChart) *
             size_graph
         )
         .attr(
@@ -723,14 +724,15 @@ function update_LongevityRadialGraph(filtered_data_input) {
           -height_longevity_radialChart / 3,
           width_longevity_radialChart * 0.8,
           height_longevity_radialChart * 0.8,
-        ]);
+        ])
+        .attr("transform", `translate(${0}, ${margin_longevity_radialChart.top / 2})`);
 
         svgContainer
         .append("text")
         .attr("x", 0)
-        .attr("y", -height_longevity_radialChart * size_graph * 0.6)
+        .attr("y", -height_longevity_radialChart * size_graph * 0.8)
         .attr("text-anchor", "middle")
-        .style("font-size", "20px")
+        .style("font-size", "22px")
         .style("fill", "white")
         .style("font-weight", "bold")
         .text(

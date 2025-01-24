@@ -23,7 +23,7 @@ function createInteractiveGraph_Features_radial(divId, data, features) {
     
     svg.append("circle")
         .attr("r", outerRadius)
-        .style("fill", "darkslategrey");
+        .style("fill", "darkslategray");
 
 
     const angles = d3
@@ -143,7 +143,7 @@ function createInteractiveGraph_Features_radial(divId, data, features) {
 
     
     const legend = svg.append("g")
-        .attr("transform", `translate(${-width / 4 + 130}, ${-height / 4 + 50 })`);
+        .attr("transform", `translate(${-width_radialplot / 4 + 130}, ${-height_radialplot / 4 + 50 })`);
 
     features.forEach((feature, index) => {
         const legendItem = legend.append("g")
@@ -223,7 +223,7 @@ function loadAndProcess_FeaturesData_radial(filtered_data_input, range_years, se
         }
         return a.week - b.week;
     });
-
+    console.log("radial", plotData)
     return plotData;
 }
 

@@ -143,7 +143,7 @@ function createInteractiveGraph_Features_radial(divId, data, features) {
 
     
     const legend = svg.append("g")
-        .attr("transform", `translate(${-width_radialplot / 4 + 130}, ${-height_radialplot / 4 + 50 })`);
+        .attr("transform", `translate(${-width_radialplot / 10}, ${-height_radialplot * 0.4 })`);
 
     features.forEach((feature, index) => {
         const legendItem = legend.append("g")

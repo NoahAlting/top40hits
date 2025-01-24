@@ -228,9 +228,10 @@ function update_graphs_all_FeaturesGenres(filtered_data){
 
 // All functions to graphs that take one genre or one feature as input
 function update_graphs_selected_FeatureGenre(filtered_data, type){
+  update_scat_features(filtered_data, selectedGenre)
   updateLineGraph(filtered_data);
     if (type === "features"){
-      update_scat_features(filtered_data, selectedGenre);
+      ;
     }
     else{
         renderGenrePlot(filtered_data, selectedGenre);

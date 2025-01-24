@@ -1,10 +1,11 @@
 body {
     display: grid;
     grid-template-areas:
+        "introduction introduction introduction" 
         "lineGraph selectorDashboard longevityradialPlot"
         "radialFeatures selectorDashboard scatterPlot";
     grid-template-columns: 2fr 1fr 2fr; /* Divide into three vertical sections */
-    grid-template-rows: auto auto; /* Two rows: one for radial plots, one for charts */
+    grid-template-rows: auto auto auto; /* Two rows: one for radial plots, one for charts */
     gap: 10px;
     justify-content: center;
     align-items: start;
@@ -15,12 +16,38 @@ body {
     margin: 0;
 }
 
+.intro-container {
+    grid-area: introduction; 
+    text-align: center;
+    padding: 20px;
+    background-color: #2c2c3c;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.intro-container h1 {
+    font-size: 30px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.intro-container p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #c4c4c4;
+    margin: 0 auto;
+    max-width: 800px;
+}
+
 h1 {
     color: #ffffff;
     align-items: center;
     justify-content: center;
     margin: 0;           /* Remove any default margin to avoid shifting */
     padding: 0;
+    font-size: 22px;
 }
 
 .label-text {

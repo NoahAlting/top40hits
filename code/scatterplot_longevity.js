@@ -120,50 +120,53 @@ const barChart = d3
     .attr("width", width_scatterplot)
     .attr("height", height_scatterplot);
 
-function showBarChart(year_range, colour, song, selectedFeature) {
-    const selectedFeatures = ['Danceability', 'Acousticness', 'Energy', 'Liveness', 'Valence', 'Speechiness'];
-    const featureData = selectedFeatures
-        .map(feature => ({ feature, value: song[feature] }))
-        .filter(d => d.value != null && d.value != undefined);
-
-    const xScale = d3.scaleBand()
-        .domain(featureData.map(d => d.feature))
-        .range([margin_scatterplot.left, width_scatterplot - margin_scatterplot.right])
-        .padding(0.1);
-
-    const increasedHeight = height_scatterplot * 1.5;
-
-    const yScale = d3.scaleLinear()
-        .domain([0, 1])
-        .range([increasedHeight - margin_scatterplot.bottom, margin_scatterplot.top]);
-
-    barChart.selectAll("*").remove();
-
-    barChart.append("g")
-        .attr("transform", `translate(0, ${increasedHeight - margin_scatterplot.bottom})`)
-        .call(d3.axisBottom(xScale))
-        .selectAll("text")
-        .attr("transform", "rotate(-45)")
-        .style("text-anchor", "end");
-
-    barChart.append("g")
-        .attr("transform", `translate(${margin_scatterplot.left}, 0)`)
-        .call(d3.axisLeft(yScale));
-
-    barChart.selectAll("rect")
-        .data(featureData)
-        .enter()
-        .append("rect")
-        .attr("x", d => xScale(d.feature))
-        .attr("y", yScale(0))
-        .attr("width", xScale.bandwidth())
-        .attr("height", 0)
-        .attr("fill", d => d.feature === selectedFeature ? colour : "darkgrey")
-        .transition()
-        .duration(500)
-        .attr("y", d => yScale(d.value))
-        .attr("height", d => increasedHeight - margin_scatterplot.bottom - yScale(d.value));
-}
+    function showBarChart(year_range, colour, song, selectedFeature) {
+        const selectedFeatures = ['Danceability', 'Acousticness', 'Energy', 'Liveness', 'Valence', 'Speechiness'];
+        const featureData = selectedFeatures
+            .map(feature => ({ feature, value: song[feature] }))
+            .filter(d => d.value != null && d.value != undefined);
+    
+        const xScale = d3.scaleBand()
+            .domain(featureData.map(d => d.feature))
+            .range([margin_scatterplot.left, width_scatterplot - margin_scatterplot.right])
+            .padding(0.1);
+    
+        const increasedHeight = height_scatterplot * 1.5;
+    
+        const yScale = d3.scaleLinear()
+            .domain([0, 1])
+            .range([increasedHeight - margin_scatterplot.bottom, margin_scatterplot.top]);
+    
+        barChart.selectAll("*").remove();
+    
+        const chartGroup = barChart.append("g")
+            .attr("transform", "translate(0, -50)"); 
+    
+        chartGroup.append("g")
+            .attr("transform", `translate(0, ${increasedHeight - margin_scatterplot.bottom})`)
+            .call(d3.axisBottom(xScale))
+            .selectAll("text")
+            .attr("transform", "rotate(-45)")
+            .style("text-anchor", "end");
+    
+        chartGroup.append("g")
+            .attr("transform", `translate(${margin_scatterplot.left}, 0)`)
+            .call(d3.axisLeft(yScale));
+    
+        chartGroup.selectAll("rect")
+            .data(featureData)
+            .enter()
+            .append("rect")
+            .attr("x", d => xScale(d.feature))
+            .attr("y", yScale(0))
+            .attr("width", xScale.bandwidth())
+            .attr("height", 0)
+            .attr("fill", d => d.feature === selectedFeature ? colour : "darkgrey")
+            .transition()
+            .duration(500)
+            .attr("y", d => yScale(d.value))
+            .attr("height", d => increasedHeight - margin_scatterplot.bottom - yScale(d.value));
+    }
 
 function showTooltip(event, d) {
     const tooltip = d3.select("#tooltip");

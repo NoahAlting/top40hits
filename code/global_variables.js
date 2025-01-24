@@ -207,8 +207,8 @@ function processData(selected_ranges, selected_weeks, max_top, selectedGenre, da
                     // Remove unwanted columns
                     const excludedFields = [
                         'Album', 'Artiest', 'Artist_Country',
-                        'Artist_Followers', 'Artist_Popularity', 'Artist_Song',
-                        'Titel', 'Status', 'Vorige_week', 'undefined', 'Aantal_weken',
+                        'Artist_Followers', 'Artist_Popularity',
+                         'Status', 'Vorige_week', 'undefined'
                     ];
                     excludedFields.forEach(field => delete mergedRow[field]);
                     return mergedRow;
@@ -230,7 +230,7 @@ function update_graphs_all_FeaturesGenres(filtered_data){
 function update_graphs_selected_FeatureGenre(filtered_data, type){
   updateLineGraph(filtered_data);
     if (type === "features"){
-        renderFeaturePlot();
+      update_scat_features(filtered_data, selectedGenre);
     }
     else{
         renderGenrePlot(filtered_data, selectedGenre);

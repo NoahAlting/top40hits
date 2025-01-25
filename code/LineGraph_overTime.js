@@ -9,30 +9,6 @@ createInfoButtonWithTooltip(
     "right"
 );
 
-var linegraph_containerWidth = document.getElementById("lineGraphContainer").clientWidth;
-var linegraph_containerHeight = document.getElementById("lineGraphContainer").clientHeight;
-var margin_lineGraph = {top: linegraph_containerHeight * 0.15, right: linegraph_containerWidth * 0.05, bottom: linegraph_containerHeight * 0.2, left: linegraph_containerWidth * 0.05};
-var width_lineGraph = linegraph_containerWidth - margin_lineGraph.left - margin_lineGraph.right;
-var height_lineGraph = linegraph_containerHeight - margin_lineGraph.top - margin_lineGraph.bottom;
-const linePlot = d3.select("#lineGraph_overTime")
-    .append("svg")
-    .attr("width", width_lineGraph) 
-    .attr("height", height_lineGraph) 
-    .attr("viewBox", `0 0 ${linegraph_containerWidth} ${linegraph_containerHeight}`) 
-    .attr("preserveAspectRatio", "xMidYMid meet") 
-    .append("g")
-    .attr("transform", `translate(${margin_lineGraph.left}, ${margin_lineGraph.top})`)  
-    .style("overflow", "visible"); 
-var tableContainer = d3.select("#lineGraph_overTime")
-    .append("div")
-    .attr("class", "table-container")
-    .style("width", `${width_lineGraph}px`);
-var table = tableContainer.append("table")
-    .attr("class", "value-table")
-    .style("width", "100%")
-    .style("border-collapse", "collapse")
-    .style("visibility", "hidden");
-
 function loadAndProcess_FeaturesData_LineGraph(filtered_data_input, selected_years, selectedGenre, max_top) {
     const plotData = [];
     selected_years.forEach(range_years=>{
@@ -124,7 +100,7 @@ function loadAndProcess_GenresData_LineGraph(filtered_data_input, selected_years
     return plotData;
 }
 
-function createInteractiveGraph_Features_LineGraph(plotData, selected_years, selected_weeks, max_top, selectedGenre) {
+function createInteractiveGraph_Features_LineGraph(plotData, selected_years, selected_weeks, max_top, selectedGenre, linePlot, table, width_lineGraph, height_lineGraph) {
     // Set domain and ranges for axes
     var x = d3.scaleLinear()
         .domain([selected_weeks[0], selected_weeks[1]])
@@ -284,7 +260,7 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
         });
 }
 
-function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, selected_weeks, max_top, selectedGenre){
+function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, selected_weeks, max_top, selectedGenre, linePlot, table, width_lineGraph, height_lineGraph){
     /// Graph settings
     // Set domain and ranges for axes
     var x = d3.scaleLinear()
@@ -407,16 +383,41 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
 }
 
 function updateLineGraph(filtered_data_input) {
-    linePlot.selectAll("*")
-        .transition()
-        .duration(500)
-        .style("opacity", 0)
-        .remove();
-    table.selectAll("*")
-        .transition()
-        .duration(500)
-        .style("opacity", 0)
-        .remove();
+    if (typeof linePlot !== "undefined") {
+        d3.select("#lineGraph_overTime").selectAll("*").remove();
+    }
+    if (typeof table !== "undefined") {
+        table.selectAll("*")
+            .transition()
+            .duration(500)
+            .style("opacity", 0)
+            .remove();
+    }
+    
+    var linegraph_containerWidth = document.getElementById("lineGraphContainer").clientWidth;
+    var linegraph_containerHeight = document.getElementById("lineGraphContainer").clientHeight;
+    var margin_lineGraph = {top: linegraph_containerHeight * 0.15, right: linegraph_containerWidth * 0.05, bottom: linegraph_containerHeight * 0.2, left: linegraph_containerWidth * 0.05};
+    var width_lineGraph = linegraph_containerWidth - margin_lineGraph.left - margin_lineGraph.right;
+    var height_lineGraph = linegraph_containerHeight - margin_lineGraph.top - margin_lineGraph.bottom;
+    linePlot = d3.select("#lineGraph_overTime")
+        .append("svg")
+        .attr("width", width_lineGraph) 
+        .attr("height", height_lineGraph) 
+        .attr("viewBox", `0 0 ${linegraph_containerWidth} ${linegraph_containerHeight}`) 
+        .attr("preserveAspectRatio", "xMidYMid meet") 
+        .append("g")
+        .attr("transform", `translate(${margin_lineGraph.left}, ${margin_lineGraph.top})`)  
+        .style("overflow", "visible"); 
+    var tableContainer = d3.select("#lineGraph_overTime")
+        .append("div")
+        .attr("class", "table-container")
+        .style("width", `${width_lineGraph}px`);
+    var table = tableContainer.append("table")
+        .attr("class", "value-table")
+        .style("width", "100%")
+        .style("border-collapse", "collapse")
+        .style("visibility", "hidden");    
+
     const selected_years = window.selectedYearRanges.sort((a, b) => a[0] - b[0])
         .map(range => range[0] === range[1] ? [range[0]] : range);
     const selectedType = window.selectedType;
@@ -425,10 +426,10 @@ function updateLineGraph(filtered_data_input) {
     const selected_weeks = window.selectedWeekRange;
     if (selectedType == "features"){
         const data = loadAndProcess_FeaturesData_LineGraph(filtered_data_input, selected_years, selectedGenre, max_top);
-        createInteractiveGraph_Features_LineGraph(data, selected_years, selected_weeks, max_top, selectedGenre);
+        createInteractiveGraph_Features_LineGraph(data, selected_years, selected_weeks, max_top, selectedGenre,  linePlot, table, width_lineGraph, height_lineGraph);
     }
     else {
         const data = loadAndProcess_GenresData_LineGraph(filtered_data_input, selected_years, selectedGenre, max_top);
-        createInteractiveGraph_Genress_LineGraph(data, selected_years, selected_weeks, max_top, selectedGenre);
+        createInteractiveGraph_Genress_LineGraph(data, selected_years, selected_weeks, max_top, selectedGenre,  linePlot, table, width_lineGraph, height_lineGraph);
     }
 }

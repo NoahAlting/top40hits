@@ -1,18 +1,4 @@
-var width_scatterplot_container = document.getElementById("longevityCharts").clientWidth;
-console.log("Width Scatterplot Container:", width_scatterplot_container);
-var height_scatterplot_container = document.getElementById("longevityCharts").clientHeight;
-console.log("Height Scatterplot Container:", height_scatterplot_container);
-var margin_scatterplot = {
-    top: height_scatterplot_container * 0.1,
-    right: width_scatterplot_container * 0.1,
-    bottom: height_scatterplot_container * 0.3,
-    left: width_scatterplot_container * 0.1
-};
-console.log("Margin Scatterplot:", margin_scatterplot);
-var width_scatterplot = width_scatterplot_container - margin_scatterplot.left - margin_scatterplot.right;
-console.log("Width Scatterplot:", width_scatterplot);
-var height_scatterplot = height_scatterplot_container - margin_scatterplot.top - margin_scatterplot.bottom;
-console.log("Height Scatterplot:", height_scatterplot);
+
 function hideAllElements() {
     const elementsToHide = document.querySelectorAll('#barchart, #scatterplot, #feature-selector, #tooltip, #prev, #next, #year-range-display, #clip, #h1');
     elementsToHide.forEach(element => {
@@ -69,7 +55,6 @@ function loadAndProcess_FeaturesData_scat(filtered_data_input, range_years, sele
 
     const filteredData = filtered_data_input
         .filter(row => +row.Jaar >= range_years[0] && +row.Jaar <= range_years[1]);
-    console.log(filteredData)
 
     const songMap = new Map();
 
@@ -110,17 +95,29 @@ function loadAndProcess_FeaturesData_scat(filtered_data_input, range_years, sele
         });
     });
 
-    console.log("Plot Data:", plotData);
     return plotData;
 }
 
-const barChart = d3
+    function showBarChart(year_range, colour, song, selectedFeature) {
+        const barChart = d3
     .select("#barchart")
     .append("svg")
     .attr("width", width_scatterplot)
     .attr("height", height_scatterplot);
 
-    function showBarChart(year_range, colour, song, selectedFeature) {
+        var width_scatterplot_container = document.getElementById("longevityCharts").clientWidth;
+        var height_scatterplot_container = document.getElementById("longevityCharts").clientHeight;
+        var margin_scatterplot = {
+            top: height_scatterplot_container * 0.1,
+            right: width_scatterplot_container * 0.1,
+            bottom: height_scatterplot_container * 0.3,
+            left: width_scatterplot_container * 0.2
+        };
+        var width_scatterplot = width_scatterplot_container - margin_scatterplot.left - margin_scatterplot.right;
+        var height_scatterplot = height_scatterplot_container - margin_scatterplot.top - margin_scatterplot.bottom;
+
+        
+
         const selectedFeatures = ['Danceability', 'Acousticness', 'Energy', 'Liveness', 'Valence', 'Speechiness'];
         const featureData = selectedFeatures
             .map(feature => ({ feature, value: song[feature] }))
@@ -177,7 +174,20 @@ function showTooltip(event, d) {
 }
 
 function createInteractiveGraph_Features_scat(divId, data, features, feature, year_range, year_range_colour) {
-    console.log("feature", feature);
+
+
+var width_scatterplot_container = document.getElementById("longevityCharts").clientWidth;
+var height_scatterplot_container = document.getElementById("longevityCharts").clientHeight;
+var margin_scatterplot = {
+    top: height_scatterplot_container * 0.1,
+    right: width_scatterplot_container * 0.1,
+    bottom: height_scatterplot_container * 0.3,
+    left: width_scatterplot_container * 0.2
+};
+var width_scatterplot = width_scatterplot_container - margin_scatterplot.left - margin_scatterplot.right;
+var height_scatterplot = height_scatterplot_container - margin_scatterplot.top - margin_scatterplot.bottom;
+
+
     const svg = d3
         .select(divId)
         .append("svg")
@@ -219,7 +229,6 @@ function createInteractiveGraph_Features_scat(divId, data, features, feature, ye
         .size([width_scatterplot, height_scatterplot])
         .bandwidth(30)
         .thresholds(12)(data);
-    console.log("Contours:", contours);
 
     // Apply the clipping path to the contours
     svg.append("g")
@@ -251,7 +260,6 @@ function createInteractiveGraph_Features_scat(divId, data, features, feature, ye
         .attr("opacity", 0)
         .style("fill", year_range_colour)
         .on("click", (event, d) => {
-            console.log("Clicked on dot:", d);
             const dot = d3.select(event.target);
             const initialX = dot.attr("cx");
             const initialY = dot.attr("cy");
@@ -279,8 +287,6 @@ function createInteractiveGraph_Features_scat(divId, data, features, feature, ye
         .on("mouseout", event => {
             d3.select(event.target).attr("r", 8);
         });
-
-    console.log("Dots Data:", data);
 
 
     const background = svg.append("rect")
@@ -327,7 +333,6 @@ function createInteractiveGraph_Features_scat(divId, data, features, feature, ye
 
     background.call(zoom);
     svg.call(zoom);
-    console.log("SVG Container:", svg.node());
 }
 
 let currentYearRangeIndex_scat = 0;
@@ -335,15 +340,13 @@ let global_data_scat = []
 let selected_genre = ""
 const sortedYearRanges_scat = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
 
-function update_scat_features(filtered_data_input, selectedGenre_scat) {
+function update_scat_features(filtered_data_input, selectedGenre_scat) {    
     global_data_scat = filtered_data_input;
     selected_genre = selectedGenre_scat;
-    console.log("Selected Genre:", selected_genre);
     const selectedYearRanges_scat = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
     const currentYearRange = selectedYearRanges_scat[currentYearRangeIndex_scat];
     const yearRangeText = `${currentYearRange[0]} - ${currentYearRange[1]}`;
     const yearRangeColor = get_color_yearRange(currentYearRange, selectedYearRanges_scat);
-    console.log(yearRangeColor)
     const data = loadAndProcess_FeaturesData_scat(filtered_data_input, currentYearRange, selectedGenre_scat, possible_features_songs, selectedYearRanges_scat);
 
     d3.select("#year-range-display")
@@ -351,19 +354,20 @@ function update_scat_features(filtered_data_input, selectedGenre_scat) {
         .style("background-color", yearRangeColor)
     d3.select("#scatterplot").html("");
     createInteractiveGraph_Features_scat("#scatterplot", data, possible_features_songs, selected_genre, currentYearRange, yearRangeColor);
+
 }
 
-document.getElementById("prev").addEventListener("click", function () {
-    const totalRanges = window.selectedYearRanges.length;
-    currentYearRangeIndex_scat = (currentYearRangeIndex_scat - 1 + totalRanges) % totalRanges;
-    update_scat_features(global_data_scat, selected_genre);
-});
+// document.getElementById("prev").addEventListener("click", function () {
+//     const totalRanges = window.selectedYearRanges.length;
+//     currentYearRangeIndex_scat = (currentYearRangeIndex_scat - 1 + totalRanges) % totalRanges;
+//     update_scat_features(global_data_scat, selected_genre);
+// });
 
-document.getElementById("next").addEventListener("click", function () {
-    const totalRanges = window.selectedYearRanges.length;
-    currentYearRangeIndex_scat = (currentYearRangeIndex_scat + 1) % totalRanges;
-    update_scat_features(global_data_scat, selected_genre);
-});
+// document.getElementById("next").addEventListener("click", function () {
+//     const totalRanges = window.selectedYearRanges.length;
+//     currentYearRangeIndex_scat = (currentYearRangeIndex_scat + 1) % totalRanges;
+//     update_scat_features(global_data_scat, selected_genre);
+// });
 
 
 
@@ -434,29 +438,29 @@ function smoothData(data, windowSize = 3) {
 // Apply dynamic filters
 
 function createVisualization(freqData, dynamicallyFilteredData, yearRanges) {
-    const svg = d3.select("#longevity_histogram").attr("width", 800).attr("height", 400);
-    const width = +svg.attr("width");
-    const height = +svg.attr("height");
-    const margin = { top: 20, right: 50, bottom: 40, left: 50 };
+    const svg = d3.select("#longevity_histogram").attr("width", width_scatterplot_container).attr("height", height_scatterplot_container);
+    const width_longevityHistogram = +svg.attr("width");
+    const height_longevityHistogram = +svg.attr("height");
+    const margin_longevityHistogram = { top: height_scatterplot_container*0.1, right: width_scatterplot_container*0.1, bottom: height_scatterplot_container*0.3, left: width_scatterplot_container*0.1 };
 
     svg.selectAll("*").remove();
 
     const x = d3.scaleBand()
         .domain(freqData.map((d) => d.weeks))
-        .range([margin.left, width - margin.right])
+        .range([margin_longevityHistogram.left, width_longevityHistogram - margin_longevityHistogram.right])
         .padding(0.1);
 
     const yLeft = d3.scaleLinear()
         .domain([0, d3.max(freqData, (d) => d.frequency)]).nice()
-        .range([height - margin.bottom, margin.top]);
+        .range([height_longevityHistogram - margin_longevityHistogram.bottom, margin_longevityHistogram.top]);
 
     const yRight = d3.scaleLinear()
         .domain([0, 1])
-        .range([height - margin.bottom, margin.top]);
+        .range([height_longevityHistogram - margin_longevityHistogram.bottom, margin_longevityHistogram.top]);
 
-    svg.append("g").attr("transform", `translate(0,${height - margin.bottom})`).call(d3.axisBottom(x));
-    svg.append("g").attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(yLeft));
-    svg.append("g").attr("transform", `translate(${width - margin.right},0)`).call(d3.axisRight(yRight));
+    svg.append("g").attr("transform", `translate(0,${height_longevityHistogram - margin_longevityHistogram.bottom})`).call(d3.axisBottom(x));
+    svg.append("g").attr("transform", `translate(${margin_longevityHistogram.left},0)`).call(d3.axisLeft(yLeft));
+    svg.append("g").attr("transform", `translate(${width_longevityHistogram - margin_longevityHistogram.right},0)`).call(d3.axisRight(yRight));
 
     const colorScale = d3.scaleSequential(d3.interpolateViridis).domain([0, yearRanges.length]);
 
@@ -499,54 +503,46 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges) {
             };
         });
 
-        renderLinePlot(svg, x, yRight, groupedData, colorScale, width, height, margin, yLeft);
+        renderLinePlot(svg, x, yRight, groupedData, colorScale, width_longevityHistogram, height_longevityHistogram, margin_longevityHistogram, yLeft);
     }
 }
 
 
 // Render line plot for normalized data
-function renderLinePlot(svg, x, yRight, groupedData, width, height, margin, yLeft, dynamicallyFilteredData) {
+function renderLinePlot(svg, x, yRight, groupedData, colorScale, width_longevityHistogram, height_longevityHistogram, margin_longevityHistogram, yLeft) {
     const line = d3.line()
         .x(d => x(d.weeks) + x.bandwidth() / 2)
-        .y(d => yRight(d.frequency)); // Use the right y-axis for normalized values
+        .y(d => yRight(d.frequency));
 
     groupedData.forEach(({ range, data, color }, index) => {
-        const path = svg.append("path")
+        svg.append("path")
             .datum(data)
             .attr("fill", "none")
             .attr("stroke", color)
             .attr("stroke-width", 2)
+            .attr("opacity", 0.9)
             .attr("d", line)
-            .on("click", function () {
-            });
+            .attr("data-range", range)
+            .attr("data-original-color", color);
     });
-
 }
 
 // Render bar plot
 function singleLinePlot(svg, x, y, data, color) {
-    // svg.selectAll(".line").remove();
     svg.selectAll(".area").remove();
     svg.selectAll(".point").remove();
 
-    // Define the line generator function
-    const line = d3.line()
-        .x(d => x(d.weeks))  // Mapping x axis data
-        .y(d => y(d.frequency));  // Mapping y axis data
-
-    // Define the area generator function
     const area = d3.area()
-        .x(d => x(d.weeks) + x.bandwidth() / 2)  // Mapping x axis data
-        .y0(y(0))  // The bottom of the area (on the x-axis)
-        .y1(d => y(d.frequency));  // The top of the area (based on the frequency)
+        .x(d => x(d.weeks) + x.bandwidth() / 2)
+        .y0(y(0))
+        .y1(d => y(d.frequency));
 
-    // Append the area element (filled beneath the line)
     svg.append("path")
-        .data([data])  // Pass the data as an array
+        .data([data])
         .attr("class", "area")
-        .attr("d", area)  // Define the area using the area generator
-        .attr("fill", color)  // Set the area fill color
-        .attr("fill-opacity", 0.8);  // Set the opacity to 40%
+        .attr("d", area)
+        .attr("fill", color)
+        .attr("fill-opacity", 1);
 }
 
 // Smoothing toggle
@@ -559,4 +555,35 @@ function createSmoothingToggle() {
             smoothingEnabled = this.checked;
             applyDynamicFilters();
         });
+}
+
+function longevity_genre_yearhighlight(selectedRange) {
+    if (!selectedRange || !Array.isArray(selectedRange) || selectedRange.length !== 2) {
+        console.error("Invalid selectedRange:", selectedRange);
+        return;
+    }
+
+    const svg = d3.select("#longevity_histogram");
+    const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
+
+    // Reset all lines (except axes) to their original color and default style
+    svg.selectAll("path")
+        .attr("stroke-width", 2)
+        .attr("opacity", 0.9)
+        .attr("stroke", function () {
+            // Restore the original stroke color from the data-original-color attribute
+            return d3.select(this).attr("data-original-color") || "#ffffff";
+        });
+
+    // Highlight the selected range's line by matching the 'data-range' attribute
+    const highlightedPath = svg.selectAll("path")
+        .filter(function () {
+            return d3.select(this).attr("data-range") === rangeKey;
+        })
+        .attr("stroke-width", 3)
+        .attr("opacity", 1.0)
+        .attr("stroke", "#ff0000");  // Apply the highlight color
+
+    // Bring the selected path to the front
+    highlightedPath.raise();
 }

@@ -1,17 +1,16 @@
 // ============================================ Manual determined variables ============================================
 // Features that are taken into account
+const width_scatterplot_container = 700;
+const height_scatterplot_container = 500;
+
 const possible_features_songs = [
     "Danceability",
     "Acousticness",
     "Energy",
-    // "Liveness",
+    "Liveness",
     "Valence",
-    // "Speechiness",
-    "Normalized_Loudness", 
-    // "Normalized_Popularity", 
-    "Normalized_Tempo",
+    "Speechiness",
   ];
-
   
 // Keywords for the genres
 const genreKeywords = {
@@ -30,7 +29,6 @@ let possible_genres = Object.keys(genreKeywords);
 const remaining_genres = "other";
 
 const viridisScale = d3.scaleSequential(d3.interpolateCool).domain([0, 5]);
-
 
 // ============================================ Functions ============================================
 // This function determined the coloring of the year ranges
@@ -100,7 +98,7 @@ function filter_data() {
         // Load and cache the original datasets if not already cached
         if (!cachedSpotifySongs || !cachedTop40Data) {
             Promise.all([
-                d3.csv("../data/spotify_songs_with_ids_norm.csv"),
+                d3.csv("../data/spotify_songs_with_ids.csv"),
                 d3.csv("../data/top40_with_ids.csv"),
             ]).then(([data_spotifySongs, data_top40]) => {
                 // Cache the original datasets
@@ -222,100 +220,11 @@ function processData(selected_ranges, selected_weeks, max_top, selectedGenre, da
     });
 }
 
-// All functions to graphs that take all features or genres as input
-function update_graphs_all_FeaturesGenres(filtered_data){
-  if (window.selectedType === "features"){
-    update_radial_features(filtered_data);
-  }
-  update_LongevityRadialGraph(filtered_data);
-}
 
 // All functions to graphs that take one genre or one feature as input
 function update_graphs_selected_FeatureGenre(filtered_data){
-  updateLineGraph(filtered_data);
-    if (window.selectedType === "features"){
-      update_scat_features(filtered_data, selectedGenre);
-    }
-    else{
         renderGenrePlot(filtered_data, selectedGenre);
-    }
 }
-
-
-const dragHandleLeft = document.getElementById("drag-handle-left");
-const root1 = document.documentElement;
-
-// Initial column sizes
-let initialLineGraphWidth = 2; // Represents 2fr
-let initialSelectorWidth = 1; // Represents 1fr
-
-dragHandleLeft.addEventListener("mousedown", (e) => {
-    const startX = e.clientX;
-
-    const onMouseMove = (event) => {
-        const delta = event.clientX - startX;
-
-        // Adjust column sizes based on the drag delta
-        const totalWidth = initialLineGraphWidth + initialSelectorWidth;
-        const newLineGraphWidth = Math.max(0.5, initialLineGraphWidth + delta / window.innerWidth * totalWidth);
-        const newSelectorWidth = totalWidth - newLineGraphWidth;
-
-        // Update CSS variables
-        root1.style.setProperty("--linegraph-width", `${newLineGraphWidth}fr`);
-        root1.style.setProperty("--selector-width", `${newSelectorWidth}fr`);
-    };
-
-    const onMouseUp = () => {
-        // Remove listeners when the drag ends
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
-        // Update initial sizes
-        initialLineGraphWidth = parseFloat(root1.style.getPropertyValue("--linegraph-width") || initialLineGraphWidth);
-        initialSelectorWidth = parseFloat(root1.style.getPropertyValue("--selector-width") || initialSelectorWidth);
-    };
-
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
-});
-
-
-
-const dragHandleRight = document.getElementById("drag-handle-right");
-const root2 = document.documentElement;
-
-let initialLongevityWidth = 2; // Represents 2fr
-let initialScatterWidth = 2; // Represents 2fr
-
-dragHandleRight.addEventListener("mousedown", (e) => {
-    const startX = e.clientX;
-
-    const onMouseMove = (event) => {
-        const delta = event.clientX - startX;
-
-        // Adjust column sizes based on the drag delta
-        const totalWidth = initialLongevityWidth + initialScatterWidth;
-        const newLongevityWidth = Math.max(0.5, initialLongevityWidth - delta / window.innerWidth * totalWidth);
-        const newScatterWidth = totalWidth - initialLongevityWidth;
-        const newSelectorWidth = totalWidth - newLongevityWidth;
-
-        // Update CSS variables
-        root2.style.setProperty("--longevity-width", `${newLongevityWidth}fr`);
-        root1.style.setProperty("--selector-width", `${newSelectorWidth}fr`);
-    };
-
-    const onMouseUp = () => {
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseup", onMouseUp);
-      initialLongevityWidth = parseFloat(root2.style.getPropertyValue("--longevity-width") || initialLongevityWidth);
-      initialScatterWidth = parseFloat(root2.style.getPropertyValue("--scatter-width") || initialScatterWidth);
-  };
-
-
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
-});
-
-
 
 
 
@@ -323,7 +232,6 @@ dragHandleRight.addEventListener("mousedown", (e) => {
 // When top is updated
 window.addEventListener("topUpdated", function () {
   filter_data().then(output_filtered_data => {
-    update_graphs_all_FeaturesGenres(output_filtered_data);
     update_graphs_selected_FeatureGenre(output_filtered_data);
   }).catch(err => {
     console.error("Error filtering data:", err);
@@ -333,7 +241,6 @@ window.addEventListener("topUpdated", function () {
 // When year range is updated
 window.addEventListener("yearRangeUpdated", function () {
   filter_data().then(output_filtered_data => {
-    update_graphs_all_FeaturesGenres(output_filtered_data);
     update_graphs_selected_FeatureGenre(output_filtered_data);
   }).catch(err => {
     console.error("Error filtering data:", err);
@@ -343,7 +250,6 @@ window.addEventListener("yearRangeUpdated", function () {
 // When week range is updated
 window.addEventListener("weekRangeUpdated", function () {
   filter_data().then(output_filtered_data => {
-    update_graphs_all_FeaturesGenres(output_filtered_data);
     update_graphs_selected_FeatureGenre(output_filtered_data);
   }).catch(err => {
     console.error("Error filtering data:", err);
@@ -353,18 +259,7 @@ window.addEventListener("weekRangeUpdated", function () {
 
 // When type (genres/ featres) is updated
 window.addEventListener("typeUpdated", function () {
-  const selectedRadialPlot = document.getElementById('radial_plot_year_content');
-  if (window.selectedType == "features"){
-    selectedRadialPlot.style.display = 'block';
-    createFeatureGenreMenu(possible_features_songs, true)
-  }
-  else{
-    selectedRadialPlot.style.display = 'none';
-    createFeatureGenreMenu(possible_genres.concat(remaining_genres), true);
-  }
-  updateLongevityChartContent();
   filter_data().then(output_filtered_data => {
-    update_graphs_all_FeaturesGenres(output_filtered_data);
     update_graphs_selected_FeatureGenre(output_filtered_data);
   }).catch(err => {
     console.error("Error filtering data:", err);
@@ -375,15 +270,14 @@ window.addEventListener("typeUpdated", function () {
 document.addEventListener('DOMContentLoaded', () => {
   filter_data()
      .then(output_filtered_data => {
-      update_graphs_all_FeaturesGenres(output_filtered_data);
       update_graphs_selected_FeatureGenre(output_filtered_data);
      })
      .catch(err => console.error("Error initializing chart:", err));
 });
 
-
 window.addEventListener("selectedRangeUpdated", function () {
     const selectedRange = window.selectedRange;
+    console.log("the input selected range", selectedRange);
     if (window.selectedType === "genres"){
         longevity_genre_yearhighlight(selectedRange);
     }

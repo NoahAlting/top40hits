@@ -40,22 +40,18 @@
     <div id="weekRangeContainer"></div>
 </div>
 
-<h1>Process Song Data Test</h1>
-<div id="menu-container">
-    <label for="genre_dropdown">Select Genre: </label>
-    <div id="genre_menu"></div>
-</div>
-
-<div id="histogram-container">
-    <svg id="longevity_histogram"></svg>
-    <div id="controls"></div>
-</div>
+<div id="longevityCharts"  class="chart_container">
+    <div id="h1"></div>
+    <div id="selected_genre_long">
+        <svg id="longevity_histogram" class="chart"></svg></svg>
+        <div id="controls"></div>
+    </div>
 
 </div>
 
 <!--Global variables-->
 <script>
-    window.selectedType = "features";
+    window.selectedType = "genres";
     window.selectedTop = 40;
     window.selectedYearRanges = [[1965, 2023]];
     window.selectedWeekRange = [1,52];
@@ -66,7 +62,8 @@
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="selection_yearweek.js"></script>
 <script src="selection_typetop.js"></script>
-<script src="longevity_genres.js"></script>
+<script src="jess/jess_global_variables.js"></script>
+<script src="jess/jess_scatterplot_longevity.js"></script>
 
 
 </body>

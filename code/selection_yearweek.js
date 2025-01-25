@@ -1,4 +1,5 @@
 // Data structure for years
+// code based upon:
 // ludwig schubert 2016 multiple brush https://github.com/ludwigschubert/d3-brush-multiple
 // brush snapping https://observablehq.com/@d3/brush-snapping
 
@@ -10,18 +11,16 @@ function dispatchCustomEvent(eventName, detail = {}) {
 }
 
 // ============================================ YEAR SELECTOR =================================================
-// mapfn -> transforming indices to correspond with years
 const years = Array.from({ length: 59 }, (_, i) => 1965 + i);
 const margin_year = { top: 6, bottom: 6, left: 4, right: 4 };
-const width_year = 100;
+const width_year = 80;
 const height_year = 360;
-const basecolors = ["#c5c4c4", "#9d9c9c"]
+const basecolors = ["#4a4a62", "#646487"]
 
 const svg_yearselect = d3.select("#yearSelector")
     .attr("viewBox", [0, 0, width_year, height_year]);
 
 // Define the height for each year block
-// TODO: INSTEAD MAKE THIS MORE LIKE WEEK SELECTOR WHERE IT IS DERIVED FROM THE YEAR_HEIGHT AND WIDTH
 const yearHeight = 6;
 const stackGroup = svg_yearselect
     .append("g")
@@ -52,7 +51,7 @@ const yearRects = stackGroup
         const blockIndex = Math.floor((d - 1965) / 5);
         return basecolors[blockIndex % basecolors.length];
     })
-    .attr("stroke", "#929090")
+    .attr("stroke", "#1e1e2f")
     .attr("stroke-width", 0.5)
 
 // Draw the strokes between the years
@@ -65,7 +64,7 @@ stackGroup
     .attr("x2", 112)
     .attr("y1", (d) => yScale(d) + yScale.bandwidth())
     .attr("y2", (d) => yScale(d) + yScale.bandwidth())
-    .attr("stroke", "#5d5c5c")
+    .attr("stroke", "#1e1e2f")
     .attr("stroke-width", (d) => (d % 5 === 0 ? 1.5 : 0))
     .attr("transform", "translate(0, -5.75)");
 
@@ -85,6 +84,7 @@ stackGroup
     // make years bigger when hovering over
     .on("mouseover", function(event, d) {
         d3.select(this).style("font-size", "12px");
+
     })
     .on("mouseout", function(event, d) {
         d3.select(this).style("font-size", "8px");
@@ -96,8 +96,6 @@ const multiBrushes = [];
 
 // Function to highlight selected years sorted oldest - newest
 function resetYearColors() {
-    const viridisScale = d3.scaleSequential(d3.interpolateCool).domain([0, 5]);
-
     const sortedRanges = selectedRanges
         .map((r) => r.range)
         .sort((a, b) => a[0] - b[0]);
@@ -118,28 +116,11 @@ function resetYearColors() {
         .attr("fill", (d) => highlightedYears[d] || basecolors[Math.floor((d - 1965) / 5) % basecolors.length]);
 }
 
-// Function ro remove a year range from the selection
-function removeRange(index) {
-    const { group } = selectedRanges[index];
-
-    group.remove();
-
-    selectedRanges.splice(index, 1);
-    multiBrushes.splice(index, 1);
-
-    renderRanges();
-    console.log("selected ranges after deletion", selectedRanges);
-    window.previousYearLength = selectedRanges.length + 1;
-    window.selectedYearRanges = selectedRanges.map(r => r.range);
-    dispatchCustomEvent('yearRangeUpdated', { ranges: selectedRanges });
-    resetYearColors();
-}
-
 
 // Function to create a new brush for selecting multiple year ranges
 function createBrush() {
     const brushHeight = years.length * yearHeight;
-    const horizontalOffset = 22;
+    const horizontalOffset = 10;
     const verticalOffset = 6;
 
     const newBrush = d3.brushY()
@@ -243,15 +224,55 @@ function updateAddBrushButton() {
     }
 }
 
+// Function ro remove a year range from the selection
+function removeRange(index) {
+    const { group } = selectedRanges[index];
+
+    group.remove();
+
+    selectedRanges.splice(index, 1);
+    multiBrushes.splice(index, 1);
+
+    renderRanges();
+    console.log("selected ranges after deletion", selectedRanges);
+    window.previousYearLength = selectedRanges.length + 1;
+    window.selectedYearRanges = selectedRanges.map(r => r.range);
+    dispatchCustomEvent('yearRangeUpdated', { ranges: selectedRanges });
+    resetYearColors();
+}
+
 // Function to show the selected year ranges on the dashboard, & remove & edit them
 function renderRanges() {
     const rangeContainer = document.getElementById("rangeContainer");
     rangeContainer.innerHTML = "";
 
+    // Sort ranges from earliest to latest
+    const sortedRanges = selectedRanges
+        .map((r) => r.range)
+        .sort((a, b) => a[0] - b[0]);
+
+    // Re-assign colors to ranges based on their sorted order
     selectedRanges.forEach(({ range }, index) => {
+        const sortedIndex = sortedRanges.findIndex(
+            (sortedRange) => sortedRange[0] === range[0] && sortedRange[1] === range[1]
+        );
+        const rangeColor = viridisScale(sortedIndex + 1);
+
         const rangeDiv = document.createElement("div");
         rangeDiv.className = "range-item";
         rangeDiv.textContent = `${range[0]} - ${range[1]}`;
+        rangeDiv.style.backgroundColor = rangeColor;
+        rangeDiv.style.color = "#ffffff";
+        rangeDiv.onclick = () => {
+            const allRangeDivs = document.querySelectorAll(".range-item");
+            allRangeDivs.forEach((div) => {
+                div.style.border = "none";
+            });
+
+            rangeDiv.style.border = "4px solid #ff0000"
+            window.selectedRange = range;
+            dispatchCustomEvent('selectedRangeUpdated');
+        };
 
         const removeButton = document.createElement("button");
         removeButton.innerHTML = `
@@ -277,6 +298,8 @@ function renderRanges() {
 
     updateAddBrushButton();
 }
+
+
 
 // Function to edit the range of a previous created year range
 function editRange(index) {
@@ -356,9 +379,10 @@ const xAxis = g => g
     .call(d3.axisBottom(xScale)
         .tickValues(weeks.filter(d => d % 8 === 0))
         .tickSize(-height_week + margin_week.top + margin_week.bottom))
+        .attr("stroke-opacity", 0)
     .call(g => g.selectAll(".tick line")
-        .attr("stroke", "#FFFFFF")
-        .attr("stroke-width", 1)
+        .attr("stroke", "#1e1e2f")
+        .attr("stroke-width", 0.75)
         .attr("stroke-opacity", 1))
     .call(g => g.selectAll(".tick line")
         .filter(d => d % 8 === 0)

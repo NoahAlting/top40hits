@@ -1,14 +1,3 @@
-createInfoButtonWithTooltip(
-    "lineGraphContainer", 
-    "Title", 
-    "what are you looking at, info info info", 
-    "x ax", 
-    "y ax", 
-    "marks", 
-    "what can you do with it",
-    "right"
-);
-
 function loadAndProcess_FeaturesData_LineGraph(filtered_data_input, selected_years, selectedGenre, max_top) {
     const plotData = [];
     selected_years.forEach(range_years=>{
@@ -425,10 +414,32 @@ function updateLineGraph(filtered_data_input) {
     const max_top = window.selectedTop;
     const selected_weeks = window.selectedWeekRange;
     if (selectedType == "features"){
+        removeButtonByContainerId("lineGraphContainer")
+        createInfoButtonWithTooltip(
+            "lineGraphContainer", 
+            "Title features", 
+            "what are you looking at, info info info", 
+            "x ax", 
+            "y ax", 
+            "marks", 
+            "what can you do with it",
+            "right"
+        );
         const data = loadAndProcess_FeaturesData_LineGraph(filtered_data_input, selected_years, selectedGenre, max_top);
         createInteractiveGraph_Features_LineGraph(data, selected_years, selected_weeks, max_top, selectedGenre,  linePlot, table, width_lineGraph, height_lineGraph);
     }
     else {
+        removeButtonByContainerId("lineGraphContainer")
+        createInfoButtonWithTooltip(
+            "lineGraphContainer", 
+            "Title genres", 
+            "what are you looking at, info info info", 
+            "x ax", 
+            "y ax", 
+            "marks", 
+            "what can you do with it",
+            "right"
+        );
         const data = loadAndProcess_GenresData_LineGraph(filtered_data_input, selected_years, selectedGenre, max_top);
         createInteractiveGraph_Genress_LineGraph(data, selected_years, selected_weeks, max_top, selectedGenre,  linePlot, table, width_lineGraph, height_lineGraph);
     }

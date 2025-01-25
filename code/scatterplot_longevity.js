@@ -515,16 +515,17 @@ function renderLinePlot(svg, x, yRight, groupedData, colorScale, width_longevity
         .y(d => yRight(d.frequency));
 
     groupedData.forEach(({ range, data, color }, index) => {
-        svg.append("path")
-            .datum({ range, data })
+        const path = svg.append("path")
+            .datum(data)
             .attr("fill", "none")
             .attr("stroke", color)
             .attr("stroke-width", 2)
-            .attr("opacity", 0.5)
+            .attr("opacity", 1)
             .attr("d", line)
             .on("click", function () {
                 longevity_genre_yearhighlight(range.split("-").map(Number)); // Convert range to [start, end]
             });
+        path.attr("data-range", range);
     });
 }
 
@@ -559,11 +560,11 @@ function createSmoothingToggle() {
 }
 
 function longevity_genre_yearhighlight(selectedRange) {
-    console.log("Selected Range in function:", selectedRange); // Debugging log
     if (!selectedRange || !Array.isArray(selectedRange) || selectedRange.length !== 2) {
         console.error("Invalid selectedRange:", selectedRange);
         return;
     }
+
     const svg = d3.select("#longevity_histogram");
     const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
 
@@ -572,10 +573,11 @@ function longevity_genre_yearhighlight(selectedRange) {
         .attr("stroke-width", 2)
         .attr("opacity", 0.5);
 
-    // Highlight the selected range's line
+    // Highlight the selected range's line by matching the 'data-range' attribute
     svg.selectAll("path")
         .filter(function () {
-            return d3.select(this).datum().range === rangeKey;
+            // Compare the 'data-range' attribute with the selected range key
+            return d3.select(this).attr("data-range") === rangeKey;
         })
         .attr("stroke-width", 4)
         .attr("opacity", 1);

@@ -28,6 +28,7 @@ const genreKeywords = {
 let possible_genres = Object.keys(genreKeywords);
 const remaining_genres = "other";
 
+const viridisScale = d3.scaleSequential(d3.interpolateCool).domain([0, 5]);
 
 // ============================================ Functions ============================================
 // This function determined the coloring of the year ranges

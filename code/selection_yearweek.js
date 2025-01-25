@@ -16,7 +16,6 @@ const margin_year = { top: 6, bottom: 6, left: 4, right: 4 };
 const width_year = 80;
 const height_year = 360;
 const basecolors = ["#4a4a62", "#646487"]
-const viridisScale = d3.scaleSequential(d3.interpolateCool).domain([0, 5]);
 
 const svg_yearselect = d3.select("#yearSelector")
     .attr("viewBox", [0, 0, width_year, height_year]);
@@ -270,7 +269,7 @@ function renderRanges() {
                 div.style.border = "none";
             });
 
-            rangeDiv.style.border = "4px solid red";
+            rangeDiv.style.border = "4px solid #ff0000"
             window.selectedRange = range;
             dispatchCustomEvent('selectedRangeUpdated');
         };

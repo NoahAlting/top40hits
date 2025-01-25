@@ -88,10 +88,8 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges) {
     svg.append("g").attr("transform", `translate(${margin_longevityHistogram.left},0)`).call(d3.axisLeft(yLeft));
     svg.append("g").attr("transform", `translate(${width_longevityHistogram - margin_longevityHistogram.right},0)`).call(d3.axisRight(yRight));
 
-    const colorScale = d3.scaleSequential(d3.interpolateViridis).domain([0, yearRanges.length]);
-
     if (yearRanges.length === 1) {
-        singleLinePlot(svg, x, yLeft, freqData, colorScale(0));
+        singleLinePlot(svg, x, yLeft, freqData, viridisScale(1));
     } else {
         const groupedData = yearRanges.map(([start, end], index) => {
             const rangeKey = `${start}-${end}`;
@@ -125,11 +123,11 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges) {
             return {
                 range: rangeKey,
                 data: smoothingEnabled ? smoothData(filledData) : filledData,
-                color: colorScale(index),
+                color: viridisScale(index + 1),
             };
         });
 
-        renderLinePlot(svg, x, yRight, groupedData, colorScale, width_longevityHistogram, height_longevityHistogram, margin_longevityHistogram, yLeft);
+        renderLinePlot(svg, x, yRight, groupedData, viridisScale, width_longevityHistogram, height_longevityHistogram, margin_longevityHistogram, yLeft);
     }
 }
 
@@ -141,14 +139,15 @@ function renderLinePlot(svg, x, yRight, groupedData, colorScale, width_longevity
         .y(d => yRight(d.frequency));
 
     groupedData.forEach(({ range, data, color }, index) => {
-        const path = svg.append("path")
+        svg.append("path")
             .datum(data)
             .attr("fill", "none")
             .attr("stroke", color)
             .attr("stroke-width", 2)
-            .attr("opacity", 1)
+            .attr("opacity", 0.9)
             .attr("d", line)
-        path.attr("data-range", range);
+            .attr("data-range", range)
+            .attr("data-original-color", color);
     });
 }
 
@@ -191,17 +190,24 @@ function longevity_genre_yearhighlight(selectedRange) {
     const svg = d3.select("#longevity_histogram");
     const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
 
-    // Reset all lines to default style
+    // Reset all lines (except axes) to their original color and default style
     svg.selectAll("path")
         .attr("stroke-width", 2)
-        .attr("opacity", 0.5);
+        .attr("opacity", 0.9)
+        .attr("stroke", function () {
+            // Restore the original stroke color from the data-original-color attribute
+            return d3.select(this).attr("data-original-color") || "#ffffff";
+        });
 
     // Highlight the selected range's line by matching the 'data-range' attribute
-    svg.selectAll("path")
+    const highlightedPath = svg.selectAll("path")
         .filter(function () {
-            // Compare the 'data-range' attribute with the selected range key
             return d3.select(this).attr("data-range") === rangeKey;
         })
-        .attr("stroke-width", 4)
-        .attr("opacity", 1);
+        .attr("stroke-width", 3)
+        .attr("opacity", 1.0)
+        .attr("stroke", "#ff0000");  // Apply the highlight color
+
+    // Bring the selected path to the front
+    highlightedPath.raise();
 }

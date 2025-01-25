@@ -253,7 +253,7 @@ dragHandleLeft.addEventListener("mousedown", (e) => {
 
         // Adjust column sizes based on the drag delta
         const totalWidth = initialLineGraphWidth + initialSelectorWidth;
-        const newLineGraphWidth = Math.max(1.5, initialLineGraphWidth + delta / window.innerWidth * totalWidth);
+        const newLineGraphWidth = Math.max(1.4, initialLineGraphWidth + delta / window.innerWidth * totalWidth);
         const newSelectorWidth = totalWidth - newLineGraphWidth;
 
         // Update CSS variables

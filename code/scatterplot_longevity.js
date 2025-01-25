@@ -137,25 +137,15 @@ function loadAndProcess_FeaturesData_scat(filtered_data_input, range_years, sele
 }
 
     function showBarChart(year_range, colour, song, selectedFeature) {
+        const barChartContainer = d3.select("#barchart");
+        barChartContainer.selectAll("*").remove();
+
         const barChart = d3
-    .select("#barchart")
-    .append("svg")
-    .attr("width", width_scatterplot)
-    .attr("height", height_scatterplot);
-
-        var width_scatterplot_container = document.getElementById("longevityCharts").clientWidth;
-        var height_scatterplot_container = document.getElementById("longevityCharts").clientHeight;
-        var margin_scatterplot = {
-            top: height_scatterplot_container * 0.1,
-            right: width_scatterplot_container * 0.1,
-            bottom: height_scatterplot_container * 0.3,
-            left: width_scatterplot_container * 0.2
-        };
-        var width_scatterplot = width_scatterplot_container - margin_scatterplot.left - margin_scatterplot.right;
-        var height_scatterplot = height_scatterplot_container - margin_scatterplot.top - margin_scatterplot.bottom;
-
+            .select("#barchart")
+            .append("svg")
+            .attr("width", width_scatterplot)
+            .attr("height", height_scatterplot+ margin_scatterplot.bottom);
         
-
         const selectedFeatures = ['Danceability', 'Acousticness', 'Energy', 'Liveness', 'Valence', 'Speechiness'];
         const featureData = selectedFeatures
             .map(feature => ({ feature, value: song[feature] }))
@@ -163,7 +153,7 @@ function loadAndProcess_FeaturesData_scat(filtered_data_input, range_years, sele
     
         const xScale = d3.scaleBand()
             .domain(featureData.map(d => d.feature))
-            .range([margin_scatterplot.left, width_scatterplot - margin_scatterplot.right])
+            .range([margin_scatterplot.left, (width_scatterplot - margin_scatterplot.right)*1.2])
             .padding(0.1);
     
         const increasedHeight = height_scatterplot * 1.5;
@@ -175,7 +165,7 @@ function loadAndProcess_FeaturesData_scat(filtered_data_input, range_years, sele
         barChart.selectAll("*").remove();
     
         const chartGroup = barChart.append("g")
-            .attr("transform", "translate(0, -50)"); 
+            .attr("transform", "translate(0, -10)"); 
     
         chartGroup.append("g")
             .attr("transform", `translate(0, ${increasedHeight - margin_scatterplot.bottom})`)
@@ -188,6 +178,17 @@ function loadAndProcess_FeaturesData_scat(filtered_data_input, range_years, sele
             .attr("transform", `translate(${margin_scatterplot.left}, 0)`)
             .call(d3.axisLeft(yScale));
     
+
+            chartGroup.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -(increasedHeight / 2)) 
+        .attr("y", margin_scatterplot.left - 50) 
+        .attr("dy", "1em") 
+        .style("text-anchor", "middle")
+        .attr("class", "label-text")
+        .text(`Value for ${selectedFeature}`); 
+
+
         chartGroup.selectAll("rect")
             .data(featureData)
             .enter()
@@ -201,7 +202,9 @@ function loadAndProcess_FeaturesData_scat(filtered_data_input, range_years, sele
             .duration(500)
             .attr("y", d => yScale(d.value))
             .attr("height", d => increasedHeight - margin_scatterplot.bottom - yScale(d.value));
+            console.log(chartGroup)
     }
+    
 
 function showTooltip(event, d) {
     const tooltip = d3.select("#tooltip");
@@ -230,7 +233,7 @@ var height_scatterplot = height_scatterplot_container - margin_scatterplot.top -
         .select(divId)
         .append("svg")
         .attr("width", width_scatterplot + margin_scatterplot.left + margin_scatterplot.right)
-        .attr("height", height_scatterplot + margin_scatterplot.top + margin_scatterplot.bottom)
+        .attr("height", height_scatterplot + margin_scatterplot.bottom )
         .style("overflow", "hidden")
         .append("g")
         .attr("transform", `translate(${margin_scatterplot.left},${margin_scatterplot.top})`);
@@ -258,7 +261,7 @@ var height_scatterplot = height_scatterplot_container - margin_scatterplot.top -
     svg.append("text")
         .attr("class", "x-axis-label")
         .attr("x", width_scatterplot * 0.5)
-        .attr("y", height_scatterplot * 1.2) 
+        .attr("y", height_scatterplot * 1.1) 
         .attr("text-anchor", "middle")
         .style("font-size", "12px")
         .style("fill", "white")

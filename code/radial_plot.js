@@ -32,7 +32,7 @@ function createinfobutton_radial() {
 
 var width_radialplot_container = document.getElementById("radial_plots").clientWidth;
 var height_radialplot_container = document.getElementById("radial_plots").clientHeight;
-var margin_radialplot = {top: height_radialplot_container*0.55, right: width_radialplot_container*0.1, bottom: height_radialplot_container*0.1, left: width_radialplot_container*0.1};
+var margin_radialplot = {top: height_radialplot_container*0.2, right: width_radialplot_container*0.1, bottom: height_radialplot_container*0.1, left: width_radialplot_container*0.1};
 var width_radialplot = width_radialplot_container - margin_radialplot.left - margin_radialplot.right;
 var height_radialplot = height_radialplot_container - margin_radialplot.top - margin_radialplot.bottom;
 
@@ -48,10 +48,9 @@ function createInteractiveGraph_Features_radial(divId, data, features) {
         .select(divId)
         .append("svg")
         .attr("width", width_radialplot)
-        .attr("height", height_radialplot * 2)
-        .attr("viewBox", "0 0 800 600")
+        .attr("height", height_radialplot *4)
         .append("g")
-        .attr("transform", `translate(${margin_radialplot.left *4}, ${margin_radialplot.top*1.1})`);
+        .attr("transform", `translate(${margin_radialplot.left*4}, ${margin_radialplot.top*7})`);
 
     
     svg.append("circle")

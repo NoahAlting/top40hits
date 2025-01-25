@@ -182,12 +182,17 @@ function createSmoothingToggle() {
 }
 
 function longevity_genre_yearhighlight(selectedRange) {
+    const svg = d3.select("#longevity_histogram");
     if (!selectedRange || !Array.isArray(selectedRange) || selectedRange.length !== 2) {
-        console.error("Invalid selectedRange:", selectedRange);
+        svg.selectAll("path")
+            .attr("stroke-width", 2)
+            .attr("opacity", 0.9)
+            .attr("stroke", function () {
+                return d3.select(this).attr("data-original-color") || "#ffffff";
+            });
         return;
     }
 
-    const svg = d3.select("#longevity_histogram");
     const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
 
     // Reset all lines (except axes) to their original color and default style

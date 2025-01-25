@@ -1,3 +1,41 @@
+function createinfobutton(){
+    createInfoButtonWithTooltip(
+        "longevityCharts",
+        "Feature Value Distribution by Longevity",
+        "This scatterplot displays per song its feature value and the amount of weeks the song was in the top 40. When zoomed out, it shows the density of these points.",
+        "Longevity, amount of weeks in the top 40",
+        "Feature value",
+        "Position, colour hue ",
+        "By scrolling on the plot, you can zoom in on the data. When a small enough range is selected (less than 6000 songs), the individual songs become visible. By clicking on the dots, you can see the song details and a barchart displaying all feature values.",
+        "left"
+      );
+}
+createinfobutton();
+let infoButtonExists = true; 
+window.addEventListener("typeUpdated", function () {
+  if (window.selectedType == "features") {
+    if (!infoButtonExists) {
+      createinfobutton();
+      infoButtonExists = true; 
+    }
+  } else {
+    if (infoButtonExists) {
+      removeButtonByContainerId("longevityCharts");
+      infoButtonExists = false; 
+    }
+  }
+});
+
+var width_scatterplot_container = document.getElementById("longevityCharts").clientWidth;
+var height_scatterplot_container = document.getElementById("longevityCharts").clientHeight;
+var margin_scatterplot = {
+    top: height_scatterplot_container * 0.1,
+    right: width_scatterplot_container * 0.1,
+    bottom: height_scatterplot_container * 0.3,
+    left: width_scatterplot_container * 0.2
+};
+var width_scatterplot = width_scatterplot_container - margin_scatterplot.left - margin_scatterplot.right;
+var height_scatterplot = height_scatterplot_container - margin_scatterplot.top - margin_scatterplot.bottom;
 
 function hideAllElements() {
     const elementsToHide = document.querySelectorAll('#barchart, #scatterplot, #feature-selector, #tooltip, #prev, #next, #year-range-display, #clip, #h1');
@@ -18,7 +56,7 @@ function updateLongevityChartContent() {
         if (!headerElement) {
             headerElement = document.createElement("h1");
             headerElement.id = "longevityHeader_2";
-            headerElement.textContent = "Longevity vs Features";
+            headerElement.textContent = "Feature Value Distribution by Longevity";
             const longevityChartsContainer = document.getElementById("longevityCharts");
             longevityChartsContainer.insertBefore(headerElement, longevityChartsContainer.firstChild);
         }
@@ -41,7 +79,7 @@ function updateLongevityChartContent() {
 }
 
 const header = document.createElement("h1");
-header.textContent = "Longevity vs Features";
+header.textContent = "Feature Value Distribution by Longevity";
 header.id = "longevityHeader_2";  
 const longevityChartsContainer = document.getElementById("longevityCharts");
 longevityChartsContainer.insertBefore(header, longevityChartsContainer.firstChild);
@@ -210,10 +248,33 @@ var height_scatterplot = height_scatterplot_container - margin_scatterplot.top -
         .attr("class", "x-axis")
         .attr("transform", `translate(0,${height_scatterplot})`)
         .call(xAxis);
+        
 
     svg.append("g")
         .attr("class", "y-axis")
         .call(yAxis);
+
+    // x-axis
+    svg.append("text")
+        .attr("class", "x-axis-label")
+        .attr("x", width_scatterplot * 0.5)
+        .attr("y", height_scatterplot * 1.2) 
+        .attr("text-anchor", "middle")
+        .style("font-size", "12px")
+        .style("fill", "white")
+        .text("Longevity (amount of weeks in top 40)");
+
+    // y-axis
+    svg.append("text")
+        .attr("class", "y-axis-label")
+        .attr("x", -height_scatterplot * 0.5)
+        .attr("y", -margin_scatterplot.left *0.4) 
+        .attr("text-anchor", "middle")
+        .attr("transform", "rotate(-90)") 
+        .style("font-size", "12px")
+        .style("fill", "white")
+        .text(`Value for ${feature}`);
+
 
     // Create a clipping path
     svg.append("defs").append("clipPath")
@@ -349,9 +410,9 @@ function update_scat_features(filtered_data_input, selectedGenre_scat) {
     const yearRangeColor = get_color_yearRange(currentYearRange, selectedYearRanges_scat);
     const data = loadAndProcess_FeaturesData_scat(filtered_data_input, currentYearRange, selectedGenre_scat, possible_features_songs, selectedYearRanges_scat);
 
-    d3.select("#year-range-display")
-        .text(`Year Range: ${yearRangeText}`)
-        .style("background-color", yearRangeColor)
+    // d3.select("#year-range-display")
+    //     .text(`Year Range: ${yearRangeText}`)
+    //     .style("background-color", yearRangeColor)
     d3.select("#scatterplot").html("");
     createInteractiveGraph_Features_scat("#scatterplot", data, possible_features_songs, selected_genre, currentYearRange, yearRangeColor);
 

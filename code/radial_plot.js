@@ -1,3 +1,35 @@
+function createinfobutton_radial() {
+    createInfoButtonWithTooltip(
+      "radial_plots", 
+      "Feature Values During the Year", 
+      "This radial plot shows the average feature value of the songs in the top 40 for each week of the year.", 
+      "Distance from center: feature value, between 0 and 1", 
+      "Circumference: week of the year", 
+      "Position, Colour", 
+      "The plot updates based on the year and week range.",
+      "right"
+    );
+  }
+  
+  let infoButtonExists_radial = true; 
+  createinfobutton_radial(); 
+  
+  window.addEventListener("typeUpdated", function () {
+    if (window.selectedType == "features") {
+      if (!infoButtonExists_radial) {
+        createinfobutton_radial(); 
+        infoButtonExists_radial = true; 
+      }
+    } else {
+      if (infoButtonExists_radial) {
+        removeButtonByContainerId("radial_plots"); 
+        infoButtonExists_radial = false; 
+      }
+    }
+  });
+  
+
+
 var width_radialplot_container = document.getElementById("radial_plots").clientWidth;
 var height_radialplot_container = document.getElementById("radial_plots").clientHeight;
 var margin_radialplot = {top: height_radialplot_container*0.55, right: width_radialplot_container*0.1, bottom: height_radialplot_container*0.1, left: width_radialplot_container*0.1};
@@ -10,6 +42,7 @@ var height_radialplot = height_radialplot_container - margin_radialplot.top - ma
 // var width_lineGraph = linegraph_containerWidth - margin_lineGraph.left - margin_lineGraph.right;
 // var height_lineGraph = linegraph_containerHeight - margin_lineGraph.top - margin_lineGraph.bottom;
 
+
 function createInteractiveGraph_Features_radial(divId, data, features) {
     const svg = d3
         .select(divId)
@@ -18,7 +51,7 @@ function createInteractiveGraph_Features_radial(divId, data, features) {
         .attr("height", height_radialplot * 2)
         .attr("viewBox", "0 0 800 600")
         .append("g")
-        .attr("transform", `translate(${width_radialplot * 0.8}, ${height_radialplot / 0.45})`);
+        .attr("transform", `translate(${margin_radialplot.left *4}, ${margin_radialplot.top*1.1})`);
 
     
     svg.append("circle")
@@ -143,7 +176,7 @@ function createInteractiveGraph_Features_radial(divId, data, features) {
 
     
     const legend = svg.append("g")
-        .attr("transform", `translate(${-width_radialplot / 10}, ${-height_radialplot * 0.4 })`);
+        .attr("transform", `translate(${-width_radialplot / 15}, ${-height_radialplot * 0.3 })`);
 
     features.forEach((feature, index) => {
         const legendItem = legend.append("g")
@@ -249,15 +282,15 @@ function update_radial_features(filtered_data_input) {
     
 }
 
-document.getElementById("prev-radial").addEventListener("click", function () {
-    const totalRanges = window.selectedYearRanges.length;
-    currentYearRangeIndex = (currentYearRangeIndex - 1 + totalRanges) % totalRanges; 
-    update_radial_features(global_data); 
-});
+// document.getElementById("prev-radial").addEventListener("click", function () {
+//     const totalRanges = window.selectedYearRanges.length;
+//     currentYearRangeIndex = (currentYearRangeIndex - 1 + totalRanges) % totalRanges; 
+//     update_radial_features(global_data); 
+// });
 
-document.getElementById("next-radial").addEventListener("click", function () {
-    const totalRanges = window.selectedYearRanges.length;
-    currentYearRangeIndex = (currentYearRangeIndex + 1) % totalRanges; 
-    update_radial_features(global_data); 
-});
+// document.getElementById("next-radial").addEventListener("click", function () {
+//     const totalRanges = window.selectedYearRanges.length;
+//     currentYearRangeIndex = (currentYearRangeIndex + 1) % totalRanges; 
+//     update_radial_features(global_data); 
+// });
 

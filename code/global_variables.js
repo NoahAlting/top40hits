@@ -253,7 +253,7 @@ dragHandleLeft.addEventListener("mousedown", (e) => {
 
         // Adjust column sizes based on the drag delta
         const totalWidth = initialLineGraphWidth + initialSelectorWidth;
-        const newLineGraphWidth = Math.max(0.5, initialLineGraphWidth + delta / window.innerWidth * totalWidth);
+        const newLineGraphWidth = Math.max(1.5, initialLineGraphWidth + delta / window.innerWidth * totalWidth);
         const newSelectorWidth = totalWidth - newLineGraphWidth;
 
         // Update CSS variables
@@ -276,40 +276,40 @@ dragHandleLeft.addEventListener("mousedown", (e) => {
 
 
 
-const dragHandleRight = document.getElementById("drag-handle-right");
-const root2 = document.documentElement;
+// const dragHandleRight = document.getElementById("drag-handle-right");
+// const root2 = document.documentElement;
 
-let initialLongevityWidth = 2; // Represents 2fr
-let initialScatterWidth = 2; // Represents 2fr
+// let initialLongevityWidth = 2; // Represents 2fr
+// let initialScatterWidth = 2; // Represents 2fr
 
-dragHandleRight.addEventListener("mousedown", (e) => {
-    const startX = e.clientX;
+// dragHandleRight.addEventListener("mousedown", (e) => {
+//     const startX = e.clientX;
 
-    const onMouseMove = (event) => {
-        const delta = event.clientX - startX;
+//     const onMouseMove = (event) => {
+//         const delta = event.clientX - startX;
 
-        // Adjust column sizes based on the drag delta
-        const totalWidth = initialLongevityWidth + initialScatterWidth;
-        const newLongevityWidth = Math.max(0.5, initialLongevityWidth - delta / window.innerWidth * totalWidth);
-        const newScatterWidth = totalWidth - initialLongevityWidth;
-        const newSelectorWidth = totalWidth - newLongevityWidth;
+//         // Adjust column sizes based on the drag delta
+//         const totalWidth = initialLongevityWidth + initialScatterWidth;
+//         const newLongevityWidth = Math.max(1, initialLongevityWidth - delta / window.innerWidth * totalWidth);
+//         const newScatterWidth = totalWidth - initialLongevityWidth;
+//         const newSelectorWidth = totalWidth - newLongevityWidth;
 
-        // Update CSS variables
-        root2.style.setProperty("--longevity-width", `${newLongevityWidth}fr`);
-        root1.style.setProperty("--selector-width", `${newSelectorWidth}fr`);
-    };
+//         // Update CSS variables
+//         root2.style.setProperty("--longevity-width", `${newLongevityWidth}fr`);
+//         root1.style.setProperty("--selector-width", `${newSelectorWidth}fr`);
+//     };
 
-    const onMouseUp = () => {
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseup", onMouseUp);
-      initialLongevityWidth = parseFloat(root2.style.getPropertyValue("--longevity-width") || initialLongevityWidth);
-      initialScatterWidth = parseFloat(root2.style.getPropertyValue("--scatter-width") || initialScatterWidth);
-  };
+//     const onMouseUp = () => {
+//       document.removeEventListener("mousemove", onMouseMove);
+//       document.removeEventListener("mouseup", onMouseUp);
+//       initialLongevityWidth = parseFloat(root2.style.getPropertyValue("--longevity-width") || initialLongevityWidth);
+//       initialScatterWidth = parseFloat(root2.style.getPropertyValue("--scatter-width") || initialScatterWidth);
+//   };
 
 
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
-});
+//     document.addEventListener("mousemove", onMouseMove);
+//     document.addEventListener("mouseup", onMouseUp);
+// });
 
 
 // All functions that highlight the selected year

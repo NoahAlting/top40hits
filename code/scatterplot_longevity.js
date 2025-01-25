@@ -509,48 +509,41 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges) {
 
 
 // Render line plot for normalized data
-function renderLinePlot(svg, x, yRight, groupedData, width_longevityHistogram, height_longevityHistogram, margin_longevityHistogram, yLeft, dynamicallyFilteredData) {
+function renderLinePlot(svg, x, yRight, groupedData, colorScale, width_longevityHistogram, height_longevityHistogram, margin_longevityHistogram, yLeft) {
     const line = d3.line()
         .x(d => x(d.weeks) + x.bandwidth() / 2)
-        .y(d => yRight(d.frequency)); // Use the right y-axis for normalized values
+        .y(d => yRight(d.frequency));
 
     groupedData.forEach(({ range, data, color }, index) => {
-        const path = svg.append("path")
-            .datum(data)
+        svg.append("path")
+            .datum({ range, data })
             .attr("fill", "none")
             .attr("stroke", color)
             .attr("stroke-width", 2)
+            .attr("opacity", 0.5)
             .attr("d", line)
             .on("click", function () {
+                longevity_genre_yearhighlight(range.split("-").map(Number)); // Convert range to [start, end]
             });
     });
-
 }
 
 // Render bar plot
 function singleLinePlot(svg, x, y, data, color) {
-    // svg.selectAll(".line").remove();
     svg.selectAll(".area").remove();
     svg.selectAll(".point").remove();
 
-    // Define the line generator function
-    const line = d3.line()
-        .x(d => x(d.weeks))  // Mapping x axis data
-        .y(d => y(d.frequency));  // Mapping y axis data
-
-    // Define the area generator function
     const area = d3.area()
-        .x(d => x(d.weeks) + x.bandwidth() / 2)  // Mapping x axis data
-        .y0(y(0))  // The bottom of the area (on the x-axis)
-        .y1(d => y(d.frequency));  // The top of the area (based on the frequency)
+        .x(d => x(d.weeks) + x.bandwidth() / 2)
+        .y0(y(0))
+        .y1(d => y(d.frequency));
 
-    // Append the area element (filled beneath the line)
     svg.append("path")
-        .data([data])  // Pass the data as an array
+        .data([data])
         .attr("class", "area")
-        .attr("d", area)  // Define the area using the area generator
-        .attr("fill", color)  // Set the area fill color
-        .attr("fill-opacity", 0.8);  // Set the opacity to 40%
+        .attr("d", area)
+        .attr("fill", color)
+        .attr("fill-opacity", 0.8);
 }
 
 // Smoothing toggle
@@ -563,4 +556,27 @@ function createSmoothingToggle() {
             smoothingEnabled = this.checked;
             applyDynamicFilters();
         });
+}
+
+function longevity_genre_yearhighlight(selectedRange) {
+    console.log("Selected Range in function:", selectedRange); // Debugging log
+    if (!selectedRange || !Array.isArray(selectedRange) || selectedRange.length !== 2) {
+        console.error("Invalid selectedRange:", selectedRange);
+        return;
+    }
+    const svg = d3.select("#longevity_histogram");
+    const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
+
+    // Reset all lines to default style
+    svg.selectAll("path")
+        .attr("stroke-width", 2)
+        .attr("opacity", 0.5);
+
+    // Highlight the selected range's line
+    svg.selectAll("path")
+        .filter(function () {
+            return d3.select(this).datum().range === rangeKey;
+        })
+        .attr("stroke-width", 4)
+        .attr("opacity", 1);
 }

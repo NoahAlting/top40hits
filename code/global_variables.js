@@ -82,7 +82,6 @@ function filter_data() {
     } else {
         createFeatureGenreMenu(possible_genres.concat(remaining_genres));
     }
-    console.log("Filtering data...");
 
     return new Promise((resolve, reject) => {
         const selected_weeks = window.selectedWeekRange;
@@ -94,7 +93,6 @@ function filter_data() {
 
         // Load and cache the original datasets if not already cached
         if (!cachedSpotifySongs || !cachedTop40Data) {
-            console.log("Loading datasets...");
             Promise.all([
                 d3.csv("../data/spotify_songs_with_ids.csv"),
                 d3.csv("../data/top40_with_ids.csv"),
@@ -129,8 +127,6 @@ function filter_data() {
                 reject(err);
             });
         } else {
-            console.log("Using cached datasets...");
-            console.log("cached: ", cachedGenreData)
             if (selectedType === "genres") {
                 // Filter and cache all genres
                 const genreDataByGenre = processAllGenresFilter(cachedSpotifySongs);
@@ -348,6 +344,7 @@ window.addEventListener("weekRangeUpdated", function () {
   });
 });
 
+
 // When type (genres/ featres) is updated
 window.addEventListener("typeUpdated", function () {
   const selectedRadialPlot = document.getElementById('radial_plot_year_content');
@@ -376,4 +373,12 @@ document.addEventListener('DOMContentLoaded', () => {
       update_graphs_selected_FeatureGenre(output_filtered_data);
      })
      .catch(err => console.error("Error initializing chart:", err));
+});
+
+window.addEventListener("selectedRangeUpdated", function () {
+    const selectedRange = window.selectedRange;
+    console.log("the input selected range", selectedRange);
+    if (window.selectedType === "genres"){
+        longevity_genre_yearhighlight(selectedRange);
+    }
 });

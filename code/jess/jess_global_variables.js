@@ -224,19 +224,31 @@ function processData(selected_ranges, selected_weeks, max_top, selectedGenre, da
 // All functions to graphs that take one genre or one feature as input
 function update_graphs_selected_FeatureGenre(filtered_data){
         renderGenrePlot(filtered_data, selectedGenre);
+        highlight_selection(window.selectedRange);
+        console.log("selected range:", window.selectedRange);
 }
 
+// All functions that highlight the selected year
+function highlight_selection(selectedRange) {
+    console.log("function highlight fired")
+    if (window.selectedType === "genres"){
+        longevity_genre_yearhighlight(selectedRange);
+    }
+
+}
 
 
 // ============================================ Event functions, if one of the global variables has changed ============================================
 // When top is updated
-window.addEventListener("topUpdated", function () {
-  filter_data().then(output_filtered_data => {
-    update_graphs_selected_FeatureGenre(output_filtered_data);
-  }).catch(err => {
-    console.error("Error filtering data:", err);
-  });
-});
+window.addEventListener("topUpdated",
+    function () {
+        filter_data().then(output_filtered_data => {
+            update_graphs_selected_FeatureGenre(output_filtered_data);
+        }).catch(err => {
+            console.error("Error filtering data:", err);
+        });
+        console.log("selected range:", window.selectedRange);
+    });
 
 // When year range is updated
 window.addEventListener("yearRangeUpdated", function () {
@@ -245,6 +257,7 @@ window.addEventListener("yearRangeUpdated", function () {
   }).catch(err => {
     console.error("Error filtering data:", err);
   });
+    console.log("selected range:", window.selectedRange);
 });
   
 // When week range is updated
@@ -254,6 +267,7 @@ window.addEventListener("weekRangeUpdated", function () {
   }).catch(err => {
     console.error("Error filtering data:", err);
   });
+    console.log("selected range:", window.selectedRange);
 });
 
 
@@ -264,7 +278,6 @@ window.addEventListener("typeUpdated", function () {
   }).catch(err => {
     console.error("Error filtering data:", err);
   });
-  
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -277,8 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.addEventListener("selectedRangeUpdated", function () {
     const selectedRange = window.selectedRange;
-    console.log("the input selected range", selectedRange);
-    if (window.selectedType === "genres"){
-        longevity_genre_yearhighlight(selectedRange);
-    }
+    highlight_selection(selectedRange)
+    console.log("selected range:", window.selectedRange);
+
 });

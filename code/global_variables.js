@@ -316,6 +316,13 @@ dragHandleRight.addEventListener("mousedown", (e) => {
 });
 
 
+// All functions that highlight the selected year
+function highlight_selection(selectedRange) {
+    if (window.selectedType === "genres"){
+        longevity_genre_yearhighlight(selectedRange);
+    }
+
+}
 
 
 
@@ -384,7 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.addEventListener("selectedRangeUpdated", function () {
     const selectedRange = window.selectedRange;
-    if (window.selectedType === "genres"){
-        longevity_genre_yearhighlight(selectedRange);
-    }
+    highlight_selection(selectedRange)
+    console.log("selected range:", window.selectedRange);
+
 });

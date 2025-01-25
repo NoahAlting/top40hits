@@ -176,6 +176,7 @@ function multiBrush(event, currentBrush) {
 
     if (selectedYears.length > 0) {
         const range = [selectedYears[0], selectedYears[selectedYears.length - 1]];
+        window.selectedRange = range;
         updateRanges(currentBrush, range);
     }
 
@@ -263,19 +264,33 @@ function renderRanges() {
         rangeDiv.textContent = `${range[0]} - ${range[1]}`;
         rangeDiv.style.backgroundColor = rangeColor;
         rangeDiv.style.color = "#ffffff";
+
+        // Highlight the range div if it's the selected range
+        if (window.selectedRange && window.selectedRange[0] === range[0] && window.selectedRange[1] === range[1]) {
+            rangeDiv.style.border = "4px solid #ff0000";  // Highlight the selected range
+        } else {
+            rangeDiv.style.border = "none";  // Ensure non-selected ranges don't have borders
+        }
+
         rangeDiv.onclick = () => {
             const allRangeDivs = document.querySelectorAll(".range-item");
             allRangeDivs.forEach((div) => {
-                div.style.border = "none";
+                div.style.border = "none"; // Unhighlight all containers first
             });
 
-            rangeDiv.style.border = "4px solid #ff0000"
-            window.selectedRange = range;
+            // If the same container is selected, unhighlight it
+            if (window.selectedRange && window.selectedRange[0] === range[0] && window.selectedRange[1] === range[1]) {
+                window.selectedRange = [];
+            } else {
+                rangeDiv.style.border = "4px solid #ff0000";
+                window.selectedRange = range;
+            }
+
             dispatchCustomEvent('selectedRangeUpdated');
         };
 
         const removeButton = document.createElement("button");
-        removeButton.innerHTML = `
+        removeButton.innerHTML = ` 
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path d="M3 6l3 16h12l3-16H3zm16 14H5L4.5 8h15l-.5 12zM9 10h2v8H9zm4 0h2v8h-2zM15 4l-1-1h-4l-1 1H5v2h14V4z"/>
             </svg>`;
@@ -285,11 +300,14 @@ function renderRanges() {
         };
 
         const editButton = document.createElement("button");
-        editButton.innerHTML = `
+        editButton.innerHTML = ` 
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm3.37 1.43H5v-1.37l9.44-9.44 1.37 1.37L6.37 18.68zM21 7.34c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.17 1.17 3.75 3.75 1.17-1.17z"/>
             </svg>`;
-        editButton.onclick = () => editRange(index);
+        editButton.onclick = () => {
+            editRange(index);
+        }
+
 
         rangeDiv.appendChild(removeButton);
         rangeDiv.appendChild(editButton);

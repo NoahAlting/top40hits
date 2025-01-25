@@ -22,7 +22,7 @@
 
 
 <div id="grid-container"></div>
-<div id="radial_plots" class="chart_container">
+<div id="radial_plots" class="chart_container_below">
     <h1>Radial Chart Features</h1>
     <div id="radial_plot_year_content">
         <div id="year-range-display-radial"> </div>
@@ -114,13 +114,23 @@
 </div>
 </div>
 
+</div>
+<div id="feature_genre_selector" class ="chart_container_FG">
+    <!-- <div id="container_header_PDF">
+        <h1 style="margin-bottom: 10px;">Probability Density Function</h1>
+    </div> -->
+
+    <dif id="topContainer_featuregenre" class="subcontainer_FG"></dif>
+    <dif id="bottomContainer_featuregenre" class="subcontainer_FG"></dif>
+</div>
+
 <!--Global variables-->
 <script>
-    window.selectedType = "genres";
+    window.selectedType = "features";
     window.selectedTop = 40;
-    window.selectedYearRanges = [[1965, 1966], [1966, 1967], [1967, 1968]];
+    window.selectedYearRanges = [[1965, 1966]];
     window.selectedWeekRange = [1,52];
-    window.selectedGenre = "pop"
+    window.selectedGenre = "Danceability"
     window.previousYearLength = 0;
     window.selectedRange = [];
 </script>

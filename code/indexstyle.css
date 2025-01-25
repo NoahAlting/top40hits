@@ -3,7 +3,7 @@ body {
     grid-template-areas:
         "introduction introduction introduction introduction introduction" 
         "lineGraph dragLeft selectorDashboard dragRight longevityradialPlot"
-        "radialFeatures dragLeft PDF dragRight scatterPlot";
+        "radialFeatures dragLeft FG_selector dragRight scatterPlot";
     grid-template-columns: var(--linegraph-width, 2fr) 5px var(--selector-width, 1fr) 5px var(--longevity-width, 2fr);
     gap: 10px;
     justify-content: center;
@@ -117,8 +117,10 @@ h1 {
     z-index: 10;         /* Ensure it stays on top of other elements */
 }
 
-/* .chart_container {
+.chart_container {
     overflow: hidden;
+}
+
 .chart_container_above {
     width: 600px;
     height: 400px;
@@ -155,8 +157,13 @@ h1 {
     position: relative;
 }
 
+.subcontainer_FG {
+    width: 600px;
+    height: 400px;
+}
+
 #feature_genre_selector{
-    grid-area: PDF; 
+    grid-area: FG_selector; 
     display: flex;
     flex-direction: column;
     align-items: center;

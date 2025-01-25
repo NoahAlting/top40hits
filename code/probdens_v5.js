@@ -11,8 +11,8 @@ function initializePlots() {
         renderTopContainerFeatures();
         renderBottomContainerFeatures();
     } else if (window.selectedType === "genres") {
-        renderTopContainerGenres();
-        renderBottomContainerGenres();
+        renderTopContainerGenres(1.1);
+        renderBottomContainerGenres(0.7);
     }
 }
 
@@ -156,9 +156,9 @@ function renderBottomContainerFeatures() {
     const height = featureGenreHeight;
 
     var margin = {
-        top: height * 0.05, 
+        top: height * 0.15, 
         right: width * 0.05, 
-        bottom: height * 0.1, 
+        bottom: height * 0.05, 
         left: width * 0.1};
 
     const svg = container.append("svg")
@@ -226,19 +226,19 @@ function renderDetailedPDF(svg, feature, width, height) {
                 .attr("x", width / 2)
                 .attr("y", height + 35)
                 .attr("text-anchor", "middle")
-                .style("font-size", "12px")
+                .style("font-size", "16px")
                 .style("fill", "white")
                 .text(feature + " value");
 
             // Add y-axis label
-            svg.append("text")
-                .attr("x", -height / 2)
-                .attr("y", -40)
-                .attr("transform", "rotate(-90)")
-                .attr("text-anchor", "middle")
-                .style("font-size", "12px")
-                .style("fill", "white")
-                .text("Probability Density");
+            // svg.append("text")
+            //     .attr("x", -height / 2)
+            //     .attr("y", -40)
+            //     .attr("transform", "rotate(-90)")
+            //     .attr("text-anchor", "middle")
+            //     .style("font-size", "16px")
+            //     .style("fill", "white")
+            //     .text("Probability Density");
 
             // Add title
             svg.append("text")
@@ -248,7 +248,7 @@ function renderDetailedPDF(svg, feature, width, height) {
                 .style("font-size", "16px")
                 .style("font-weight", "bold")
                 .style("fill", "white")
-                .text(`Detailed PDF of ${feature}`);
+                .text(`Detailed view: ${feature}`);
 
             // Draw density lines for each range
             densities.forEach(({ range, density }) => {
@@ -268,18 +268,18 @@ function renderDetailedPDF(svg, feature, width, height) {
 
 
 // ========================= Top Container (Genres) =========================
-function renderTopContainerGenres() {
+function renderTopContainerGenres(containerHeightFraction) {
     const container = d3.select("#topContainer_featuregenre");
     container.selectAll("*").remove(); // Clear existing plots
 
     const width = featureGenreWidth;
-    const height = featureGenreHeight;
+    const height = featureGenreHeight * containerHeightFraction;
 
     var margin = {
-        top: height * 0.05, 
+        top: height * 0.15, 
         right: width * 0.05, 
         bottom: height * 0.1, 
-        left: width * 0.1};
+        left: width * 0.15};
 
     // Create SVG container
     const svg = container.append("svg")
@@ -334,6 +334,7 @@ function renderHistogram(svg, width, height) {
                     .call(d3.axisLeft(y0))
                     .selectAll(".tick") // Select all ticks
                     .style("cursor", "pointer")
+                    .style("font-size", "14px")
                     .on("click", (event, d) => {
                         // Update the global variable and trigger event
                         window.selectedGenre = d;
@@ -382,15 +383,14 @@ function renderHistogram(svg, width, height) {
                     .style("fill", "white")
                     .text("Number of Songs");
 
-                // svg.append("text")
-                //     .attr("x", -50)
-                //     .attr("y", height / 2)
-                //     .attr("transform", "rotate(-90)")
-                //     .attr("text-anchor", "middle")
-                //     .style("font-size", "14px")
-                //     .style("font-weight", "bold")
-                //     .style("fill", "white")
-                //     .text("Genres");
+                svg.append("text")
+                    .attr("x", width / 2)
+                    .attr("y", -20)
+                    .attr("text-anchor", "middle")
+                    .style("font-size", "22px")
+                    .style("font-weight", "bold")
+                    .style("fill", "white")
+                    .text(`Genres in the top ${window.selectedTop}`);
             } else {
                 // If `filteredData` is not an object, log an error
                 console.error("Expected filteredData to be an object, but got:", filteredData);
@@ -418,17 +418,17 @@ function renderHistogram(svg, width, height) {
 
 
 // ========================= Bottom Container (Genres) =========================
-function renderBottomContainerGenres() {
+function renderBottomContainerGenres(containerHeightFraction) {
     const container = d3.select("#bottomContainer_featuregenre");
     container.selectAll("*").remove();
 
     const width = featureGenreWidth;
-    const height = featureGenreHeight * 2 / 3; // If time left change this so that it is large but not absolutely necessary
+    const height = featureGenreHeight * containerHeightFraction; // If time left change this so that it is large but not absolutely necessary
 
     var margin = {
-        top: height * 0.1, 
+        top: height * 0.15, 
         right: width * 0.05, 
-        bottom: height * 0.1, 
+        bottom: height * 0.15, 
         left: width * 0.15
     };
 
@@ -507,6 +507,8 @@ function renderDetailedHistogram(svg, width, height) {
             svg.append("g")
                 .attr("class", "y-axis")
                 .attr("transform", `translate(0,0)`) // No translation needed for y-axis
+                .style("font-size", "14px")
+
                 .call(d3.axisLeft(y));
 
             // Add bars with hover functionality
@@ -551,22 +553,22 @@ function renderDetailedHistogram(svg, width, height) {
             // Add x-axis label
             svg.append("text")
                 .attr("x", width / 2)
-                .attr("y", height - 10) // Position below the x-axis
+                .attr("y", height + 35) // Position below the x-axis
                 .attr("text-anchor", "middle")
                 .style("font-size", "14px")
                 .style("font-weight", "bold")
-                .style("fill", "white");
-                // .text("Number of Songs");
-
-            // Add title
-            svg.append("text")
-                .attr("x", width / 2)
-                .attr("y", -10) // Position above the plot
-                .attr("text-anchor", "middle")
-                .style("font-size", "16px")
-                .style("font-weight", "bold")
                 .style("fill", "white")
                 .text(`Number of ${selectedGenre} songs`);
+
+            // Add title
+            // svg.append("text")
+            //     .attr("x", width / 2)
+            //     .attr("y", -10) // Position above the plot
+            //     .attr("text-anchor", "middle")
+            //     .style("font-size", "16px")
+            //     .style("font-weight", "bold")
+            //     .style("fill", "white")
+            //     .text(`Number of ${selectedGenre} songs`);
                 
         })
         .catch((err) => console.error("Error rendering barplot:", err));

@@ -1,4 +1,9 @@
-// noah/probdens_v4.js
+var featureGenreWidth = document.getElementById("feature_genre_selector").clientWidth;
+var featureGenreHeight = document.getElementById("feature_genre_selector").clientHeight / 2;
+
+// var featureGenreWidth = document.getElementById("topContainer_featuregenre").clientWidth;
+// var featureGenreHeight = document.getElementById("topContainer_featuregenre").clientHeight / 2;
+
 
 // Entry function to initialize plots based on global variables
 function initializePlots() {
@@ -13,37 +18,45 @@ function initializePlots() {
 
 // ========================= Top Container (Features) =========================
 function renderTopContainerFeatures() {
-    const container = d3.select("#topContainer");
+    const container = d3.select("#topContainer_featuregenre");
     container.selectAll("*").remove(); // Clear existing plots
 
     const features = possible_features_songs;
     const num_of_subcolumns = 3;
-    const total_plot_width = 500;
-    const total_plot_height = 500;
-    const width = total_plot_width / num_of_subcolumns;
-    const height = total_plot_height / (possible_features_songs.length / (num_of_subcolumns - 1));
-    const margin = { top: 20, right: 20, bottom: 20, left: 25 };
 
+    const width_subplots = featureGenreWidth / num_of_subcolumns;
+    const height_subplots = featureGenreHeight / (possible_features_songs.length / (num_of_subcolumns - 1));
+
+    var margin_subplots = {
+        top: height_subplots * 0.15, 
+        right: width_subplots * 0.1, 
+        bottom: height_subplots * 0.15, 
+        left: width_subplots * 0.15};
+        
     // Create a grid layout
     container.style("display", "grid")
-        .style("grid-template-columns", "repeat(3, auto)");
-
+    .style("grid-template-columns", `repeat(${num_of_subcolumns}, auto)`);
+    
     features.forEach(feature => {
         const svg = container.append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .style("cursor", "pointer")
-            .on("click", () => {
-                // Update the global variable and dispatch event
-                window.selectedGenre = feature;
-                console.log(`Genre updated to: ${feature}`); // Log the updated genre to the console
-                const event = new CustomEvent("genreUpdated", { detail: { feature } });
-                window.dispatchEvent(event);
-            }) // Event listener for subplot click
-            .append("g")
-            .attr("transform", `translate(${margin.left},${margin.top})`);
+        // .attr("width", width_subplots) // + margin_subplots.left + margin_subplots.right)
+        // .attr("height", height_subplots) // + margin_subplots.top + margin_subplots.bottom)
 
-        renderPDF(svg, feature, width, height);
+        // Event listener for subplot click
+        .style("cursor", "pointer")
+        .on("click", () => {
+            // Update the global variable and dispatch event
+            window.selectedGenre = feature;
+            console.log(`Genre updated to: ${feature}`); // Log the updated genre to the console
+            const event = new CustomEvent("genreUpdated", { detail: { feature } });
+            window.dispatchEvent(event);
+
+        }) 
+        .append("g")
+        .attr("transform", `translate(${margin_subplots.left},${margin_subplots.top})`);
+        renderPDF(svg, feature, 
+            width_subplots - margin_subplots.left - margin_subplots.right, 
+            height_subplots - margin_subplots.top - margin_subplots.bottom);
     });
 }
 
@@ -94,7 +107,7 @@ function renderPDF(svg, feature, width, height) {
                 .attr("text-anchor", "middle")
                 .style("font-size", "12px")
                 .style("fill", "white")
-                .text(`PDF of ${feature}`);
+                .text(`${feature}`);
 
             // Draw the density lines
             densities.forEach(({ range, density }) => {
@@ -136,12 +149,17 @@ function calculateBandwidth(values, factor = 8) {
 
 // ========================= Bottom Container (Features) =========================
 function renderBottomContainerFeatures() {
-    const container = d3.select("#bottomContainer");
+    const container = d3.select("#bottomContainer_featuregenre");
     container.selectAll("*").remove();
 
-    const margin = { top: 30, right: 30, bottom: 50, left: 50 };
-    const width = 500;
-    const height = 300; 
+    const width = featureGenreWidth;
+    const height = featureGenreHeight;
+
+    var margin = {
+        top: height * 0.05, 
+        right: width * 0.05, 
+        bottom: height * 0.1, 
+        left: width * 0.1};
 
     const svg = container.append("svg")
         .attr("width", width) // Set width of the detailed view
@@ -150,7 +168,9 @@ function renderBottomContainerFeatures() {
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
     const selectedFeature = window.selectedGenre;
-    renderDetailedPDF(svg, selectedFeature, width - margin.left - margin.right, height - margin.top - margin.bottom);
+    renderDetailedPDF(svg, selectedFeature, 
+        width - margin.left - margin.right, 
+        height - margin.top - margin.bottom);
 }
 
 
@@ -166,7 +186,7 @@ function renderDetailedPDF(svg, feature, width, height) {
                     .map(row => row[feature]);
 
                 if (rangeData.length > 0) {
-                    const bandwidth = calculateBandwidth(rangeData, factor= 1.1);
+                    const bandwidth = calculateBandwidth(rangeData, factor = 1.1);
                     const xTicks = d3.range(
                         d3.min(rangeData),
                         d3.max(rangeData),
@@ -201,6 +221,25 @@ function renderDetailedPDF(svg, feature, width, height) {
             svg.append("g")
                 .call(d3.axisLeft(y).ticks(5));
 
+            // Add x-axis label
+            svg.append("text")
+                .attr("x", width / 2)
+                .attr("y", height + 35)
+                .attr("text-anchor", "middle")
+                .style("font-size", "12px")
+                .style("fill", "white")
+                .text(feature + " value");
+
+            // Add y-axis label
+            svg.append("text")
+                .attr("x", -height / 2)
+                .attr("y", -40)
+                .attr("transform", "rotate(-90)")
+                .attr("text-anchor", "middle")
+                .style("font-size", "12px")
+                .style("fill", "white")
+                .text("Probability Density");
+
             // Add title
             svg.append("text")
                 .attr("x", width / 2)
@@ -230,22 +269,31 @@ function renderDetailedPDF(svg, feature, width, height) {
 
 // ========================= Top Container (Genres) =========================
 function renderTopContainerGenres() {
-    const container = d3.select("#topContainer");
+    const container = d3.select("#topContainer_featuregenre");
     container.selectAll("*").remove(); // Clear existing plots
 
-    // Set dimensions
-    const margin = { top: 20, right: 50, bottom: 50, left: 200 }; // Increased bottom margin
-    const width = 500 - margin.left - margin.right;
-    const height = 500 - margin.top - margin.bottom;
+    const width = featureGenreWidth;
+    const height = featureGenreHeight;
+
+    var margin = {
+        top: height * 0.05, 
+        right: width * 0.05, 
+        bottom: height * 0.1, 
+        left: width * 0.1};
 
     // Create SVG container
     const svg = container.append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("width", width)
+        .attr("height", height)
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // Ensure cachedGenreData is populated
+    renderHistogram(svg, 
+        width - margin.left - margin.right, 
+        height - margin.top - margin.bottom);
+}
+
+function renderHistogram(svg, width, height) {
     filter_data()
         .then((filteredData) => {
             const isObject = typeof filteredData === "object" && !Array.isArray(filteredData);
@@ -327,21 +375,22 @@ function renderTopContainerGenres() {
                 // Add axis labels
                 svg.append("text")
                     .attr("x", width / 2)
-                    .attr("y", height + margin.bottom - 15) // Position label below the axis ticks
+                    .attr("y", height + 35) // Position label below the axis ticks
                     .attr("text-anchor", "middle")
                     .style("font-size", "14px")
                     .style("font-weight", "bold")
                     .style("fill", "white")
                     .text("Number of Songs");
 
-                svg.append("text")
-                    .attr("x", -margin.left / 2)
-                    .attr("y", -margin.top / 2)
-                    .attr("text-anchor", "start")
-                    .style("font-size", "14px")
-                    .style("font-weight", "bold")
-                    .style("fill", "white")
-                    .text("Genres");
+                // svg.append("text")
+                //     .attr("x", -50)
+                //     .attr("y", height / 2)
+                //     .attr("transform", "rotate(-90)")
+                //     .attr("text-anchor", "middle")
+                //     .style("font-size", "14px")
+                //     .style("font-weight", "bold")
+                //     .style("fill", "white")
+                //     .text("Genres");
             } else {
                 // If `filteredData` is not an object, log an error
                 console.error("Expected filteredData to be an object, but got:", filteredData);
@@ -365,28 +414,38 @@ function renderTopContainerGenres() {
                 .text("Error loading data");
         });
 }
+        
 
 
 // ========================= Bottom Container (Genres) =========================
 function renderBottomContainerGenres() {
-    const container = d3.select("#bottomContainer");
+    const container = d3.select("#bottomContainer_featuregenre");
     container.selectAll("*").remove();
 
-    const margin = { top: 30, right: 30, bottom: 50, left: 70 };
-    const width = 500 - margin.left - margin.right;
-    const height = 250 - margin.top - margin.bottom;
+    const width = featureGenreWidth;
+    const height = featureGenreHeight * 2 / 3; // If time left change this so that it is large but not absolutely necessary
 
+    var margin = {
+        top: height * 0.1, 
+        right: width * 0.05, 
+        bottom: height * 0.1, 
+        left: width * 0.15
+    };
+
+    // Create SVG container
     const svg = container.append("svg")
-        .attr("width", 500)
-        .attr("height", 250)
+        .attr("width", width)
+        .attr("height", height)
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    renderDetailedHistogram(svg, width, height, margin);
+    renderDetailedHistogram(svg, 
+        width - margin.left - margin.right, 
+        height - margin.top - margin.bottom);
 }
 
 
-function renderDetailedHistogram(svg, width, height, margin) {
+function renderDetailedHistogram(svg, width, height) {
     filter_data()
         .then((filteredData) => {
             const selectedGenre = window.selectedGenre; // Check the global variable for the selected genre
@@ -479,7 +538,7 @@ function renderDetailedHistogram(svg, width, height, margin) {
 
             // Add text elements inside the bars
             bars.append("text")
-                .attr("x", d => x(d.count) + 30) // Position text near the end of the bar
+                .attr("x", d => x(d.count) - width*0.05) // Position text near the end of the bar
                 .attr("y", y.bandwidth() / 2) // Vertically center the text
                 .attr("dy", "0.35em") // Adjust text alignment
                 .attr("text-anchor", "end") // Align text to the end
@@ -492,7 +551,7 @@ function renderDetailedHistogram(svg, width, height, margin) {
             // Add x-axis label
             svg.append("text")
                 .attr("x", width / 2)
-                .attr("y", height + margin.bottom - 10) // Position below the x-axis
+                .attr("y", height - 10) // Position below the x-axis
                 .attr("text-anchor", "middle")
                 .style("font-size", "14px")
                 .style("font-weight", "bold")
@@ -524,10 +583,5 @@ window.addEventListener("topUpdated", initializePlots);
 
 // Initialize on page load
 document.addEventListener("DOMContentLoaded", () => {
-    // Create containers dynamically
-    const body = d3.select("body");
-    body.append("div").attr("id", "topContainer").style("width", "500px").style("height", "250px");
-    body.append("div").attr("id", "bottomContainer").style("width", "500px").style("height", "250px");
-
     initializePlots();
 });

@@ -4,11 +4,11 @@ const possible_features_songs = [
     "Danceability",
     "Acousticness",
     "Energy",
-    "Liveness",
+    // "Liveness",
     "Valence",
-    "Speechiness",
+    // "Speechiness",
     "Normalized_Loudness", 
-    "Normalized_Popularity", 
+    // "Normalized_Popularity", 
     "Normalized_Tempo",
   ];
 

@@ -18,7 +18,7 @@
 <!-- Radial Plots -->
 
 
-<div id="radial_plots" class="chart_container">
+<div id="radial_plots" class="chart_container_below">
     <h1>Radial Chart Features</h1>
     <div id="year-range-display-radial"> </div>
     <div id="radial-plot" class="chart"></div>
@@ -27,7 +27,7 @@
 </div>
 
 <!-- Line Graph on the Left -->
-<div id="lineGraphContainer" class="chart_container">
+<div id="lineGraphContainer" class="chart_container_above">
     <div class="heading-container">
         <h1>Linegraph</h1>
     </div>
@@ -71,7 +71,7 @@
 
 <!-- Longevity Charts on the Right -->
 
-<div id="longevityradialPlotContainer"  class="chart_container">
+<div id="longevityradialPlotContainer"  class="chart_container_above">
     <div class="heading-container">
         <h1>Radial Plots</h1>
         <div id="std_button_id"></div>
@@ -80,7 +80,7 @@
 </div>
 
 
-<div id="longevityCharts"  class="chart_container">
+<div id="longevityCharts"  class="chart_container_below">
     <div id="h1"></div> 
     <div id="year-range-display"> </div>
         <div id="scatterplot" class="chart"></div>
@@ -97,13 +97,21 @@
 
 </div>
 
+<div id="feature_genre_selector" class="chart_container_FG">
+    <div class="heading-container">
+        <h1 id="header_FG_container"> Probability Density Function for Features</h1>
+    </div>
+    <div id="topContainer_featuregenre"></div>
+    <div id="bottomContainer_featuregenre"></div>
+</div>
+
 <!--Global variables-->
 <script>
-    window.selectedType = "features";
+    window.selectedType = "genres";
     window.selectedTop = 40;
-    window.selectedYearRanges = [[1965, 2023]];
+    window.selectedYearRanges = [[1965, 1966], [1966, 1967], [1967, 1968]];
     window.selectedWeekRange = [1,52];
-    window.selectedGenre = "Danceability"
+    window.selectedGenre = "pop"
     window.previousYearLength = 0;
 </script>
 
@@ -116,6 +124,7 @@
 <script src="Longevity_radialCharts.js"></script>
 <script src="LineGraph_overTime.js"></script>
 <script src="radial_plot.js"></script>
+<script src = "probdens_v5.js"></script>
 
 
 </body>

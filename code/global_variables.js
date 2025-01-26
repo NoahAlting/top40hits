@@ -314,6 +314,8 @@ dragHandleLeft.addEventListener("mousedown", (e) => {
 
 // All functions that highlight the selected year
 function highlight_selection(selectedRange) {
+  linegraph_yearhighlight(selectedRange);
+  longevity_radialChart_yearhighlight(selectedRange);
     if (window.selectedType === "genres"){
         longevity_genre_yearhighlight(selectedRange);
     }

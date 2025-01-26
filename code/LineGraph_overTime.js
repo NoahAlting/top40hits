@@ -135,9 +135,15 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
     /// Create all graphs/ parts
     // Average line in graph
     selected_years.forEach(year_range => {
+        let rangeKey = `${year_range[0]}-${year_range[1]}`; 
+        if (year_range.length === 1) {
+            rangeKey = `${year_range}-${year_range}`;
+        }
         const yearData = plotData.filter(d => d.year_range === year_range);
         var line = linePlot.append("path")
             .datum(yearData)
+            .attr("data-range", rangeKey)
+            .attr("data-original-color", get_color_yearRange(year_range, selected_years))
             .attr("fill", "none")
             .attr("stroke", get_color_yearRange(year_range, selected_years))
             .attr("stroke-width", 3)
@@ -295,9 +301,15 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
     /// Create all graphs/ parts
     // Average line in graph
     selected_years.forEach(year_range => {
+        let rangeKey = `${year_range[0]}-${year_range[1]}`; 
+        if (year_range.length === 1) {
+            rangeKey = `${year_range}-${year_range}`;
+        }
         const yearData = plotData.filter(d => d.year_range === year_range);
         var line = linePlot.append("path")
             .datum(yearData)
+            .attr("data-range", rangeKey)
+            .attr("data-original-color", get_color_yearRange(year_range, selected_years))
             .attr("fill", "none")
             .attr("stroke", get_color_yearRange(year_range, selected_years))
             .attr("stroke-width", 3)
@@ -443,4 +455,27 @@ function updateLineGraph(filtered_data_input) {
         const data = loadAndProcess_GenresData_LineGraph(filtered_data_input, selected_years, selectedGenre, max_top);
         createInteractiveGraph_Genress_LineGraph(data, selected_years, selected_weeks, max_top, selectedGenre,  linePlot, table, width_lineGraph, height_lineGraph);
     }
+}
+
+function linegraph_yearhighlight(selectedRange) {
+    const svg = d3.select("#lineGraph_overTime");
+    svg.selectAll("path")
+        .attr("stroke-width", 3)
+        .attr("opacity", 0.9)
+        .attr("stroke", function () {
+            return d3.select(this).attr("data-original-color");
+        });
+
+    if (!selectedRange || !Array.isArray(selectedRange) || selectedRange.length !== 2) {
+        return; 
+    }
+    const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
+    const highlightedPath = svg.selectAll("path")
+        .filter(function () {
+            return d3.select(this).attr("data-range") === rangeKey;
+        })
+        .attr("stroke-width", 5)
+        .attr("opacity", 1.0)
+        .attr("stroke", "#ff0000");
+    highlightedPath.raise();
 }

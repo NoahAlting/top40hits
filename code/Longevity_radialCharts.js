@@ -299,6 +299,10 @@ function createInteractiveGraph_Features_longevityRadialChart(
     .text((d) => d.feature);
 
   labels.forEach((label) => {
+    let rangeKey = `${label[0]}-${label[1]}`; 
+        if (label.length === 1) {
+            rangeKey = `${label}-${label}`;
+        }
     const filteredStats = data[label];
     const radialLine = d3
       .lineRadial()
@@ -308,6 +312,8 @@ function createInteractiveGraph_Features_longevityRadialChart(
     chartContainer
       .append("path")
       .datum(filteredStats)
+      .attr("data-range", rangeKey)
+      .attr("data-original-color", get_color_yearRange(label, labels))
       .attr("d", radialLine)
       .attr("stroke", function_colors(label, labels))
       .attr("fill", "none")
@@ -405,6 +411,10 @@ function createInteractiveGraph_GenresData_longevityRadialChart(
     .text((d) => d.genre);
 
   labels.forEach((label) => {
+    let rangeKey = `${label[0]}-${label[1]}`; 
+        if (label.length === 1) {
+            rangeKey = `${label}-${label}`;
+        }
     const filteredStats = data[label];
     const radialLine = d3
       .lineRadial()
@@ -414,6 +424,8 @@ function createInteractiveGraph_GenresData_longevityRadialChart(
     chartContainer
       .append("path")
       .datum(filteredStats)
+      .attr("data-range", rangeKey)
+      .attr("data-original-color", get_color_yearRange(label, labels))
       .attr("d", radialLine)
       .attr("stroke", function_colors(label, labels))
       .attr("fill", "none")
@@ -777,4 +789,48 @@ function update_LongevityRadialGraph(filtered_data_input) {
       }
     }
   }
+}
+
+function longevity_radialChart_yearhighlight(selectedRange) {
+  console.log("lenght", window.selectedYearRanges.length);
+  if (window.selectedYearRanges.length > 1) {
+    // Select all <svg> elements within #longevity_radialChart
+    const svgs = d3.select("#longevity_radialChart").selectAll("svg");
+
+    svgs.each(function (_, i) {
+        console.log(`SVG ${i}:`, this); // Log each individual <svg> element
+
+        // Reset all paths in the current SVG to their original styles
+        d3.select(this)
+            .selectAll("path")
+            .attr("stroke-width", 3)
+            .attr("opacity", 0.9)
+            .attr("stroke", function () {
+                return d3.select(this).attr("data-original-color") || "#ffffff"; // Default to white if no original color
+            });
+
+        // Exit early if no valid range is provided
+        if (!selectedRange || !Array.isArray(selectedRange) || selectedRange.length !== 2) {
+            return;
+        }
+
+        const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
+        console.log('rangekey', rangeKey);
+
+        // Highlight the path corresponding to the selected range
+        const highlightedPath = d3.select(this)
+            .selectAll("path")
+            .filter(function () {
+                return d3.select(this).attr("data-range") === rangeKey;
+            })
+            .attr("stroke-width", 5)
+            .attr("opacity", 1.0)
+            .attr("stroke", "#ff0000"); // Highlight with red
+
+        // Bring the highlighted path to the front
+        highlightedPath.each(function () {
+            this.parentNode.appendChild(this); // Append to the end of the group to bring to front
+        });
+    });
+}
 }

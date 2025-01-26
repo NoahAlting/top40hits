@@ -5,6 +5,7 @@ function createInfoButtonWithTooltip(
   xAxis,
   yAxis,
   marks,
+  channels,
   whatCanYouDo,
   left_right
 ) {

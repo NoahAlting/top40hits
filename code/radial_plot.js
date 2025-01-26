@@ -5,7 +5,8 @@ function createinfobutton_radial() {
       "This radial plot shows the average feature value of the songs in the top 40 for each week of the year.", 
       "Distance from center: feature value, between 0 and 1", 
       "Circumference: week of the year", 
-      "Position, Colour", 
+      "Points, Lines",
+    "Position, Colour hue",
       "The plot updates based on the year and week range.",
       "right"
     );

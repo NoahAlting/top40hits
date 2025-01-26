@@ -1,29 +1,95 @@
-function createinfobutton(){
+function createinfobutton_feat() {
     createInfoButtonWithTooltip(
         "longevityCharts",
         "Feature Value Distribution by Longevity",
-        "This scatterplot displays per song its feature value and the amount of weeks the song was in the top 40. When zoomed out, it shows the density of these points.",
-        "Longevity, amount of weeks in the top 40",
+        "This scatterplot displays per song its feature value and the amount of weeks the song was in the user-selected top positions. When zoomed out, it shows the density of these points.",
+        "Longevity, amount of weeks in the user-selected top (default 40)",
         "Feature value",
-        "Position, colour hue ",
+        "Points, areas",
+        "Position, color hue",
         "By scrolling on the plot, you can zoom in on the data. When a small enough range is selected (less than 6000 songs), the individual songs become visible. By clicking on the dots, you can see the song details and a barchart displaying all feature values.",
         "left"
-      );
+    );
 }
-createinfobutton();
-let infoButtonExists = true; 
+
+function createinfobutton_genre() {
+    createInfoButtonWithTooltip(
+        "longevityCharts",
+        "Genre Frequency Distribution by Longevity",
+        "This lineplot displays . The values are normalized ",
+        "Longevity, amount of weeks in the selected top 40",
+        "Normalized Frequency of appearance ",
+        "lines, areas underneath lines",
+        "color hue for year ranges, y-postion for frequency value, x-position for longevity",
+        "With this plot, you can discover if the selected genre is a longer lasting hit in different year ranges",
+        "left"
+    );
+}
+
+createinfobutton_feat();
+
+
+let infoButtonExists_feat = true;
+let infoButtonExists_genre = false;
+
+function toggleVisibility(selectedType) {
+    if (selectedType === "features") {
+        // Hide genre-related elements
+        hideGenreElements();
+        if (!infoButtonExists_feat) {
+            removeButtonByContainerId("longevityCharts");
+            createinfobutton_feat();
+            infoButtonExists_feat = true;
+        }
+
+        showFeatureElements();
+    } else if (selectedType === "genres") {
+        hideFeatureElements();
+        if (!infoButtonExists_genre) {
+            removeButtonByContainerId("longevityCharts");
+            createinfobutton_genre();
+            infoButtonExists_genre = true;
+        }
+        showGenreElements();
+    }
+}
+
+// ================================================================== GENRE AND FEATURES PLOT SWITCH =============================================================================
+function hideFeatureElements() {
+    const featureElements = document.querySelectorAll('#barchart, #scatterplot, #feature-selector, #tooltip, #longevityHeader_2');
+    featureElements.forEach(el => el.style.display = 'none');
+}
+
+function showFeatureElements() {
+    const featureElements = document.querySelectorAll('#barchart, #scatterplot, #feature-selector, #tooltip');
+    featureElements.forEach(el => el.style.display = 'block');
+    ensureHeaderExists("Feature Value Distribution by Longevity");
+}
+
+function hideGenreElements() {
+    const genreElements = document.querySelectorAll('#selected_genre_long, #longevity_histogram, #controls');
+    genreElements.forEach(el => el.style.display = 'none');
+}
+
+function showGenreElements() {
+    const genreElements = document.querySelectorAll('#selected_genre_long, #longevity_histogram, #controls');
+    genreElements.forEach(el => el.style.display = 'block');
+}
+
+function ensureHeaderExists(headerText) {
+    let headerElement = document.getElementById('longevityHeader_2');
+    if (!headerElement) {
+        headerElement = document.createElement("h1");
+        headerElement.id = "longevityHeader_2";
+        headerElement.textContent = headerText;
+        const longevityChartsContainer = document.getElementById("longevityCharts");
+        longevityChartsContainer.insertBefore(headerElement, longevityChartsContainer.firstChild);
+    }
+}
+
+// Listen for type updates
 window.addEventListener("typeUpdated", function () {
-  if (window.selectedType == "features") {
-    if (!infoButtonExists) {
-      createinfobutton();
-      infoButtonExists = true; 
-    }
-  } else {
-    if (infoButtonExists) {
-      removeButtonByContainerId("longevityCharts");
-      infoButtonExists = false; 
-    }
-  }
+    toggleVisibility(window.selectedType);
 });
 
 var width_scatterplot_container = document.getElementById("longevityCharts").clientWidth;
@@ -80,7 +146,7 @@ function updateLongevityChartContent() {
 
 const header = document.createElement("h1");
 header.textContent = "Feature Value Distribution by Longevity";
-header.id = "longevityHeader_2";  
+header.id = "longevityHeader_2";
 const longevityChartsContainer = document.getElementById("longevityCharts");
 longevityChartsContainer.insertBefore(header, longevityChartsContainer.firstChild);
 
@@ -136,75 +202,75 @@ function loadAndProcess_FeaturesData_scat(filtered_data_input, range_years, sele
     return plotData;
 }
 
-    function showBarChart(year_range, colour, song, selectedFeature) {
-        const barChartContainer = d3.select("#barchart");
-        barChartContainer.selectAll("*").remove();
+function showBarChart(year_range, colour, song, selectedFeature) {
+    const barChartContainer = d3.select("#barchart");
+    barChartContainer.selectAll("*").remove();
 
-        const barChart = d3
-            .select("#barchart")
-            .append("svg")
-            .attr("width", width_scatterplot)
-            .attr("height", height_scatterplot+ margin_scatterplot.bottom);
-        
-        const selectedFeatures = ['Danceability', 'Acousticness', 'Energy', 'Liveness', 'Valence', 'Speechiness'];
-        const featureData = selectedFeatures
-            .map(feature => ({ feature, value: song[feature] }))
-            .filter(d => d.value != null && d.value != undefined);
-    
-        const xScale = d3.scaleBand()
-            .domain(featureData.map(d => d.feature))
-            .range([margin_scatterplot.left, (width_scatterplot - margin_scatterplot.right)*1.2])
-            .padding(0.1);
-    
-        const increasedHeight = height_scatterplot * 1.5;
-    
-        const yScale = d3.scaleLinear()
-            .domain([0, 1])
-            .range([increasedHeight - margin_scatterplot.bottom, margin_scatterplot.top]);
-    
-        barChart.selectAll("*").remove();
-    
-        const chartGroup = barChart.append("g")
-            .attr("transform", "translate(0, -10)"); 
-    
-        chartGroup.append("g")
-            .attr("transform", `translate(0, ${increasedHeight - margin_scatterplot.bottom})`)
-            .call(d3.axisBottom(xScale))
-            .selectAll("text")
-            .attr("transform", "rotate(-45)")
-            .style("text-anchor", "end");
-    
-        chartGroup.append("g")
-            .attr("transform", `translate(${margin_scatterplot.left}, 0)`)
-            .call(d3.axisLeft(yScale));
-    
+    const barChart = d3
+        .select("#barchart")
+        .append("svg")
+        .attr("width", width_scatterplot)
+        .attr("height", height_scatterplot + margin_scatterplot.bottom);
 
-            chartGroup.append("text")
+    const selectedFeatures = ['Danceability', 'Acousticness', 'Energy', 'Liveness', 'Valence', 'Speechiness'];
+    const featureData = selectedFeatures
+        .map(feature => ({feature, value: song[feature]}))
+        .filter(d => d.value != null && d.value != undefined);
+
+    const xScale = d3.scaleBand()
+        .domain(featureData.map(d => d.feature))
+        .range([margin_scatterplot.left, (width_scatterplot - margin_scatterplot.right) * 1.2])
+        .padding(0.1);
+
+    const increasedHeight = height_scatterplot * 1.5;
+
+    const yScale = d3.scaleLinear()
+        .domain([0, 1])
+        .range([increasedHeight - margin_scatterplot.bottom, margin_scatterplot.top]);
+
+    barChart.selectAll("*").remove();
+
+    const chartGroup = barChart.append("g")
+        .attr("transform", "translate(0, -10)");
+
+    chartGroup.append("g")
+        .attr("transform", `translate(0, ${increasedHeight - margin_scatterplot.bottom})`)
+        .call(d3.axisBottom(xScale))
+        .selectAll("text")
+        .attr("transform", "rotate(-45)")
+        .style("text-anchor", "end");
+
+    chartGroup.append("g")
+        .attr("transform", `translate(${margin_scatterplot.left}, 0)`)
+        .call(d3.axisLeft(yScale));
+
+
+    chartGroup.append("text")
         .attr("transform", "rotate(-90)")
-        .attr("x", -(increasedHeight / 2)) 
-        .attr("y", margin_scatterplot.left - 50) 
-        .attr("dy", "1em") 
+        .attr("x", -(increasedHeight / 2))
+        .attr("y", margin_scatterplot.left - 50)
+        .attr("dy", "1em")
         .style("text-anchor", "middle")
         .attr("class", "label-text")
-        .text(`Value for ${selectedFeature}`); 
+        .text(`Value for ${selectedFeature}`);
 
 
-        chartGroup.selectAll("rect")
-            .data(featureData)
-            .enter()
-            .append("rect")
-            .attr("x", d => xScale(d.feature))
-            .attr("y", yScale(0))
-            .attr("width", xScale.bandwidth())
-            .attr("height", 0)
-            .attr("fill", d => d.feature === selectedFeature ? colour : "darkgrey")
-            .transition()
-            .duration(500)
-            .attr("y", d => yScale(d.value))
-            .attr("height", d => increasedHeight - margin_scatterplot.bottom - yScale(d.value));
-            console.log(chartGroup)
-    }
-    
+    chartGroup.selectAll("rect")
+        .data(featureData)
+        .enter()
+        .append("rect")
+        .attr("x", d => xScale(d.feature))
+        .attr("y", yScale(0))
+        .attr("width", xScale.bandwidth())
+        .attr("height", 0)
+        .attr("fill", d => d.feature === selectedFeature ? colour : "darkgrey")
+        .transition()
+        .duration(500)
+        .attr("y", d => yScale(d.value))
+        .attr("height", d => increasedHeight - margin_scatterplot.bottom - yScale(d.value));
+    console.log(chartGroup)
+}
+
 
 function showTooltip(event, d) {
     const tooltip = d3.select("#tooltip");
@@ -217,23 +283,23 @@ function showTooltip(event, d) {
 function createInteractiveGraph_Features_scat(divId, data, features, feature, year_range, year_range_colour) {
 
 
-var width_scatterplot_container = document.getElementById("longevityCharts").clientWidth;
-var height_scatterplot_container = document.getElementById("longevityCharts").clientHeight;
-var margin_scatterplot = {
-    top: height_scatterplot_container * 0.1,
-    right: width_scatterplot_container * 0.1,
-    bottom: height_scatterplot_container * 0.3,
-    left: width_scatterplot_container * 0.2
-};
-var width_scatterplot = width_scatterplot_container - margin_scatterplot.left - margin_scatterplot.right;
-var height_scatterplot = height_scatterplot_container - margin_scatterplot.top - margin_scatterplot.bottom;
+    var width_scatterplot_container = document.getElementById("longevityCharts").clientWidth;
+    var height_scatterplot_container = document.getElementById("longevityCharts").clientHeight;
+    var margin_scatterplot = {
+        top: height_scatterplot_container * 0.1,
+        right: width_scatterplot_container * 0.1,
+        bottom: height_scatterplot_container * 0.3,
+        left: width_scatterplot_container * 0.2
+    };
+    var width_scatterplot = width_scatterplot_container - margin_scatterplot.left - margin_scatterplot.right;
+    var height_scatterplot = height_scatterplot_container - margin_scatterplot.top - margin_scatterplot.bottom;
 
 
     const svg = d3
         .select(divId)
         .append("svg")
         .attr("width", width_scatterplot + margin_scatterplot.left + margin_scatterplot.right)
-        .attr("height", height_scatterplot + margin_scatterplot.bottom )
+        .attr("height", height_scatterplot + margin_scatterplot.bottom)
         .style("overflow", "hidden")
         .append("g")
         .attr("transform", `translate(${margin_scatterplot.left},${margin_scatterplot.top})`);
@@ -251,7 +317,7 @@ var height_scatterplot = height_scatterplot_container - margin_scatterplot.top -
         .attr("class", "x-axis")
         .attr("transform", `translate(0,${height_scatterplot})`)
         .call(xAxis);
-        
+
 
     svg.append("g")
         .attr("class", "y-axis")
@@ -261,7 +327,7 @@ var height_scatterplot = height_scatterplot_container - margin_scatterplot.top -
     svg.append("text")
         .attr("class", "x-axis-label")
         .attr("x", width_scatterplot * 0.5)
-        .attr("y", height_scatterplot * 1.1) 
+        .attr("y", height_scatterplot * 1.1)
         .attr("text-anchor", "middle")
         .style("font-size", "12px")
         .style("fill", "white")
@@ -271,9 +337,9 @@ var height_scatterplot = height_scatterplot_container - margin_scatterplot.top -
     svg.append("text")
         .attr("class", "y-axis-label")
         .attr("x", -height_scatterplot * 0.5)
-        .attr("y", -margin_scatterplot.left *0.4) 
+        .attr("y", -margin_scatterplot.left * 0.4)
         .attr("text-anchor", "middle")
-        .attr("transform", "rotate(-90)") 
+        .attr("transform", "rotate(-90)")
         .style("font-size", "12px")
         .style("fill", "white")
         .text(`Value for ${feature}`);
@@ -382,9 +448,9 @@ var height_scatterplot = height_scatterplot_container - margin_scatterplot.top -
                     .attr("opacity", d => Math.min(1, (event.transform.k - 1) / 5))
                     .attr("visibility", d =>
                         d.Longevity >= newXScale.domain()[0] &&
-                            d.Longevity <= newXScale.domain()[1] &&
-                            d[feature] >= newYScale.domain()[0] &&
-                            d[feature] <= newYScale.domain()[1]
+                        d.Longevity <= newXScale.domain()[1] &&
+                        d[feature] >= newYScale.domain()[0] &&
+                        d[feature] <= newYScale.domain()[1]
                             ? "visible"
                             : "hidden"
                     );
@@ -404,7 +470,7 @@ let global_data_scat = []
 let selected_genre = ""
 const sortedYearRanges_scat = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
 
-function update_scat_features(filtered_data_input, selectedGenre_scat) {    
+function update_scat_features(filtered_data_input, selectedGenre_scat) {
     global_data_scat = filtered_data_input;
     selected_genre = selectedGenre_scat;
     const selectedYearRanges_scat = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
@@ -434,16 +500,12 @@ function update_scat_features(filtered_data_input, selectedGenre_scat) {
 // });
 
 
-
 // =========================================== Genre Selected ========================================================
 let smoothingEnabled = false;
 
 function renderGenrePlot(filtered_data, selectedType) {
-    console.log('render genre plot', filtered_data)
-
     const genreData = filtered_data[selectedType] || [];
 
-    console.log(genreData)
     const yearRanges = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
 
     // Calculate longevity (number of unique weeks) for each song
@@ -463,21 +525,24 @@ function renderGenrePlot(filtered_data, selectedType) {
         (song) => song.longevity
     );
 
+    // Determine the max weeks dynamically
+    const maxWeeks = Math.max(...Array.from(longevityCounts.keys()));
+
     const frequencyData = fillMissingWeeks(
         Array.from(longevityCounts, ([weeks, frequency]) => ({
             weeks: +weeks,
             frequency: +frequency,
-        })).sort((a, b) => a.weeks - b.weeks)
+        })).sort((a, b) => a.weeks - b.weeks),
+        maxWeeks
     );
-
 
     const finalData = smoothingEnabled ? smoothData(frequencyData) : frequencyData;
 
-
-    createVisualization(finalData, genreData, yearRanges);
+    createVisualization(finalData, genreData, yearRanges, maxWeeks);
 }
 
-function fillMissingWeeks(data, maxWeeks = 20) {
+
+function fillMissingWeeks(data, maxWeeks) {
     const weekMap = new Map(data.map(d => [d.weeks, d.frequency]));
     const filledData = [];
     for (let week = 1; week <= maxWeeks; week++) {
@@ -501,100 +566,145 @@ function smoothData(data, windowSize = 3) {
 
 // Apply dynamic filters
 
-function createVisualization(freqData, dynamicallyFilteredData, yearRanges) {
+
+function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxWeeks) {
     const svg = d3.select("#longevity_histogram").attr("width", width_scatterplot_container).attr("height", height_scatterplot_container);
     const width_longevityHistogram = +svg.attr("width");
     const height_longevityHistogram = +svg.attr("height");
-    const margin_longevityHistogram = { top: height_scatterplot_container*0.1, right: width_scatterplot_container*0.1, bottom: height_scatterplot_container*0.3, left: width_scatterplot_container*0.1 };
+    const margin_longevityHistogram = { top: height_scatterplot_container * 0.1, right: width_scatterplot_container * 0.1, bottom: height_scatterplot_container * 0.3, left: width_scatterplot_container * 0.1 };
 
-    svg.selectAll("*").remove();
+    // Clear old plot lines and areas, but not the axes
+    svg.selectAll(".line-path").transition().duration(500).style("opacity", 0).remove();  // Fade out old lines before removing
+    svg.selectAll(".area").transition().duration(500).style("opacity", 0).remove();  // Fade out old areas before removing
 
     const x = d3.scaleBand()
         .domain(freqData.map((d) => d.weeks))
         .range([margin_longevityHistogram.left, width_longevityHistogram - margin_longevityHistogram.right])
         .padding(0.1);
 
-    const yLeft = d3.scaleLinear()
-        .domain([0, d3.max(freqData, (d) => d.frequency)]).nice()
-        .range([height_longevityHistogram - margin_longevityHistogram.bottom, margin_longevityHistogram.top]);
-
-    const yRight = d3.scaleLinear()
-        .domain([0, 1])
-        .range([height_longevityHistogram - margin_longevityHistogram.bottom, margin_longevityHistogram.top]);
-
-    svg.append("g").attr("transform", `translate(0,${height_longevityHistogram - margin_longevityHistogram.bottom})`).call(d3.axisBottom(x));
-    svg.append("g").attr("transform", `translate(${margin_longevityHistogram.left},0)`).call(d3.axisLeft(yLeft));
-    svg.append("g").attr("transform", `translate(${width_longevityHistogram - margin_longevityHistogram.right},0)`).call(d3.axisRight(yRight));
-
-    const colorScale = d3.scaleSequential(d3.interpolateViridis).domain([0, yearRanges.length]);
-
+    let yScale;
     if (yearRanges.length === 1) {
-        singleLinePlot(svg, x, yLeft, freqData, colorScale(0));
+        yScale = d3.scaleLinear()
+            .domain([0, d3.max(freqData, (d) => d.frequency)]).nice()
+            .range([height_longevityHistogram - margin_longevityHistogram.bottom, margin_longevityHistogram.top]);
+    } else {
+        const maxNormalized = d3.max(freqData, (d) => d.frequency);
+        yScale = d3.scaleLinear()
+            .domain([0, Math.min(maxNormalized, 0.25)])
+            .range([height_longevityHistogram - margin_longevityHistogram.bottom, margin_longevityHistogram.top]);
+    }
+
+    // Handle the X-axis transition
+    let xAxisGroup = svg.select(".x-axis-group");
+    if (xAxisGroup.empty()) {
+        xAxisGroup = svg.append("g")
+            .attr("class", "x-axis-group")
+            .attr("transform", `translate(0,${height_longevityHistogram - margin_longevityHistogram.bottom})`)
+            .call(d3.axisBottom(x).tickSize(-height_longevityHistogram + margin_longevityHistogram.top + margin_longevityHistogram.bottom));
+
+        // Apply consistent styling for ticks
+        xAxisGroup.selectAll(".tick line")
+            .style("stroke", "#535067")
+            .style("stroke-width", 0.6);
+    } else {
+        xAxisGroup.transition()
+            .duration(1000)
+            .ease(d3.easeCubicOut)
+            .call(d3.axisBottom(x).tickSize(-height_longevityHistogram + margin_longevityHistogram.top + margin_longevityHistogram.bottom));
+
+        // Apply consistent styling for ticks during transition
+        xAxisGroup.selectAll(".tick line")
+            .style("stroke", "#535067")
+            .style("stroke-width", 0.6);
+    }
+
+    // Handle the Y-axis transition
+    let yAxisGroup = svg.select(".y-axis-group");
+    if (yAxisGroup.empty()) {
+        yAxisGroup = svg.append("g")
+            .attr("class", "y-axis-group")
+            .attr("transform", `translate(${margin_longevityHistogram.left},0)`)
+            .call(d3.axisLeft(yScale).ticks(5).tickSize(-width_longevityHistogram + margin_longevityHistogram.left + margin_longevityHistogram.right));
+
+        // Apply consistent styling for ticks
+        yAxisGroup.selectAll(".tick line")
+            .style("stroke", "#65627c")
+            .style("stroke-width", 1.5);
+    } else {
+        yAxisGroup.transition()
+            .duration(1000)
+            .ease(d3.easeCubicOut)
+            .call(d3.axisLeft(yScale).ticks(5).tickSize(-width_longevityHistogram + margin_longevityHistogram.left + margin_longevityHistogram.right));
+
+        // Apply consistent styling for ticks during transition
+        yAxisGroup.selectAll(".tick line")
+            .style("stroke", "#65627c")
+            .style("stroke-width", 1.5);
+    }
+
+    // Plotting based on year range count (other parts remain unchanged)
+    if (yearRanges.length === 1) {
+        singleLinePlot(svg, x, yScale, freqData, viridisScale(1));
     } else {
         const groupedData = yearRanges.map(([start, end], index) => {
             const rangeKey = `${start}-${end}`;
             const filtered = dynamicallyFilteredData.filter(row => row.Jaar >= start && row.Jaar <= end);
-
-            // Get the count of unique songs in the filtered data
             const uniqueSongsCount = new Set(filtered.map(row => row.Song_ID)).size;
 
-            // Group by Song_ID and calculate longevity (number of unique weeks)
             const groupedBySong = d3.group(filtered, (song) => song.Song_ID);
             const songLongevity = Array.from(groupedBySong, ([Song_ID, appearances]) => {
                 const uniqueWeeks = new Set(appearances.map((entry) => entry.Weeknr));
                 return { Song_ID, longevity: uniqueWeeks.size };
             });
 
-            // Count the frequency of each longevity value
             const longevityCounts = d3.rollup(
                 songLongevity,
                 (songs) => songs.length,
                 (song) => song.longevity
             );
 
-            // Normalize by the unique song count in the filtered data
             const filledData = fillMissingWeeks(
                 Array.from(longevityCounts, ([weeks, frequency]) => ({
                     weeks: +weeks,
                     frequency: frequency / uniqueSongsCount, // Normalize by the unique song count
-                })).sort((a, b) => a.weeks - b.weeks)
+                })).sort((a, b) => a.weeks - b.weeks),
+                maxWeeks
             );
 
             return {
                 range: rangeKey,
                 data: smoothingEnabled ? smoothData(filledData) : filledData,
-                color: colorScale(index),
+                color: viridisScale(index + 1),
             };
         });
 
-        renderLinePlot(svg, x, yRight, groupedData, colorScale, width_longevityHistogram, height_longevityHistogram, margin_longevityHistogram, yLeft);
+        renderLinePlot(svg, x, yScale, groupedData, viridisScale, width_longevityHistogram, height_longevityHistogram, margin_longevityHistogram);
     }
 }
 
-
-// Render line plot for normalized data
-function renderLinePlot(svg, x, yRight, groupedData, colorScale, width_longevityHistogram, height_longevityHistogram, margin_longevityHistogram, yLeft) {
+// Render line plot with smooth transitions and consistent styles
+function renderLinePlot(svg, x, yRight, groupedData, colorScale, width_longevityHistogram, height_longevityHistogram, margin_longevityHistogram) {
     const line = d3.line()
         .x(d => x(d.weeks) + x.bandwidth() / 2)
         .y(d => yRight(d.frequency));
 
-    groupedData.forEach(({ range, data, color }, index) => {
+    groupedData.forEach(({ range, data, color }) => {
         svg.append("path")
             .datum(data)
+            .attr("class", "line-path")  // Add class for line paths to easily clear them later
             .attr("fill", "none")
             .attr("stroke", color)
             .attr("stroke-width", 2)
-            .attr("opacity", 0.9)
+            .attr("opacity", 0)
             .attr("d", line)
             .attr("data-range", range)
-            .attr("data-original-color", color);
+            .attr("data-original-color", color)
     });
 }
 
-// Render bar plot
+// Render single line plot
 function singleLinePlot(svg, x, y, data, color) {
     svg.selectAll(".area").remove();
-    svg.selectAll(".point").remove();
 
     const area = d3.area()
         .x(d => x(d.weeks) + x.bandwidth() / 2)
@@ -606,9 +716,9 @@ function singleLinePlot(svg, x, y, data, color) {
         .attr("class", "area")
         .attr("d", area)
         .attr("fill", color)
-        .attr("fill-opacity", 1);
-}
+        .attr("fill-opacity", 1)
 
+}
 // Smoothing toggle
 function createSmoothingToggle() {
     const container = d3.select("#controls");

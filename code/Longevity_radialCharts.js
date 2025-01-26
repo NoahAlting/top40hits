@@ -844,13 +844,13 @@ function update_LongevityRadialGraph(filtered_data_input) {
 }
 
 function longevity_radialChart_yearhighlight(selectedRange) {
-  console.log("lenght", window.selectedYearRanges.length);
+  // console.log("lenght", window.selectedYearRanges.length);
   if (window.selectedYearRanges.length > 1) {
     // Select all <svg> elements within #longevity_radialChart
     const svgs = d3.select("#longevity_radialChart").selectAll("svg");
 
     svgs.each(function (_, i) {
-        console.log(`SVG ${i}:`, this); // Log each individual <svg> element
+        // console.log(`SVG ${i}:`, this); // Log each individual <svg> element
 
         // Reset all paths in the current SVG to their original styles
         d3.select(this)
@@ -867,7 +867,7 @@ function longevity_radialChart_yearhighlight(selectedRange) {
         }
 
         const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
-        console.log('rangekey', rangeKey);
+        // console.log('rangekey', rangeKey);
 
         // Highlight the path corresponding to the selected range
         const highlightedPath = d3.select(this)

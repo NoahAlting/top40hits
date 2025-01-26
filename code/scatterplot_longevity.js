@@ -720,36 +720,37 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
             .style("stroke", "#9694af")
             .style("stroke-width", 3);
     }
+
+    svg.select(".x-axis-label").remove();
+
     svg.append("text")
         .attr("class", "x-axis-label")
-        .attr("x", width_longevityGenre * 0.5)
-        .attr("y", height_longevityGenre * 1.1)
+        .attr("x", width_longevityGenre / 2)
+        .attr("y", height_longevityGenre - margin_longevityGenre.bottom * 0.82)
         .attr("text-anchor", "middle")
         .style("font-size", "12px")
         .style("fill", "white")
-        .text(`Longevity (amount of weeks song was charted in the top ${window.selectedTop})`);
+        .text(`Longevity (Amount of Weeks Song Was Charted in The Top ${window.selectedTop})`);
 
-    // y-axis
+    svg.select(".y-axis-label").remove();
+
+// Y-axis label
     svg.append("text")
         .attr("class", "y-axis-label")
-        .attr("x", -height_longevityGenre * 0.5)
-        .attr("y", -margin_longevityGenre.left * 0.4)
+        .attr("x", -height_longevityGenre / 2.4)
+        .attr("y", margin_longevityGenre.left * 0.6)
         .attr("text-anchor", "middle")
-        .attr("transform", "rotate(-90)")
+        .attr("transform", "rotate(-90)")  // Rotate the text to align with the Y-axis
         .style("font-size", "12px")
         .style("fill", "white")
-        .text(`Value of  ${window.selectedGenre}`);
+        .text(`Normalized Frequency of Songs with Genre ${window.selectedGenre}`);
 }
 
 // Render line plot with smooth transitions and consistent styles
-function renderLinePlot(svg, x, yRight, groupedData, colorScale, width_longevityHistogram, height_longevityHistogram, margin_longevityHistogram) {
+function renderLinePlot(svg, x, yRight, groupedData) {
+    console.log("render lineplot called")
     const line = d3.line()
         .x(d => x(d.weeks) + x.bandwidth() / 2)
-        .y(d => yRight(d.frequency));
-
-    const area = d3.area()
-        .x(d => x(d.weeks) + x.bandwidth() / 2)
-        .y0(yRight(0))
         .y(d => yRight(d.frequency));
 
     groupedData.forEach(({ range, data, color }) => {
@@ -759,13 +760,11 @@ function renderLinePlot(svg, x, yRight, groupedData, colorScale, width_longevity
             .attr("fill", "none")
             .attr("stroke", color)
             .attr("stroke-width", 2)
-            .attr("opacity", 0)
+            .attr("opacity", 1)
             .attr("d", line)
             .attr("data-range", range)
             .attr("data-original-color", color)
             .attr("class", "area")
-            .attr("d", area)
-            .attr("fill", color)
             .attr("fill-opacity", 0.1)
     });
 }
@@ -787,6 +786,7 @@ function singleLinePlot(svg, x, y, data, color) {
         .attr("fill-opacity", 1)
 
 }
+
 // Smoothing toggle
 function createSmoothingToggle() {
     const container = d3.select("#controls");

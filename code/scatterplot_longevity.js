@@ -92,16 +92,7 @@ window.addEventListener("typeUpdated", function () {
     toggleVisibility(window.selectedType);
 });
 
-var width_scatterplot_container = document.getElementById("longevityCharts").clientWidth;
-var height_scatterplot_container = document.getElementById("longevityCharts").clientHeight;
-var margin_scatterplot = {
-    top: height_scatterplot_container * 0.1,
-    right: width_scatterplot_container * 0.1,
-    bottom: height_scatterplot_container * 0.3,
-    left: width_scatterplot_container * 0.2
-};
-var width_scatterplot = width_scatterplot_container - margin_scatterplot.left - margin_scatterplot.right;
-var height_scatterplot = height_scatterplot_container - margin_scatterplot.top - margin_scatterplot.bottom;
+
 
 function hideAllElements() {
     const elementsToHide = document.querySelectorAll('#barchart, #scatterplot, #feature-selector, #tooltip, #prev, #next, #year-range-display, #clip, #h1');
@@ -281,8 +272,6 @@ function showTooltip(event, d) {
 }
 
 function createInteractiveGraph_Features_scat(divId, data, features, feature, year_range, year_range_colour) {
-
-
     var width_scatterplot_container = document.getElementById("longevityCharts").clientWidth;
     var height_scatterplot_container = document.getElementById("longevityCharts").clientHeight;
     var margin_scatterplot = {
@@ -293,7 +282,6 @@ function createInteractiveGraph_Features_scat(divId, data, features, feature, ye
     };
     var width_scatterplot = width_scatterplot_container - margin_scatterplot.left - margin_scatterplot.right;
     var height_scatterplot = height_scatterplot_container - margin_scatterplot.top - margin_scatterplot.bottom;
-
 
     const svg = d3
         .select(divId)
@@ -568,14 +556,18 @@ function smoothData(data, windowSize = 3) {
 
 
 function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxWeeks) {
+    var width_scatterplot_container = document.getElementById("longevityCharts").clientWidth;
+    var height_scatterplot_container = document.getElementById("longevityCharts").clientHeight;
+
     const svg = d3.select("#longevity_histogram").attr("width", width_scatterplot_container).attr("height", height_scatterplot_container);
     const width_longevityHistogram = +svg.attr("width");
     const height_longevityHistogram = +svg.attr("height");
     const margin_longevityHistogram = { top: height_scatterplot_container * 0.1, right: width_scatterplot_container * 0.1, bottom: height_scatterplot_container * 0.3, left: width_scatterplot_container * 0.1 };
-
+    console.log('hrntr height: ', height_scatterplot_container )
+    console.log("genre given height", height_longevityHistogram)
     // Clear old plot lines and areas, but not the axes
-    svg.selectAll(".line-path").transition().duration(500).style("opacity", 0).remove();  // Fade out old lines before removing
-    svg.selectAll(".area").transition().duration(500).style("opacity", 0).remove();  // Fade out old areas before removing
+    svg.selectAll(".line-path").transition().duration(500).style("opacity", 0).remove();  
+    svg.selectAll(".area").transition().duration(500).style("opacity", 0).remove();
 
     const x = d3.scaleBand()
         .domain(freqData.map((d) => d.weeks))
@@ -590,7 +582,7 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
     } else {
         const maxNormalized = d3.max(freqData, (d) => d.frequency);
         yScale = d3.scaleLinear()
-            .domain([0, Math.min(maxNormalized, 0.25)])
+            .domain([0, Math.min(maxNormalized, 0.4)])
             .range([height_longevityHistogram - margin_longevityHistogram.bottom, margin_longevityHistogram.top]);
     }
 

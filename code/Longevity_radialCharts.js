@@ -499,6 +499,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
         "All features.",
         `The average score for each feature within a given category.`,
         "The position indicates the feature and the average score, while color represents the category.",
+        "Channel",
         "Click on the button to view the standard deviation of the scores.",
         "left"
       );  
@@ -512,6 +513,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
           "All features.",
           `The average score for each feature within a given category and year range.`,
           "The position indicates the feature and the average score, while color represents the year range.",
+          "Channel",
           "Click the button to view the standard deviation of the scores.",
           "left"
       );
@@ -691,6 +693,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
         "All genres.",
         `The number of songs per genre within each category.`,
         "The position indicates the genre and the number of songs, while the color represents the category.",
+        "Channel",
         "No interactivity.",
         "left"
     );
@@ -704,6 +707,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
         "All genres.",
         `The number of songs per genre within each category.`,
         "The position indicates the genre and the number of songs, while color represents the year range.",
+        "Channel",
         "No interactivity.",
         "left"
     );

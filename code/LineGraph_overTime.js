@@ -482,6 +482,7 @@ function updateLineGraph(filtered_data_input) {
             "The week number within the year.",
             `The average ${window.selectedGenre} score of all songs in the Top ${window.selectedTop} for a specific week.`,
             "Position indicates the week and score, and color represents the year range.",
+            "Channel",
             "Hover over the graph to view the standard deviation of scores. Use the vertical search line to display detailed scores for a specific week.",
             "right"
         );        
@@ -497,6 +498,7 @@ function updateLineGraph(filtered_data_input) {
             "The week number within the year.",
             `The percentage of ${window.selectedGenre} songs in the Top ${window.selectedTop} for a specific week.`,
             "Position indicates the week and score, while color represents the year range.",
+            "Channel",
             "Hover over the graph to use the vertical search line to view detailed scores for a specific week.",
             "right"
         );        

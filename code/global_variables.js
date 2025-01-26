@@ -358,13 +358,13 @@ window.addEventListener("weekRangeUpdated", function () {
 
 // When type (genres/ featres) is updated
 window.addEventListener("typeUpdated", function () {
-  const selectedRadialPlot = document.getElementById('radial_plot_year_content');
+  // const selectedRadialPlot = document.getElementById('radial-plot');
   if (window.selectedType == "features"){
-    selectedRadialPlot.style.display = 'block';
+    // selectedRadialPlot.style.display = 'block';
     createFeatureGenreMenu(possible_features_songs, true)
   }
   else{
-    selectedRadialPlot.style.display = 'none';
+    // selectedRadialPlot.style.display = 'none';
     createFeatureGenreMenu(possible_genres.concat(remaining_genres), true);
   }
   updateLongevityChartContent();

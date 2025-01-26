@@ -90,13 +90,25 @@ function loadAndProcess_GenresData_LineGraph(filtered_data_input, selected_years
 }
 
 function createInteractiveGraph_Features_LineGraph(plotData, selected_years, selected_weeks, max_top, selectedGenre, linePlot, table, width_lineGraph, height_lineGraph) {
-    // Set domain and ranges for axes
+    let minValue = Infinity;
+    let maxValue = -Infinity;
+    plotData.forEach(item => {
+        if ((item.avgValue - item.stdDev) < minValue) minValue = item.avgValue - item.stdDev;
+        if ((item.avgValue + item.stdDev) > maxValue) maxValue = item.avgValue + item.stdDev;
+      });
+    var difference_y = maxValue - minValue;
+    var minY = Math.max(minValue - difference_y * 0.1, 0);
+    var maxY = Math.min(maxValue + difference_y * 0.1, 1);
+    if ((maxY - minY) < 0.2){
+        minY = Math.max(0, (minY - (0.5) * (maxY - minY)));
+        maxY = Math.min(1, (maxY + (0.5) * (maxY - minY)));
+    }
     var x = d3.scaleLinear()
         .domain([selected_weeks[0], selected_weeks[1]])
         .range([0, width_lineGraph])
         .clamp(true);
     var y = d3.scaleLinear()
-        .domain([0, 1])
+        .domain([minY, maxY])
         .range([height_lineGraph, 0])
         .clamp(true);
     // Label x-axis
@@ -130,7 +142,19 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
         .attr("transform", "rotate(-90)") 
         .attr("x", -height_lineGraph * 0.5) 
         .attr("y", -70)
-        .text(`Weekly average for ${selectedGenre}`);
+        .text(`Weekly average ${selectedGenre} Score`);
+
+    // Y-axis grid lines
+    linePlot.append("g")
+        .attr("class", "grid")
+        .call(
+            d3.axisLeft(y)
+                .ticks(5)
+                .tickSize(-width_lineGraph)
+                .tickFormat("") 
+        )
+        .attr("opacity", 0.2)
+        .attr("stroke-dasharray", "2,2");
  
     /// Create all graphs/ parts
     // Average line in graph
@@ -256,6 +280,19 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
 }
 
 function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, selected_weeks, max_top, selectedGenre, linePlot, table, width_lineGraph, height_lineGraph){
+    let minValue = Infinity;
+    let maxValue = -Infinity;
+    plotData.forEach(item => {
+        const value = parseFloat(item.genre_percentage);
+        if (!isNaN(value)) {
+            if (value < minValue) minValue = value;
+            if (value > maxValue) maxValue = value;
+        }
+    });    
+    var difference_y = maxValue - minValue;
+    var minY = Math.max(minValue - difference_y * 0.2, 0);
+    var maxY = Math.min(maxValue + difference_y * 0.2, 100);
+    maxY = Math.max(maxY, 10);
     /// Graph settings
     // Set domain and ranges for axes
     var x = d3.scaleLinear()
@@ -263,7 +300,7 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
         .range([0, width_lineGraph])
         .clamp(true);
     var y = d3.scaleLinear()
-        .domain([0, 100])
+        .domain([minY, maxY])
         .range([height_lineGraph, 0])
         .clamp(true);
     // Label x-axis
@@ -298,6 +335,17 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
         .attr("x", -height_lineGraph * 0.5) 
         .attr("y", -70)
         .text(`Amount of ${selectedGenre} songs per week (%)`);
+    // Y-axis grid lines
+    linePlot.append("g")
+        .attr("class", "grid")
+        .call(
+            d3.axisLeft(y)
+                .ticks(5)
+                .tickSize(-width_lineGraph)
+                .tickFormat("") 
+        )
+        .attr("opacity", 0.2)
+        .attr("stroke-dasharray", "2,2");
     /// Create all graphs/ parts
     // Average line in graph
     selected_years.forEach(year_range => {
@@ -385,14 +433,14 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
 
 function updateLineGraph(filtered_data_input) {
     if (typeof linePlot !== "undefined") {
-        d3.select("#lineGraph_overTime").selectAll("*").remove();
+        d3.select("#lineGraph_overTime").selectAll("*")
+            .transition()
+            .duration(1500)
+            .ease(d3.easeLinear)
+            .remove();
     }
     if (typeof table !== "undefined") {
-        table.selectAll("*")
-            .transition()
-            .duration(500)
-            .style("opacity", 0)
-            .remove();
+        table.selectAll("*").remove();
     }
     
     var linegraph_containerWidth = document.getElementById("lineGraphContainer").clientWidth;
@@ -428,30 +476,30 @@ function updateLineGraph(filtered_data_input) {
     if (selectedType == "features"){
         removeButtonByContainerId("lineGraphContainer")
         createInfoButtonWithTooltip(
-            "lineGraphContainer", 
-            "Title features", 
-            "what are you looking at, info info info", 
-            "x ax", 
-            "y ax", 
-            "marks", 
-            "what can you do with it",
+            "lineGraphContainer",
+            `Weekly ${window.selectedGenre} Scores Over the Year`,
+            `This line graph displays the average ${window.selectedGenre} scores of songs in the Top ${window.selectedTop} for each week across all selected year ranges. You can compare the ${window.selectedGenre} distribution across different year ranges or within a single year range.`,
+            "The week number within the year.",
+            `The average ${window.selectedGenre} score of all songs in the Top ${window.selectedTop} for a specific week.`,
+            "Position indicates the week and score, and color represents the year range.",
+            "Hover over the graph to view the standard deviation of scores. Use the vertical search line to display detailed scores for a specific week.",
             "right"
-        );
+        );        
         const data = loadAndProcess_FeaturesData_LineGraph(filtered_data_input, selected_years, selectedGenre, max_top);
         createInteractiveGraph_Features_LineGraph(data, selected_years, selected_weeks, max_top, selectedGenre,  linePlot, table, width_lineGraph, height_lineGraph);
     }
     else {
         removeButtonByContainerId("lineGraphContainer")
         createInfoButtonWithTooltip(
-            "lineGraphContainer", 
-            "Title genres", 
-            "what are you looking at, info info info", 
-            "x ax", 
-            "y ax", 
-            "marks", 
-            "what can you do with it",
+            "lineGraphContainer",
+            `Weekly ${window.selectedGenre} Scores Over the Year`,
+            `This line graph shows the proportion of ${window.selectedGenre} songs in the Top ${window.selectedTop} for each week across all selected year ranges. You can compare the ${window.selectedGenre} distribution across different year ranges or within a single year range.`,
+            "The week number within the year.",
+            `The percentage of ${window.selectedGenre} songs in the Top ${window.selectedTop} for a specific week.`,
+            "Position indicates the week and score, while color represents the year range.",
+            "Hover over the graph to use the vertical search line to view detailed scores for a specific week.",
             "right"
-        );
+        );        
         const data = loadAndProcess_GenresData_LineGraph(filtered_data_input, selected_years, selectedGenre, max_top);
         createInteractiveGraph_Genress_LineGraph(data, selected_years, selected_weeks, max_top, selectedGenre,  linePlot, table, width_lineGraph, height_lineGraph);
     }

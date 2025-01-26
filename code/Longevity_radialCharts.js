@@ -490,6 +490,32 @@ function update_LongevityRadialGraph(filtered_data_input) {
   const chartContainers = []; 
 
   if (selection_features === "features") {
+    if (numCharts == 1){
+      removeButtonByContainerId("longevityradialPlotContainer")
+      createInfoButtonWithTooltip(
+        "longevityradialPlotContainer",
+        `Category-Based Longevity of Scores`,
+        `This radial graph displays the average score for all features, divided into categories: ${categories[0]}, ${categories[1]}, and ${categories[2]}. Songs are categorized based on how many weeks they spent in the Top ${window.selectedTop} during the selected year range. Category "${categories[2]}" represents the songs that have remained in the Top ${window.selectedTop} for the longest period. This visualization helps identify trends in the longevity of scores.`,
+        "All features.",
+        `The average score for each feature within a given category.`,
+        "The position indicates the feature and the average score, while color represents the category.",
+        "Click on the button to view the standard deviation of the scores.",
+        "left"
+      );  
+    }
+    else{
+      removeButtonByContainerId("longevityradialPlotContainer");
+      createInfoButtonWithTooltip(
+          "longevityradialPlotContainer",
+          "Category-Based Longevity of Scores",
+          `These radial graphs display the average score for all features, with one graph per category: ${categories[0]}, ${categories[1]}, and ${categories[2]}. Songs are categorized based on how many weeks they spent in the Top ${window.selectedTop} during the selected year range. Category "${categories[2]}" represents songs that have remained in the Top ${window.selectedTop} for the longest period. This visualization helps identify trends in score longevity and compare across different year ranges.`,
+          "All features.",
+          `The average score for each feature within a given category and year range.`,
+          "The position indicates the feature and the average score, while color represents the year range.",
+          "Click the button to view the standard deviation of the scores.",
+          "left"
+      );
+    }
     const radiusScale = d3
       .scaleLinear()
       .domain([0, 1])
@@ -656,6 +682,32 @@ function update_LongevityRadialGraph(filtered_data_input) {
       });
     });
   } else {
+    if (numCharts == 1){
+      removeButtonByContainerId("longevityradialPlotContainer")
+      createInfoButtonWithTooltip(
+        "longevityradialPlotContainer",
+        "Category-Based Longevity of Scores",
+        `This radial graph displays the number of songs per category for each specific genre. The categories are: ${categories[0]}, ${categories[1]}, and ${categories[2]}. Songs are categorized based on how many weeks they spent in the Top ${window.selectedTop} during the selected year range. Category "${categories[2]}" represents songs that have remained in the Top ${window.selectedTop} for the longest period. This visualization helps identify trends in the longevity of genres.`,
+        "All genres.",
+        `The number of songs per genre within each category.`,
+        "The position indicates the genre and the number of songs, while the color represents the category.",
+        "No interactivity.",
+        "left"
+    );
+    }
+    else{
+      removeButtonByContainerId("longevityradialPlotContainer");
+      createInfoButtonWithTooltip(
+        "longevityradialPlotContainer",
+        "Category-Based Longevity of Scores",
+        `These radial graphs display the number of songs per category for each specific genre, with one graph for each category: ${categories[0]}, ${categories[1]}, and ${categories[2]}. Songs are categorized based on how many weeks they spent in the Top ${window.selectedTop} during the selected year range. Category "${categories[2]}" represents songs that have remained in the Top ${window.selectedTop} for the longest period. This visualization helps identify trends in genre longevity and compare across different year ranges.`,
+        "All genres.",
+        `The number of songs per genre within each category.`,
+        "The position indicates the genre and the number of songs, while color represents the year range.",
+        "No interactivity.",
+        "left"
+    );
+    }
     const data = loadAndProcess_GenresData_longevityRadialChart(
       filtered_data_input,
       selected_years

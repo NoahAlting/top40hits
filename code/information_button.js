@@ -39,7 +39,7 @@ function createInfoButtonWithTooltip(
   tooltip.style.color = "white";
   tooltip.style.borderRadius = "8px";
   tooltip.style.fontSize = "14px";
-  tooltip.style.maxWidth = "600px";
+  tooltip.style.maxWidth = "500px";
   tooltip.style.display = "none";
   tooltip.style.zIndex = "11";
 

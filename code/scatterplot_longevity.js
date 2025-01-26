@@ -17,7 +17,7 @@ function createinfobutton_genre() {
         "longevityCharts",
         "Genre Frequency Distribution by Longevity",
         "This lineplot displays . The values are normalized ",
-        "Longevity, amount of weeks in the selected top 40",
+        "Longevity, amount of weeks in the selected top",
         "Normalized Frequency of appearance ",
         "lines, areas underneath lines",
         "color hue for year ranges, y-postion for frequency value, x-position for longevity",
@@ -319,7 +319,7 @@ function createInteractiveGraph_Features_scat(divId, data, features, feature, ye
         .attr("text-anchor", "middle")
         .style("font-size", "12px")
         .style("fill", "white")
-        .text("Longevity (amount of weeks in top 40)");
+        .text(`Longevity (amount of weeks song was charted in the top ${window.selectedTop})`);
 
     // y-axis
     svg.append("text")
@@ -330,7 +330,7 @@ function createInteractiveGraph_Features_scat(divId, data, features, feature, ye
         .attr("transform", "rotate(-90)")
         .style("font-size", "12px")
         .style("fill", "white")
-        .text(`Value for ${feature}`);
+        .text(`Value of  ${feature}`);
 
 
     // Create a clipping path
@@ -553,91 +553,47 @@ function smoothData(data, windowSize = 3) {
 }
 
 // Apply dynamic filters
-
-
 function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxWeeks) {
     var width_scatterplot_container = document.getElementById("longevityCharts").clientWidth;
     var height_scatterplot_container = document.getElementById("longevityCharts").clientHeight;
 
     const svg = d3.select("#longevity_histogram").attr("width", width_scatterplot_container).attr("height", height_scatterplot_container);
-    const width_longevityHistogram = +svg.attr("width");
-    const height_longevityHistogram = +svg.attr("height");
-    const margin_longevityHistogram = { top: height_scatterplot_container * 0.1, right: width_scatterplot_container * 0.1, bottom: height_scatterplot_container * 0.3, left: width_scatterplot_container * 0.1 };
-    console.log('hrntr height: ', height_scatterplot_container )
-    console.log("genre given height", height_longevityHistogram)
+    const width_longevityGenre = +svg.attr("width");
+    const height_longevityGenre = +svg.attr("height");
+    const margin_longevityGenre = { top: height_scatterplot_container * 0.1, right: width_scatterplot_container * 0.1, bottom: height_scatterplot_container * 0.3, left: width_scatterplot_container * 0.1 };
+
     // Clear old plot lines and areas, but not the axes
-    svg.selectAll(".line-path").transition().duration(500).style("opacity", 0).remove();  
+    svg.selectAll(".line-path").transition().duration(500).style("opacity", 0).remove();
     svg.selectAll(".area").transition().duration(500).style("opacity", 0).remove();
 
     const x = d3.scaleBand()
         .domain(freqData.map((d) => d.weeks))
-        .range([margin_longevityHistogram.left, width_longevityHistogram - margin_longevityHistogram.right])
+        .range([margin_longevityGenre.left, width_longevityGenre - margin_longevityGenre.right])
         .padding(0.1);
 
     let yScale;
-    if (yearRanges.length === 1) {
         yScale = d3.scaleLinear()
-            .domain([0, d3.max(freqData, (d) => d.frequency)]).nice()
-            .range([height_longevityHistogram - margin_longevityHistogram.bottom, margin_longevityHistogram.top]);
-    } else {
-        const maxNormalized = d3.max(freqData, (d) => d.frequency);
-        yScale = d3.scaleLinear()
-            .domain([0, Math.min(maxNormalized, 0.4)])
-            .range([height_longevityHistogram - margin_longevityHistogram.bottom, margin_longevityHistogram.top]);
-    }
+            .domain([0, 1])
+            .range([height_longevityGenre - margin_longevityGenre.bottom, margin_longevityGenre.top]);
 
-    // Handle the X-axis transition
-    let xAxisGroup = svg.select(".x-axis-group");
-    if (xAxisGroup.empty()) {
-        xAxisGroup = svg.append("g")
-            .attr("class", "x-axis-group")
-            .attr("transform", `translate(0,${height_longevityHistogram - margin_longevityHistogram.bottom})`)
-            .call(d3.axisBottom(x).tickSize(-height_longevityHistogram + margin_longevityHistogram.top + margin_longevityHistogram.bottom));
-
-        // Apply consistent styling for ticks
-        xAxisGroup.selectAll(".tick line")
-            .style("stroke", "#535067")
-            .style("stroke-width", 0.6);
-    } else {
-        xAxisGroup.transition()
-            .duration(1000)
-            .ease(d3.easeCubicOut)
-            .call(d3.axisBottom(x).tickSize(-height_longevityHistogram + margin_longevityHistogram.top + margin_longevityHistogram.bottom));
-
-        // Apply consistent styling for ticks during transition
-        xAxisGroup.selectAll(".tick line")
-            .style("stroke", "#535067")
-            .style("stroke-width", 0.6);
-    }
-
-    // Handle the Y-axis transition
-    let yAxisGroup = svg.select(".y-axis-group");
-    if (yAxisGroup.empty()) {
-        yAxisGroup = svg.append("g")
-            .attr("class", "y-axis-group")
-            .attr("transform", `translate(${margin_longevityHistogram.left},0)`)
-            .call(d3.axisLeft(yScale).ticks(5).tickSize(-width_longevityHistogram + margin_longevityHistogram.left + margin_longevityHistogram.right));
-
-        // Apply consistent styling for ticks
-        yAxisGroup.selectAll(".tick line")
-            .style("stroke", "#65627c")
-            .style("stroke-width", 1.5);
-    } else {
-        yAxisGroup.transition()
-            .duration(1000)
-            .ease(d3.easeCubicOut)
-            .call(d3.axisLeft(yScale).ticks(5).tickSize(-width_longevityHistogram + margin_longevityHistogram.left + margin_longevityHistogram.right));
-
-        // Apply consistent styling for ticks during transition
-        yAxisGroup.selectAll(".tick line")
-            .style("stroke", "#65627c")
-            .style("stroke-width", 1.5);
-    }
-
-    // Plotting based on year range count (other parts remain unchanged)
     if (yearRanges.length === 1) {
+        const uniqueSongsCount = new Set(dynamicallyFilteredData.map(row => row.Song_ID)).size;
+
+        // Normalize the frequency
+        freqData.forEach(d => {
+            d.frequency = d.frequency / uniqueSongsCount;
+        });
+
+        const maxFrequency = d3.max(freqData, (d) => d.frequency);
+        yScale = d3.scaleLinear()
+            .domain([0, Math.max(0.25, maxFrequency)])
+            .nice()
+            .range([height_longevityGenre - margin_longevityGenre.bottom, margin_longevityGenre.top]);
+
+
         singleLinePlot(svg, x, yScale, freqData, viridisScale(1));
     } else {
+        let maxFrequency = 0;
         const groupedData = yearRanges.map(([start, end], index) => {
             const rangeKey = `${start}-${end}`;
             const filtered = dynamicallyFilteredData.filter(row => row.Jaar >= start && row.Jaar <= end);
@@ -658,10 +614,12 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
             const filledData = fillMissingWeeks(
                 Array.from(longevityCounts, ([weeks, frequency]) => ({
                     weeks: +weeks,
-                    frequency: frequency / uniqueSongsCount, // Normalize by the unique song count
+                    frequency: frequency / uniqueSongsCount,
                 })).sort((a, b) => a.weeks - b.weeks),
                 maxWeeks
             );
+
+            maxFrequency = Math.max(maxFrequency, d3.max(filledData, (d) => d.frequency));
 
             return {
                 range: rangeKey,
@@ -669,15 +627,129 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
                 color: viridisScale(index + 1),
             };
         });
+        yScale = d3.scaleLinear()
+            .domain([0, Math.max(0.25, maxFrequency)])
+            .nice()
+            .range([height_longevityGenre - margin_longevityGenre.bottom, margin_longevityGenre.top]);
 
-        renderLinePlot(svg, x, yScale, groupedData, viridisScale, width_longevityHistogram, height_longevityHistogram, margin_longevityHistogram);
+        renderLinePlot(svg, x, yScale, groupedData, viridisScale, width_longevityGenre, height_longevityGenre, margin_longevityGenre);
     }
+
+    // Handle the X-axis transition
+    let xAxisGroup = svg.select(".x-axis-group");
+    if (xAxisGroup.empty()) {
+        xAxisGroup = svg.append("g")
+            .attr("class", "x-axis-group")
+            .attr("transform", `translate(0,${height_longevityGenre - margin_longevityGenre.bottom})`)
+            .call(d3.axisBottom(x).tickSize(-height_longevityGenre + margin_longevityGenre.top + margin_longevityGenre.bottom).ticks(5));
+
+        // Apply consistent styling for ticks
+        xAxisGroup.selectAll(".tick line")
+            .style("stroke", "#535067")
+            .style("stroke-width", 0.6);
+
+        // Remove the domain (top axis line) by setting its tick size to 0
+        xAxisGroup.select("path.domain").style("display", "none");
+
+        // Manually draw the bottom axis line (this is the "domain" path, but we manually control it)
+        xAxisGroup.append("path")
+            .attr("class", "x-axis-line")
+            .attr("d", `M${margin_longevityGenre.left},0L${width_longevityGenre - margin_longevityGenre.right},0`)  // Stretches the line to the domain's full length
+            .style("stroke", "#9694af")
+            .style("stroke-width", 3);
+    } else {
+        xAxisGroup.transition()
+            .duration(1000)
+            .ease(d3.easeCubicOut)
+            .call(d3.axisBottom(x).tickSize(-height_longevityGenre + margin_longevityGenre.top + margin_longevityGenre.bottom).ticks(5));
+
+        // Apply consistent styling for ticks during transition
+        xAxisGroup.selectAll(".tick line")
+            .style("stroke", "#535067")
+            .style("stroke-width", 0.6);
+
+        // Remove the domain (top axis line) by setting its tick size to 0
+        xAxisGroup.select("path.domain").style("display", "none");
+
+        // Manually draw the bottom axis line during transition (matching domain length)
+        xAxisGroup.select(".x-axis-line")
+            .attr("d", `M${margin_longevityGenre.left},0L${width_longevityGenre - margin_longevityGenre.right},0`)
+            .style("stroke", "#9694af")
+            .style("stroke-width", 3);
+    }
+
+// Handle the Y-axis transition (left axis)
+    let yAxisGroup = svg.select(".y-axis-group");
+    if (yAxisGroup.empty()) {
+        yAxisGroup = svg.append("g")
+            .attr("class", "y-axis-group")
+            .attr("transform", `translate(${margin_longevityGenre.left},0)`)
+            .call(d3.axisLeft(yScale).ticks(5).tickSize(-width_longevityGenre + margin_longevityGenre.left + margin_longevityGenre.right));
+
+        // Apply consistent styling for ticks
+        yAxisGroup.selectAll(".tick line")
+            .style("stroke", "#65627c")
+            .style("stroke-width", 1.5);
+
+        // Remove the domain (right axis line)
+        yAxisGroup.select("path.domain").style("display", "none");
+
+        // Manually draw the left axis line (this is the "domain" path, but we manually control it)
+        yAxisGroup.append("path")
+            .attr("class", "y-axis-line")
+            .attr("d", `M0,${margin_longevityGenre.top}L0,${height_longevityGenre - margin_longevityGenre.bottom}`)  // Stretches the line to the domain's full height
+            .style("stroke", "#9694af")
+            .style("stroke-width", 3);
+    } else {
+        yAxisGroup.transition()
+            .duration(1000)
+            .ease(d3.easeCubicOut)
+            .call(d3.axisLeft(yScale).ticks(5).tickSize(-width_longevityGenre + margin_longevityGenre.left + margin_longevityGenre.right));
+
+        // Apply consistent styling for ticks during transition
+        yAxisGroup.selectAll(".tick line")
+            .style("stroke", "#65627c")
+            .style("stroke-width", 1.5);
+
+        // Remove the domain (right axis line)
+        yAxisGroup.select("path.domain").style("display", "none");
+
+        // Manually draw the left axis line during transition (matching domain height)
+        yAxisGroup.select(".y-axis-line")
+            .attr("d", `M0,${margin_longevityGenre.top}L0,${height_longevityGenre - margin_longevityGenre.bottom}`)
+            .style("stroke", "#9694af")
+            .style("stroke-width", 3);
+    }
+    svg.append("text")
+        .attr("class", "x-axis-label")
+        .attr("x", width_longevityGenre * 0.5)
+        .attr("y", height_longevityGenre * 1.1)
+        .attr("text-anchor", "middle")
+        .style("font-size", "12px")
+        .style("fill", "white")
+        .text(`Longevity (amount of weeks song was charted in the top ${window.selectedTop})`);
+
+    // y-axis
+    svg.append("text")
+        .attr("class", "y-axis-label")
+        .attr("x", -height_longevityGenre * 0.5)
+        .attr("y", -margin_longevityGenre.left * 0.4)
+        .attr("text-anchor", "middle")
+        .attr("transform", "rotate(-90)")
+        .style("font-size", "12px")
+        .style("fill", "white")
+        .text(`Value of  ${window.selectedGenre}`);
 }
 
 // Render line plot with smooth transitions and consistent styles
 function renderLinePlot(svg, x, yRight, groupedData, colorScale, width_longevityHistogram, height_longevityHistogram, margin_longevityHistogram) {
     const line = d3.line()
         .x(d => x(d.weeks) + x.bandwidth() / 2)
+        .y(d => yRight(d.frequency));
+
+    const area = d3.area()
+        .x(d => x(d.weeks) + x.bandwidth() / 2)
+        .y0(yRight(0))
         .y(d => yRight(d.frequency));
 
     groupedData.forEach(({ range, data, color }) => {
@@ -691,6 +763,10 @@ function renderLinePlot(svg, x, yRight, groupedData, colorScale, width_longevity
             .attr("d", line)
             .attr("data-range", range)
             .attr("data-original-color", color)
+            .attr("class", "area")
+            .attr("d", area)
+            .attr("fill", color)
+            .attr("fill-opacity", 0.1)
     });
 }
 

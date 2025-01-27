@@ -56,7 +56,7 @@ function createInfoButtonWithTooltip(
     titleElement.style.textAlign = "left";
 
     const textElement = document.createElement("span");
-    textElement.textContent = text;
+    textElement.innerHTML = text;
     textElement.style.flex = "2";
     textElement.style.textAlign = "left";
 

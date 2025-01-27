@@ -12,15 +12,43 @@ function initializePlots() {
     // Update the header text based on the selectedType
     if (window.selectedType === "features") {
         header.text("Probability Density for Features");
+
+        removeButtonByContainerId("feature_genre_selector")
+        createInfoButtonWithTooltip(
+        "feature_genre_selector",
+        `Probability Density of Features`,
+        `A Probability Density Function (PDF) shows the density of features for specific value ranges.`,
+        "The feature value",
+        `The Probability Density`,
+        "The lines indicate the probability density for the feature values within the selected year ranges, the latter is visualized using color hue.",
+        "Channel",
+        "A higher peak means a larger portion of the selected data has this feature value. The smaller top plots provide a global overview to distinguish interesting features, and can be clicked to show a detailed version of that plot below." +
+        "<br><br> The detailed plot shows the PDF with a less relaxed fit. The lines can be hovered to show the median and average feature value within the data range.",
+        "right"
+    );    
+
         renderTopContainerFeatures();
         renderBottomContainerFeatures();
     } else if (window.selectedType === "genres") {
         header.text(`Genres in the top ${window.selectedTop}`);
+        removeButtonByContainerId("feature_genre_selector")
+        createInfoButtonWithTooltip(
+        "feature_genre_selector",
+        `Genres in the top ${window.selectedTop}`,
+        `This histogram plot shows how many songs within a genre were in the top ${window.selectedTop} in the selected data range.`,
+        "The number of songs",
+        `The genre, aggregated to the ${Object.keys(genreKeywords).length} largest genres.`,
+        "Position indicates the count, color indicates the year range.",
+        "Channel",
+        "In the top view, the total count of genres per year can be inspected. The genre groups or label can be clicked to show a detailed version below." +
+        `<br><br> In the detailed histogram, the selected genre can be closely inspected across year ranges. When hovered, the exact amount of songs in the top ${window.selectedTop} that are classified as the selected genre is shown.`,
+        "right"
+        )
         renderTopContainerGenres(1.2);
         renderBottomContainerGenres(0.8);
     }
 }
-
+   
 // ========================= Top Container (Features) =========================
 function renderTopContainerFeatures() {
     const container = d3.select("#topContainer_featuregenre");
@@ -178,7 +206,7 @@ function renderBottomContainerFeatures() {
     var margin = {
         top: height * 0.15, 
         right: width * 0.05, 
-        bottom: height * 0.05, 
+        bottom: height * 0.1, 
         left: width * 0.1};
 
     const svg = container.append("svg")
@@ -273,7 +301,7 @@ function renderDetailedPDF(svg, feature, width, height) {
                 .style("font-size", "16px")
                 .style("font-weight", "bold")
                 .style("fill", "white")
-                .text(`Detailed view: ${feature} values`);
+                .text(`Detailed view: ${feature}`);
 
             // Hoverable lines
             const hoverLinesGroup = svg.append("g");

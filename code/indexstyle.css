@@ -44,7 +44,7 @@ body {
 .intro-container {
     grid-area: introduction; 
     text-align: center;
-    padding: 20px;
+    padding: 40px;
     background-color: #2c2c3c;
     border-radius: 10px;
     margin-bottom: 20px;

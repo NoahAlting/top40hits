@@ -335,6 +335,8 @@ window.addEventListener("typeUpdated", function () {
   } else {
     selectedRadialPlot.style.visibility = 'hidden';
     selectedRadialPlot.style.opacity = '0';
+    const header_linegraph = d3.select("#heading-container-radial-year");
+    header_linegraph.html(`No weekly radial chart available for genres.`);
     createFeatureGenreMenu(possible_genres.concat(remaining_genres), true);
   }
   updateLongevityChartContent();

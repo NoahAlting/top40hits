@@ -70,7 +70,7 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
     const width_longevityHistogram = +svg.attr("width");
     const height_longevityHistogram = +svg.attr("height");
     const margin_longevityHistogram = { top: height_scatterplot_container * 0.1, right: width_scatterplot_container * 0.1, bottom: height_scatterplot_container * 0.3, left: width_scatterplot_container * 0.1 };
-
+    let groupedData = [];
     // Clear old plot lines and areas, but not the axes
     svg.selectAll(".line-path").transition().duration(500).style("opacity", 0).remove();  // Fade out old lines before removing
     svg.selectAll(".area").transition().duration(500).style("opacity", 0).remove();  // Fade out old areas before removing
@@ -144,7 +144,7 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
     if (yearRanges.length === 1) {
         singleLinePlot(svg, x, yScale, freqData, viridisScale(1));
     } else {
-        const groupedData = yearRanges.map(([start, end], index) => {
+        groupedData = yearRanges.map(([start, end], index) => {
             const rangeKey = `${start}-${end}`;
             const filtered = dynamicallyFilteredData.filter(row => row.Jaar >= start && row.Jaar <= end);
             const uniqueSongsCount = new Set(filtered.map(row => row.Song_ID)).size;
@@ -152,7 +152,7 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
             const groupedBySong = d3.group(filtered, (song) => song.Song_ID);
             const songLongevity = Array.from(groupedBySong, ([Song_ID, appearances]) => {
                 const uniqueWeeks = new Set(appearances.map((entry) => entry.Weeknr));
-                return { Song_ID, longevity: uniqueWeeks.size };
+                return {Song_ID, longevity: uniqueWeeks.size};
             });
 
             const longevityCounts = d3.rollup(

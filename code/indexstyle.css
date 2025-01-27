@@ -417,11 +417,13 @@ button {
     text-align: center;
     border: 1px solid white;
     padding: 5px;
+    top: -250px;
 }
 
 #value-table_long th {
     text-align: center;
     border: 1px solid white;
     padding: 5px;
-    background-color: #f4f4f4;
+    background-color: #65627c;
 }
+

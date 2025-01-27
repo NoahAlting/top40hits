@@ -565,12 +565,15 @@ function renderGenrePlot(filtered_data, selectedType) {
 
 
 function fillMissingWeeks(data, maxWeeks) {
-    const weekMap = new Map(data.map(d => [d.weeks, d.frequency]));
+    const frequencyMap = new Map(data.map(d => [d.weeks, d.frequency]));
+    const oldfreqMap = new Map(data.map(d => [d.weeks, d.oldfreq]));
+
     const filledData = [];
     for (let week = 1; week <= maxWeeks; week++) {
         filledData.push({
             weeks: week,
-            frequency: weekMap.get(week) || 0
+            oldfreq: oldfreqMap.get(week) || 0, // Use oldfreq from the map or default to 0
+            frequency: frequencyMap.get(week) || 0 // Use frequency from the map or default to 0
         });
     }
     return filledData;
@@ -587,7 +590,11 @@ function smoothData(data, windowSize = 3) {
 }
 
 function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
-    console.log("input year ranges", yearRanges)
+    console.log("Input year ranges:", yearRanges);
+
+    // Sort year ranges in ascending order
+    yearRanges.sort((a, b) => a[0] - b[0]);
+
     const overlay = svg.append("rect")
         .attr("class", "interactive-overlay")
         .attr("x", margin.left)
@@ -614,7 +621,34 @@ function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
         .style("visibility", "hidden")
         .style("pointer-events", "none");
 
-    const tbody = d3.select("#value-table_long"); // Targeting the table you want to populate
+    const tbody = d3.select("#value-table_long"); // Table to populate
+
+    // Clear previous table content to avoid duplicates
+    tbody.selectAll("tr").remove();
+
+    // Create the header row once with the year ranges
+    const headerRow = tbody.append("thead").append("tr");
+
+    // Add a column for "Week" in the header
+    headerRow.append("th").text("Longevity").style("border", "1px solid white").style("padding", "5px");
+
+    // Add year range columns
+    yearRanges.forEach(year_range => {
+        headerRow.append("th")
+            .text(`${year_range[0]}-${year_range[1]}`)
+            .style("border", "1px solid white")
+            .style("padding", "5px");
+    });
+
+    // Create a second row that will be populated with the data for the hovered week
+    const dataRow = tbody.append("tbody").append("tr");
+    dataRow.append("td").attr("id", "week-cell").style("border", "1px solid white").style("padding", "5px");
+
+    yearRanges.forEach(() => {
+        dataRow.append("td")
+            .style("border", "1px solid white")
+            .style("padding", "5px");
+    });
 
     overlay
         .on("mouseover", () => {
@@ -634,7 +668,6 @@ function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
             if (weekIndex < 0 || weekIndex >= xDomain.length) return;
 
             const week = xDomain[weekIndex];
-            console.log("week hovered: ", week)
             const xPosition = xScale(week) + xScale.bandwidth() / 2;
             verticalLine
                 .attr("x1", xPosition)
@@ -642,41 +675,69 @@ function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
                 .attr("y1", margin.top)
                 .attr("y2", svg.attr("height") - margin.bottom);
 
-            // Filter data for the selected week
-            const weekData = freqData.filter(d => d.weeks === week);
-            if (weekData.length > 0) {
-                tbody.selectAll("tr").remove(); // Clear existing rows before adding new data
+            // Check if data is nested or flat
+            const isNested = Array.isArray(freqData[0].data);
 
-                // Create a new table row for the selected week
-                const row = tbody.append("tr");
+            let yearRangeData = [];
+            yearRanges.forEach(year_range => {
+                const dataForRange = isNested
+                    ? freqData.filter(d => {
+                        const [rangeStart, rangeEnd] = d.range.split("-").map(Number);
+                        return rangeStart <= year_range[1] && rangeEnd >= year_range[0] && d.data.some(item => item.weeks === week);
+                    })
+                    : freqData.filter(d => d.weeks === week && d.range.split("-").map(Number).some((range, i) => i === 0 ? range <= year_range[1] : range >= year_range[0]));
 
-                // First column: Week value
-                row.append("td").text(week).style("border", "1px solid white").style("padding", "5px");
+                yearRangeData.push({ year_range, data: dataForRange });
+            });
 
-                // Loop through each year range and populate corresponding data
+            // Calculate the total frequency across all weeks for each year range
+            let totalFrequency = {};
+            yearRangeData.forEach(({ year_range, data }) => {
+                const totalCount = isNested
+                    ? d3.sum(data.flatMap(d => d.data), d => d.oldfreq) // Flatten and sum for nested data
+                    : d3.sum(data, d => d.oldfreq); // Sum directly for flat data
+
+                totalFrequency[year_range] = totalCount;
+            });
+
+            // Now, calculate total frequencies correctly for flat data (sum across all weeks)
+            if (!isNested) {
                 yearRanges.forEach(year_range => {
-                    const dataForYear = weekData.filter(d => d.Jaar >= year_range[0] && d.Jaar <= year_range[1]);
+                    const totalCountForRange = freqData
+                        .filter(d => {
+                            const [rangeStart, rangeEnd] = d.range.split("-").map(Number);
+                            return rangeStart <= year_range[1] && rangeEnd >= year_range[0];
+                        })
+                        .reduce((sum, d) => sum + d.oldfreq, 0);
+                    totalFrequency[year_range] = totalCountForRange;
+                });
+            }
 
-                    // Calculate the total frequency in the selected year range
-                    const totalCount = d3.sum(dataForYear, d => d.oldfreq); // Sum the old frequencies to get total
+            if (yearRangeData.length > 0) {
+                // Set the week number in the first column of the data row
+                d3.select("#week-cell").text(week);
 
-                    // Calculate the frequency in the specific week for the selected year range
-                    const thisWeekCount = d3.sum(dataForYear.filter(d => d.weeks === week), d => d.oldfreq);
+                // Loop through each year range and populate corresponding data for the hovered week
+                yearRanges.forEach((year_range, index) => {
+                    const dataForYearRange = yearRangeData[index].data;
+                    const thisWeekCount = isNested
+                        ? d3.sum(dataForYearRange.flatMap(d => d.data.filter(d => d.weeks === week)), d => d.oldfreq) // Flatten for nested data
+                        : d3.sum(dataForYearRange.filter(d => d.weeks === week), d => d.oldfreq); // Direct sum for flat data
 
-                    // Add year-specific data in the table
-                    row.append("td")
-                        .text(`${thisWeekCount} (Total: ${totalCount})`)  // Showing week frequency and total count for the range
-                        .style("border", "1px solid white")
-                        .style("padding", "5px");
+                    // Get the total frequency for the year range (already calculated)
+                    const totalCount = totalFrequency[year_range];
+
+                    // Update the corresponding cell in the data row
+                    d3.select(dataRow.selectAll("td").nodes()[index + 1])
+                        .text(`${thisWeekCount} (Total: ${totalCount})`);
                 });
             }
         });
 }
-
 // Apply dynamic filters
 function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxWeeks) {
-    var width_scatterplot_container = document.getElementById("longevityCharts").clientWidth;
-    var height_scatterplot_container = document.getElementById("longevityCharts").clientHeight;
+    var width_scatterplot_container = 680;
+    var height_scatterplot_container = 500;
 
     const svg = d3.select("#longevity_histogram").attr("width", width_scatterplot_container).attr("height", height_scatterplot_container);
     const width_longevityGenre = +svg.attr("width");
@@ -684,27 +745,35 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
     const margin_longevityGenre = { top: height_scatterplot_container * 0.1, right: width_scatterplot_container * 0.1, bottom: height_scatterplot_container * 0.3, left: width_scatterplot_container * 0.15 };
 
     console.log("height container", height_longevityGenre)
+
     // Clear old plot lines and areas, but not the axes
     svg.selectAll(".line-path").transition().duration(500).style("opacity", 0).remove();
     svg.selectAll(".area").transition().duration(500).style("opacity", 0).remove();
+
+    const tableContainer = document.getElementById("value-table");
+    if (tableContainer) {
+        tableContainer.innerHTML = "";
+    }
 
     const x = d3.scaleBand()
         .domain(freqData.map((d) => d.weeks))
         .range([margin_longevityGenre.left, width_longevityGenre - margin_longevityGenre.right])
         .padding(0.1);
 
-    let yScale;
-        yScale = d3.scaleLinear()
-            .domain([0, 1])
-            .range([height_longevityGenre - margin_longevityGenre.bottom, margin_longevityGenre.top]);
+    let yScale = d3.scaleLinear()
+        .domain([0, 1])
+        .range([height_longevityGenre - margin_longevityGenre.bottom, margin_longevityGenre.top]);
 
+    // Handle single year range
     if (yearRanges.length === 1) {
         const uniqueSongsCount = new Set(dynamicallyFilteredData.map(row => row.Song_ID)).size;
+        console.log("yearranges[0]", yearRanges[0]);
 
         // Normalize the frequency
         freqData.forEach(d => {
-            d.oldfreq = d.frequency
-            d.frequency = d.frequency / uniqueSongsCount;
+            d.oldfreq = d.frequency; // Non-normalized frequency
+            d.frequency = d.frequency / uniqueSongsCount; // Normalized frequency
+            d.range = `${yearRanges[0][0]}-${yearRanges[0][1]}`;
         });
 
         const maxFrequency = d3.max(freqData, (d) => d.frequency);
@@ -713,11 +782,13 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
             .nice()
             .range([height_longevityGenre - margin_longevityGenre.bottom, margin_longevityGenre.top]);
 
-
         singleLinePlot(svg, x, yScale, freqData, viridisScale(1));
-    } else {
+    }
+    // Handle multiple year ranges
+    else {
         let maxFrequency = 0;
-        const groupedData = yearRanges.map(([start, end], index) => {
+
+        groupedData = yearRanges.map(([start, end], index) => {
             const rangeKey = `${start}-${end}`;
             const filtered = dynamicallyFilteredData.filter(row => row.Jaar >= start && row.Jaar <= end);
             const uniqueSongsCount = new Set(filtered.map(row => row.Song_ID)).size;
@@ -737,8 +808,8 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
             const filledData = fillMissingWeeks(
                 Array.from(longevityCounts, ([weeks, frequency]) => ({
                     weeks: +weeks,
-                    oldfreq: frequency,
-                    frequency: frequency / uniqueSongsCount,
+                    oldfreq: frequency, // Non-normalized frequency
+                    frequency: frequency / uniqueSongsCount, // Normalized frequency
                 })).sort((a, b) => a.weeks - b.weeks),
                 maxWeeks
             );
@@ -751,6 +822,7 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
                 color: viridisScale(index + 1),
             };
         });
+
         yScale = d3.scaleLinear()
             .domain([0, Math.max(0.25, maxFrequency)])
             .nice()
@@ -767,18 +839,15 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
             .attr("transform", `translate(0,${height_longevityGenre - margin_longevityGenre.bottom})`)
             .call(d3.axisBottom(x).tickSize(-height_longevityGenre + margin_longevityGenre.top + margin_longevityGenre.bottom).ticks(5));
 
-        // Apply consistent styling for ticks
         xAxisGroup.selectAll(".tick line")
             .style("stroke", "#535067")
             .style("stroke-width", 0.6);
 
-        // Remove the domain (top axis line) by setting its tick size to 0
         xAxisGroup.select("path.domain").style("display", "none");
 
-        // Manually draw the bottom axis line (this is the "domain" path, but we manually control it)
         xAxisGroup.append("path")
             .attr("class", "x-axis-line")
-            .attr("d", `M${margin_longevityGenre.left},0L${width_longevityGenre - margin_longevityGenre.right},0`)  // Stretches the line to the domain's full length
+            .attr("d", `M${margin_longevityGenre.left},0L${width_longevityGenre - margin_longevityGenre.right},0`)
             .style("stroke", "#9694af")
             .style("stroke-width", 3);
     } else {
@@ -787,22 +856,19 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
             .ease(d3.easeCubicOut)
             .call(d3.axisBottom(x).tickSize(-height_longevityGenre + margin_longevityGenre.top + margin_longevityGenre.bottom).ticks(5));
 
-        // Apply consistent styling for ticks during transition
         xAxisGroup.selectAll(".tick line")
             .style("stroke", "#535067")
             .style("stroke-width", 0.6);
 
-        // Remove the domain (top axis line) by setting its tick size to 0
         xAxisGroup.select("path.domain").style("display", "none");
 
-        // Manually draw the bottom axis line during transition (matching domain length)
         xAxisGroup.select(".x-axis-line")
             .attr("d", `M${margin_longevityGenre.left},0L${width_longevityGenre - margin_longevityGenre.right},0`)
             .style("stroke", "#9694af")
             .style("stroke-width", 3);
     }
 
-// Handle the Y-axis transition (left axis)
+    // Handle the Y-axis transition (left axis)
     let yAxisGroup = svg.select(".y-axis-group");
     if (yAxisGroup.empty()) {
         yAxisGroup = svg.append("g")
@@ -810,18 +876,15 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
             .attr("transform", `translate(${margin_longevityGenre.left},0)`)
             .call(d3.axisLeft(yScale).ticks(5).tickSize(-width_longevityGenre + margin_longevityGenre.left + margin_longevityGenre.right));
 
-        // Apply consistent styling for ticks
         yAxisGroup.selectAll(".tick line")
             .style("stroke", "#65627c")
             .style("stroke-width", 1.5);
 
-        // Remove the domain (right axis line)
         yAxisGroup.select("path.domain").style("display", "none");
 
-        // Manually draw the left axis line (this is the "domain" path, but we manually control it)
         yAxisGroup.append("path")
             .attr("class", "y-axis-line")
-            .attr("d", `M0,${margin_longevityGenre.top}L0,${height_longevityGenre - margin_longevityGenre.bottom}`)  // Stretches the line to the domain's full height
+            .attr("d", `M0,${margin_longevityGenre.top}L0,${height_longevityGenre - margin_longevityGenre.bottom}`)
             .style("stroke", "#9694af")
             .style("stroke-width", 3);
     } else {
@@ -830,15 +893,12 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
             .ease(d3.easeCubicOut)
             .call(d3.axisLeft(yScale).ticks(5).tickSize(-width_longevityGenre + margin_longevityGenre.left + margin_longevityGenre.right));
 
-        // Apply consistent styling for ticks during transition
         yAxisGroup.selectAll(".tick line")
             .style("stroke", "#65627c")
             .style("stroke-width", 1.5);
 
-        // Remove the domain (right axis line)
         yAxisGroup.select("path.domain").style("display", "none");
 
-        // Manually draw the left axis line during transition (matching domain height)
         yAxisGroup.select(".y-axis-line")
             .attr("d", `M0,${margin_longevityGenre.top}L0,${height_longevityGenre - margin_longevityGenre.bottom}`)
             .style("stroke", "#9694af")
@@ -858,24 +918,28 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
 
     svg.select(".y-axis-label").remove();
 
-// Y-axis label
+    // Y-axis label
     svg.append("text")
         .attr("class", "y-axis-label")
         .attr("x", -height_longevityGenre / 2.4)
         .attr("y", margin_longevityGenre.left * 0.6)
         .attr("text-anchor", "middle")
-        .attr("transform", "rotate(-90)")  // Rotate the text to align with the Y-axis
+        .attr("transform", "rotate(-90)")
         .style("font-size", "12px")
         .style("fill", "white")
         .text(`Normalized Song Count`);
 
-    addInteractiveLine(svg, x, yScale, freqData, yearRanges, margin_longevityGenre);
+    if (yearRanges.length === 1) {
+        addInteractiveLine(svg, x, yScale, freqData, yearRanges, margin_longevityGenre);
+    } else {
+        addInteractiveLine(svg, x, yScale, groupedData, yearRanges, margin_longevityGenre);
+    }
+
     updateHeader();
 }
 
 // Render line plot with smooth transitions and consistent styles
 function renderLinePlot(svg, x, yRight, groupedData) {
-    console.log("render lineplot called")
     const line = d3.line()
         .x(d => x(d.weeks) + x.bandwidth() / 2)
         .y(d => yRight(d.frequency));
@@ -883,7 +947,7 @@ function renderLinePlot(svg, x, yRight, groupedData) {
     groupedData.forEach(({ range, data, color }) => {
         svg.append("path")
             .datum(data)
-            .attr("class", "line-path")  // Add class for line paths to easily clear them later
+            .attr("class", "line-path")
             .attr("fill", "none")
             .attr("stroke", color)
             .attr("stroke-width", 2)
@@ -891,10 +955,8 @@ function renderLinePlot(svg, x, yRight, groupedData) {
             .attr("d", line)
             .attr("data-range", range)
             .attr("data-original-color", color)
-            .attr("class", "area")
-            .attr("fill-opacity", 0.1)
     });
-}
+    }
 
 // Render single line plot
 function singleLinePlot(svg, x, y, data, color) {
@@ -928,36 +990,33 @@ function createSmoothingToggle() {
 
 function longevity_genre_yearhighlight(selectedRange) {
     const svg = d3.select("#longevity_histogram");
+
+    console.log('svg in highlight', svg.selectAll(".line-path").nodes());
+
+    if (window.selectedYearRanges.length < 2) {
+        return;
+    }
+    // Reset all paths if no range is selected
     if (!selectedRange || !Array.isArray(selectedRange) || selectedRange.length !== 2) {
-        svg.selectAll("path")
+        svg.selectAll(".line-path")
             .attr("stroke-width", 2)
-            .attr("opacity", 0.9)
-            .attr("stroke", function () {
-                return d3.select(this).attr("data-original-color") || "#ffffff";
-            });
+            .attr("opacity", 1.0);
         return;
     }
 
     const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
 
-    // Reset all lines (except axes) to their original color and default style
-    svg.selectAll("path")
-        .attr("stroke-width", 2)
-        .attr("opacity", 0.9)
-        .attr("stroke", function () {
-            // Restore the original stroke color from the data-original-color attribute
-            return d3.select(this).attr("data-original-color") || "#ffffff";
-        });
+    // Dim all paths
+    svg.selectAll(".line-path")
+        .attr("opacity", 0.2)
+        .attr("stroke-width", 2);
 
-    // Highlight the selected range's line by matching the 'data-range' attribute
-    const highlightedPath = svg.selectAll("path")
+    // Highlight the selected range
+    svg.selectAll(".line-path")
         .filter(function () {
             return d3.select(this).attr("data-range") === rangeKey;
         })
         .attr("stroke-width", 3)
         .attr("opacity", 1.0)
-        .attr("stroke", "#ff0000");  // Apply the highlight color
-
-    // Bring the selected path to the front
-    highlightedPath.raise();
+        .raise();
 }

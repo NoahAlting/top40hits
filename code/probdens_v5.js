@@ -94,7 +94,7 @@ function PDF_highlight_range_opacity(selectedRange) {
 
     // Dim all paths
     svgs.selectAll("path")
-        .attr("opacity", 0.2);
+        .attr("opacity", 0.4);
 
     // Highlight the selected range
     svgs.selectAll("path")
@@ -150,7 +150,7 @@ function PDF_highlight_range_detailed_opacity(selectedRange) {
 
     // Dim all paths
     svgs.selectAll("path")
-        .attr("opacity", 0.2);
+        .attr("opacity", 0.4);
 
     // Highlight the selected range
     svgs.selectAll("path")
@@ -205,7 +205,7 @@ function GenreHist_range_detailed_opacity(selectedRange) {
 
     // Dim all bars
     svg.selectAll("rect")
-        .attr("opacity", 0.2);
+        .attr("opacity", 0.4);
 
     // Highlight the selected range
     svg.selectAll("rect")

@@ -194,6 +194,16 @@ function loadAndProcess_FeaturesData_scat(filtered_data_input, range_years, sele
 }
 
 function showBarChart(year_range, colour, song, selectedFeature) {
+    var width_scatterplot_container = document.getElementById("longevityCharts").clientWidth;
+    var height_scatterplot_container = 800;
+    var margin_scatterplot = {
+        top: height_scatterplot_container * 0.1,
+        right: width_scatterplot_container * 0.1,
+        bottom: height_scatterplot_container * 0.4,
+        left: width_scatterplot_container * 0.2
+    };
+    var width_scatterplot = width_scatterplot_container - margin_scatterplot.left - margin_scatterplot.right;
+    var height_scatterplot = height_scatterplot_container - margin_scatterplot.top - margin_scatterplot.bottom;
     const barChartContainer = d3.select("#barchart");
     barChartContainer.selectAll("*").remove();
 
@@ -238,7 +248,7 @@ function showBarChart(year_range, colour, song, selectedFeature) {
 
     chartGroup.append("text")
         .attr("transform", "rotate(-90)")
-        .attr("x", -(increasedHeight / 2))
+        .attr("x", -(increasedHeight / 3))
         .attr("y", margin_scatterplot.left - 50)
         .attr("dy", "1em")
         .style("text-anchor", "middle")
@@ -364,7 +374,8 @@ function createInteractiveGraph_Features_scat(divId, data, features, feature, ye
 
     // Create the dot group with clipping path applied
     const dotGroup = svg.append("g").attr("clip-path", "url(#clip)");
-
+    
+    let previouslySelectedDot = null;
     // Dots for the scatterplot
     const dots = dotGroup
         .selectAll(".dot-scatter")
@@ -379,6 +390,17 @@ function createInteractiveGraph_Features_scat(divId, data, features, feature, ye
         .style("fill", year_range_colour)
         .on("click", (event, d) => {
             const dot = d3.select(event.target);
+    
+            // Reset the previously selected dot 
+            if (previouslySelectedDot) {
+                previouslySelectedDot
+                    .style("fill", year_range_colour) 
+                    .attr("r", 8); 
+            }
+
+            dot.style("fill", "orange").attr("r", 10); // Change color and size
+            previouslySelectedDot = dot;
+
             const initialX = dot.attr("cx");
             const initialY = dot.attr("cy");
             dot.transition()
@@ -398,12 +420,15 @@ function createInteractiveGraph_Features_scat(divId, data, features, feature, ye
         })
         .on("mouseover", (event, d) => {
             d3.select(event.target)
-                .attr("r", 10)
+                .attr("r", 10) 
                 .transition()
                 .duration(200);
         })
         .on("mouseout", event => {
-            d3.select(event.target).attr("r", 8);
+            const dot = d3.select(event.target);
+            if (!dot.classed("selected")) {
+                dot.attr("r", 8);
+            }
         });
 
 
@@ -463,7 +488,6 @@ function update_scat_features(filtered_data_input, selectedGenre_scat) {
     selected_genre = selectedGenre_scat;
     const selectedYearRanges_scat = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
     const currentYearRange = selectedYearRanges_scat[currentYearRangeIndex_scat];
-    const yearRangeText = `${currentYearRange[0]} - ${currentYearRange[1]}`;
     const yearRangeColor = get_color_yearRange(currentYearRange, selectedYearRanges_scat);
     const data = loadAndProcess_FeaturesData_scat(filtered_data_input, currentYearRange, selectedGenre_scat, possible_features_songs, selectedYearRanges_scat);
 
@@ -474,6 +498,17 @@ function update_scat_features(filtered_data_input, selectedGenre_scat) {
     createInteractiveGraph_Features_scat("#scatterplot", data, possible_features_songs, selected_genre, currentYearRange, yearRangeColor);
 
 }
+
+window.addEventListener("selectedRangeUpdated", function () {
+    const selectedRange = window.selectedRange; 
+    const selectedYearRanges_scat = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
+    const currentYearRange = selectedRange;
+    console.log("selected", selectedRange)
+    const yearRangeColor = get_color_yearRange(currentYearRange, selectedYearRanges_scat);
+    const data = loadAndProcess_FeaturesData_scat(global_data_scat, currentYearRange, selected_genre, possible_features_songs, selectedYearRanges_scat);
+    d3.select("#scatterplot").html("");
+    createInteractiveGraph_Features_scat("#scatterplot", data, possible_features_songs, selected_genre, currentYearRange, yearRangeColor);
+});
 
 // document.getElementById("prev").addEventListener("click", function () {
 //     const totalRanges = window.selectedYearRanges.length;

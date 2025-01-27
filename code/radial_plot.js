@@ -51,7 +51,7 @@ function createInteractiveGraph_Features_radial(divId, data, features) {
         .attr("width", width_radialplot)
         .attr("height", height_radialplot *4)
         .append("g")
-        .attr("transform", `translate(${margin_radialplot.left*4}, ${margin_radialplot.top*7})`);
+        .attr("transform", `translate(${margin_radialplot.left*4}, ${margin_radialplot.top*6})`);
 
     
     svg.append("circle")
@@ -271,26 +271,22 @@ function update_radial_features(filtered_data_input) {
     const selectedGenre = window.selectedGenre;
     
     const data = loadAndProcess_FeaturesData_radial(filtered_data_input, currentYearRange, selectedGenre, possible_features_songs);
-    const yearRangeText = `${currentYearRange[0]} - ${currentYearRange[1]}`;
 
-    const yearRangeColor = get_color_yearRange(currentYearRange, selectedYearRanges);
-    d3.select("#year-range-display-radial")
-        .text(`Year Range: ${yearRangeText}`)
-        .style("background-color",yearRangeColor ) 
     d3.select("#radial-plot").html(""); 
     createInteractiveGraph_Features_radial("#radial-plot", data, possible_features_songs);
     
 }
 
-// document.getElementById("prev-radial").addEventListener("click", function () {
-//     const totalRanges = window.selectedYearRanges.length;
-//     currentYearRangeIndex = (currentYearRangeIndex - 1 + totalRanges) % totalRanges; 
-//     update_radial_features(global_data); 
-// });
+window.addEventListener("selectedRangeUpdated", function () {
+    const selectedRange = window.selectedRange; 
+    const selectedYearRanges = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
+    const currentYearRange = selectedRange;
+    const selectedGenre = window.selectedGenre;
+    console.log(selectedGenre)
+    console.log(global_data)
+    const data = loadAndProcess_FeaturesData_radial(global_data, currentYearRange, selectedGenre, possible_features_songs);
+    d3.select("#radial-plot").html(""); 
+    createInteractiveGraph_Features_radial("#radial-plot", data, possible_features_songs);
+});
 
-// document.getElementById("next-radial").addEventListener("click", function () {
-//     const totalRanges = window.selectedYearRanges.length;
-//     currentYearRangeIndex = (currentYearRangeIndex + 1) % totalRanges; 
-//     update_radial_features(global_data); 
-// });
 

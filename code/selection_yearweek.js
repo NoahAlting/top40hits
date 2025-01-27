@@ -429,8 +429,12 @@ svg_weekselect.append("g")
     .call(xAxis);
 const brush = d3.brushX()
     .extent([[margin_week.left, margin_week.top], [width_week - margin_week.right, height_week - margin_week.bottom]])
-    .on("brush", brushed)
-    .on("end", brushended);
+brush.on('start', (event) => console.log('Brush start:', event));
+brush.on('brush', brushed);
+brush.on('end', (event) => {
+    console.log('Brush end:', event);
+    brushended(event);
+});
 
 // change the fill of the brush
 svg_weekselect.append("g")

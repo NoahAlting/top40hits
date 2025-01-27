@@ -363,3 +363,15 @@ window.addEventListener("selectedRangeUpdated", function () {
     console.log("selected range:", window.selectedRange);
 
 });
+
+window.addEventListener("genreUpdated", function () {
+    const selectedGenre = window.selectedGenre;
+    console.log("Genre/Feature updated:", selectedGenre);
+    filter_data()
+        .then(output_filtered_data => {
+            update_graphs_selected_FeatureGenre(output_filtered_data);
+            update_graphs_all_FeaturesGenres(output_filtered_data)
+        })
+        .catch(err => console.error("Error filtering data for feature:", err));
+
+});

@@ -8,31 +8,27 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 
-
 <body>
-
+<!-- Introduction part -->
 <div id="introduction" class="intro-container" >
     <h1>Interactive Data Visualization Dashboard</h1>
-    <p>
-        Description
+    <p style="text-align: right;">
+        Source: .....
     </p>
 </div>
-<!-- Radial Plots -->
+
+<!-- Radial Plots Year -->
 <!-- <div class="drag-handle" data-resize="1"></div> -->
-
-
 <div id="grid-container"></div>
 <div id="radial_plots" class="chart_container_below">
-    <h1>Radial Chart Features</h1>
-    <div id="radial-plot" class="chart"></div>
-
+    <h1 id="heading-container-radial-year" style="text-align: center; color: white; margin-bottom: 10px;"></h2>
+    <div id="radial-plot" class="chart">
+    </div>
 </div>
 
 <!-- Line Graph on the Left -->
 <div id="lineGraphContainer" class="chart_container_above">
-    <div class="heading-container">
-        <h1>Weekly Scores Over the Year</h1>
-    </div>
+    <h1 id="heading-container-linegraph" style="text-align: center; color: white; margin-bottom: 10px;"></h2>
     <div id="lineGraph_overTime"></div>
     <div id="table-container">
         <table id="value-table" class="value-table"></table>
@@ -75,10 +71,7 @@
     <div id="weekRangeContainer"></div>
 </div>
 
-
-
-<!-- Longevity Charts on the Right -->
-
+<!-- Longevity radial charts -->
 <div id="longevityradialPlotContainer"  class="chart_container_above">
     <div class="heading-container">
         <h1>Category-based Longevity of Scores</h1>
@@ -87,7 +80,7 @@
     <div id="longevity_radialChart" class="chart"></div>
 </div>
 
-
+<!-- Longevity scatterplot and genre histogram -->
 <div id="longevityCharts"  class="chart_container_below">
     <div id="h1"></div> 
     <div id="selected_feature_long">
@@ -98,16 +91,16 @@
     <div id="selected_genre_long">
         <svg id="longevity_histogram" class="chart"></svg></svg>
         <div id="controls"></div>
+    </div>    
+    <div id="table-container_long">
+        <table id="value-table_long" class="value-table"></table>
     </div>
-    
-
+</div>
 <!-- <div class="drag-handle" id="drag-handle-right" data-resize="2"></div> -->
 <!-- <div class="drag-handle" id="drag-handle-right"></div> -->
 
-</div>
-</div>
 
-</div>
+<!-- Probility Density functions -->
 <div id="feature_genre_selector" class ="chart_container_FG">
     <h1 id="FG_Header" style="text-align: center; color: white; margin-bottom: 10px;"></h2>
     <dif id="topContainer_featuregenre" class="subcontainer_FG"></dif>
@@ -128,6 +121,7 @@
 
 <!--Scripts-->
 <script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="introduction_button.js"></script>
 <script src="information_button.js"></script>
 <script src="selection_yearweek.js"></script>
 <script src="selection_typetop.js"></script>

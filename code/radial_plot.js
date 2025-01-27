@@ -294,6 +294,16 @@ let global_data = []
 const sortedYearRanges = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
 
 function update_radial_features(filtered_data_input) {
+    const header_linegraph = d3.select("#heading-container-radial-year");
+    if (window.selectedRange.length == 0){
+        header_linegraph.html(`Weekly Scores All Features Averaged over <br> 1965 - 2023`);
+    }
+    else if (window.selectedRange[0] == window.selectedRange[1]){
+        header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${window.selectedRange[0]}`);
+    }
+    else if (window.selectedRange.length == 2){
+        header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${window.selectedRange[0]} - ${window.selectedRange[1]}`);
+    }
     global_data = filtered_data_input;
     const selectedYearRanges = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
     const currentYearRange = selectedYearRanges[currentYearRangeIndex];
@@ -307,15 +317,27 @@ function update_radial_features(filtered_data_input) {
 }
 
 window.addEventListener("selectedRangeUpdated", function () {
-    const selectedRange = window.selectedRange; 
-    const selectedYearRanges = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
-    const currentYearRange = selectedRange;
-    const selectedGenre = window.selectedGenre;
-    console.log(selectedGenre)
-    console.log(global_data)
-    const data = loadAndProcess_FeaturesData_radial(global_data, currentYearRange, selectedGenre, possible_features_songs);
-    d3.select("#radial-plot").html(""); 
-    createInteractiveGraph_Features_radial("#radial-plot", data, possible_features_songs);
+    if (window.selectedType == "features") {
+        const header_linegraph = d3.select("#heading-container-radial-year");
+        if (window.selectedRange.length == 0){
+            header_linegraph.html(`Weekly Scores All Features Averaged over <br> 1965 - 2023`);
+        }
+        else if (window.selectedRange[0] == window.selectedRange[1]){
+            header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${window.selectedRange[0]}`);
+        }
+        else if (window.selectedRange.length == 2){
+            header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${window.selectedRange[0]} - ${window.selectedRange[1]}`);
+        }
+        const selectedRange = window.selectedRange; 
+        const selectedYearRanges = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
+        const currentYearRange = selectedRange;
+        const selectedGenre = window.selectedGenre;
+        console.log(selectedGenre)
+        console.log(global_data)
+        const data = loadAndProcess_FeaturesData_radial(global_data, currentYearRange, selectedGenre, possible_features_songs);
+        d3.select("#radial-plot").html(""); 
+        createInteractiveGraph_Features_radial("#radial-plot", data, possible_features_songs);
+    }
 });
 
 

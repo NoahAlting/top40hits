@@ -142,7 +142,7 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
         .attr("transform", "rotate(-90)") 
         .attr("x", -height_lineGraph * 0.5) 
         .attr("y", -70)
-        .text(`Weekly average ${selectedGenre} Score`);
+        .text(`Average score`);
 
     // Y-axis grid lines
     linePlot.append("g")
@@ -334,7 +334,7 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
         .attr("transform", "rotate(-90)") 
         .attr("x", -height_lineGraph * 0.5) 
         .attr("y", -70)
-        .text(`Amount of ${selectedGenre} songs per week (%)`);
+        .text(`Amount of songs (in %)`);
     // Y-axis grid lines
     linePlot.append("g")
         .attr("class", "grid")
@@ -435,7 +435,7 @@ function updateLineGraph(filtered_data_input) {
     if (typeof linePlot !== "undefined") {
         d3.select("#lineGraph_overTime").selectAll("*")
             .transition()
-            .duration(1500)
+            .duration(5)
             .ease(d3.easeLinear)
             .remove();
     }
@@ -473,7 +473,10 @@ function updateLineGraph(filtered_data_input) {
     const selectedGenre = window.selectedGenre;
     const max_top = window.selectedTop;
     const selected_weeks = window.selectedWeekRange;
+
+    const header_linegraph = d3.select("#heading-container-linegraph");
     if (selectedType == "features"){
+        header_linegraph.text(`Weekly ${selectedGenre} Scores Over the Year`);
         removeButtonByContainerId("lineGraphContainer")
         createInfoButtonWithTooltip(
             "lineGraphContainer",
@@ -490,6 +493,7 @@ function updateLineGraph(filtered_data_input) {
         createInteractiveGraph_Features_LineGraph(data, selected_years, selected_weeks, max_top, selectedGenre,  linePlot, table, width_lineGraph, height_lineGraph);
     }
     else {
+        header_linegraph.text(`Weekly Amount of ${selectedGenre} Songs Over the Year`);
         removeButtonByContainerId("lineGraphContainer")
         createInfoButtonWithTooltip(
             "lineGraphContainer",

@@ -10,6 +10,8 @@ function createInfoButtonWithTooltip(
   left_right
 ) {
   const infoButton = document.createElement("button");
+  const container = document.getElementById(containerId);
+  var width_container = container.clientWidth;
   infoButton.id = "information_button";
   infoButton.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
@@ -25,8 +27,11 @@ function createInfoButtonWithTooltip(
   if (left_right == "right") {
     infoButton.style.right = "10px";
   }
-  if (left_right == "left") {
+  else if (left_right == "left") {
     infoButton.style.left = "10px";
+  }
+  else if (left_right == "middle"){
+    infoButton.style.right = `${0.5 * width_container}px`;
   }
   infoButton.style.zIndex = "10";
 
@@ -34,7 +39,15 @@ function createInfoButtonWithTooltip(
   tooltip.id = "information_button_content";
   tooltip.style.position = "absolute";
   tooltip.style.top = "40px";
-  tooltip.style.right = "10px";
+  if (left_right == "right") {
+    infoButton.style.right = "10px";
+  }
+  else if (left_right == "left") {
+    infoButton.style.left = "10px";
+  }
+  else if (left_right == "middle"){
+    infoButton.style.right = `${0.5 * width_container}px`;
+  }
   tooltip.style.padding = "10px";
   tooltip.style.background = "rgba(0, 0, 0, 0.8)";
   tooltip.style.color = "white";
@@ -73,6 +86,7 @@ function createInfoButtonWithTooltip(
   tooltip.appendChild(createTooltipLine("X-axis:", xAxis));
   tooltip.appendChild(createTooltipLine("Y-axis:", yAxis));
   tooltip.appendChild(createTooltipLine("Marks:", marks));
+  tooltip.appendChild(createTooltipLine("Channels:", channels));
   tooltip.appendChild(
     createTooltipLine("What can you do with it:", whatCanYouDo)
   );
@@ -88,7 +102,6 @@ function createInfoButtonWithTooltip(
     }
   });
 
-  const container = document.getElementById(containerId);
   container.style.position = "relative";
   container.appendChild(infoButton);
   container.appendChild(tooltip);

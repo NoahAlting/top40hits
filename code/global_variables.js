@@ -7,9 +7,9 @@ const possible_features_songs = [
     // "Liveness",
     "Valence",
     // "Speechiness",
-    "Normalized_Loudness", 
+    "Loudness",
     // "Normalized_Popularity", 
-    "Normalized_Tempo",
+    "Tempo",
   ];
 
   
@@ -312,6 +312,8 @@ window.addEventListener("topUpdated", function () {
 
 // When year range is updated
 window.addEventListener("yearRangeUpdated", function () {
+    window.selectedRange = [];
+    dispatchCustomEvent('selectedRangeUpdated')
   filter_data().then(output_filtered_data => {
     update_graphs_all_FeaturesGenres(output_filtered_data);
     update_graphs_selected_FeatureGenre(output_filtered_data);
@@ -333,6 +335,8 @@ window.addEventListener("weekRangeUpdated", function () {
 
 // When type (genres/ featres) is updated
 window.addEventListener("typeUpdated", function () {
+    window.selectedRange = [];
+    dispatchCustomEvent('selectedRangeUpdated')
   const selectedRadialPlot = document.getElementById('radial-plot');
   if (window.selectedType == "features") {
     selectedRadialPlot.style.visibility = 'visible';
@@ -341,6 +345,8 @@ window.addEventListener("typeUpdated", function () {
   } else {
     selectedRadialPlot.style.visibility = 'hidden';
     selectedRadialPlot.style.opacity = '0';
+    const header_linegraph = d3.select("#heading-container-radial-year");
+    header_linegraph.html(`No weekly radial chart available for genres.`);
     createFeatureGenreMenu(possible_genres.concat(remaining_genres), true);
   }
   updateLongevityChartContent();

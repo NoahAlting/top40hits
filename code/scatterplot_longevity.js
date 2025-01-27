@@ -36,11 +36,20 @@ const headerElement = document.createElement("h1");
 headerElement.id = "longevityHeader_2";
 document.getElementById("longevityCharts").prepend(headerElement);
 
-// Simplified updateHeader function
-function updateHeader(headerText) {
-    const headerElement = document.getElementById('longevityHeader_2');
-    if (headerElement) {
-        headerElement.textContent = headerText;
+function updateHeader() {
+    console.log("selected type: ", selectedType)
+    let headerElement = document.getElementById('longevityHeader_2');
+    if (!headerElement) {
+        headerElement = document.createElement("h1");
+        headerElement.id = "longevityHeader_2";
+        const longevityChartsContainer = document.getElementById("longevityCharts");
+        longevityChartsContainer.insertBefore(headerElement, longevityChartsContainer.firstChild);
+    }
+    if (window.selectedType === "features") {
+        headerElement.textContent = `${window.selectedGenre} Value Distribution by Longevity for ${window.selectedRange}`;
+
+    } else {
+        headerElement.textContent =  `${window.selectedGenre} Distribution by Longevity`
     }
 }
 
@@ -60,7 +69,7 @@ function toggleVisibility(selectedType) {
         }
 
         showFeatureElements();
-        updateHeader(`${window.selectedGenre} Value Distribution by Longevity for ${window.selectedRange}`);
+        updateHeader();
     } else if (selectedType === "genres") {
         hideFeatureElements();
 
@@ -75,7 +84,7 @@ function toggleVisibility(selectedType) {
         }
 
         showGenreElements();
-        updateHeader(`${window.selectedGenre} Distribution by Longevity`);
+        updateHeader();
     }
 }
 
@@ -103,17 +112,7 @@ function showGenreElements() {
     genreElements.forEach(el => el.style.display = 'block');
 }
 
-// Function to update or create the header dynamically
-function updateHeader(headerText) {
-    let headerElement = document.getElementById('longevityHeader_2');
-    if (!headerElement) {
-        headerElement = document.createElement("h1");
-        headerElement.id = "longevityHeader_2";
-        const longevityChartsContainer = document.getElementById("longevityCharts");
-        longevityChartsContainer.insertBefore(headerElement, longevityChartsContainer.firstChild);
-    }
-    headerElement.textContent = headerText;
-}
+
 
 // Function to hide all elements (used for reset)
 function hideAllElements() {
@@ -137,7 +136,7 @@ function updateLongevityChartContent() {
         selectedFeatureElement.style.display = 'block';
         selectedGenreElement.style.display = 'none';
 
-        updateHeader(`${window.selectedGenre} Value Distribution by Longevity for ${window.selectedRange}`)
+        updateHeader()
 
         const elementsToHide = document.querySelectorAll('#barchart, #scatterplot, #feature-selector, #tooltip, #prev, #next, #year-range-display, #clip');
         elementsToHide.forEach(element => {
@@ -148,7 +147,7 @@ function updateLongevityChartContent() {
         selectedFeatureElement.style.display = 'none';
         selectedGenreElement.style.display = 'block';
         hideAllElements();
-        updateHeader(`${window.selectedGenre} Distribution by Longevity`);
+        updateHeader();
     }
 }
 
@@ -494,7 +493,7 @@ function update_scat_features(filtered_data_input, selectedGenre_scat) {
     //     .style("background-color", yearRangeColor)
     d3.select("#scatterplot").html("");
     createInteractiveGraph_Features_scat("#scatterplot", data, possible_features_songs, selected_genre, currentYearRange, yearRangeColor);
-    updateHeader(`${window.selectedGenre} Value Distribution by Longevity for ${window.selectedRange}`)
+    updateHeader()
 
 }
 
@@ -506,7 +505,7 @@ window.addEventListener("selectedRangeUpdated", function () {
     const yearRangeColor = get_color_yearRange(currentYearRange, selectedYearRanges_scat);
     const data = loadAndProcess_FeaturesData_scat(global_data_scat, currentYearRange, selected_genre, possible_features_songs, selectedYearRanges_scat);
     d3.select("#scatterplot").html("");
-    updateHeader(`${window.selectedGenre} Value Distribution by Longevity for ${window.selectedRange}`);
+    updateHeader();
     createInteractiveGraph_Features_scat("#scatterplot", data, possible_features_songs, selected_genre, currentYearRange, yearRangeColor);
 });
 
@@ -871,7 +870,7 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
         .text(`Normalized Song Count`);
 
     addInteractiveLine(svg, x, yScale, freqData, yearRanges, margin_longevityGenre);
-    updateHeader(`${window.selectedGenre} Distribution by Longevity`);
+    updateHeader();
 }
 
 // Render line plot with smooth transitions and consistent styles

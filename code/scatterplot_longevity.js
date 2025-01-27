@@ -155,49 +155,31 @@ const allWeeks = [];
 
 const week_ranges = window.selectedWeekRange;
 
-function loadAndProcess_FeaturesData_scat(filtered_data_input, range_years, selectedGenre, possible_features_songs) {
-    const plotData = [];
+function loadAndProcess_FeaturesData_scat(filtered_data_input, range_years) {
+    const filteredData = filtered_data_input.filter(row =>
+        +row.Jaar >= range_years[0] && +row.Jaar <= range_years[1]
+    );
 
-    const filteredData = filtered_data_input
-        .filter(row => +row.Jaar >= range_years[0] && +row.Jaar <= range_years[1]);
+    const groupedBySong = d3.group(filteredData, (row) => row.Song_ID);
 
-    const songMap = new Map();
+    // Calculate longevity (number of unique weeks) for each song
+    const plotData = Array.from(groupedBySong, ([Song_ID, appearances]) => {
+        const uniqueWeeks = new Set(appearances.map(entry => entry.Weeknr)).size;
 
-    filteredData.forEach(row => {
-        const songId = row.Song_ID;
-        const currentLongevity = +row.Aantal_weken;
+        const representativeEntry = appearances[0];
 
-        // Keep the song with the highest longevity
-        if (!songMap.has(songId) || songMap.get(songId).Longevity < currentLongevity) {
-            songMap.set(songId, {
-                Song_ID: songId,
-                Longevity: currentLongevity,
-                Aantal_weken: +row.Aantal_weken,
-                Artist: row.Artist,
-                Title: row.Titel,
-                Danceability: row.Danceability,
-                Liveness: row.Liveness,
-                Speechiness: row.Speechiness,
-                Acousticness: row.Acousticness,
-                Energy: row.Energy,
-                Valence: row.Valence,
-            });
-        }
-    });
-
-    songMap.forEach((song, songId) => {
-        plotData.push({
-            Song_ID: song.Song_ID,
-            Artist: song.Artist,
-            Title: song.Title,
-            Longevity: song.Longevity,
-            Danceability: song.Danceability,
-            Liveness: song.Liveness,
-            Speechiness: song.Speechiness,
-            Acousticness: song.Acousticness,
-            Energy: song.Energy,
-            Valence: song.Valence,
-        });
+        return {
+            Song_ID,
+            Artist: representativeEntry.Artist,
+            Title: representativeEntry.Titel,
+            Longevity: uniqueWeeks,
+            Danceability: representativeEntry.Danceability,
+            Liveness: representativeEntry.Liveness,
+            Loudness: representativeEntry.Normalized_Loudness,
+            Acousticness: representativeEntry.Acousticness,
+            Energy: representativeEntry.Energy,
+            Valence: representativeEntry.Valence,
+        };
     });
 
     return plotData;
@@ -223,7 +205,7 @@ function showBarChart(year_range, colour, song, selectedFeature) {
         .attr("width", width_scatterplot)
         .attr("height", height_scatterplot + margin_scatterplot.bottom);
 
-    const selectedFeatures = ['Danceability', 'Acousticness', 'Energy', 'Liveness', 'Valence', 'Speechiness'];
+    const selectedFeatures = ['Danceability', 'Acousticness', 'Energy', 'Liveness', 'Valence', 'Normalized_Loudness'];
     const featureData = selectedFeatures
         .map(feature => ({feature, value: song[feature]}))
         .filter(d => d.value != null && d.value != undefined);

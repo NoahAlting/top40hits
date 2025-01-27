@@ -131,6 +131,7 @@ function createBrush() {
         .on("end", function (event) {
             console.log(selectedRanges);
             dispatchCustomEvent('yearRangeUpdated', { ranges: selectedRanges });
+            removeAllBorders()
         });
 
     const brushGroup = svg_yearselect
@@ -176,7 +177,6 @@ function multiBrush(event, currentBrush) {
 
     if (selectedYears.length > 0) {
         const range = [selectedYears[0], selectedYears[selectedYears.length - 1]];
-        window.selectedRange = range;
         updateRanges(currentBrush, range);
     }
 
@@ -235,11 +235,18 @@ function removeRange(index) {
     multiBrushes.splice(index, 1);
 
     renderRanges();
-    console.log("selected ranges after deletion", selectedRanges);
     window.previousYearLength = selectedRanges.length + 1;
     window.selectedYearRanges = selectedRanges.map(r => r.range);
     dispatchCustomEvent('yearRangeUpdated', { ranges: selectedRanges });
     resetYearColors();
+}
+
+// Function to remove borders from range items
+function removeAllBorders() {
+    const allRangeDivs = document.querySelectorAll(".range-item");
+    allRangeDivs.forEach((div) => {
+        div.style.border = "none";
+    });
 }
 
 // Function to show the selected year ranges on the dashboard, & remove & edit them
@@ -266,18 +273,17 @@ function renderRanges() {
 
         // Highlight the range div if it's the selected range
         if (window.selectedRange && window.selectedRange[0] === range[0] && window.selectedRange[1] === range[1]) {
-            rangeDiv.style.border = "4px solid #ff0000";  // Highlight the selected range
+            rangeDiv.style.border = "4px solid #ff0000";
         } else {
-            rangeDiv.style.border = "none";  // Ensure non-selected ranges don't have borders
+            rangeDiv.style.border = "none";
         }
 
         rangeDiv.onclick = () => {
             const allRangeDivs = document.querySelectorAll(".range-item");
             allRangeDivs.forEach((div) => {
-                div.style.border = "none"; // Unhighlight all containers first
+                div.style.border = "none";
             });
 
-            // If the same container is selected, unhighlight it
             if (window.selectedRange && window.selectedRange[0] === range[0] && window.selectedRange[1] === range[1]) {
                 window.selectedRange = [];
             } else {
@@ -339,7 +345,7 @@ function editRange(index) {
             multiBrush.call(this, event, newBrush);
             dispatchCustomEvent('yearRangeUpdated', { ranges: selectedRanges });
             window.previousYearLength = selectedRanges.length - 1;
-            console.log("Dispatched Event:", 'yearRangeUpdated', { ranges: selectedRanges });
+            removeAllBorders()
         });
 
     const newGroup = svg_yearselect

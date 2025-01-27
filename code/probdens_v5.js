@@ -36,7 +36,7 @@ function initializePlots() {
         "feature_genre_selector",
         `Genres in the top ${window.selectedTop}`,
         `This histogram plot shows how many songs within a genre were in the top ${window.selectedTop} in the selected data range.`,
-        "The number of songs",
+        "The number of songs that were assigned the genre label.",
         `The genre, aggregated to the ${Object.keys(genreKeywords).length} largest genres.`,
         "Position indicates the count, color indicates the year range.",
         "Channel",
@@ -566,7 +566,7 @@ function renderHistogram(svg, width, height) {
                     .style("font-size", "14px")
                     .style("font-weight", "bold")
                     .style("fill", "white")
-                    .text("Number of Songs");
+                    .text("Number of songs");
 
                 // svg.append("text")
                 //     .attr("x", width / 2)
@@ -756,7 +756,7 @@ function renderDetailedHistogram(svg, width, height) {
                 .style("font-size", "14px")
                 .style("font-weight", "bold")
                 .style("fill", "white")
-                .text(`Number of ${selectedGenre} songs`);
+                .text(`Number of songs labeled as ${selectedGenre}`);
         })
         .catch((err) => console.error("Error rendering barplot:", err));
 }

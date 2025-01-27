@@ -77,12 +77,12 @@ function showFeatureElements() {
 }
 
 function hideGenreElements() {
-    const genreElements = document.querySelectorAll('#selected_genre_long, #longevity_histogram, #controls');
+    const genreElements = document.querySelectorAll('#selected_genre_long, #longevity_histogram, #controls, #table-container_long, #value-table');
     genreElements.forEach(el => el.style.display = 'none');
 }
 
 function showGenreElements() {
-    const genreElements = document.querySelectorAll('#selected_genre_long, #longevity_histogram, #controls');
+    const genreElements = document.querySelectorAll('#selected_genre_long, #longevity_histogram, #controls, #table-container_long, #value-table');
     genreElements.forEach(el => el.style.display = 'block');
 }
 
@@ -174,8 +174,8 @@ function loadAndProcess_FeaturesData_scat(filtered_data_input, range_years) {
             Title: representativeEntry.Titel,
             Longevity: uniqueWeeks,
             Danceability: representativeEntry.Danceability,
-            Normalized_Loudness: representativeEntry.Normalized_Loudness,
-            Normalized_Tempo: representativeEntry.Normalized_Tempo,
+            Loudness: representativeEntry.Loudness,
+            Tempo: representativeEntry.Tempo,
             Acousticness: representativeEntry.Acousticness,
             Energy: representativeEntry.Energy,
             Valence: representativeEntry.Valence,
@@ -205,7 +205,7 @@ function showBarChart(year_range, colour, song, selectedFeature) {
         .attr("width", width_scatterplot)
         .attr("height", height_scatterplot + margin_scatterplot.bottom);
 
-    const selectedFeatures = ['Danceability', 'Acousticness', 'Energy', 'Normalized_Tempo', 'Valence', 'Normalized_Loudness'];
+    const selectedFeatures = ['Danceability', 'Acousticness', 'Energy', 'Tempo', 'Valence', 'Loudness'];
     const featureData = selectedFeatures
         .map(feature => ({feature, value: song[feature]}))
         .filter(d => d.value != null && d.value != undefined);
@@ -579,24 +579,24 @@ function smoothData(data, windowSize = 3) {
     });
 }
 
-function addInteractiveLine(svg, xScale, yScale, freqData, dynamicallyFilteredData, yearRanges, margin) {
-    // Add a rectangle for capturing mouse events
+function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
+    console.log("input year ranges", yearRanges)
     const overlay = svg.append("rect")
         .attr("class", "interactive-overlay")
-        .attr("width", svg.attr("width"))
-        .attr("height", svg.attr("height"))
+        .attr("x", margin.left)
+        .attr("y", margin.top)
+        .attr("width", svg.attr("width") - margin.left - margin.right)
+        .attr("height", svg.attr("height") - margin.top - margin.bottom)
         .attr("fill", "none")
         .attr("pointer-events", "all");
 
-    // Create a vertical line for interactivity
     const verticalLine = svg.append("line")
         .attr("class", "interactive-line")
         .attr("stroke", "white")
         .attr("stroke-width", 1.5)
         .attr("opacity", 0);
 
-    // Create a tooltip or display area for showing the details
-    const tooltip = d3.select("#controls")
+    const tooltip = d3.select("body")
         .append("div")
         .attr("class", "tooltip")
         .style("position", "absolute")
@@ -604,7 +604,10 @@ function addInteractiveLine(svg, xScale, yScale, freqData, dynamicallyFilteredDa
         .style("color", "white")
         .style("padding", "10px")
         .style("border-radius", "5px")
-        .style("visibility", "hidden");
+        .style("visibility", "hidden")
+        .style("pointer-events", "none");
+
+    const tbody = d3.select("#value-table_long"); // Targeting the table you want to populate
 
     overlay
         .on("mouseover", () => {
@@ -617,20 +620,15 @@ function addInteractiveLine(svg, xScale, yScale, freqData, dynamicallyFilteredDa
         })
         .on("mousemove", function (event) {
             const [mouseX] = d3.pointer(event, this);
+            const adjustedX = mouseX - margin.left;
+            const weekIndex = Math.floor(adjustedX / xScale.bandwidth());
 
-            // Calculate the approximate index for the band
-            const bandWidth = xScale.bandwidth();
-            const xIndex = Math.round((mouseX - margin.left) / bandWidth);
-
-            // Ensure the index is within the domain bounds
             const xDomain = xScale.domain();
-            if (xIndex < 0 || xIndex >= xDomain.length) return;
+            if (weekIndex < 0 || weekIndex >= xDomain.length) return;
 
-            // Retrieve the closest x-value
-            const week = xDomain[xIndex];
-
-            // Position the vertical line
-            const xPosition = xScale(week) + bandWidth / 2; // Center the line in the band
+            const week = xDomain[weekIndex];
+            console.log("week hovered: ", week)
+            const xPosition = xScale(week) + xScale.bandwidth() / 2;
             verticalLine
                 .attr("x1", xPosition)
                 .attr("x2", xPosition)
@@ -638,27 +636,36 @@ function addInteractiveLine(svg, xScale, yScale, freqData, dynamicallyFilteredDa
                 .attr("y2", svg.attr("height") - margin.bottom);
 
             // Filter data for the selected week
-            const filteredWeekData = dynamicallyFilteredData.filter(d => d.weeks === week);
+            const weekData = freqData.filter(d => d.weeks === week);
+            if (weekData.length > 0) {
+                tbody.selectAll("tr").remove(); // Clear existing rows before adding new data
 
-            // Calculate the total number of unique songs
-            const totalUniqueSongs = new Set(dynamicallyFilteredData.map(d => d.Song_ID)).size;
+                // Create a new table row for the selected week
+                const row = tbody.append("tr");
 
-            // Calculate unique songs within the selected genre
-            const uniqueSongsInGenre = new Set(filteredWeekData.map(d => d.Song_ID)).size;
+                // First column: Week value
+                row.append("td").text(week).style("border", "1px solid white").style("padding", "5px");
 
-            // Update the tooltip content
-            tooltip.html(`
-                <strong>Week:</strong> ${week}<br>
-                <strong>Total Unique Songs:</strong> ${totalUniqueSongs}<br>
-                <strong>Unique Songs in Genre:</strong> ${uniqueSongsInGenre}
-            `);
+                // Loop through each year range and populate corresponding data
+                yearRanges.forEach(year_range => {
+                    const dataForYear = weekData.filter(d => d.Jaar >= year_range[0] && d.Jaar <= year_range[1]);
 
-            // Position the tooltip
-            tooltip
-                .style("left", `${event.pageX + 15}px`)
-                .style("top", `${event.pageY - 15}px`);
+                    // Calculate the total frequency in the selected year range
+                    const totalCount = d3.sum(dataForYear, d => d.oldfreq); // Sum the old frequencies to get total
+
+                    // Calculate the frequency in the specific week for the selected year range
+                    const thisWeekCount = d3.sum(dataForYear.filter(d => d.weeks === week), d => d.oldfreq);
+
+                    // Add year-specific data in the table
+                    row.append("td")
+                        .text(`${thisWeekCount} (Total: ${totalCount})`)  // Showing week frequency and total count for the range
+                        .style("border", "1px solid white")
+                        .style("padding", "5px");
+                });
+            }
         });
 }
+
 // Apply dynamic filters
 function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxWeeks) {
     var width_scatterplot_container = document.getElementById("longevityCharts").clientWidth;
@@ -689,6 +696,7 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
 
         // Normalize the frequency
         freqData.forEach(d => {
+            d.oldfreq = d.frequency
             d.frequency = d.frequency / uniqueSongsCount;
         });
 
@@ -722,6 +730,7 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
             const filledData = fillMissingWeeks(
                 Array.from(longevityCounts, ([weeks, frequency]) => ({
                     weeks: +weeks,
+                    oldfreq: frequency,
                     frequency: frequency / uniqueSongsCount,
                 })).sort((a, b) => a.weeks - b.weeks),
                 maxWeeks
@@ -853,7 +862,7 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
         .style("fill", "white")
         .text(`Normalized Frequency of Songs with Genre ${window.selectedGenre}`);
 
-    addInteractiveLine(svg, x, yScale, freqData, dynamicallyFilteredData, yearRanges, margin_longevityGenre);
+    addInteractiveLine(svg, x, yScale, freqData, yearRanges, margin_longevityGenre);
 }
 
 // Render line plot with smooth transitions and consistent styles

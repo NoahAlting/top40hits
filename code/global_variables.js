@@ -7,9 +7,9 @@ const possible_features_songs = [
     // "Liveness",
     "Valence",
     // "Speechiness",
-    "Normalized_Loudness", 
+    "Loudness",
     // "Normalized_Popularity", 
-    "Normalized_Tempo",
+    "Tempo",
   ];
 
   

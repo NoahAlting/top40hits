@@ -174,8 +174,8 @@ function loadAndProcess_FeaturesData_scat(filtered_data_input, range_years) {
             Title: representativeEntry.Titel,
             Longevity: uniqueWeeks,
             Danceability: representativeEntry.Danceability,
-            Liveness: representativeEntry.Liveness,
-            Loudness: representativeEntry.Normalized_Loudness,
+            Normalized_Loudness: representativeEntry.Normalized_Loudness,
+            Normalized_Tempo: representativeEntry.Normalized_Tempo,
             Acousticness: representativeEntry.Acousticness,
             Energy: representativeEntry.Energy,
             Valence: representativeEntry.Valence,
@@ -205,7 +205,7 @@ function showBarChart(year_range, colour, song, selectedFeature) {
         .attr("width", width_scatterplot)
         .attr("height", height_scatterplot + margin_scatterplot.bottom);
 
-    const selectedFeatures = ['Danceability', 'Acousticness', 'Energy', 'Liveness', 'Valence', 'Normalized_Loudness'];
+    const selectedFeatures = ['Danceability', 'Acousticness', 'Energy', 'Normalized_Tempo', 'Valence', 'Normalized_Loudness'];
     const featureData = selectedFeatures
         .map(feature => ({feature, value: song[feature]}))
         .filter(d => d.value != null && d.value != undefined);

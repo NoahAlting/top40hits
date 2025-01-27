@@ -208,6 +208,7 @@ h1 {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    height: 80%;
 }
 
 #longevityCharts {
@@ -216,6 +217,7 @@ h1 {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    height: 80%;
 }
 
 #selected_genre_long{
@@ -302,6 +304,9 @@ button {
     padding: 3px;
     border-radius: 4px;
     font-size: 12px;
+    font-weight: bold;
+    color: #000000;
+    /*-webkit-text-stroke: 0.5px #333333;*/
 }
 
 .range-item button {

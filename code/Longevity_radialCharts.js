@@ -299,6 +299,10 @@ function createInteractiveGraph_Features_longevityRadialChart(
     .text((d) => d.feature);
 
   labels.forEach((label) => {
+    let rangeKey = `${label[0]}-${label[1]}`; 
+        if (label.length === 1) {
+            rangeKey = `${label}-${label}`;
+        }
     const filteredStats = data[label];
     const radialLine = d3
       .lineRadial()
@@ -308,6 +312,8 @@ function createInteractiveGraph_Features_longevityRadialChart(
     chartContainer
       .append("path")
       .datum(filteredStats)
+      .attr("data-range", rangeKey)
+      .attr("data-original-color", get_color_yearRange(label, labels))
       .attr("d", radialLine)
       .attr("stroke", function_colors(label, labels))
       .attr("fill", "none")
@@ -405,6 +411,10 @@ function createInteractiveGraph_GenresData_longevityRadialChart(
     .text((d) => d.genre);
 
   labels.forEach((label) => {
+    let rangeKey = `${label[0]}-${label[1]}`; 
+        if (label.length === 1) {
+            rangeKey = `${label}-${label}`;
+        }
     const filteredStats = data[label];
     const radialLine = d3
       .lineRadial()
@@ -414,6 +424,8 @@ function createInteractiveGraph_GenresData_longevityRadialChart(
     chartContainer
       .append("path")
       .datum(filteredStats)
+      .attr("data-range", rangeKey)
+      .attr("data-original-color", get_color_yearRange(label, labels))
       .attr("d", radialLine)
       .attr("stroke", function_colors(label, labels))
       .attr("fill", "none")
@@ -478,6 +490,34 @@ function update_LongevityRadialGraph(filtered_data_input) {
   const chartContainers = []; 
 
   if (selection_features === "features") {
+    if (numCharts == 1){
+      removeButtonByContainerId("longevityradialPlotContainer")
+      createInfoButtonWithTooltip(
+        "longevityradialPlotContainer",
+        `Category-Based Longevity of Scores`,
+        `This radial graph displays the average score for all features, divided into categories: ${categories[0]}, ${categories[1]}, and ${categories[2]}. Songs are categorized based on how many weeks they spent in the Top ${window.selectedTop} during the selected year range. Category "${categories[2]}" represents the songs that have remained in the Top ${window.selectedTop} for the longest period. This visualization helps identify trends in the longevity of scores.`,
+        "All features.",
+        `The average score for each feature within a given category.`,
+        "The position indicates the feature and the average score, while color represents the category.",
+        "Channel",
+        "Click on the button to view the standard deviation of the scores.",
+        "left"
+      );  
+    }
+    else{
+      removeButtonByContainerId("longevityradialPlotContainer");
+      createInfoButtonWithTooltip(
+          "longevityradialPlotContainer",
+          "Category-Based Longevity of Scores",
+          `These radial graphs display the average score for all features, with one graph per category: ${categories[0]}, ${categories[1]}, and ${categories[2]}. Songs are categorized based on how many weeks they spent in the Top ${window.selectedTop} during the selected year range. Category "${categories[2]}" represents songs that have remained in the Top ${window.selectedTop} for the longest period. This visualization helps identify trends in score longevity and compare across different year ranges.`,
+          "All features.",
+          `The average score for each feature within a given category and year range.`,
+          "The position indicates the feature and the average score, while color represents the year range.",
+          "Channel",
+          "Click the button to view the standard deviation of the scores.",
+          "left"
+      );
+    }
     const radiusScale = d3
       .scaleLinear()
       .domain([0, 1])
@@ -644,6 +684,34 @@ function update_LongevityRadialGraph(filtered_data_input) {
       });
     });
   } else {
+    if (numCharts == 1){
+      removeButtonByContainerId("longevityradialPlotContainer")
+      createInfoButtonWithTooltip(
+        "longevityradialPlotContainer",
+        "Category-Based Longevity of Scores",
+        `This radial graph displays the number of songs per category for each specific genre. The categories are: ${categories[0]}, ${categories[1]}, and ${categories[2]}. Songs are categorized based on how many weeks they spent in the Top ${window.selectedTop} during the selected year range. Category "${categories[2]}" represents songs that have remained in the Top ${window.selectedTop} for the longest period. This visualization helps identify trends in the longevity of genres.`,
+        "All genres.",
+        `The number of songs per genre within each category.`,
+        "The position indicates the genre and the number of songs, while the color represents the category.",
+        "Channel",
+        "No interactivity.",
+        "left"
+    );
+    }
+    else{
+      removeButtonByContainerId("longevityradialPlotContainer");
+      createInfoButtonWithTooltip(
+        "longevityradialPlotContainer",
+        "Category-Based Longevity of Scores",
+        `These radial graphs display the number of songs per category for each specific genre, with one graph for each category: ${categories[0]}, ${categories[1]}, and ${categories[2]}. Songs are categorized based on how many weeks they spent in the Top ${window.selectedTop} during the selected year range. Category "${categories[2]}" represents songs that have remained in the Top ${window.selectedTop} for the longest period. This visualization helps identify trends in genre longevity and compare across different year ranges.`,
+        "All genres.",
+        `The number of songs per genre within each category.`,
+        "The position indicates the genre and the number of songs, while color represents the year range.",
+        "Channel",
+        "No interactivity.",
+        "left"
+    );
+    }
     const data = loadAndProcess_GenresData_longevityRadialChart(
       filtered_data_input,
       selected_years
@@ -777,4 +845,48 @@ function update_LongevityRadialGraph(filtered_data_input) {
       }
     }
   }
+}
+
+function longevity_radialChart_yearhighlight(selectedRange) {
+  // console.log("lenght", window.selectedYearRanges.length);
+  if (window.selectedYearRanges.length > 1) {
+    // Select all <svg> elements within #longevity_radialChart
+    const svgs = d3.select("#longevity_radialChart").selectAll("svg");
+
+    svgs.each(function (_, i) {
+        // console.log(`SVG ${i}:`, this); // Log each individual <svg> element
+
+        // Reset all paths in the current SVG to their original styles
+        d3.select(this)
+            .selectAll("path")
+            .attr("stroke-width", 3)
+            .attr("opacity", 0.9)
+            .attr("stroke", function () {
+                return d3.select(this).attr("data-original-color") || "#ffffff"; // Default to white if no original color
+            });
+
+        // Exit early if no valid range is provided
+        if (!selectedRange || !Array.isArray(selectedRange) || selectedRange.length !== 2) {
+            return;
+        }
+
+        const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
+        // console.log('rangekey', rangeKey);
+
+        // Highlight the path corresponding to the selected range
+        const highlightedPath = d3.select(this)
+            .selectAll("path")
+            .filter(function () {
+                return d3.select(this).attr("data-range") === rangeKey;
+            })
+            .attr("stroke-width", 5)
+            .attr("opacity", 1.0)
+            .attr("stroke", "#ff0000"); // Highlight with red
+
+        // Bring the highlighted path to the front
+        highlightedPath.each(function () {
+            this.parentNode.appendChild(this); // Append to the end of the group to bring to front
+        });
+    });
+}
 }

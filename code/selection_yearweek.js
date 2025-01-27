@@ -263,7 +263,6 @@ function renderRanges() {
         rangeDiv.className = "range-item";
         rangeDiv.textContent = `${range[0]} - ${range[1]}`;
         rangeDiv.style.backgroundColor = rangeColor;
-        rangeDiv.style.color = "#ffffff";
 
         // Highlight the range div if it's the selected range
         if (window.selectedRange && window.selectedRange[0] === range[0] && window.selectedRange[1] === range[1]) {

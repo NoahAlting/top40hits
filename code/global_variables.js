@@ -72,6 +72,45 @@ function createFeatureGenreMenu(options_drop_down, switched_type=false) {
       .property("selected", (d) => d === window.selectedGenre);
 }
 
+
+const dragHandleLeft = document.getElementById("drag-handle-left");
+const root1 = document.documentElement;
+
+// Initial column sizes
+let initialLineGraphWidth = 2; // Represents 2fr
+let initialSelectorWidth = 1; // Represents 1fr
+
+dragHandleLeft.addEventListener("mousedown", (e) => {
+    const startX = e.clientX;
+
+    const onMouseMove = (event) => {
+        const delta = event.clientX - startX;
+
+        // Adjust column sizes based on the drag delta
+        const totalWidth = initialLineGraphWidth + initialSelectorWidth;
+        const newLineGraphWidth = Math.max(1.4, initialLineGraphWidth + delta / window.innerWidth * totalWidth);
+        const newSelectorWidth = totalWidth - newLineGraphWidth;
+
+        // Update CSS variables
+        root1.style.setProperty("--linegraph-width", `${newLineGraphWidth}fr`);
+        root1.style.setProperty("--selector-width", `${newSelectorWidth}fr`);
+    };
+
+    const onMouseUp = () => {
+        // Remove listeners when the drag ends
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+        // Update initial sizes
+        initialLineGraphWidth = parseFloat(root1.style.getPropertyValue("--linegraph-width") || initialLineGraphWidth);
+        initialSelectorWidth = parseFloat(root1.style.getPropertyValue("--selector-width") || initialSelectorWidth);
+    };
+
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+});
+
+
+
 // ============================================ Filter data and update graphs ============================================
 
 // NEW PROPOSED FUNCTION WHERE CSV IS LOADED IN
@@ -242,82 +281,10 @@ function update_graphs_selected_FeatureGenre(filtered_data){
 }
 
 
-const dragHandleLeft = document.getElementById("drag-handle-left");
-const root1 = document.documentElement;
-
-// Initial column sizes
-let initialLineGraphWidth = 2; // Represents 2fr
-let initialSelectorWidth = 1; // Represents 1fr
-
-dragHandleLeft.addEventListener("mousedown", (e) => {
-    const startX = e.clientX;
-
-    const onMouseMove = (event) => {
-        const delta = event.clientX - startX;
-
-        // Adjust column sizes based on the drag delta
-        const totalWidth = initialLineGraphWidth + initialSelectorWidth;
-        const newLineGraphWidth = Math.max(0.5, initialLineGraphWidth + delta / window.innerWidth * totalWidth);
-        const newSelectorWidth = totalWidth - newLineGraphWidth;
-
-        // Update CSS variables
-        root1.style.setProperty("--linegraph-width", `${newLineGraphWidth}fr`);
-        root1.style.setProperty("--selector-width", `${newSelectorWidth}fr`);
-    };
-
-    const onMouseUp = () => {
-        // Remove listeners when the drag ends
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
-        // Update initial sizes
-        initialLineGraphWidth = parseFloat(root1.style.getPropertyValue("--linegraph-width") || initialLineGraphWidth);
-        initialSelectorWidth = parseFloat(root1.style.getPropertyValue("--selector-width") || initialSelectorWidth);
-    };
-
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
-});
-
-
-
-const dragHandleRight = document.getElementById("drag-handle-right");
-const root2 = document.documentElement;
-
-let initialLongevityWidth = 2; // Represents 2fr
-let initialScatterWidth = 2; // Represents 2fr
-
-dragHandleRight.addEventListener("mousedown", (e) => {
-    const startX = e.clientX;
-
-    const onMouseMove = (event) => {
-        const delta = event.clientX - startX;
-
-        // Adjust column sizes based on the drag delta
-        const totalWidth = initialLongevityWidth + initialScatterWidth;
-        const newLongevityWidth = Math.max(0.5, initialLongevityWidth - delta / window.innerWidth * totalWidth);
-        const newScatterWidth = totalWidth - initialLongevityWidth;
-        const newSelectorWidth = totalWidth - newLongevityWidth;
-
-        // Update CSS variables
-        root2.style.setProperty("--longevity-width", `${newLongevityWidth}fr`);
-        root1.style.setProperty("--selector-width", `${newSelectorWidth}fr`);
-    };
-
-    const onMouseUp = () => {
-      document.removeEventListener("mousemove", onMouseMove);
-      document.removeEventListener("mouseup", onMouseUp);
-      initialLongevityWidth = parseFloat(root2.style.getPropertyValue("--longevity-width") || initialLongevityWidth);
-      initialScatterWidth = parseFloat(root2.style.getPropertyValue("--scatter-width") || initialScatterWidth);
-  };
-
-
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
-});
-
-
 // All functions that highlight the selected year
 function highlight_selection(selectedRange) {
+  linegraph_yearhighlight(selectedRange);
+  longevity_radialChart_yearhighlight(selectedRange);
     if (window.selectedType === "genres"){
         longevity_genre_yearhighlight(selectedRange);
     }
@@ -360,13 +327,14 @@ window.addEventListener("weekRangeUpdated", function () {
 
 // When type (genres/ featres) is updated
 window.addEventListener("typeUpdated", function () {
-  const selectedRadialPlot = document.getElementById('radial_plot_year_content');
-  if (window.selectedType == "features"){
-    selectedRadialPlot.style.display = 'block';
-    createFeatureGenreMenu(possible_features_songs, true)
-  }
-  else{
-    selectedRadialPlot.style.display = 'none';
+  const selectedRadialPlot = document.getElementById('radial-plot');
+  if (window.selectedType == "features") {
+    selectedRadialPlot.style.visibility = 'visible';
+    selectedRadialPlot.style.opacity = '1';
+    createFeatureGenreMenu(possible_features_songs, true);
+  } else {
+    selectedRadialPlot.style.visibility = 'hidden';
+    selectedRadialPlot.style.opacity = '0';
     createFeatureGenreMenu(possible_genres.concat(remaining_genres), true);
   }
   updateLongevityChartContent();

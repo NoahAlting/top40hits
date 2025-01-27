@@ -25,7 +25,7 @@ function renderTopContainerFeatures() {
     const num_of_subcolumns = 3;
 
     const width_subplots = featureGenreWidth / num_of_subcolumns;
-    const height_subplots = featureGenreHeight / (possible_features_songs.length / (num_of_subcolumns - 1));
+    const height_subplots = 1.2* featureGenreHeight / (possible_features_songs.length / (num_of_subcolumns - 1));
 
     var margin_subplots = {
         top: height_subplots * 0.15, 
@@ -51,7 +51,7 @@ function renderTopContainerFeatures() {
             
             .on("mouseover", function () {
                 // Change the background color on hover
-                d3.select(this).style("background-color", "#8080a5");
+                d3.select(this).style("background-color", "rgba(255, 255, 255, 0.2)");
             })
             .on("mouseout", function () {
                 // Reset the background color to the default chart container background color
@@ -264,7 +264,7 @@ function renderDetailedPDF(svg, feature, width, height) {
             // Add title
             svg.append("text")
                 .attr("x", width / 2)
-                .attr("y", -10)
+                .attr("y", -20)
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
                 .style("font-weight", "bold")
@@ -283,7 +283,7 @@ function renderDetailedPDF(svg, feature, width, height) {
                     .datum(density)
                     .attr("fill", "none")
                     .attr("stroke", color) // Use the color scheme
-                    .attr("stroke-width", 1.5)
+                    .attr("stroke-width", 2)
                     .attr("d", d3.line()
                         .curve(d3.curveBasis)
                         .x(d => x(d[0]))
@@ -317,9 +317,13 @@ function renderDetailedPDF(svg, feature, width, height) {
                                 .y(d => y(d[1])));
 
                         const positions = [
-                            { value: median, label: `Median: ${median.toFixed(2)}`, align: "left" },
-                            { value: mean, label: `Mean: ${mean.toFixed(2)}`, align: "right" }
-                        ].sort((a, b) => a.value - b.value); // Sort for consistent left-right assignment
+                            median < mean
+                                ? { value: median, label: `Median: ${median.toFixed(2)}`, align: "left" }
+                                : { value: median, label: `Median: ${median.toFixed(2)}`, align: "right" },
+                            mean < median
+                                ? { value: mean, label: `Mean: ${mean.toFixed(2)}`, align: "left" }
+                                : { value: mean, label: `Mean: ${mean.toFixed(2)}`, align: "right" }
+                        ];
 
                         positions.forEach((pos) => {
                             // Add vertical line
@@ -340,7 +344,7 @@ function renderDetailedPDF(svg, feature, width, height) {
                                 .attr("font-size", "12px")
                                 .html(() => {
                                     const [label, value] = pos.label.split(': ');
-                                    const offset = 0.1 * width; // Dynamically calculate offset as 10% of the width
+                                    const offset = 0.05 * width; // Dynamically calculate offset as 5% of the width
                                     return `
                                         <tspan x="${x(pos.value) + (pos.align === "left" ? -offset : offset)}" dy="0">${label}</tspan>
                                         <tspan x="${x(pos.value) + (pos.align === "left" ? -offset : offset)}" dy="1.2em">${value}</tspan>

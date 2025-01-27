@@ -7,12 +7,17 @@ var featureGenreHeight = document.getElementById("feature_genre_selector").clien
 
 // Entry function to initialize plots based on global variables
 function initializePlots() {
+    const header = d3.select("#FG_Header");
+
+    // Update the header text based on the selectedType
     if (window.selectedType === "features") {
+        header.text("Probability Density for Features");
         renderTopContainerFeatures();
         renderBottomContainerFeatures();
     } else if (window.selectedType === "genres") {
-        renderTopContainerGenres(1.1);
-        renderBottomContainerGenres(0.7);
+        header.text(`Genres in the top ${window.selectedTop}`);
+        renderTopContainerGenres(1.2);
+        renderBottomContainerGenres(0.8);
     }
 }
 
@@ -74,7 +79,6 @@ function renderTopContainerFeatures() {
             height_subplots - margin_subplots.top - margin_subplots.bottom);
     });
 }
-
 
 
 // Render individual PDF using global_variables.js functions
@@ -371,7 +375,7 @@ function renderTopContainerGenres(containerHeightFraction) {
     const height = featureGenreHeight * containerHeightFraction;
 
     var margin = {
-        top: height * 0.15, 
+        top: height * 0.05, 
         right: width * 0.05, 
         bottom: height * 0.1, 
         left: width * 0.15};
@@ -536,14 +540,14 @@ function renderHistogram(svg, width, height) {
                     .style("fill", "white")
                     .text("Number of Songs");
 
-                svg.append("text")
-                    .attr("x", width / 2)
-                    .attr("y", -20)
-                    .attr("text-anchor", "middle")
-                    .style("font-size", "22px")
-                    .style("font-weight", "bold")
-                    .style("fill", "white")
-                    .text(`Genres in the top ${window.selectedTop}`);
+                // svg.append("text")
+                //     .attr("x", width / 2)
+                //     .attr("y", -20)
+                //     .attr("text-anchor", "middle")
+                //     .style("font-size", "22px")
+                //     .style("font-weight", "bold")
+                //     .style("fill", "white")
+                //     .text(`Genres in the top ${window.selectedTop}`);
             } else {
                 // Handle errors
                 console.error("Expected filteredData to be an object, but got:", filteredData);
@@ -579,7 +583,7 @@ function renderBottomContainerGenres(containerHeightFraction) {
     const height = featureGenreHeight * containerHeightFraction; // If time left change this so that it is large but not absolutely necessary
 
     var margin = {
-        top: height * 0.15, 
+        top: height * 0.35, 
         right: width * 0.05, 
         bottom: height * 0.15, 
         left: width * 0.15
@@ -728,8 +732,6 @@ function renderDetailedHistogram(svg, width, height) {
         })
         .catch((err) => console.error("Error rendering barplot:", err));
 }
-
-
 
 
 // ========================= Event Listeners =========================

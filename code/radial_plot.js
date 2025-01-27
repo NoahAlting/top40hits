@@ -31,8 +31,8 @@ function createinfobutton_radial() {
   
 
 
-var width_radialplot_container = document.getElementById("radial_plots").clientWidth;
-var height_radialplot_container = document.getElementById("radial_plots").clientHeight;
+var width_radialplot_container = document.getElementById("radial_plots").clientWidth/0.6;
+var height_radialplot_container = document.getElementById("radial_plots").clientHeight/1.6;
 var margin_radialplot = {top: height_radialplot_container*0.2, right: width_radialplot_container*0.1, bottom: height_radialplot_container*0.1, left: width_radialplot_container*0.1};
 var width_radialplot = width_radialplot_container - margin_radialplot.left - margin_radialplot.right;
 var height_radialplot = height_radialplot_container - margin_radialplot.top - margin_radialplot.bottom;
@@ -44,6 +44,7 @@ var height_radialplot = height_radialplot_container - margin_radialplot.top - ma
 // var height_lineGraph = linegraph_containerHeight - margin_lineGraph.top - margin_lineGraph.bottom;
 
 
+
 function createInteractiveGraph_Features_radial(divId, data, features) {
     const svg = d3
         .select(divId)
@@ -51,7 +52,7 @@ function createInteractiveGraph_Features_radial(divId, data, features) {
         .attr("width", width_radialplot)
         .attr("height", height_radialplot *4)
         .append("g")
-        .attr("transform", `translate(${margin_radialplot.left*4}, ${margin_radialplot.top*6})`);
+        .attr("transform", `translate(${margin_radialplot.left*4}, ${margin_radialplot.top*4.5})`);
 
     
     svg.append("circle")
@@ -88,6 +89,8 @@ function createInteractiveGraph_Features_radial(divId, data, features) {
         .attr("stroke-dasharray", "2,2");
 
         features.forEach(feature => {
+
+            
             const featureData = data.filter(d => d.feature === feature);
         
             const featureLines = d3
@@ -111,7 +114,17 @@ function createInteractiveGraph_Features_radial(divId, data, features) {
                 .attr("cx", d => feature_range(d.avgValue) * Math.sin(angles(d.week - 1)))
                 .attr("cy", d => -feature_range(d.avgValue) * Math.cos(angles(d.week - 1)))
                 .attr("r", 3)
-                .attr("fill", colorScale(feature));
+                .attr("fill", colorScale(feature))
+                .on("mouseover", function (event, d) {
+                    tooltip
+                        .style("opacity", 1)
+                        .html(`<strong>Feature:</strong> ${d.feature}<br><strong>Week:</strong> ${d.week}<br><strong>Value:</strong> ${d.avgValue.toFixed(2)}`)
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 28) + "px");
+                })
+                .on("mouseout", function () {
+                    tooltip.style("opacity", 0);
+                });
         });
 
 
@@ -174,9 +187,23 @@ function createInteractiveGraph_Features_radial(divId, data, features) {
     .attr("r", innerRadius)
     .style("fill", "#2c2c3c");
 
+    features = ["Danceability", "Acousticness", "Energy","Valence", "Loudness",  "Tempo"]
     
+    const tooltip = d3.select("body")
+    .append("div")
+    .attr("class", "tooltip")
+    .style("position", "absolute")
+    .style("text-align", "left")
+    .style("padding", "8px")
+    .style("font-size", "12px")
+    .style("background", "rgba(0, 0, 0, 0.7)")
+    .style("color", "#fff")
+    .style("border-radius", "4px")
+    .style("pointer-events", "none")
+    .style("opacity", 0);
+
     const legend = svg.append("g")
-        .attr("transform", `translate(${-width_radialplot / 15}, ${-height_radialplot * 0.3 })`);
+        .attr("transform", `translate(${-width_radialplot / 15}, ${-height_radialplot * 0.25 })`);
 
     features.forEach((feature, index) => {
         const legendItem = legend.append("g")
@@ -191,10 +218,11 @@ function createInteractiveGraph_Features_radial(divId, data, features) {
             .attr("x", 10)
             .attr("y", 5)
             .text(feature)
-            .style("font-size", "16px")
+            .style("font-size", "15px")
     });
 
 }
+
 
 
 
@@ -202,7 +230,7 @@ var selectedYearRanges = window.selectedYearRanges;
 var selectedWeekRange = window.selectedWeekRange; 
 
 // TO DO: check welke features we willen
-const features = ["Danceability", "Energy", "Valence", "Acousticness", "Liveness"];
+const features = ["Danceability", "Acousticness",  "Energy", "Valence", "Loudness", "Tempo"];
 const innerRadius = 100;
 const outerRadius = 250;
 
@@ -256,9 +284,10 @@ function loadAndProcess_FeaturesData_radial(filtered_data_input, range_years, se
         }
         return a.week - b.week;
     });
-    console.log("radial", plotData)
     return plotData;
 }
+
+
 
 let currentYearRangeIndex = 0;
 let global_data = []

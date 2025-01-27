@@ -245,7 +245,7 @@ function showBarChart(year_range, colour, song, selectedFeature) {
         .attr("dy", "1em")
         .style("text-anchor", "middle")
         .attr("class", "label-text")
-        .text(`Value for ${selectedFeature}`);
+        .text(`Feature Values`);
 
 
     chartGroup.selectAll("rect")
@@ -275,7 +275,7 @@ function showTooltip(event, d) {
 
 function createInteractiveGraph_Features_scat(divId, data, features, feature, year_range, year_range_colour) {
     var width_scatterplot_container = document.getElementById("longevityCharts").clientWidth;
-    var height_scatterplot_container = document.getElementById("longevityCharts").clientHeight;
+    var height_scatterplot_container = document.getElementById("longevityCharts").clientHeight/1.8;
     var margin_scatterplot = {
         top: height_scatterplot_container * 0.1,
         right: width_scatterplot_container * 0.1,
@@ -317,7 +317,7 @@ function createInteractiveGraph_Features_scat(divId, data, features, feature, ye
     svg.append("text")
         .attr("class", "x-axis-label")
         .attr("x", width_scatterplot * 0.5)
-        .attr("y", height_scatterplot * 1.1)
+        .attr("y", height_scatterplot * 1.2)
         .attr("text-anchor", "middle")
         .style("font-size", "12px")
         .style("fill", "white")
@@ -666,8 +666,8 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
 
     const svg = d3.select("#longevity_histogram").attr("width", width_scatterplot_container).attr("height", height_scatterplot_container);
     const width_longevityGenre = +svg.attr("width");
-    const height_longevityGenre = 900;
-    const margin_longevityGenre = { top: height_scatterplot_container * 0.1, right: width_scatterplot_container * 0.1, bottom: height_scatterplot_container * 0.3, left: width_scatterplot_container * 0.1 };
+    const height_longevityGenre = height_scatterplot_container;
+    const margin_longevityGenre = { top: height_scatterplot_container * 0.1, right: width_scatterplot_container * 0.1, bottom: height_scatterplot_container * 0.3, left: width_scatterplot_container * 0.15 };
 
     console.log("height container", height_longevityGenre)
     // Clear old plot lines and areas, but not the axes

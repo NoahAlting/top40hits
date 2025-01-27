@@ -31,34 +31,50 @@ function renderTopContainerFeatures() {
         top: height_subplots * 0.15, 
         right: width_subplots * 0.1, 
         bottom: height_subplots * 0.15, 
-        left: width_subplots * 0.15};
-        
+        left: width_subplots * 0.15
+    };
+
+    // Get the background color of the chart container
+    const chartContainer = document.querySelector(".chart_container_FG");
+    const defaultBackgroundColor = window.getComputedStyle(chartContainer).backgroundColor;
+
     // Create a grid layout
     container.style("display", "grid")
-    .style("grid-template-columns", `repeat(${num_of_subcolumns}, auto)`);
-    
+        .style("grid-template-columns", `repeat(${num_of_subcolumns}, auto)`);
+
     features.forEach(feature => {
         const svg = container.append("svg")
-        // .attr("width", width_subplots) // + margin_subplots.left + margin_subplots.right)
-        // .attr("height", height_subplots) // + margin_subplots.top + margin_subplots.bottom)
+            .attr("width", width_subplots)
+            .attr("height", height_subplots)
+            .style("cursor", "pointer")
+            .style("border-radius", "10px") // Matches the parent container's border-radius
+            
+            .on("mouseover", function () {
+                // Change the background color on hover
+                d3.select(this).style("background-color", "#8080a5");
+            })
+            .on("mouseout", function () {
+                // Reset the background color to the default chart container background color
+                d3.select(this).style("background-color", defaultBackgroundColor);
+            })
+            .on("click", () => {
+                // Update the global variable and dispatch event
+                window.selectedGenre = feature;
+                console.log(`Genre updated to: ${feature}`); // Log the updated genre to the console
+                const event = new CustomEvent("genreUpdated", { detail: { feature } });
+                window.dispatchEvent(event);
+            });
 
-        // Event listener for subplot click
-        .style("cursor", "pointer")
-        .on("click", () => {
-            // Update the global variable and dispatch event
-            window.selectedGenre = feature;
-            console.log(`Genre updated to: ${feature}`); // Log the updated genre to the console
-            const event = new CustomEvent("genreUpdated", { detail: { feature } });
-            window.dispatchEvent(event);
+        const g = svg.append("g")
+            .attr("transform", `translate(${margin_subplots.left},${margin_subplots.top})`);
 
-        }) 
-        .append("g")
-        .attr("transform", `translate(${margin_subplots.left},${margin_subplots.top})`);
-        renderPDF(svg, feature, 
+        // Render the content inside the SVG (e.g., PDFs)
+        renderPDF(g, feature, 
             width_subplots - margin_subplots.left - margin_subplots.right, 
             height_subplots - margin_subplots.top - margin_subplots.bottom);
     });
 }
+
 
 
 // Render individual PDF using global_variables.js functions
@@ -186,14 +202,19 @@ function renderDetailedPDF(svg, feature, width, height) {
                     .map(row => row[feature]);
 
                 if (rangeData.length > 0) {
-                    const bandwidth = calculateBandwidth(rangeData, factor = 1.1);
+                    const bandwidth = calculateBandwidth(rangeData, factor = 1.5);
                     const xTicks = d3.range(
                         d3.min(rangeData),
                         d3.max(rangeData),
                         (d3.max(rangeData) - d3.min(rangeData)) / 100
                     );
                     const kde = kernelDensityEstimator(kernelEpanechnikov(bandwidth), xTicks);
-                    return { range, density: kde(rangeData) };
+                    return {
+                        range,
+                        density: kde(rangeData),
+                        median: d3.median(rangeData),
+                        mean: d3.mean(rangeData)
+                    };
                 }
                 return null;
             }).filter(d => d !== null); // Remove ranges with no data
@@ -231,14 +252,14 @@ function renderDetailedPDF(svg, feature, width, height) {
                 .text(feature + " value");
 
             // Add y-axis label
-            // svg.append("text")
-            //     .attr("x", -height / 2)
-            //     .attr("y", -40)
-            //     .attr("transform", "rotate(-90)")
-            //     .attr("text-anchor", "middle")
-            //     .style("font-size", "16px")
-            //     .style("fill", "white")
-            //     .text("Probability Density");
+            svg.append("text")
+                .attr("x", -height / 2)
+                .attr("y", -40)
+                .attr("transform", "rotate(-90)")
+                .attr("text-anchor", "middle")
+                .style("font-size", "16px")
+                .style("fill", "white")
+                .text("Density");
 
             // Add title
             svg.append("text")
@@ -248,19 +269,89 @@ function renderDetailedPDF(svg, feature, width, height) {
                 .style("font-size", "16px")
                 .style("font-weight", "bold")
                 .style("fill", "white")
-                .text(`Detailed view: ${feature}`);
+                .text(`Detailed view: ${feature} values`);
+
+            // Hoverable lines
+            const hoverLinesGroup = svg.append("g");
 
             // Draw density lines for each range
-            densities.forEach(({ range, density }) => {
-                svg.append("path")
+            densities.forEach(({ range, density, median, mean }) => {
+                const color = get_color_yearRange(range, allRanges);
+
+                // Add density line
+                const linePath = svg.append("path")
                     .datum(density)
                     .attr("fill", "none")
-                    .attr("stroke", get_color_yearRange(range, allRanges)) // Use the color scheme
+                    .attr("stroke", color) // Use the color scheme
                     .attr("stroke-width", 1.5)
                     .attr("d", d3.line()
                         .curve(d3.curveBasis)
                         .x(d => x(d[0]))
                         .y(d => y(d[1])));
+
+                // Add invisible line for better hitbox
+                const invisibleLine = svg.append("path")
+                    .datum(density)
+                    .attr("fill", "none")
+                    .attr("stroke", "transparent")
+                    .attr("stroke-width", 15) // Larger clickable area
+                    .attr("d", d3.line()
+                        .curve(d3.curveBasis)
+                        .x(d => x(d[0]))
+                        .y(d => y(d[1])))
+
+                    .on("mouseover", function () {
+                        // Add vertical lines for median and mean
+                        hoverLinesGroup.selectAll("*").remove();
+
+                        // Highlight the hovered line
+                        hoverLinesGroup.append("path")
+                            .datum(density)
+                            .attr("fill", "none")
+                            .attr("stroke", "white")
+                            .attr("stroke-width", 15) // Same size as the hitbox
+                            .attr("stroke-opacity", 0.1) // Semi-transparent
+                            .attr("d", d3.line()
+                                .curve(d3.curveBasis)
+                                .x(d => x(d[0]))
+                                .y(d => y(d[1])));
+
+                        const positions = [
+                            { value: median, label: `Median: ${median.toFixed(2)}`, align: "left" },
+                            { value: mean, label: `Mean: ${mean.toFixed(2)}`, align: "right" }
+                        ].sort((a, b) => a.value - b.value); // Sort for consistent left-right assignment
+
+                        positions.forEach((pos) => {
+                            // Add vertical line
+                            hoverLinesGroup.append("line")
+                                .attr("x1", x(pos.value))
+                                .attr("x2", x(pos.value))
+                                .attr("y1", 0)
+                                .attr("y2", height)
+                                .attr("stroke", "white")
+                                .attr("stroke-width", 1)
+                                .attr("stroke-dasharray", "4 2");
+
+                            // Add text
+                            hoverLinesGroup.append("text")
+                                .attr("y", height * 0.8) // Set base y position for text
+                                .attr("text-anchor", "middle")
+                                .attr("fill", "white")
+                                .attr("font-size", "12px")
+                                .html(() => {
+                                    const [label, value] = pos.label.split(': ');
+                                    const offset = 0.1 * width; // Dynamically calculate offset as 10% of the width
+                                    return `
+                                        <tspan x="${x(pos.value) + (pos.align === "left" ? -offset : offset)}" dy="0">${label}</tspan>
+                                        <tspan x="${x(pos.value) + (pos.align === "left" ? -offset : offset)}" dy="1.2em">${value}</tspan>
+                                    `;
+                                });
+                        });
+                    })
+                    .on("mouseout", () => {
+                        // Remove hover lines and highlight on mouseout
+                        hoverLinesGroup.selectAll("*").remove();
+                    });
             });
         })
         .catch((err) => console.error("Error rendering detailed PDF:", err));
@@ -328,20 +419,56 @@ function renderHistogram(svg, width, height) {
                     .domain([0, d3.max(data, d => d.count)])
                     .range([0, width]);
 
-                // Add y-axis (only genre labels) with click interaction
-                svg.append("g")
+                // Add y-axis (only genre labels)
+                const yAxis = svg.append("g")
                     .attr("class", "y-axis")
                     .call(d3.axisLeft(y0))
-                    .selectAll(".tick") // Select all ticks
-                    .style("cursor", "pointer")
+                    .selectAll(".tick")
                     .style("font-size", "14px")
-                    .on("click", (event, d) => {
-                        // Update the global variable and trigger event
-                        window.selectedGenre = d;
-                        console.log(`Genre updated to: ${d}`); // Log the updated genre to the console
-                        const genreEvent = new CustomEvent("genreUpdated", { detail: { genre: d } });
-                        window.dispatchEvent(genreEvent);
-                    });
+                    .style("cursor", "pointer");
+
+                // Add hover effect and click interaction for y-axis ticks
+                yAxis.each(function (d) {
+                    const tick = d3.select(this);
+                    const bbox = tick.node().getBBox();
+
+                    // Add a rect behind each tick label for hover effect
+                    tick.insert("rect", ":first-child")
+                        .attr("x", bbox.x - 10) // Add padding
+                        .attr("y", bbox.y - 5)
+                        .attr("width", bbox.width + 5) // Add width for padding
+                        .attr("height", bbox.height + 10) // Add height for padding
+                        .attr("fill", "transparent") // Default transparent
+                        .attr("rx", 5) // Rounded corners
+                        .attr("ry", 5);
+
+                    // Handle hover and click
+                    tick.on("mouseover", function () {
+                        // Highlight the bars for the hovered genre
+                        svg.selectAll(".bar-group rect")
+                            .attr("fill-opacity", 0.3); // Dim all bars
+                        svg.selectAll(`.bar-group[transform="translate(0,${y0(d)})"] rect`)
+                            .attr("fill-opacity", 1); // Highlight the bars for the hovered genre
+                        
+                        // Highlight the tick background
+                        tick.select("rect").attr("fill", "rgba(255, 255, 255, 0.3)");
+                    })
+                        .on("mouseout", function () {
+                            // Reset all bar opacities
+                            svg.selectAll(".bar-group rect")
+                                .attr("fill-opacity", 1);
+
+                            // Reset tick background
+                            tick.select("rect").attr("fill", "transparent");
+                        })
+                        .on("click", function () {
+                            // Update the global variable and trigger event
+                            window.selectedGenre = d;
+                            console.log(`Genre updated to: ${d}`);
+                            const genreEvent = new CustomEvent("genreUpdated", { detail: { genre: d } });
+                            window.dispatchEvent(genreEvent);
+                        });
+                });
 
                 // Add x-axis
                 svg.append("g")
@@ -349,24 +476,46 @@ function renderHistogram(svg, width, height) {
                     .attr("transform", `translate(0,${height})`)
                     .call(d3.axisBottom(x).ticks(5));
 
-                // Add bars with click interaction
-                const bars = svg.selectAll(".bar-group")
-                    .data(data, d => `${d.genre}-${d.range}`);
-
-                const barGroups = bars.enter()
+                // Group bars by genre
+                const barGroups = svg.selectAll(".bar-group")
+                    .data(genres)
+                    .enter()
                     .append("g")
                     .attr("class", "bar-group")
-                    .attr("transform", d => `translate(0,${y0(d.genre)})`)
-                    .style("cursor", "pointer")
-                    .on("click", (event, d) => {
-                        // Update the global variable and trigger event
-                        window.selectedGenre = d.genre;
-                        console.log(`Genre updated to: ${d.genre}`); // Log the updated genre to the console
-                        const genreEvent = new CustomEvent("genreUpdated", { detail: { genre: d.genre } });
+                    .attr("transform", d => `translate(0,${y0(d)})`)
+                    .on("mouseover", function (event, genre) {
+                        // Make all bar groups semi-transparent
+                        svg.selectAll(".bar-group rect")
+                            .attr("fill-opacity", 0.3);
+
+                        // Highlight the hovered bar group
+                        d3.select(this).selectAll("rect")
+                            .attr("fill-opacity", 1)
+                            .attr("y", d => y1(d.range) - 0.05 * y1.bandwidth()) // Add padding to the top
+                            .attr("height", y1.bandwidth() * 1.1); // Increase height
+                    })
+                    .on("mouseout", function () {
+                        // Reset all bar groups to full opacity and original size
+                        svg.selectAll(".bar-group rect")
+                            .attr("fill-opacity", 1)
+                            .attr("y", d => y1(d.range)) // Reset y position
+                            .attr("height", y1.bandwidth()); // Reset height
+                    })
+                    .on("click", function (event, genre) {
+                        // Update global variable
+                        window.selectedGenre = genre;
+                        console.log(`Genre updated to: ${genre}`);
+
+                        // Dispatch custom event
+                        const genreEvent = new CustomEvent("genreUpdated", { detail: { genre } });
                         window.dispatchEvent(genreEvent);
                     });
 
-                barGroups.append("rect")
+                // Add bars within each group
+                barGroups.selectAll("rect")
+                    .data(genre => data.filter(d => d.genre === genre))
+                    .enter()
+                    .append("rect")
                     .attr("y", d => y1(d.range))
                     .attr("x", 0)
                     .attr("width", d => x(d.count))
@@ -376,7 +525,7 @@ function renderHistogram(svg, width, height) {
                 // Add axis labels
                 svg.append("text")
                     .attr("x", width / 2)
-                    .attr("y", height + 35) // Position label below the axis ticks
+                    .attr("y", height + 35)
                     .attr("text-anchor", "middle")
                     .style("font-size", "14px")
                     .style("font-weight", "bold")
@@ -392,7 +541,7 @@ function renderHistogram(svg, width, height) {
                     .style("fill", "white")
                     .text(`Genres in the top ${window.selectedTop}`);
             } else {
-                // If `filteredData` is not an object, log an error
+                // Handle errors
                 console.error("Expected filteredData to be an object, but got:", filteredData);
                 svg.append("text")
                     .attr("x", width / 2)
@@ -400,6 +549,7 @@ function renderHistogram(svg, width, height) {
                     .attr("text-anchor", "middle")
                     .style("font-size", "16px")
                     .style("font-weight", "bold")
+                    .style("fill", "white")
                     .text("No data available");
             }
         })
@@ -414,7 +564,6 @@ function renderHistogram(svg, width, height) {
                 .text("Error loading data");
         });
 }
-        
 
 
 // ========================= Bottom Container (Genres) =========================
@@ -472,6 +621,7 @@ function renderDetailedHistogram(svg, width, height) {
                     .attr("text-anchor", "middle")
                     .style("font-size", "16px")
                     .style("font-weight", "bold")
+                    .style("fill", "white")
                     .text(`No data available for genre: ${selectedGenre}`);
                 return;
             }
@@ -508,7 +658,6 @@ function renderDetailedHistogram(svg, width, height) {
                 .attr("class", "y-axis")
                 .attr("transform", `translate(0,0)`) // No translation needed for y-axis
                 .style("font-size", "14px")
-
                 .call(d3.axisLeft(y));
 
             // Add bars with hover functionality
@@ -526,21 +675,34 @@ function renderDetailedHistogram(svg, width, height) {
                 .attr("height", y.bandwidth())
                 .attr("fill", d => get_color_yearRange(d.range, ranges))
                 .on("mouseover", function (event, d) {
-                    // Highlight the bar on hover
-                    d3.select(this).attr("fill", "orange");
-                    // Show the count text
+                    // Reduce opacity of all bars
+                    bars.selectAll("rect")
+                        .attr("fill", function (b) {
+                            const originalColor = get_color_yearRange(b.range, ranges);
+                            const opaqueColor = d3.color(originalColor);
+                            opaqueColor.opacity = 0.5; // Reduce opacity
+                            return opaqueColor.toString();
+                        });
+
+                    // Keep the hovered bar's original color
+                    d3.select(this)
+                        .attr("fill", get_color_yearRange(d.range, ranges));
+
+                    // Show the count text for the hovered bar
                     d3.select(this.parentNode).select("text").style("display", "block");
                 })
-                .on("mouseout", function (event, d) {
-                    // Reset bar color
-                    d3.select(this).attr("fill", get_color_yearRange(d.range, ranges));
+                .on("mouseout", function () {
+                    // Reset all bars to their original color
+                    bars.selectAll("rect")
+                        .attr("fill", d => get_color_yearRange(d.range, ranges));
+
                     // Hide the count text
                     d3.select(this.parentNode).select("text").style("display", "none");
                 });
 
             // Add text elements inside the bars
             bars.append("text")
-                .attr("x", d => x(d.count) - width*0.05) // Position text near the end of the bar
+                .attr("x", d => x(d.count) - width * 0.05) // Position text near the end of the bar
                 .attr("y", y.bandwidth() / 2) // Vertically center the text
                 .attr("dy", "0.35em") // Adjust text alignment
                 .attr("text-anchor", "end") // Align text to the end
@@ -559,20 +721,10 @@ function renderDetailedHistogram(svg, width, height) {
                 .style("font-weight", "bold")
                 .style("fill", "white")
                 .text(`Number of ${selectedGenre} songs`);
-
-            // Add title
-            // svg.append("text")
-            //     .attr("x", width / 2)
-            //     .attr("y", -10) // Position above the plot
-            //     .attr("text-anchor", "middle")
-            //     .style("font-size", "16px")
-            //     .style("font-weight", "bold")
-            //     .style("fill", "white")
-            //     .text(`Number of ${selectedGenre} songs`);
-                
         })
         .catch((err) => console.error("Error rendering barplot:", err));
 }
+
 
 
 

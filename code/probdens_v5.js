@@ -48,7 +48,176 @@ function initializePlots() {
         renderBottomContainerGenres(0.8);
     }
 }
-   
+function PDF_highlight_range(selectedRange) {
+    const mother_svg = d3.select("#topContainer_featuregenre");
+    const svgs = mother_svg.selectAll("svg");
+
+    // Reset all paths to original styles
+    svgs.selectAll("path")
+        .attr("stroke-width", 1.5)
+        .attr("stroke", function () {
+            return d3.select(this).attr("data-original-color") || d3.select(this).attr("stroke");
+        });
+
+    if (!selectedRange || !Array.isArray(selectedRange) || selectedRange.length !== 2) {
+        // If no range is selected, ensure all paths are in their original state
+        return;
+    }
+
+    const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
+
+    // Highlight the path corresponding to the selected range
+    svgs.selectAll("path")
+        .filter(function () {
+            return d3.select(this).attr("data-range") === rangeKey;
+        })
+        .attr("stroke-width", 3)
+        .attr("stroke", "#ff0000") // Highlight in red
+        .raise(); // Bring to the front
+}
+
+function PDF_highlight_range_opacity(selectedRange) {
+    const mother_svg = d3.select("#topContainer_featuregenre");
+    const svgs = mother_svg.selectAll("svg");
+
+    // Reset all paths to full opacity
+    svgs.selectAll("path")
+        .attr("stroke-width", 1.5)
+        .attr("opacity", 1.0);
+
+    if (!selectedRange || !Array.isArray(selectedRange) || selectedRange.length !== 2) {
+        // If no range is selected, reset all paths
+        return;
+    }
+
+    const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
+
+    // Dim all paths
+    svgs.selectAll("path")
+        .attr("opacity", 0.2);
+
+    // Highlight the selected range
+    svgs.selectAll("path")
+        .filter(function () {
+            return d3.select(this).attr("data-range") === rangeKey;
+        })
+        .attr("stroke-width", 3)
+        .attr("opacity", 1.0) // Full opacity for the selected path
+        .raise(); // Bring to the front
+}
+
+function PDF_highlight_range_detailed(selectedRange) {
+    const svgs = d3.selectAll("#bottomContainer_featuregenre");
+
+    // Reset all paths to original styles
+    svgs.selectAll("path")
+        .attr("stroke-width", 1.5)
+        .attr("stroke", function () {
+            return d3.select(this).attr("data-original-color") || d3.select(this).attr("stroke");
+        });
+
+    if (!selectedRange || !Array.isArray(selectedRange) || selectedRange.length !== 2) {
+        // If no range is selected, ensure all paths are in their original state
+        return;
+    }
+
+    const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
+
+    // Highlight the path corresponding to the selected range
+    svgs.selectAll("path")
+        .filter(function () {
+            return d3.select(this).attr("data-range") === rangeKey;
+        })
+        .attr("stroke-width", 3)
+        .attr("stroke", "#ff0000") // Highlight in red
+        .raise(); // Bring to the front
+}
+
+function PDF_highlight_range_detailed_opacity(selectedRange) {
+    const svgs = d3.selectAll("#bottomContainer_featuregenre");
+
+    // Reset all paths to full opacity
+    svgs.selectAll("path")
+        .attr("stroke-width", 1.5)
+        .attr("opacity", 1.0);
+
+    if (!selectedRange || !Array.isArray(selectedRange) || selectedRange.length !== 2) {
+        // If no range is selected, reset all paths
+        return;
+    }
+
+    const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
+
+    // Dim all paths
+    svgs.selectAll("path")
+        .attr("opacity", 0.2);
+
+    // Highlight the selected range
+    svgs.selectAll("path")
+        .filter(function () {
+            return d3.select(this).attr("data-range") === rangeKey;
+        })
+        .attr("stroke-width", 3)
+        .attr("opacity", 1.0) // Full opacity for the selected path
+        .raise(); // Bring to the front
+}
+
+function GenreHist_range_detailed(selectedRange) {
+    const svg = d3.select("#bottomContainer_featuregenre").select("svg");
+
+    // Reset all bars to their original styles
+    svg.selectAll("rect")
+        .attr("fill", function () {
+            return d3.select(this).attr("data-original-color") || d3.select(this).attr("fill");
+        })
+        .attr("opacity", 1.0);
+
+    // If no valid range is selected, exit
+    if (!selectedRange || !Array.isArray(selectedRange) || selectedRange.length !== 2) {
+        return;
+    }
+
+    const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
+
+    // Highlight bars that match the selected range
+    svg.selectAll("rect")
+        .filter(function () {
+            return d3.select(this).attr("data-range") === rangeKey;
+        })
+        .attr("fill", "#ff0000") // Set the highlight color
+        .attr("opacity", 1.0)
+        .raise(); // Bring the highlighted bars to the front
+}
+
+function GenreHist_range_detailed_opacity(selectedRange) {
+    const svg = d3.select("#bottomContainer_featuregenre").select("svg");
+
+    // Reset all bars to full opacity
+    svg.selectAll("rect")
+        .attr("opacity", 1.0);
+
+    if (!selectedRange || !Array.isArray(selectedRange) || selectedRange.length !== 2) {
+        // If no range is selected, reset all bars
+        return;
+    }
+
+    const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
+
+    // Dim all bars
+    svg.selectAll("rect")
+        .attr("opacity", 0.2);
+
+    // Highlight the selected range
+    svg.selectAll("rect")
+        .filter(function () {
+            return d3.select(this).attr("data-range") === rangeKey;
+        })
+        .attr("opacity", 1.0) // Full opacity for the selected bars
+        .raise(); // Bring to the front
+}
+
+
+
 // ========================= Top Container (Features) =========================
 function renderTopContainerFeatures() {
     const container = d3.select("#topContainer_featuregenre");
@@ -124,7 +293,7 @@ function renderPDF(svg, feature, width, height) {
 
                 if (rangeData.length > 0) {
                     const bandwidth = calculateBandwidth(rangeData);
-                    const kde = kernelDensityEstimator(kernelEpanechnikov(bandwidth), d3.range(0, 1, 0.01)); // Fixed range from 0 to 1
+                    const kde = kernelDensityEstimator(kernelEpanechnikov(bandwidth), d3.range(0, 1.001, 0.01)); // Fixed range from 0 to 1
                     const density = kde(rangeData);
                     densities.push({ range, density });
                 }
@@ -132,7 +301,7 @@ function renderPDF(svg, feature, width, height) {
 
             // Update x and y scales
             const x = d3.scaleLinear()
-                .domain([0, 1]) // Fixed range for x-axis
+                .domain([0, 1.001]) // Fixed range for x-axis
                 .range([0, width]);
 
             const yMax = d3.max(densities.flatMap(d => d.density.map(point => point[1])));
@@ -152,7 +321,7 @@ function renderPDF(svg, feature, width, height) {
             const grid = svg.append("g")
                 .attr("class", "grid");
 
-            const yTicks = y.ticks(4);
+            const yTicks = y.ticks(2);
             // Add horizontal grid lines (y-axis)
             grid.selectAll(".horizontal-line")
                 .data(yTicks)
@@ -197,6 +366,12 @@ function renderPDF(svg, feature, width, height) {
                     .attr("fill", "none")
                     .attr("stroke", get_color_yearRange(range, allRanges))
                     .attr("stroke-width", 1.5)
+
+                    // add for highlighting
+                    .attr("data-range", `${range[0]}-${range[1]}`)
+                    .attr("data-original-color", get_color_yearRange(range, allRanges))
+
+                    // add actual line
                     .attr("d", d3.line()
                         .curve(d3.curveBasis)
                         .x(d => x(d[0]))
@@ -258,7 +433,7 @@ function renderBottomContainerFeatures() {
 function renderDetailedPDF(svg, feature, width, height) {
     filter_data()
         .then((filteredData) => {
-            const allRanges = window.selectedYearRanges;
+            const allRanges = window.selectedYearRanges || [];
 
             // Extract data for each range
             const densities = allRanges.map(range => {
@@ -273,7 +448,7 @@ function renderDetailedPDF(svg, feature, width, height) {
                         d3.max(rangeData),
                         (d3.max(rangeData) - d3.min(rangeData)) / 100
                     );
-                    const kde = kernelDensityEstimator(kernelEpanechnikov(bandwidth), xTicks);
+                    const kde = kernelDensityEstimator(kernelEpanechnikov(bandwidth), d3.range(0, 1.001, 0.01));
                     return {
                         range,
                         density: kde(rangeData),
@@ -287,6 +462,9 @@ function renderDetailedPDF(svg, feature, width, height) {
             // Combine data across ranges to calculate the x and y scales
             const allFeatureData = densities.flatMap(d => d.density.map(point => point[0]));
             const xExtent = d3.extent(allFeatureData);
+            const xMax = d3.max(densities.flatMap(d => d.density.map(point => point[0])));
+            const xMin = d3.min(densities.flatMap(d => d.density.map(point => point[0])));
+            // console.log('......', xMin, '-', xMax)
             const yMax = d3.max(densities.flatMap(d => d.density.map(point => point[1])));
 
             // Define scales
@@ -383,6 +561,12 @@ function renderDetailedPDF(svg, feature, width, height) {
                     .attr("fill", "none")
                     .attr("stroke", color) // Use the color scheme
                     .attr("stroke-width", 2)
+
+                    // add for highlighting
+                    .attr("data-range", `${range[0]}-${range[1]}`)
+                    .attr("data-original-color", get_color_yearRange(range, allRanges))
+
+                    // add actual line
                     .attr("d", d3.line()
                         .curve(d3.curveBasis)
                         .x(d => x(d[0]))
@@ -772,7 +956,7 @@ function renderDetailedHistogram(svg, width, height) {
                 .paddingInner(0.2);
 
             const x = d3.scaleLinear()
-                .domain([0, d3.max(data, d => d.count)])
+                .domain([0, d3.max(data, d => d.count)*1.05])
                 .range([0, width]);
 
             // Add x-axis (counts)
@@ -803,6 +987,7 @@ function renderDetailedHistogram(svg, width, height) {
                 .attr("stroke-opacity", 0.2)
                 .attr("stroke-dasharray", "4 4");
 
+
             // Add bars with hover functionality
             const bars = svg.selectAll(".bar-group")
                 .data(data)
@@ -817,31 +1002,28 @@ function renderDetailedHistogram(svg, width, height) {
                 .attr("width", d => x(d.count))
                 .attr("height", y.bandwidth())
                 .attr("fill", d => get_color_yearRange(d.range, ranges))
+                .attr("data-range", d => d.range) // Set the range for this bar
+                .attr("data-original-color", d => get_color_yearRange(d.range, ranges)) // Store the original color
                 .on("mouseover", function (event, d) {
                     // Reduce opacity of all bars
                     bars.selectAll("rect")
-                        .attr("fill", function (b) {
-                            const originalColor = get_color_yearRange(b.range, ranges);
-                            const opaqueColor = d3.color(originalColor);
-                            opaqueColor.opacity = 0.5; // Reduce opacity
-                            return opaqueColor.toString();
-                        });
-
-                    // Keep the hovered bar's original color
+                        .attr("opacity", 0.5);
+            
+                    // Keep the hovered bar's original color and opacity
                     d3.select(this)
-                        .attr("fill", get_color_yearRange(d.range, ranges));
-
+                        .attr("opacity", 1.0);
+            
                     // Show the count text for the hovered bar
                     d3.select(this.parentNode).select("text").style("display", "block");
                 })
                 .on("mouseout", function () {
-                    // Reset all bars to their original color
-                    bars.selectAll("rect")
-                        .attr("fill", d => get_color_yearRange(d.range, ranges));
-
+                    // Reset all bars to their original opacity
+                    bars.selectAll("rect").attr("opacity", 1.0);
+            
                     // Hide the count text
                     d3.select(this.parentNode).select("text").style("display", "none");
                 });
+            
 
             // Add text elements inside the bars
             bars.append("text")

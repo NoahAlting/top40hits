@@ -285,9 +285,15 @@ function update_graphs_selected_FeatureGenre(filtered_data){
 function highlight_selection(selectedRange) {
   linegraph_yearhighlight(selectedRange);
   longevity_radialChart_yearhighlight(selectedRange);
-    if (window.selectedType === "genres"){
-        longevity_genre_yearhighlight(selectedRange);
-    }
+
+  if (window.selectedType === "features"){
+    PDF_highlight_range_opacity(selectedRange);
+    PDF_highlight_range_detailed_opacity(selectedRange);
+  }
+  if (window.selectedType === "genres"){
+      longevity_genre_yearhighlight(selectedRange);
+      GenreHist_range_detailed_opacity(selectedRange);
+  }
 
 }
 
@@ -360,7 +366,7 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener("selectedRangeUpdated", function () {
     const selectedRange = window.selectedRange;
     highlight_selection(selectedRange)
-    console.log("selected range:", window.selectedRange);
+    console.log("selected highlighted range:", window.selectedRange);
 
 });
 

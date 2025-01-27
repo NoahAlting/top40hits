@@ -406,3 +406,22 @@ button {
 #toggleTop button:not(.active):hover {
     background-color: #e7e7e7;
 }
+
+/* ================================ value table long ====================================== */
+#value-table_long {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#value-table_long td {
+    text-align: center;
+    border: 1px solid white;
+    padding: 5px;
+}
+
+#value-table_long th {
+    text-align: center;
+    border: 1px solid white;
+    padding: 5px;
+    background-color: #f4f4f4;
+}

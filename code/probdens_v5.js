@@ -114,7 +114,6 @@ function renderPDF(svg, feature, width, height) {
     filter_data()
         .then((filteredData) => {
             const allRanges = window.selectedYearRanges || [];
-            const xExtent = d3.extent(filteredData.map(row => row[feature]).filter(v => v !== undefined));
             const densities = [];
 
             // Compute densities for each range
@@ -125,7 +124,7 @@ function renderPDF(svg, feature, width, height) {
 
                 if (rangeData.length > 0) {
                     const bandwidth = calculateBandwidth(rangeData);
-                    const kde = kernelDensityEstimator(kernelEpanechnikov(bandwidth), d3.range(xExtent[0], xExtent[1], (xExtent[1] - xExtent[0]) / 100));
+                    const kde = kernelDensityEstimator(kernelEpanechnikov(bandwidth), d3.range(0, 1, 0.01)); // Fixed range from 0 to 1
                     const density = kde(rangeData);
                     densities.push({ range, density });
                 }
@@ -133,7 +132,7 @@ function renderPDF(svg, feature, width, height) {
 
             // Update x and y scales
             const x = d3.scaleLinear()
-                .domain(xExtent)
+                .domain([0, 1]) // Fixed range for x-axis
                 .range([0, width]);
 
             const yMax = d3.max(densities.flatMap(d => d.density.map(point => point[1])));
@@ -148,6 +147,40 @@ function renderPDF(svg, feature, width, height) {
 
             svg.append("g")
                 .call(d3.axisLeft(y).ticks(2));
+
+            // Add grid lines
+            const grid = svg.append("g")
+                .attr("class", "grid");
+
+            const yTicks = y.ticks(4);
+            // Add horizontal grid lines (y-axis)
+            grid.selectAll(".horizontal-line")
+                .data(yTicks)
+                .enter()
+                .append("line")
+                .attr("class", "horizontal-line")
+                .attr("x1", 0)
+                .attr("x2", width)
+                .attr("y1", d => y(d))
+                .attr("y2", d => y(d))
+                .attr("stroke", "white")
+                .attr("stroke-opacity", 0.1)
+                .attr("stroke-dasharray", "4 4");
+
+            // Add vertical grid lines (x-axis)
+            const xTicks = x.ticks(3); // Get tick positions
+            grid.selectAll(".vertical-line")
+                .data(xTicks)
+                .enter()
+                .append("line")
+                .attr("class", "vertical-line")
+                .attr("x1", d => x(d))
+                .attr("x2", d => x(d))
+                .attr("y1", 0)
+                .attr("y2", height)
+                .attr("stroke", "white")
+                .attr("stroke-opacity", 0.1)
+                .attr("stroke-dasharray", "4 4");
 
             svg.append("text")
                 .attr("x", width / 2)
@@ -268,11 +301,45 @@ function renderDetailedPDF(svg, feature, width, height) {
             // Add x-axis
             svg.append("g")
                 .attr("transform", `translate(0,${height})`)
-                .call(d3.axisBottom(x).ticks(5));
+                .call(d3.axisBottom(x).ticks(8));
 
             // Add y-axis
             svg.append("g")
-                .call(d3.axisLeft(y).ticks(5));
+                .call(d3.axisLeft(y).ticks(3));
+
+            // Add grid lines
+            const grid = svg.append("g")
+            .attr("class", "grid");
+
+            const yTicks = y.ticks(6)
+            // Add horizontal grid lines (y-axis)
+            grid.selectAll(".horizontal-line")
+                .data(yTicks)
+                .enter()
+                .append("line")
+                .attr("class", "horizontal-line")
+                .attr("x1", 0)
+                .attr("x2", width)
+                .attr("y1", d => y(d))
+                .attr("y2", d => y(d))
+                .attr("stroke", "white")
+                .attr("stroke-opacity", 0.1)
+                .attr("stroke-dasharray", "4 4");
+
+            // Add vertical grid lines (x-axis)
+            const xTicks = x.ticks(8); // Get tick positions
+            grid.selectAll(".vertical-line")
+                .data(xTicks)
+                .enter()
+                .append("line")
+                .attr("class", "vertical-line")
+                .attr("x1", d => x(d))
+                .attr("x2", d => x(d))
+                .attr("y1", 0)
+                .attr("y2", height)
+                .attr("stroke", "white")
+                .attr("stroke-opacity", 0.1)
+                .attr("stroke-dasharray", "4 4");
 
             // Add x-axis label
             svg.append("text")
@@ -455,6 +522,39 @@ function renderHistogram(svg, width, height) {
                     .domain([0, d3.max(data, d => d.count)])
                     .range([0, width]);
 
+                // Add grid lines
+                const grid = svg.append("g")
+                    .attr("class", "grid");
+
+                // Add horizontal grid lines (y-axis)
+                // grid.selectAll(".horizontal-line")
+                //     .data(genres)
+                //     .enter()
+                //     .append("line")
+                //     .attr("class", "horizontal-line")
+                //     .attr("x1", 0)
+                //     .attr("x2", width)
+                //     .attr("y1", d => y0(d) + y0.bandwidth() / 2)
+                //     .attr("y2", d => y0(d) + y0.bandwidth() / 2)
+                //     .attr("stroke", "white")
+                //     .attr("stroke-opacity", 0.2)
+                //     .attr("stroke-dasharray", "4 4");
+
+                // Add vertical grid lines (x-axis)
+                const xTicks = x.ticks(5); // Get tick positions
+                grid.selectAll(".vertical-line")
+                    .data(xTicks)
+                    .enter()
+                    .append("line")
+                    .attr("class", "vertical-line")
+                    .attr("x1", d => x(d))
+                    .attr("x2", d => x(d))
+                    .attr("y1", 0)
+                    .attr("y2", height)
+                    .attr("stroke", "white")
+                    .attr("stroke-opacity", 0.2)
+                    .attr("stroke-dasharray", "4 4");
+
                 // Add y-axis (only genre labels)
                 const yAxis = svg.append("g")
                     .attr("class", "y-axis")
@@ -568,14 +668,6 @@ function renderHistogram(svg, width, height) {
                     .style("fill", "white")
                     .text("Number of songs");
 
-                // svg.append("text")
-                //     .attr("x", width / 2)
-                //     .attr("y", -20)
-                //     .attr("text-anchor", "middle")
-                //     .style("font-size", "22px")
-                //     .style("font-weight", "bold")
-                //     .style("fill", "white")
-                //     .text(`Genres in the top ${window.selectedTop}`);
             } else {
                 // Handle errors
                 console.error("Expected filteredData to be an object, but got:", filteredData);
@@ -695,6 +787,21 @@ function renderDetailedHistogram(svg, width, height) {
                 .attr("transform", `translate(0,0)`) // No translation needed for y-axis
                 .style("font-size", "14px")
                 .call(d3.axisLeft(y));
+
+            // Add grid for the x-axis
+            svg.append("g")
+                .attr("class", "grid")
+                .attr("transform", `translate(0,${height})`)
+                .call(
+                    d3.axisBottom(x)
+                        .ticks(5)
+                        .tickSize(-height)
+                        .tickFormat("") // Remove tick labels
+                )
+                .selectAll("line")
+                .attr("stroke", "white")
+                .attr("stroke-opacity", 0.2)
+                .attr("stroke-dasharray", "4 4");
 
             // Add bars with hover functionality
             const bars = svg.selectAll(".bar-group")

@@ -597,6 +597,86 @@ function smoothData(data, windowSize = 3) {
     });
 }
 
+function addInteractiveLine(svg, xScale, yScale, freqData, dynamicallyFilteredData, yearRanges, margin) {
+    // Add a rectangle for capturing mouse events
+    const overlay = svg.append("rect")
+        .attr("class", "interactive-overlay")
+        .attr("width", svg.attr("width"))
+        .attr("height", svg.attr("height"))
+        .attr("fill", "none")
+        .attr("pointer-events", "all");
+
+    // Create a vertical line for interactivity
+    const verticalLine = svg.append("line")
+        .attr("class", "interactive-line")
+        .attr("stroke", "white")
+        .attr("stroke-width", 1.5)
+        .attr("opacity", 0);
+
+    // Create a tooltip or display area for showing the details
+    const tooltip = d3.select("#controls")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("position", "absolute")
+        .style("background", "#333")
+        .style("color", "white")
+        .style("padding", "10px")
+        .style("border-radius", "5px")
+        .style("visibility", "hidden");
+
+    overlay
+        .on("mouseover", () => {
+            verticalLine.style("opacity", 1);
+            tooltip.style("visibility", "visible");
+        })
+        .on("mouseout", () => {
+            verticalLine.style("opacity", 0);
+            tooltip.style("visibility", "hidden");
+        })
+        .on("mousemove", function (event) {
+            const [mouseX] = d3.pointer(event, this);
+
+            // Calculate the approximate index for the band
+            const bandWidth = xScale.bandwidth();
+            const xIndex = Math.round((mouseX - margin.left) / bandWidth);
+
+            // Ensure the index is within the domain bounds
+            const xDomain = xScale.domain();
+            if (xIndex < 0 || xIndex >= xDomain.length) return;
+
+            // Retrieve the closest x-value
+            const week = xDomain[xIndex];
+
+            // Position the vertical line
+            const xPosition = xScale(week) + bandWidth / 2; // Center the line in the band
+            verticalLine
+                .attr("x1", xPosition)
+                .attr("x2", xPosition)
+                .attr("y1", margin.top)
+                .attr("y2", svg.attr("height") - margin.bottom);
+
+            // Filter data for the selected week
+            const filteredWeekData = dynamicallyFilteredData.filter(d => d.weeks === week);
+
+            // Calculate the total number of unique songs
+            const totalUniqueSongs = new Set(dynamicallyFilteredData.map(d => d.Song_ID)).size;
+
+            // Calculate unique songs within the selected genre
+            const uniqueSongsInGenre = new Set(filteredWeekData.map(d => d.Song_ID)).size;
+
+            // Update the tooltip content
+            tooltip.html(`
+                <strong>Week:</strong> ${week}<br>
+                <strong>Total Unique Songs:</strong> ${totalUniqueSongs}<br>
+                <strong>Unique Songs in Genre:</strong> ${uniqueSongsInGenre}
+            `);
+
+            // Position the tooltip
+            tooltip
+                .style("left", `${event.pageX + 15}px`)
+                .style("top", `${event.pageY - 15}px`);
+        });
+}
 // Apply dynamic filters
 function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxWeeks) {
     var width_scatterplot_container = document.getElementById("longevityCharts").clientWidth;
@@ -604,9 +684,10 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
 
     const svg = d3.select("#longevity_histogram").attr("width", width_scatterplot_container).attr("height", height_scatterplot_container);
     const width_longevityGenre = +svg.attr("width");
-    const height_longevityGenre = +svg.attr("height");
+    const height_longevityGenre = 900;
     const margin_longevityGenre = { top: height_scatterplot_container * 0.1, right: width_scatterplot_container * 0.1, bottom: height_scatterplot_container * 0.3, left: width_scatterplot_container * 0.1 };
 
+    console.log("height container", height_longevityGenre)
     // Clear old plot lines and areas, but not the axes
     svg.selectAll(".line-path").transition().duration(500).style("opacity", 0).remove();
     svg.selectAll(".area").transition().duration(500).style("opacity", 0).remove();
@@ -789,6 +870,8 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
         .style("font-size", "12px")
         .style("fill", "white")
         .text(`Normalized Frequency of Songs with Genre ${window.selectedGenre}`);
+
+    addInteractiveLine(svg, x, yScale, freqData, dynamicallyFilteredData, yearRanges, margin_longevityGenre);
 }
 
 // Render line plot with smooth transitions and consistent styles

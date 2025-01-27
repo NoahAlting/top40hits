@@ -34,22 +34,32 @@ let infoButtonExists_genre = false;
 
 function toggleVisibility(selectedType) {
     if (selectedType === "features") {
-        // Hide genre-related elements
         hideGenreElements();
+
         if (!infoButtonExists_feat) {
-            removeButtonByContainerId("longevityCharts");
             createinfobutton_feat();
             infoButtonExists_feat = true;
+        }
+
+        if (infoButtonExists_genre) {
+            removeButtonByContainerId("longevityCharts");
+            infoButtonExists_genre = false;
         }
 
         showFeatureElements();
     } else if (selectedType === "genres") {
         hideFeatureElements();
+
         if (!infoButtonExists_genre) {
-            removeButtonByContainerId("longevityCharts");
             createinfobutton_genre();
             infoButtonExists_genre = true;
         }
+
+        if (infoButtonExists_feat) {
+            removeButtonByContainerId("longevityCharts");
+            infoButtonExists_feat = false;
+        }
+
         showGenreElements();
     }
 }
@@ -374,7 +384,7 @@ function createInteractiveGraph_Features_scat(divId, data, features, feature, ye
 
     // Create the dot group with clipping path applied
     const dotGroup = svg.append("g").attr("clip-path", "url(#clip)");
-    
+
     let previouslySelectedDot = null;
     // Dots for the scatterplot
     const dots = dotGroup

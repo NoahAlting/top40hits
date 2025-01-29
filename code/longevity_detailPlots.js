@@ -970,7 +970,7 @@ function renderLinePlot(svg, x, yRight, groupedData) {
             .attr("data-range", range)
             .attr("data-original-color", color)
     });
-    }
+}
 
 // Render single line plot
 function singleLinePlot(svg, x, y, data, color) {
@@ -983,6 +983,7 @@ function singleLinePlot(svg, x, y, data, color) {
 
     svg.append("path")
         .data([data])
+        .attr("data-range", data.range)
         .attr("class", "area")
         .attr("d", area)
         .attr("fill", color)
@@ -1022,7 +1023,7 @@ function longevity_genre_yearhighlight(selectedRange) {
 
     // Dim all paths
     svg.selectAll(".line-path")
-        .attr("opacity", 0.2)
+        .attr("opacity", 0.4)
         .attr("stroke-width", 2);
 
     // Highlight the selected range

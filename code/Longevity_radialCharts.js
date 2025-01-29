@@ -5,7 +5,7 @@ var margin_longevity_radialChart = {top: height_longevity_radialChartContainer*0
 var width_longevity_radialChart = width_longevity_radialChartContainer - margin_longevity_radialChart.left - margin_longevity_radialChart.right;
 var height_longevity_radialChart = height_longevity_radialChartContainer - margin_longevity_radialChart.top - margin_longevity_radialChart.bottom;
 
-const innerRadius_longevity_radialChart = 5;
+const innerRadius_longevity_radialChart = 20;
 const outerRadius_longevity_radialChart = 100;
 
 var categories = ["Short Hits", "Medium Hits", "Long Hits"];
@@ -262,7 +262,7 @@ function createInteractiveGraph_Features_longevityRadialChart(
     .attr("stroke", "#ccc")
     .attr("opacity", 0.3);
   chartContainer
-    .selectAll(".axis")
+    .selectAll(".graph-axis")
     .data(data[labels[0]])
     .enter()
     .append("line")
@@ -270,7 +270,10 @@ function createInteractiveGraph_Features_longevityRadialChart(
     .attr("x1", (d) => radiusScale(0) * Math.sin(d.angle))
     .attr("y1", (d) => -radiusScale(0) * Math.cos(d.angle))
     .attr("x2", (d) => radiusScale(1) * Math.sin(d.angle))
-    .attr("y2", (d) => -radiusScale(1) * Math.cos(d.angle));
+    .attr("y2", (d) => -radiusScale(1) * Math.cos(d.angle))
+    .style("stroke", "#ffffff") 
+    .style("stroke-width", 1); 
+  
   chartContainer
     .selectAll(".label")
     .data(data[labels[0]])
@@ -284,7 +287,7 @@ function createInteractiveGraph_Features_longevityRadialChart(
     )
     .attr(
       "y",
-      (d) => -(outerRadius_longevity_radialChart + 10) * Math.cos(d.angle)
+      (d) => -(outerRadius_longevity_radialChart + 20) * Math.cos(d.angle)
     )
     .attr("text-anchor", (d) => {
       if (d.angle === 0 || d.angle === Math.PI) {
@@ -318,7 +321,7 @@ function createInteractiveGraph_Features_longevityRadialChart(
       .attr("stroke", function_colors(label, labels))
       .attr("fill", "none")
       .attr("opacity", 0.8)
-      .attr("stroke-width", 4);
+      .attr("stroke-width", 2);
   });
 
   function activateStdArea(event) {
@@ -346,6 +349,33 @@ function createInteractiveGraph_Features_longevityRadialChart(
     });
   }
   d3.select("#myCheckbox").on("change", activateStdArea);
+  chartContainer
+    .selectAll(".axis-label")
+    .data(d3.range(0, 1.1, 1)) 
+    .enter()
+    .append("text")
+    .attr("class", "axis-label")
+    .attr("x", (d) => radiusScale(d) * Math.sin(0))
+    .attr("y", (d) => -radiusScale(d) * Math.cos(0))
+    .attr("text-anchor", "middle")
+    .attr("alignment-baseline", "middle")
+    .style("font-size", "12px")
+    .style("fill", "#ffffff")
+    .text((d) => d.toFixed(1))
+    .on("mouseover", function () {
+      d3.select(this)
+        .transition()
+        .duration(200)
+        .style("font-size", "25px") 
+        .style("fill", "#ffffff");
+    })
+    .on("mouseout", function () {
+      d3.select(this)
+        .transition()
+        .duration(200)
+        .style("font-size", "12px") 
+        .style("fill", "#ffffff");
+    });
 }
 
 function createInteractiveGraph_GenresData_longevityRadialChart(
@@ -374,15 +404,17 @@ function createInteractiveGraph_GenresData_longevityRadialChart(
     .attr("stroke", "#ccc")
     .attr("opacity", 0.3);
   chartContainer
-    .selectAll(".axis")
+    .selectAll(".graph-axis")
     .data(data[labels[0]])
     .enter()
     .append("line")
     .attr("class", "graph-axis")
     .attr("x1", (d) => radiusScale(0) * Math.sin(d.angle))
     .attr("y1", (d) => -radiusScale(0) * Math.cos(d.angle))
-    .attr("x2", (d) => radiusScale(maxCount * 1.1) * Math.sin(d.angle))
-    .attr("y2", (d) => -radiusScale(maxCount * 1.1) * Math.cos(d.angle));
+    .attr("x2", (d) => radiusScale(maxCount) * Math.sin(d.angle))
+    .attr("y2", (d) => -radiusScale(maxCount) * Math.cos(d.angle))
+    .style("stroke", "#ffffff") 
+    .style("stroke-width", 1);
   chartContainer
     .selectAll(".label")
     .data(data[labels[0]])
@@ -396,7 +428,7 @@ function createInteractiveGraph_GenresData_longevityRadialChart(
     )
     .attr(
       "y",
-      (d) => -(outerRadius_longevity_radialChart + 10) * Math.cos(d.angle)
+      (d) => -(outerRadius_longevity_radialChart + 30) * Math.cos(d.angle)
     )
     .attr("text-anchor", (d) => {
       if (d.angle === 0 || d.angle === Math.PI) {
@@ -430,8 +462,35 @@ function createInteractiveGraph_GenresData_longevityRadialChart(
       .attr("stroke", function_colors(label, labels))
       .attr("fill", "none")
       .attr("opacity", 0.8)
-      .attr("stroke-width", 4);
+      .attr("stroke-width", 2);
   });
+  chartContainer
+    .selectAll(".axis-label")
+    .data(d3.range(0, maxCount + 1, maxCount)) 
+    .enter()
+    .append("text")
+    .attr("class", "axis-label")
+    .attr("x", (d) => radiusScale(d) * Math.sin(0))
+    .attr("y", (d) => -radiusScale(d) * Math.cos(0))
+    .attr("text-anchor", "middle")
+    .attr("alignment-baseline", "middle")
+    .style("font-size", "12px")
+    .style("fill", "#ffffff")
+    .text((d) => d.toFixed(1))
+    .on("mouseover", function () {
+      d3.select(this)
+        .transition()
+        .duration(200)
+        .style("font-size", "25px") 
+        .style("fill", "#ffffff");
+    })
+    .on("mouseout", function () {
+      d3.select(this)
+        .transition()
+        .duration(200)
+        .style("font-size", "12px") 
+        .style("fill", "#ffffff");
+    });
 
 }
 
@@ -497,8 +556,8 @@ function update_LongevityRadialGraph(filtered_data_input) {
         `Category-Based Longevity of Scores`,
         `This radial graph displays the average score for all features, divided into categories: ${categories[0]}, ${categories[1]}, and ${categories[2]}. Songs are categorized based on how many weeks they spent in the Top ${window.selectedTop} during the selected year range. Category "${categories[2]}" represents the songs that have remained in the Top ${window.selectedTop} for the longest period. This visualization helps identify trends in the longevity of scores.`,
         "All features.",
-        `The average score for each feature within a given category.`,
-        "The position indicates the feature and the average score, while color represents the category.",
+        `Represents the average score for each feature within a given category. The inner ring corresponds to a value of 0, while the outer ring represents a value of 1.`,
+        "The position indicates the feature and the average score, while color represents the category. And hover over over the axes label to see the minimum and maximum value.",
         "Channel",
         "Click on the button to view the standard deviation of the scores.",
         "left"
@@ -511,10 +570,10 @@ function update_LongevityRadialGraph(filtered_data_input) {
           "Category-Based Longevity of Scores",
           `These radial graphs display the average score for all features, with one graph per category: ${categories[0]}, ${categories[1]}, and ${categories[2]}. Songs are categorized based on how many weeks they spent in the Top ${window.selectedTop} during the selected year range. Category "${categories[2]}" represents songs that have remained in the Top ${window.selectedTop} for the longest period. This visualization helps identify trends in score longevity and compare across different year ranges.`,
           "All features.",
-          `The average score for each feature within a given category and year range.`,
+          `Represents the average score for each feature within a given category. The inner ring corresponds to a value of 0, while the outer ring represents a value of 1.`,
           "The position indicates the feature and the average score, while color represents the year range.",
           "Channel",
-          "Click the button to view the standard deviation of the scores.",
+          "Click the button to view the standard deviation of the scores. And hover over over the axes label to see the minimum and maximum value.",
           "left"
       );
     }
@@ -597,7 +656,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
         }
         if (i == 2){
           var chartX = 0;
-          var chartY = -0.1;
+          var chartY = -0.13;
         }
       }
       const svgContainer = d3
@@ -691,10 +750,10 @@ function update_LongevityRadialGraph(filtered_data_input) {
         "Category-Based Longevity of Scores",
         `This radial graph displays the number of songs per category for each specific genre. The categories are: ${categories[0]}, ${categories[1]}, and ${categories[2]}. Songs are categorized based on how many weeks they spent in the Top ${window.selectedTop} during the selected year range. Category "${categories[2]}" represents songs that have remained in the Top ${window.selectedTop} for the longest period. This visualization helps identify trends in the longevity of genres.`,
         "All genres.",
-        `The number of songs per genre within each category.`,
+        `Represents the number of songs per genre within each category. All axes and graphs share the same minimum value on the inner ring and the same maximum value on the outer ring.`,
         "The position indicates the genre and the number of songs, while the color represents the category.",
         "Channel",
-        "No interactivity.",
+        "Hover over over the axes label to see the minimum and maximum value.",
         "left"
     );
     }
@@ -705,10 +764,10 @@ function update_LongevityRadialGraph(filtered_data_input) {
         "Category-Based Longevity of Scores",
         `These radial graphs display the number of songs per category for each specific genre, with one graph for each category: ${categories[0]}, ${categories[1]}, and ${categories[2]}. Songs are categorized based on how many weeks they spent in the Top ${window.selectedTop} during the selected year range. Category "${categories[2]}" represents songs that have remained in the Top ${window.selectedTop} for the longest period. This visualization helps identify trends in genre longevity and compare across different year ranges.`,
         "All genres.",
-        `The number of songs per genre within each category.`,
+        `Represents the number of songs per genre within each category. All axes and graphs share the same minimum value on the inner ring and the same maximum value on the outer ring.`,
         "The position indicates the genre and the number of songs, while color represents the year range.",
         "Channel",
-        "No interactivity.",
+        "Hover over over the axes label to see the minimum and maximum value.",
         "left"
     );
     }
@@ -716,6 +775,22 @@ function update_LongevityRadialGraph(filtered_data_input) {
       filtered_data_input,
       selected_years
     );
+
+    let global_max_count = 0;
+    data.forEach((stat) => {
+      categories.forEach((category) => {
+        stat[category].forEach((item) => {
+          if (typeof item.count === "number" && item.count > global_max_count) {
+            global_max_count = item.count;
+          }
+        });
+      });
+    });
+    console.log("maxcoutn", global_max_count);
+    
+    global_max_count = Math.ceil(global_max_count/ 10) * 10;
+    console.log("maxcoutn", global_max_count);
+    
     
     for (let i = 0; i < numCharts; i++) {
       let indexed_data = {};
@@ -723,7 +798,6 @@ function update_LongevityRadialGraph(filtered_data_input) {
       function_colors = [];
       let size_graph = 0;
       let font_size = 0;
-      let max_count = 0;
       if (numCharts === 3) {
         data.forEach((stat) => {
           if (!indexed_data[stat.range]) {
@@ -736,9 +810,6 @@ function update_LongevityRadialGraph(filtered_data_input) {
               count: genreData.count,
               angle: genreData.angle,
             });
-            if (typeof genreData.count === "number" && genreData.count > max_count) {
-              max_count = genreData.count;
-          }
           });
         });
         labels = selected_years;
@@ -756,9 +827,6 @@ function update_LongevityRadialGraph(filtered_data_input) {
               count: genreData.count,
               angle: genreData.angle,
             });
-            if (typeof genreData.count === "number" && genreData.count > max_count) {
-              max_count = genreData.count;
-          }
           });
         });
         labels = categories;
@@ -784,7 +852,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
       }
     const radiusScale = d3
       .scaleLinear()
-      .domain([0, max_count * 1.1])
+      .domain([0, global_max_count])
       .range([
         innerRadius_longevity_radialChart,
         outerRadius_longevity_radialChart,
@@ -837,7 +905,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
       labels,
       radiusScale,
       function_colors,
-      max_count,
+      global_max_count,
       font_size
     );
     if (numCharts == 1) {
@@ -848,44 +916,30 @@ function update_LongevityRadialGraph(filtered_data_input) {
 }
 
 function longevity_radialChart_yearhighlight(selectedRange) {
-  // console.log("lenght", window.selectedYearRanges.length);
   if (window.selectedYearRanges.length > 1) {
-    // Select all <svg> elements within #longevity_radialChart
     const svgs = d3.select("#longevity_radialChart").selectAll("svg");
 
     svgs.each(function (_, i) {
-        // console.log(`SVG ${i}:`, this); // Log each individual <svg> element
-
-        // Reset all paths in the current SVG to their original styles
         d3.select(this)
-            .selectAll("path")
-            .attr("stroke-width", 3)
-            .attr("opacity", 0.9)
-            .attr("stroke", function () {
-                return d3.select(this).attr("data-original-color") || "#ffffff"; // Default to white if no original color
-            });
-
-        // Exit early if no valid range is provided
+          .selectAll("path")
+          .attr("stroke-width", 1.5)
+          .attr("opacity", 0.4);
         if (!selectedRange || !Array.isArray(selectedRange) || selectedRange.length !== 2) {
-            return;
+          d3.select(this)
+          .selectAll("path")
+          .attr("stroke-width", 2)
+          .attr("opacity", 1.0);
         }
-
         const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
-        // console.log('rangekey', rangeKey);
-
-        // Highlight the path corresponding to the selected range
         const highlightedPath = d3.select(this)
             .selectAll("path")
             .filter(function () {
                 return d3.select(this).attr("data-range") === rangeKey;
             })
-            .attr("stroke-width", 5)
-            .attr("opacity", 1.0)
-            .attr("stroke", "#ff0000"); // Highlight with red
-
-        // Bring the highlighted path to the front
+            .attr("opacity", 1)
+            .attr("stroke-width", 3);
         highlightedPath.each(function () {
-            this.parentNode.appendChild(this); // Append to the end of the group to bring to front
+            this.parentNode.appendChild(this); 
         });
     });
 }

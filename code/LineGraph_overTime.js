@@ -170,7 +170,7 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
             .attr("data-original-color", get_color_yearRange(year_range, selected_years))
             .attr("fill", "none")
             .attr("stroke", get_color_yearRange(year_range, selected_years))
-            .attr("stroke-width", 3)
+            .attr("stroke-width", 2)
             .attr("d", d3.line()
                 .x(d => x(d.week))
                 .y(d => y(d.avgValue))
@@ -360,7 +360,7 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
             .attr("data-original-color", get_color_yearRange(year_range, selected_years))
             .attr("fill", "none")
             .attr("stroke", get_color_yearRange(year_range, selected_years))
-            .attr("stroke-width", 3)
+            .attr("stroke-width", 2)
             .attr("d", d3.line()
                 .x(d => x(d.week))
                 .y(d => y(d.genre_percentage))
@@ -514,22 +514,26 @@ function updateLineGraph(filtered_data_input) {
 function linegraph_yearhighlight(selectedRange) {
     const svg = d3.select("#lineGraph_overTime");
     svg.selectAll("path")
-        .attr("stroke-width", 3)
-        .attr("opacity", 0.9)
+        .attr("stroke-width", 1.5)
+        .attr("opacity", 0.4)
         .attr("stroke", function () {
             return d3.select(this).attr("data-original-color");
         });
 
     if (!selectedRange || !Array.isArray(selectedRange) || selectedRange.length !== 2) {
-        return; 
+        svg.selectAll("path")
+            .attr("stroke-width", 2)
+            .attr("opacity", 1)
+            .attr("stroke", function () {
+                return d3.select(this).attr("data-original-color");
+            });
     }
     const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
     const highlightedPath = svg.selectAll("path")
         .filter(function () {
             return d3.select(this).attr("data-range") === rangeKey;
         })
-        .attr("stroke-width", 5)
-        .attr("opacity", 1.0)
-        .attr("stroke", "#ff0000");
+        .attr("stroke-width", 3)
+        .attr("opacity", 1);
     highlightedPath.raise();
 }

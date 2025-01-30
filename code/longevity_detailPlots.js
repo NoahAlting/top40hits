@@ -796,7 +796,7 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
             .nice()
             .range([height_longevityGenre - margin_longevityGenre.bottom, margin_longevityGenre.top]);
 
-        singleLinePlot(svg, x, yScale, freqData, viridisScale(1));
+        singleLinePlot(svg, x, yScale, freqData, viridisScale[0]);
     }
     // Handle multiple year ranges
     else {
@@ -833,7 +833,7 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
             return {
                 range: rangeKey,
                 data: smoothingEnabled ? smoothData(filledData) : filledData,
-                color: viridisScale(index + 1),
+                color: viridisScale[index],
             };
         });
 
@@ -953,43 +953,78 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
 }
 
 // Render line plot with smooth transitions and consistent styles
-function renderLinePlot(svg, x, yRight, groupedData) {
+function renderLinePlot(svg, x, yRight, groupedData, previousData) {
     const line = d3.line()
         .x(d => x(d.weeks) + x.bandwidth() / 2)
         .y(d => yRight(d.frequency));
 
-    groupedData.forEach(({ range, data, color }) => {
-        svg.append("path")
-            .datum(data)
-            .attr("class", "line-path")
-            .attr("fill", "none")
-            .attr("stroke", color)
-            .attr("stroke-width", 2)
-            .attr("opacity", 1)
-            .attr("d", line)
-            .attr("data-range", range)
-            .attr("data-original-color", color)
+    // svg.selectAll(".line-path")
+    //     .filter(function () {
+    //         const range = d3.select(this).attr("data-range");
+    //         return !groupedData.some(d => d.range === range);
+    //     })
+    //     .remove();
+
+    const existingLines = new Map();
+    svg.selectAll(".line-path").each(function () {
+        existingLines.set(d3.select(this).attr("data-range"), d3.select(this));
     });
+
+    groupedData.forEach(({ range, data, color }) => {
+        if (existingLines.has(range)) {
+            // Morph existing lines
+            existingLines.get(range)
+                .datum(data)
+                .transition()
+                .duration(1000)
+                .attr("d", line)
+                .style("stroke", color)
+                .style("stroke-width", 2)
+                .style("opacity", 1)
+                .attr("class", "line-path");
+        } else {
+            // Introduce new lines after morphing existing ones
+            setTimeout(() => {
+                svg.append("path")
+                    .datum(data)
+                    .attr("class", "line-path")
+                    .attr("fill", "none")
+                    .style("stroke", color)
+                    .style("stroke-width", 2)
+                    .style("opacity", 1)
+                    .attr("d", line)
+                    .attr("data-range", range);
+            }, 1000);
+        }
+    });
+    svg.selectAll(".line-path")
+        .style("stroke-width", 2)
+        .style("opacity", 1.0);
 }
 
-// Render single line plot
-function singleLinePlot(svg, x, y, data, color) {
-    svg.selectAll(".area").remove();
-
+function singleLinePlot(svg, x, y, data, color, previousData) {
     const area = d3.area()
         .x(d => x(d.weeks) + x.bandwidth() / 2)
         .y0(y(0))
         .y1(d => y(d.frequency));
 
-    svg.append("path")
-        .data([data])
-        .attr("data-range", data.range)
-        .attr("class", "area")
-        .attr("d", area)
-        .attr("fill", color)
-        .attr("fill-opacity", 1)
-
+    let existingArea = svg.select(".area");
+    if (!existingArea.empty()) {
+        // Morph area into line smoothly
+        existingArea.datum(data)
+            .transition()
+            .duration(1000)
+            .attr("d", area);
+    } else {
+        svg.append("path")
+            .datum(data)
+            .attr("class", "area")
+            .attr("d", area)
+            .style("fill", color)
+            .style("fill-opacity", 1);
+    }
 }
+
 
 // Smoothing toggle
 function createSmoothingToggle() {
@@ -1014,8 +1049,8 @@ function longevity_genre_yearhighlight(selectedRange) {
     // Reset all paths if no range is selected
     if (!selectedRange || !Array.isArray(selectedRange) || selectedRange.length !== 2) {
         svg.selectAll(".line-path")
-            .attr("stroke-width", 2)
-            .attr("opacity", 1.0);
+            .style("stroke-width", 2)
+            .style("opacity", 1.0);
         return;
     }
 
@@ -1023,15 +1058,15 @@ function longevity_genre_yearhighlight(selectedRange) {
 
     // Dim all paths
     svg.selectAll(".line-path")
-        .attr("opacity", 0.4)
-        .attr("stroke-width", 2);
+        .style("opacity", 0.4)
+        .style("stroke-width", 2);
 
     // Highlight the selected range
     svg.selectAll(".line-path")
         .filter(function () {
             return d3.select(this).attr("data-range") === rangeKey;
         })
-        .attr("stroke-width", 3)
-        .attr("opacity", 1.0)
+        .style("stroke-width", 3)
+        .style("opacity", 1.0)
         .raise();
 }

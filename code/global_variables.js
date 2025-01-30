@@ -29,17 +29,20 @@ const genreKeywords = {
 let possible_genres = Object.keys(genreKeywords);
 const remaining_genres = "other";
 
-const viridisScale = d3.scaleSequential(d3.interpolateCool).domain([0, 5]);
+const viridisTemp = d3.scaleSequential(d3.interpolateCool).domain([0, 1.0]);
+
+const steps = 5;
+const values = d3.range(steps).map(d => (d / (steps - 1)) * (1));
+
+// Get the interpolated colors
+const viridisScale = values.map(v => viridisTemp(v));
 
 
 // ============================================ Functions ============================================
 // This function determined the coloring of the year ranges
 function get_color_yearRange(selected_range, all_ranges) {
-  var colorScale = d3
-    .scaleSequential(d3.interpolateCool)
-    .domain([0, 5]);
   let index = all_ranges.indexOf(selected_range);
-  return colorScale(index+1);
+  return viridisScale[index];
 }
 
 // Selection menu to select one genre or one feature

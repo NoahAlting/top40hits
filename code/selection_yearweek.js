@@ -100,7 +100,7 @@ function resetYearColors() {
         .map((r) => r.range)
         .sort((a, b) => a[0] - b[0]);
 
-    const rangeColors = sortedRanges.map((_, i) => viridisScale(i+1));
+    const rangeColors = sortedRanges.map((_, i) => viridisScale[i]);
 
     const highlightedYears = {};
 
@@ -265,14 +265,14 @@ function renderRanges() {
         const sortedIndex = sortedRanges.findIndex(
             (sortedRange) => sortedRange[0] === range[0] && sortedRange[1] === range[1]
         );
-        const rangeColor = viridisScale(sortedIndex + 1);
+        const rangeColor = viridisScale[sortedIndex];
 
         const rangeDiv = document.createElement("div");
         rangeDiv.className = "range-item";
         rangeDiv.textContent = `${range[0]} - ${range[1]}`;
         rangeDiv.style.backgroundColor = rangeColor;
-        rangeDiv.style.transition = "opacity 0.3s ease"; // Smooth transition effect
-        rangeDiv.style.opacity = "1.0"; // Default full visibility
+        rangeDiv.style.transition = "opacity 0.3s ease";
+        rangeDiv.style.opacity = "1.0";
 
         rangeDiv.onclick = () => {
             // Toggle selection

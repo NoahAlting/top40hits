@@ -294,16 +294,26 @@ let global_data = []
 const sortedYearRanges = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
 
 function update_radial_features(filtered_data_input) {
+    console.log("ranges", window.selectedRange, window.selectedRange.length);
     const header_linegraph = d3.select("#heading-container-radial-year");
-    if (window.selectedRange.length == 0){
-        header_linegraph.html(`Weekly Scores All Features Averaged over <br> 1965 - 2023`);
+    if (window.selectedYearRanges.length != 0){
+        if (window.selectedRange.length == 0 && window.selectedYearRanges.length == 1){
+            header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${window.selectedYearRanges[0][0]} - ${window.selectedYearRanges[0][1]}`);
+        }
+        else if (window.selectedRange.length == 1 && window.selectedRange[0] == window.selectedRange[1]){
+            header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${window.selectedRange[0]}`);
+        }
+        else if (window.selectedRange.length == 2){
+            header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${window.selectedRange[0]} - ${window.selectedRange[1]}`);
+        }
+        else{
+            header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${window.selectedYearRanges[0][0]} - ${window.selectedYearRanges[0][1]}`);
+        }
     }
-    else if (window.selectedRange[0] == window.selectedRange[1]){
-        header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${window.selectedRange[0]}`);
+    else{
+        header_linegraph.html(`No year ranges selected.`);
     }
-    else if (window.selectedRange.length == 2){
-        header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${window.selectedRange[0]} - ${window.selectedRange[1]}`);
-    }
+
     global_data = filtered_data_input;
     const selectedYearRanges = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
     const currentYearRange = selectedYearRanges[currentYearRangeIndex];

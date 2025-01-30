@@ -296,10 +296,10 @@ function createInteractiveGraph_Features_radial(divId, data, features) {
         
     // season lines and labels
     const seasons = [
-        { name: "Spring", start: 0, end: 12.5 },
-        { name: "Summer", start: 12.5, end: 25.5 },
-        { name: "Autumn", start: 25.5, end: 38.5 },
-        { name: "Winter", start: 38.5, end: 52 }
+        { name: "Winter", start: 0, end: 12.5 },
+        { name: "Spring", start: 12.5, end: 25.5 },
+        { name: "Summer", start: 25.5, end: 38.5 },
+        { name: "Autumn", start: 38.5, end: 52 }
     ];
 
     seasons.forEach(season => {
@@ -307,8 +307,8 @@ function createInteractiveGraph_Features_radial(divId, data, features) {
         const endAngle = angles(season.end % 52);
         let middleAngle;
 
-        if (season.name === "Summer") {
-            middleAngle = angles((season.start + 52 + season.end) / 2 % 52);
+        if (season.name === "Autumn") {
+            middleAngle = angles((season.start + season.end) / 2 % 52);
         } else {
             middleAngle = (startAngle + endAngle) / 2;
         }

@@ -77,7 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ============================================ Top SELECTOR =================================================
-// ============================================ Top SELECTOR =================================================
 document.addEventListener("DOMContentLoaded", () => {
     const buttonStripTop = document.getElementById("toggleTop");
 

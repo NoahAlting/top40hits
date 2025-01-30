@@ -211,6 +211,7 @@ function updateRanges(brush, range) {
         selectedRanges.push({ brush, range, group: associatedGroup });
     }
     window.selectedYearRanges = selectedRanges.map(r => r.range);
+    window.lastAdded = range;
     renderRanges();
 
 }
@@ -270,25 +271,24 @@ function renderRanges() {
         rangeDiv.className = "range-item";
         rangeDiv.textContent = `${range[0]} - ${range[1]}`;
         rangeDiv.style.backgroundColor = rangeColor;
-
-        // Highlight the range div if it's the selected range
-        if (window.selectedRange && window.selectedRange[0] === range[0] && window.selectedRange[1] === range[1]) {
-            rangeDiv.style.border = "4px solid #ff0000";
-        } else {
-            rangeDiv.style.border = "none";
-        }
+        rangeDiv.style.transition = "opacity 0.3s ease"; // Smooth transition effect
+        rangeDiv.style.opacity = "1.0"; // Default full visibility
 
         rangeDiv.onclick = () => {
-            const allRangeDivs = document.querySelectorAll(".range-item");
-            allRangeDivs.forEach((div) => {
-                div.style.border = "none";
+            // Toggle selection
+            if (window.selectedRange && window.selectedRange[0] === range[0] && window.selectedRange[1] === range[1]) {
+                window.selectedRange = []; // Deselect
+            } else {
+                window.selectedRange = range; // Select new range
+            }
+
+            // Update opacity dynamically
+            document.querySelectorAll(".range-item").forEach((div) => {
+                div.style.opacity = window.selectedRange.length ? "0.5" : "1.0"; // Dim others if selected
             });
 
-            if (window.selectedRange && window.selectedRange[0] === range[0] && window.selectedRange[1] === range[1]) {
-                window.selectedRange = [];
-            } else {
-                rangeDiv.style.border = "4px solid #ff0000";
-                window.selectedRange = range;
+            if (window.selectedRange.length) {
+                rangeDiv.style.opacity = "1.0"; // Ensure selected one is fully visible
             }
 
             dispatchCustomEvent('selectedRangeUpdated');
@@ -300,6 +300,7 @@ function renderRanges() {
                 <path d="M3 6l3 16h12l3-16H3zm16 14H5L4.5 8h15l-.5 12zM9 10h2v8H9zm4 0h2v8h-2zM15 4l-1-1h-4l-1 1H5v2h14V4z"/>
             </svg>`;
         removeButton.onclick = () => {
+            event.stopPropagation();
             removeRange(index);
             updateAddBrushButton();
         };
@@ -310,9 +311,9 @@ function renderRanges() {
                 <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm3.37 1.43H5v-1.37l9.44-9.44 1.37 1.37L6.37 18.68zM21 7.34c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.17 1.17 3.75 3.75 1.17-1.17z"/>
             </svg>`;
         editButton.onclick = () => {
+            event.stopPropagation();
             editRange(index);
-        }
-
+        };
 
         rangeDiv.appendChild(removeButton);
         rangeDiv.appendChild(editButton);
@@ -369,6 +370,7 @@ function editRange(index) {
     // Refresh display
     resetYearColors();
     renderRanges();
+    window.lastAdded = range;
 }
 
 // Event Listener for new brushes
@@ -386,7 +388,7 @@ document.addEventListener("DOMContentLoaded", () => {
 const margin_week = { top: 10, right: 0, bottom: 20, left: 0 };
 const width_week = 200;
 const height_week = 50;
-const colors_week = ["#777099", "#AFCF9D", "#FFF7D4", "#FFD4A1"];  // Array of colors
+const colors_week = ["#777099", "#AFCF9D", "#FFF7D4", "#FFD4A1"];
 const weeks = Array.from({ length: 52 }, (_, i) => i + 1);
 
 // Scale for positioning week blocks horizontally

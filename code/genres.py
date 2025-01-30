@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 
-from year_filter import merge_features_with_top40, get_data_for_year_range
+from top40hits.archive.year_filter import get_data_for_year_range
 songs_csv = os.path.join("data", "spotify_songs_with_ids.csv")
 top40_csv = os.path.join("data", "top40_with_ids.csv")
 

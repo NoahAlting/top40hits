@@ -37,19 +37,23 @@ headerElement.id = "longevityHeader_2";
 document.getElementById("longevityCharts").prepend(headerElement);
 
 function updateHeader() {
-    console.log("selected type: ", selectedType)
-    let headerElement = document.getElementById('longevityHeader_2');
-    if (!headerElement) {
-        headerElement = document.createElement("h1");
-        headerElement.id = "longevityHeader_2";
-        const longevityChartsContainer = document.getElementById("longevityCharts");
-        longevityChartsContainer.insertBefore(headerElement, longevityChartsContainer.firstChild);
-    }
-    if (window.selectedType === "features") {
-        headerElement.textContent = `${window.selectedGenre} Value Distribution by Longevity for ${window.selectedRange}`;
+    const headerElement = document.getElementById("longevityHeader_2");
+    if (!headerElement) return;
 
-    } else {
-        headerElement.textContent =  `${window.selectedGenre} Distribution by Longevity`
+    let selectedRange = (Array.isArray(window.selectedRange) && window.selectedRange.length > 0)
+        ? window.selectedRange
+        : window.lastAdded;
+
+    if (!selectedRange || selectedRange.length === 0) selectedRange = "Selected Range"; // Fallback text
+
+    if (window.selectedType === "features") {
+        if (selectedRange[0] == selectedRange[1]) {
+            headerElement.textContent = `${window.selectedGenre} Value Distribution by Longevity for ${selectedRange[0]}`;
+        } else {
+            headerElement.textContent = `${window.selectedGenre} Value Distribution by Longevity for ${selectedRange[0]} - ${selectedRange[1]}`;
+        }
+    } else if (window.selectedType === "genres") {
+        headerElement.textContent = `Genre ${window.selectedGenre} Distribution by Longevity`;
     }
 }
 
@@ -484,7 +488,15 @@ function update_scat_features(filtered_data_input, selectedGenre_scat) {
     global_data_scat = filtered_data_input;
     selected_genre = selectedGenre_scat;
     const selectedYearRanges_scat = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
-    const currentYearRange = selectedYearRanges_scat[currentYearRangeIndex_scat];
+
+    const index = selectedYearRanges_scat.findIndex(
+        (range) => JSON.stringify(range) === JSON.stringify(window.lastAdded)
+    );
+    if (index !== -1) {
+        currentYearRangeIndex_scat = index;
+    }
+
+const currentYearRange = selectedYearRanges_scat[currentYearRangeIndex_scat] || selectedYearRanges_scat[0];
     const yearRangeColor = get_color_yearRange(currentYearRange, selectedYearRanges_scat);
     const data = loadAndProcess_FeaturesData_scat(filtered_data_input, currentYearRange, selectedGenre_scat, possible_features_songs, selectedYearRanges_scat);
 
@@ -498,10 +510,12 @@ function update_scat_features(filtered_data_input, selectedGenre_scat) {
 }
 
 window.addEventListener("selectedRangeUpdated", function () {
-    const selectedRange = window.selectedRange; 
+    let selectedRange = (Array.isArray(window.selectedRange) && window.selectedRange.length > 0)
+        ? window.selectedRange
+        : window.lastAdded;
+
     const selectedYearRanges_scat = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
     const currentYearRange = selectedRange;
-    console.log("selected", selectedRange)
     const yearRangeColor = get_color_yearRange(currentYearRange, selectedYearRanges_scat);
     const data = loadAndProcess_FeaturesData_scat(global_data_scat, currentYearRange, selected_genre, possible_features_songs, selectedYearRanges_scat);
     d3.select("#scatterplot").html("");
@@ -956,7 +970,7 @@ function renderLinePlot(svg, x, yRight, groupedData) {
             .attr("data-range", range)
             .attr("data-original-color", color)
     });
-    }
+}
 
 // Render single line plot
 function singleLinePlot(svg, x, y, data, color) {
@@ -969,6 +983,7 @@ function singleLinePlot(svg, x, y, data, color) {
 
     svg.append("path")
         .data([data])
+        .attr("data-range", data.range)
         .attr("class", "area")
         .attr("d", area)
         .attr("fill", color)
@@ -1008,7 +1023,7 @@ function longevity_genre_yearhighlight(selectedRange) {
 
     // Dim all paths
     svg.selectAll(".line-path")
-        .attr("opacity", 0.2)
+        .attr("opacity", 0.4)
         .attr("stroke-width", 2);
 
     // Highlight the selected range

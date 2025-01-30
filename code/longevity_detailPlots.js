@@ -704,15 +704,26 @@ function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
             let yearRangeData = [];
             yearRanges.forEach(year_range => {
                 console.log("Year range being calculated:", year_range);
-                // Filter the data based on the current year range independently
+                console.log("freqData", freqData);
+
                 const dataForRange = isNested
                     ? freqData.filter(d => {
                         const [rangeStart, rangeEnd] = d.range.split("-").map(Number);
                         console.log("range start and end:", rangeStart, rangeEnd);
-                        return rangeStart <= year_range[1] && rangeEnd >= year_range[0] && d.data.some(item => item.weeks === week);
-                    })
-                    : freqData.filter(d => d.weeks === week && d.range.split("-").map(Number).some((range, i) => i === 0 ? range <= year_range[1] : range >= year_range[0]));
 
+                        // Check if the range exactly matches the year_range
+                        return rangeStart === year_range[0] && rangeEnd === year_range[1] && d.data.some(item => item.weeks === week);
+                    })
+                    : freqData.filter(d => {
+                        const [rangeStart, rangeEnd] = d.range.split("-").map(Number);
+
+                        // Ensure range exactly matches the year_range
+                        return d.weeks === week && rangeStart === year_range[0] && rangeEnd === year_range[1];
+                    });
+
+                console.log("Filtered data for year range", year_range, dataForRange);
+
+                // Add the filtered data to yearRangeData
                 yearRangeData.push({ year_range, data: dataForRange });
             });
 

@@ -557,9 +557,9 @@ function update_LongevityRadialGraph(filtered_data_input) {
         `This radial graph displays the average score for all features, divided into categories: ${categories[0]}, ${categories[1]}, and ${categories[2]}. Songs are categorized based on how many weeks they spent in the Top ${window.selectedTop} during the selected year range. Category "${categories[2]}" represents the songs that have remained in the Top ${window.selectedTop} for the longest period. This visualization helps identify trends in the longevity of scores.`,
         "All features.",
         `Represents the average score for each feature within a given category. The inner ring corresponds to a value of 0, while the outer ring represents a value of 1.`,
-        "The position indicates the feature and the average score, while color represents the category. And hover over over the axes label to see the minimum and maximum value.",
-        "Channel",
-        "Click on the button to view the standard deviation of the scores.",
+        "Lines (average values) and areas (standard deviation) are the marks.",    
+        "Color hue for the category, y-postion for feature value, x-position for longevity. ",
+        "Click on the button to view the standard deviation of the scores. And hover over over the axes label to see the minimum and maximum value.",
         "left"
       );  
     }
@@ -571,8 +571,8 @@ function update_LongevityRadialGraph(filtered_data_input) {
           `These radial graphs display the average score for all features, with one graph per category: ${categories[0]}, ${categories[1]}, and ${categories[2]}. Songs are categorized based on how many weeks they spent in the Top ${window.selectedTop} during the selected year range. Category "${categories[2]}" represents songs that have remained in the Top ${window.selectedTop} for the longest period. This visualization helps identify trends in score longevity and compare across different year ranges.`,
           "All features.",
           `Represents the average score for each feature within a given category. The inner ring corresponds to a value of 0, while the outer ring represents a value of 1.`,
-          "The position indicates the feature and the average score, while color represents the year range.",
-          "Channel",
+          "Lines (average values) and areas (standard deviation) are the marks.",    
+          "Color hue for year ranges, y-postion for feature value, x-position for longevity.",
           "Click the button to view the standard deviation of the scores. And hover over over the axes label to see the minimum and maximum value.",
           "left"
       );
@@ -751,8 +751,8 @@ function update_LongevityRadialGraph(filtered_data_input) {
         `This radial graph displays the number of songs per category for each specific genre. The categories are: ${categories[0]}, ${categories[1]}, and ${categories[2]}. Songs are categorized based on how many weeks they spent in the Top ${window.selectedTop} during the selected year range. Category "${categories[2]}" represents songs that have remained in the Top ${window.selectedTop} for the longest period. This visualization helps identify trends in the longevity of genres.`,
         "All genres.",
         `Represents the number of songs per genre within each category. All axes and graphs share the same minimum value on the inner ring and the same maximum value on the outer ring.`,
-        "The position indicates the genre and the number of songs, while the color represents the category.",
-        "Channel",
+        "Lines (average values) and areas (standard deviation) are the marks.",    
+        "Color hue for the category, y-postion for genre count, x-position for longevity.",
         "Hover over over the axes label to see the minimum and maximum value.",
         "left"
     );
@@ -765,8 +765,8 @@ function update_LongevityRadialGraph(filtered_data_input) {
         `These radial graphs display the number of songs per category for each specific genre, with one graph for each category: ${categories[0]}, ${categories[1]}, and ${categories[2]}. Songs are categorized based on how many weeks they spent in the Top ${window.selectedTop} during the selected year range. Category "${categories[2]}" represents songs that have remained in the Top ${window.selectedTop} for the longest period. This visualization helps identify trends in genre longevity and compare across different year ranges.`,
         "All genres.",
         `Represents the number of songs per genre within each category. All axes and graphs share the same minimum value on the inner ring and the same maximum value on the outer ring.`,
-        "The position indicates the genre and the number of songs, while color represents the year range.",
-        "Channel",
+        "Lines (average values) and areas (standard deviation) are the marks.",
+        "Color hue for the year-range, y-postion for genre count, x-position for longevity.",
         "Hover over over the axes label to see the minimum and maximum value.",
         "left"
     );

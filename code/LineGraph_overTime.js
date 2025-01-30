@@ -484,8 +484,8 @@ function updateLineGraph(filtered_data_input) {
             `This line graph displays the average ${window.selectedGenre} scores of songs in the Top ${window.selectedTop} for each week across all selected year ranges. You can compare the ${window.selectedGenre} distribution across different year ranges or within a single year range.`,
             "The week number within the year.",
             `The average ${window.selectedGenre} score of all songs in the Top ${window.selectedTop} for a specific week.`,
-            "Position indicates the week and score, and color represents the year range.",
-            "Channel",
+            "Lines (average values) and areas (standard deviation) are the marks.",
+            "Color hue for year ranges, y-postion for feature value, x-position for week.",
             "Hover over the graph to view the standard deviation of scores. Use the vertical search line to display detailed scores for a specific week.",
             "right"
         );        
@@ -501,8 +501,8 @@ function updateLineGraph(filtered_data_input) {
             `This line graph shows the proportion of ${window.selectedGenre} songs in the Top ${window.selectedTop} for each week across all selected year ranges. You can compare the ${window.selectedGenre} distribution across different year ranges or within a single year range.`,
             "The week number within the year.",
             `The percentage of ${window.selectedGenre} songs in the Top ${window.selectedTop} for a specific week.`,
-            "Position indicates the week and score, while color represents the year range.",
-            "Channel",
+            "Lines (average values) and areas (standard deviation) are the marks.",
+            "Color hue for year ranges, y-postion for genre count, x-position for week.",
             "Hover over the graph to use the vertical search line to view detailed scores for a specific week.",
             "right"
         );        

@@ -9,7 +9,7 @@ body {
     justify-content: center;
     align-items: start;
     padding: 20px;
-    background-color: #1e1e2f;
+    background-color: #1a181b;
     color: #ffffff;
     font-family: Arial, sans-serif;
     margin: 0;
@@ -26,14 +26,14 @@ body {
     z-index: 10;
 }
 #drag-handle-right {
-    right: 0; /* Position the new handle on the right of the screen */
+    right: 0;
 }
 
 .chart_container {
     overflow: hidden;
     width: 100%;
     height: 400px;
-    background-color: #2c2c3c;
+    background-color: #27271d;
     border-radius: 10px;
     padding: 20px;
     margin: 10px auto;
@@ -45,7 +45,7 @@ body {
     grid-area: introduction; 
     text-align: center;
     padding: 40px;
-    background-color: #2c2c3c;
+    background-color: #201e22;
     border-radius: 10px;
     margin-bottom: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -70,7 +70,7 @@ h1 {
     color: #ffffff;
     align-items: center;
     justify-content: center;
-    margin: 0;           /* Remove any default margin to avoid shifting */
+    margin: 0;
     padding: 0;
     font-size: 22px;
 }
@@ -113,8 +113,8 @@ h1 {
     justify-content: center; 
     width: 100%; 
     height: 80px;
-    position: relative;  /* Prevent layout shift */
-    z-index: 10;         /* Ensure it stays on top of other elements */
+    position: relative;
+    z-index: 10;
 }
 
 .chart_container {
@@ -124,7 +124,7 @@ h1 {
 .chart_container_above {
     width: 600px;
     height: 400px;
-    background-color: #2c2c3c;
+    background-color: #201e22;
     border-radius: 10px;
     padding: 20px;
     margin: 10px auto;
@@ -136,7 +136,7 @@ h1 {
 .chart_container_below {
     width: 600px;
     height: 600px;
-    background-color: #2c2c3c;
+    background-color: #201e22;
     border-radius: 10px;
     padding: 20px;
     margin: 10px auto;
@@ -148,7 +148,7 @@ h1 {
 .chart_container_FG {
     width: 600px;
     height: 800px;
-    background-color: #2c2c3c;
+    background-color: #201e22;
     border-radius: 10px;
     padding: 20px;
     margin: 10px auto;

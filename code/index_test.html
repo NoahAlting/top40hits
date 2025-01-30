@@ -11,7 +11,7 @@
 <body>
 <!-- Introduction part -->
 <div id="introduction" class="intro-container" >
-    <h1>Hitspot Dashboard</h1>
+    <h1>HitSpot Dashboard</h1>
     <p style="text-align: right; margin-right: 50px;">
         Sources: <a href="https://gerritmantel.nl/sub_top40.html" target="_blank" style="color: #1DB954" rel="noopener noreferrer">Gerrit Mantel's Sub Top 40</a>
          & <a href="https://developer.spotify.com/documentation/web-api" target="_blank" style="color: #1DB954" rel="noopener noreferrer">Spotify Web API</a>
@@ -22,14 +22,14 @@
 <!-- <div class="drag-handle" data-resize="1"></div> -->
 <div id="grid-container"></div>
 <div id="radial_plots" class="chart_container_below">
-    <h1 id="heading-container-radial-year" style="text-align: center; color: white; margin-bottom: 10px;"></h2>
+    <h1 id="heading-container-radial-year" style="text-align: center; color: white; margin-bottom: 10px;"></h1>
     <div id="radial-plot" class="chart">
     </div>
 </div>
 
 <!-- Line Graph on the Left -->
 <div id="lineGraphContainer" class="chart_container_above">
-    <h1 id="heading-container-linegraph" style="text-align: center; color: white; margin-bottom: 10px;"></h2>
+    <h1 id="heading-container-linegraph" style="text-align: center; color: white; margin-bottom: 10px;"></h1>
     <div id="lineGraph_overTime"></div>
     <div id="table-container">
         <table id="value-table" class="value-table"></table>
@@ -42,7 +42,7 @@
 <div id="selectorDashboard">
     <h1>Selector Dashboard</h1>
 <!--    <label> Top positions to include: </label>-->
-    <label for="toggleTop"> Include The Following Positions:  </label>
+    <label for="toggleTop"> Include The Following Top Positions:  </label>
     <div class="buttonstrip" id="toggleTop">
         <button data-toggle="top1">1</button>
         <button data-toggle="top3">3</button>
@@ -95,7 +95,7 @@
     </div>    
     <div id="table-container_long">
         <table id="value-table_long" class="value-table"></table>
-    </div>
+</div>
 </div>
 <!-- <div class="drag-handle" id="drag-handle-right" data-resize="2"></div> -->
 <!-- <div class="drag-handle" id="drag-handle-right"></div> -->
@@ -103,7 +103,7 @@
 
 <!-- Probility Density functions -->
 <div id="feature_genre_selector" class ="chart_container_FG">
-    <h1 id="FG_Header" style="text-align: center; color: white; margin-bottom: 10px;"></h2>
+    <h1 id="FG_Header" style="text-align: center; color: white; margin-bottom: 10px;"></h1>
     <dif id="topContainer_featuregenre" class="subcontainer_FG"></dif>
     <dif id="separator-container" class="separator_container1"></dif>
     <dif id="bottomContainer_featuregenre" class="subcontainer_FG"></dif>
@@ -118,6 +118,7 @@
     window.selectedGenre = "Danceability"
     window.previousYearLength = 0;
     window.selectedRange = [];
+    window.lastAdded = [];
 </script>
 
 <!--Scripts-->
@@ -127,7 +128,7 @@
 <script src="selection_yearweek.js"></script>
 <script src="selection_typetop.js"></script>
 <script src="global_variables.js"></script>
-<script src="scatterplot_longevity.js"></script>
+<script src="longevity_detailPlots.js"></script>
 <script src="Longevity_radialCharts.js"></script>
 <script src="LineGraph_overTime.js"></script>
 <script src="radial_plot.js"></script>

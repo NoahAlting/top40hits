@@ -28,23 +28,21 @@ const genreKeywords = {
 let possible_genres = Object.keys(genreKeywords);
 const remaining_genres = "other";
 
-const viridisTemp = d3.scaleSequential(d3.interpolateCool).domain([0, 1.0]);
-
+// Creating the color scale for the year ranges
+const colorTemp = d3.scaleSequential(d3.interpolateCool).domain([0, 1.0]);
 const steps = 5;
 const values = d3.range(steps).map(d => (d / (steps - 1)) * (1));
-
-// Get the interpolated colors
-const viridisScale = values.map(v => viridisTemp(v));
+const yearColorScale = values.map(v => colorTemp(v));
 
 
 // ============================================ Functions ============================================
 // This function determined the coloring of the year ranges
 function get_color_yearRange(selected_range, all_ranges) {
   let index = all_ranges.indexOf(selected_range);
-  return viridisScale[index];
+  return yearColorScale[index];
 }
 
-// Selection menu to select one genre or one feature
+// Selection menu to select one genre or one feature, replaced with clicking on the genres or features
 function createFeatureGenreMenu(options_drop_down, switched_type=false) {
   const menuContainer = d3.select("#genre_feature_menu");
   menuContainer.selectAll("*").remove();
@@ -74,13 +72,20 @@ function createFeatureGenreMenu(options_drop_down, switched_type=false) {
       .property("selected", (d) => d === window.selectedGenre);
 }
 
+// Function to dispatch a custom event used to notify that global variables have changed.
+function dispatchCustomEvent(eventName, detail = {}) {
+    const event = new CustomEvent(eventName, { detail });
+    window.dispatchEvent(event);
+}
 
+// ============================================ For changing the dashboard view ============================================
+// Variables for column resizing
 const dragHandleLeft = document.getElementById("drag-handle-left");
 const root1 = document.documentElement;
 
 // Initial column sizes
-let initialLineGraphWidth = 2; // Represents 2fr
-let initialSelectorWidth = 1; // Represents 1fr
+let initialLineGraphWidth = 2;
+let initialSelectorWidth = 1;
 
 dragHandleLeft.addEventListener("mousedown", (e) => {
     const startX = e.clientX;
@@ -111,17 +116,13 @@ dragHandleLeft.addEventListener("mousedown", (e) => {
     document.addEventListener("mouseup", onMouseUp);
 });
 
-
-
 // ============================================ Filter data and update graphs ============================================
-
-// NEW PROPOSED FUNCTION WHERE CSV IS LOADED IN
 
 let cachedSpotifySongs = null;
 let cachedTop40Data = null;
+let cachedGenreData = {};
 
-let cachedGenreData = {}; // Cache for filtered genre data by genre
-
+// Function to filter and fetch relevant data based on user selections (e.g., genres, features)
 function filter_data() {
     // Initialize genre or feature menu
     if (window.selectedType == "features") {
@@ -152,7 +153,6 @@ function filter_data() {
                     // Filter by genre if type is "genres"
                     const genreDataByGenre = processAllGenresFilter(cachedSpotifySongs);
 
-                    // Process the data for each genre separately
                     const dataByGenre = {};
                     possible_genres.concat(remaining_genres).forEach(genre => {
                         const genreData = genreDataByGenre[genre] || [];
@@ -161,12 +161,11 @@ function filter_data() {
                         dataByGenre[genre] = filtered_data;
                     });
 
-                    resolve(dataByGenre); // Return data grouped by genre
+                    resolve(dataByGenre);
                 } else {
-                    // Process the data for features
                     const filtered_data = [];
                     processData(selected_ranges, selected_weeks, max_top, null, cachedSpotifySongs, cachedTop40Data, filtered_data);
-                    resolve(filtered_data); // Return a single array of filtered data
+                    resolve(filtered_data);
                 }
                 
             }).catch(err => {
@@ -187,18 +186,18 @@ function filter_data() {
                     dataByGenre[genre] = filtered_data;
                 });
 
-                resolve(dataByGenre); // Return data grouped by genre
+                resolve(dataByGenre);
             } else {
                 // Process the data for features
                 const filtered_data = [];
                 processData(selected_ranges, selected_weeks, max_top, null, cachedSpotifySongs, cachedTop40Data, filtered_data);
-                resolve(filtered_data); // Return a single array of filtered data
+                resolve(filtered_data);
             }
         }
     });
 }
 
-// Separate function to filter and cache genre data
+// Function to filter and cache genre data
 function processAllGenresFilter(data_spotifySongs) {
     possible_genres.forEach(genre => {
         if (!cachedGenreData[genre]) {
@@ -230,9 +229,8 @@ function processAllGenresFilter(data_spotifySongs) {
     return cachedGenreData;
 }
 
-// Updated processData to use cached genre data or the full dataset as needed
+// Function to process the data based on selected ranges, weeks, and top positions
 function processData(selected_ranges, selected_weeks, max_top, selectedGenre, data_spotifySongs, data_top40, filtered_data) {
-    // Use a Map for faster lookups instead of .find() on large datasets
     const spotifySongsMap = new Map(data_spotifySongs.map(song => [song.Song_ID, song]));
 
     selected_ranges.forEach(range_years => {
@@ -296,10 +294,7 @@ function highlight_selection(selectedRange) {
       longevity_genre_yearhighlight(selectedRange);
       GenreHist_range_detailed_opacity(selectedRange);
   }
-
 }
-
-
 
 // ============================================ Event functions, if one of the global variables has changed ============================================
 // When top is updated
@@ -361,6 +356,7 @@ window.addEventListener("typeUpdated", function () {
   
 });
 
+// When the HTML document has been completely parsed
 document.addEventListener('DOMContentLoaded', () => {
   filter_data()
      .then(output_filtered_data => {
@@ -370,7 +366,7 @@ document.addEventListener('DOMContentLoaded', () => {
      .catch(err => console.error("Error initializing chart:", err));
 });
 
-
+// When the selected range is updated to be highlighted
 window.addEventListener("selectedRangeUpdated", function () {
     const selectedRange = window.selectedRange;
     highlight_selection(selectedRange)
@@ -378,6 +374,7 @@ window.addEventListener("selectedRangeUpdated", function () {
 
 });
 
+// when the genre/feature is updated.
 window.addEventListener("genreUpdated", function () {
     const selectedGenre = window.selectedGenre;
     console.log("Genre/Feature updated:", selectedGenre);

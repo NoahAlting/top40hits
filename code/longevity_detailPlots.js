@@ -28,14 +28,16 @@ function createinfobutton_genre() {
 
 createinfobutton_feat();
 
-
 let infoButtonExists_feat = true;
 let infoButtonExists_genre = false;
+
+// ========================================= Elements and headers to render =========================================
 const headerElement = document.createElement("h1");
 
 headerElement.id = "longevityHeader_2";
 document.getElementById("longevityCharts").prepend(headerElement);
 
+// Function to update the header based on genre or feature and selected year ranges
 function updateHeader() {
     const headerElement = document.getElementById("longevityHeader_2");
     if (!headerElement) return;
@@ -57,7 +59,7 @@ function updateHeader() {
     }
 }
 
-// Ensure consistent header updates in toggleVisibility
+// Function to ensure consistent header updates in toggleVisibility
 function toggleVisibility(selectedType) {
     if (selectedType === "features") {
         hideGenreElements();
@@ -116,8 +118,6 @@ function showGenreElements() {
     genreElements.forEach(el => el.style.display = 'block');
 }
 
-
-
 // Function to hide all elements (used for reset)
 function hideAllElements() {
     const elementsToHide = document.querySelectorAll('#barchart, #scatterplot, #feature-selector, #tooltip, #prev, #next, #year-range-display, #clip, #h1');
@@ -160,10 +160,16 @@ header.id = "longevityHeader_2";
 const longevityChartsContainer = document.getElementById("longevityCharts");
 longevityChartsContainer.insertBefore(header, longevityChartsContainer.firstChild);
 
-const allWeeks = [];
 
-const week_ranges = window.selectedWeekRange;
-
+// ========================================== FEATURES LONGEVITY CHART ================================================
+/**
+ * loadAndProcess_FeaturesData_scat - Filters the input data based on the provided year range and processes it to calculate
+ * song longevity, along with other selected song features. It returns the processed data in a format suitable for plotting.
+ *
+ * @param {Array} filtered_data_input - The input data containing song information.
+ * @param {Array} range_years - The year range to filter the data by.
+ * @returns {Array} - The processed data, including song longevity and selected features.
+ */
 function loadAndProcess_FeaturesData_scat(filtered_data_input, range_years) {
     const filteredData = filtered_data_input.filter(row =>
         +row.Jaar >= range_years[0] && +row.Jaar <= range_years[1]
@@ -194,6 +200,15 @@ function loadAndProcess_FeaturesData_scat(filtered_data_input, range_years) {
     return plotData;
 }
 
+/**
+ * showBarChart - Renders a bar chart displaying the values of different features for a selected song. It dynamically adjusts
+ * the height and width of the bars and highlights the selected feature in the chart.
+ *
+ * @param {Array} year_range - The selected year range for the chart.
+ * @param {string} colour - The color used for the bars representing the selected feature.
+ * @param {Object} song - The song data object containing the features to be visualized.
+ * @param {string} selectedFeature - The feature to highlight in the chart.
+ */
 function showBarChart(year_range, colour, song, selectedFeature) {
     var width_scatterplot_container = document.getElementById("longevityCharts").clientWidth;
     var height_scatterplot_container = 800;
@@ -246,7 +261,6 @@ function showBarChart(year_range, colour, song, selectedFeature) {
         .attr("transform", `translate(${margin_scatterplot.left}, 0)`)
         .call(d3.axisLeft(yScale));
 
-
     chartGroup.append("text")
         .attr("transform", "rotate(-90)")
         .attr("x", -(increasedHeight / 3))
@@ -255,7 +269,6 @@ function showBarChart(year_range, colour, song, selectedFeature) {
         .style("text-anchor", "middle")
         .attr("class", "label-text")
         .text(`Feature Values`);
-
 
     chartGroup.selectAll("rect")
         .data(featureData)
@@ -270,10 +283,9 @@ function showBarChart(year_range, colour, song, selectedFeature) {
         .duration(500)
         .attr("y", d => yScale(d.value))
         .attr("height", d => increasedHeight - margin_scatterplot.bottom - yScale(d.value));
-    console.log(chartGroup)
 }
 
-
+// Displays a tooltip with song details (Artist and Title) when hovering over a point on the plot.
 function showTooltip(event, d) {
     const tooltip = d3.select("#tooltip");
     tooltip.style("left", event.pageX + "px")
@@ -282,6 +294,18 @@ function showTooltip(event, d) {
         .html(`<strong>Artist:</strong> ${d.Artist}<br><strong>Title:</strong> ${d.Title}`);
 }
 
+/**
+ * createInteractiveGraph_Features_scat - Creates an interactive scatterplot with song longevity on the x-axis and a selected
+ * feature (such as Danceability, Tempo, etc.) on the y-axis. It supports zoom, tooltip, and interactive dots that update
+ * the bar chart and show detailed song information.
+ *
+ * @param {string} divId - The ID of the div where the plot will be rendered.
+ * @param {Array} data - The processed data to plot.
+ * @param {Array} features - The list of features available for visualization.
+ * @param {string} feature - The feature to display on the y-axis of the scatterplot.
+ * @param {Array} year_range - The selected year range for filtering the data.
+ * @param {string} year_range_colour - The color associated with the selected year range.
+ */
 function createInteractiveGraph_Features_scat(divId, data, features, feature, year_range, year_range_colour) {
     var width_scatterplot_container = document.getElementById("longevityCharts").clientWidth;
     var height_scatterplot_container = document.getElementById("longevityCharts").clientHeight/1.8;
@@ -399,7 +423,7 @@ function createInteractiveGraph_Features_scat(divId, data, features, feature, ye
                     .attr("r", 8); 
             }
 
-            dot.style("fill", "orange").attr("r", 10); // Change color and size
+            dot.style("fill", "orange").attr("r", 10);
             previouslySelectedDot = dot;
 
             const initialX = dot.attr("cx");
@@ -482,8 +506,14 @@ function createInteractiveGraph_Features_scat(divId, data, features, feature, ye
 let currentYearRangeIndex_scat = 0;
 let global_data_scat = []
 let selected_genre = ""
-const sortedYearRanges_scat = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
 
+/**
+ * update_scat_features - Updates the scatterplot and related visualizations based on the selected genre and year range.
+ * It processes the input data and triggers the creation of a new interactive graph.
+ *
+ * @param {Array} filtered_data_input - The input data containing song information.
+ * @param {string} selectedGenre_scat - The genre selected for the scatterplot visualization.
+ */
 function update_scat_features(filtered_data_input, selectedGenre_scat) {
     global_data_scat = filtered_data_input;
     selected_genre = selectedGenre_scat;
@@ -496,19 +526,17 @@ function update_scat_features(filtered_data_input, selectedGenre_scat) {
         currentYearRangeIndex_scat = index;
     }
 
-const currentYearRange = selectedYearRanges_scat[currentYearRangeIndex_scat] || selectedYearRanges_scat[0];
-    const yearRangeColor = get_color_yearRange(currentYearRange, selectedYearRanges_scat);
-    const data = loadAndProcess_FeaturesData_scat(filtered_data_input, currentYearRange, selectedGenre_scat, possible_features_songs, selectedYearRanges_scat);
+    const currentYearRange = selectedYearRanges_scat[currentYearRangeIndex_scat] || selectedYearRanges_scat[0];
+        const yearRangeColor = get_color_yearRange(currentYearRange, selectedYearRanges_scat);
+        const data = loadAndProcess_FeaturesData_scat(filtered_data_input, currentYearRange, selectedGenre_scat, possible_features_songs, selectedYearRanges_scat);
 
-    // d3.select("#year-range-display")
-    //     .text(`Year Range: ${yearRangeText}`)
-    //     .style("background-color", yearRangeColor)
-    d3.select("#scatterplot").html("");
-    createInteractiveGraph_Features_scat("#scatterplot", data, possible_features_songs, selected_genre, currentYearRange, yearRangeColor);
-    updateHeader()
+        d3.select("#scatterplot").html("");
+        createInteractiveGraph_Features_scat("#scatterplot", data, possible_features_songs, selected_genre, currentYearRange, yearRangeColor);
+        updateHeader()
 
 }
 
+// Listens for updates to the selected year range and re-renders the scatterplot accordingly
 window.addEventListener("selectedRangeUpdated", function () {
     let selectedRange = (Array.isArray(window.selectedRange) && window.selectedRange.length > 0)
         ? window.selectedRange
@@ -523,22 +551,19 @@ window.addEventListener("selectedRangeUpdated", function () {
     createInteractiveGraph_Features_scat("#scatterplot", data, possible_features_songs, selected_genre, currentYearRange, yearRangeColor);
 });
 
-// document.getElementById("prev").addEventListener("click", function () {
-//     const totalRanges = window.selectedYearRanges.length;
-//     currentYearRangeIndex_scat = (currentYearRangeIndex_scat - 1 + totalRanges) % totalRanges;
-//     update_scat_features(global_data_scat, selected_genre);
-// });
 
-// document.getElementById("next").addEventListener("click", function () {
-//     const totalRanges = window.selectedYearRanges.length;
-//     currentYearRangeIndex_scat = (currentYearRangeIndex_scat + 1) % totalRanges;
-//     update_scat_features(global_data_scat, selected_genre);
-// });
+// =========================================== GENRE LONGEVITY PLOT======================================================
+let smoothingEnabled = false; //
 
-
-// =========================================== Genre Selected ========================================================
-let smoothingEnabled = false;
-
+/**
+ * renderGenrePlot - Processes and visualizes genre data by calculating song longevity,
+ * generating frequency distributions, and rendering the data as a line plot. It optionally
+ * smooths the data and updates the visualization with the processed information for the
+ * selected year ranges.
+ *
+ * @param {Object} filtered_data - The filtered data from global_variables object containing genre-specific data.
+ * @param {string} selectedType - The genre type selected for visualization.
+ */
 function renderGenrePlot(filtered_data, selectedType) {
     const genreData = filtered_data[selectedType] || [];
 
@@ -561,7 +586,6 @@ function renderGenrePlot(filtered_data, selectedType) {
         (song) => song.longevity
     );
 
-    // Determine the max weeks dynamically
     const maxWeeks = Math.max(...Array.from(longevityCounts.keys()));
 
     const frequencyData = fillMissingWeeks(
@@ -577,7 +601,7 @@ function renderGenrePlot(filtered_data, selectedType) {
     createVisualization(finalData, genreData, yearRanges, maxWeeks);
 }
 
-
+// Function to fill the missing longevity weeks with 0 to ensure line starts at 0
 function fillMissingWeeks(data, maxWeeks) {
     const frequencyMap = new Map(data.map(d => [d.weeks, d.frequency]));
     const oldfreqMap = new Map(data.map(d => [d.weeks, d.oldfreq]));
@@ -586,13 +610,14 @@ function fillMissingWeeks(data, maxWeeks) {
     for (let week = 1; week <= maxWeeks; week++) {
         filledData.push({
             weeks: week,
-            oldfreq: oldfreqMap.get(week) || 0, // Use oldfreq from the map or default to 0
-            frequency: frequencyMap.get(week) || 0 // Use frequency from the map or default to 0
+            oldfreq: oldfreqMap.get(week) || 0,
+            frequency: frequencyMap.get(week) || 0
         });
     }
     return filledData;
 }
 
+// Function to smooth the data by calculating the avarage frequency over a sliding window of adjacent weeks
 function smoothData(data, windowSize = 3) {
     return data.map((d, i, arr) => {
         const start = Math.max(0, i - Math.floor(windowSize / 2));
@@ -601,13 +626,25 @@ function smoothData(data, windowSize = 3) {
         const average = d3.mean(window, w => w.frequency);
         return { ...d, frequency: average };
     });
-}
-function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
-    console.log("Input year ranges:", yearRanges);
 
-    // Sort year ranges in ascending order
+}
+
+/**
+ * addInteractiveLine - Adds an interactive vertical line and tooltip to a line plot, allowing
+ * users to hover over specific weeks to view song frequencies for multiple year ranges.
+ * It also updates a table with frequency data for the selected week.
+ *
+ * @param {Object} svg - The SVG element where the plot is rendered.
+ * @param {Object} xScale - The x-axis scale used for positioning the weeks.
+ * @param {Object} yScale - The y-axis scale used for positioning the frequencies.
+ * @param {Array} freqData - The frequency data for each song.
+ * @param {Array} yearRanges - An array of year ranges to display in the plot.
+ * @param {Object} margin - The margin object to define the plot's layout.
+ */
+function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
     yearRanges.sort((a, b) => a[0] - b[0]);
 
+    // =========================== tooltip & interactive line ===========================
     const overlay = svg.append("rect")
         .attr("class", "interactive-overlay")
         .attr("x", margin.left)
@@ -634,18 +671,15 @@ function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
         .style("visibility", "hidden")
         .style("pointer-events", "none");
 
-    const tbody = d3.select("#value-table_long"); // Table to populate
+    // =========================== Table creation  ===========================
+    const tbody = d3.select("#value-table_long");
 
-    // Clear previous table content to avoid duplicates
     tbody.selectAll("tr").remove();
 
-    // Create the header row once with the year ranges
     const headerRow = tbody.append("thead").append("tr");
 
-    // Add a column for "Week" in the header
     headerRow.append("th").text("Longevity (weeks)").style("border", "1px solid white").style("padding", "5px");
 
-    // Add year range columns
     yearRanges.forEach(year_range => {
         headerRow.append("th")
             .text(`${year_range[0]}-${year_range[1]}`)
@@ -653,7 +687,6 @@ function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
             .style("padding", "5px");
     });
 
-    // Create a second row that will be populated with the data for the hovered week
     const dataRow = tbody.append("tbody").append("tr");
     dataRow.append("td").attr("id", "week-cell").style("border", "1px solid white").style("padding", "5px");
 
@@ -663,7 +696,7 @@ function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
             .style("padding", "5px");
     });
 
-    // Add a row for total frequencies at the bottom
+    // Row for total frequencies at the bottom
     const totalRow = tbody.append("tbody").append("tr");
     totalRow.append("td").text("Overall").style("border", "1px solid white").style("padding", "5px");
 
@@ -698,50 +731,38 @@ function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
                 .attr("y1", margin.top)
                 .attr("y2", svg.attr("height") - margin.bottom);
 
-            // Check if data is nested or flat
             const isNested = Array.isArray(freqData[0].data);
 
             let yearRangeData = [];
             yearRanges.forEach(year_range => {
-                console.log("Year range being calculated:", year_range);
-                console.log("freqData", freqData);
 
                 const dataForRange = isNested
                     ? freqData.filter(d => {
                         const [rangeStart, rangeEnd] = d.range.split("-").map(Number);
                         console.log("range start and end:", rangeStart, rangeEnd);
 
-                        // Check if the range exactly matches the year_range
                         return rangeStart === year_range[0] && rangeEnd === year_range[1] && d.data.some(item => item.weeks === week);
                     })
                     : freqData.filter(d => {
                         const [rangeStart, rangeEnd] = d.range.split("-").map(Number);
 
-                        // Ensure range exactly matches the year_range
                         return d.weeks === week && rangeStart === year_range[0] && rangeEnd === year_range[1];
                     });
 
-                console.log("Filtered data for year range", year_range, dataForRange);
-
-                // Add the filtered data to yearRangeData
                 yearRangeData.push({ year_range, data: dataForRange });
             });
 
-            // Calculate the total frequency across all weeks for each year range
+            // ========================== Frequency calculation for selected week and all weeks ==========================
             let totalFrequency = {};
-            console.log("year ranges before hand", yearRangeData);
-            yearRangeData.forEach(({ year_range, data }) => {
-                console.log("year range freq calculation", year_range, data);
-                console.log("flatMap", data.flatMap(d => d.data) )
-                const totalCount = isNested
-                    ? d3.sum(data.flatMap(d => d.data), d => d.oldfreq) // Flatten and sum for nested data
-                    : d3.sum(data, d => d.oldfreq); // Sum directly for flat data
 
-                // Use a string key with both the start and end year to differentiate overlapping ranges
+            yearRangeData.forEach(({ year_range, data }) => {
+                const totalCount = isNested
+                    ? d3.sum(data.flatMap(d => d.data), d => d.oldfreq)
+                    : d3.sum(data, d => d.oldfreq);
+
                 totalFrequency[`${year_range[0]}-${year_range[1]}`] = totalCount;
             });
 
-            // Now, calculate total frequencies correctly for flat data (sum across all weeks)
             if (!isNested) {
                 yearRanges.forEach(year_range => {
                     const totalCountForRange = freqData
@@ -750,20 +771,21 @@ function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
                             return rangeStart <= year_range[1] && rangeEnd >= year_range[0];
                         })
                         .reduce((sum, d) => sum + d.oldfreq, 0);
+
                     totalFrequency[`${year_range[0]}-${year_range[1]}`] = totalCountForRange;
                 });
             }
 
+            // Populating the table
             if (yearRangeData.length > 0) {
                 // Set the week number in the first column of the data row
                 d3.select("#week-cell").text(week);
 
-                // Loop through each year range and populate corresponding data for the hovered week
                 yearRanges.forEach((year_range, index) => {
                     const dataForYearRange = yearRangeData[index].data;
                     const thisWeekCount = isNested
-                        ? d3.sum(dataForYearRange.flatMap(d => d.data.filter(d => d.weeks === week)), d => d.oldfreq) // Flatten for nested data
-                        : d3.sum(dataForYearRange.filter(d => d.weeks === week), d => d.oldfreq); // Direct sum for flat data
+                        ? d3.sum(dataForYearRange.flatMap(d => d.data.filter(d => d.weeks === week)), d => d.oldfreq)
+                        : d3.sum(dataForYearRange.filter(d => d.weeks === week), d => d.oldfreq);
 
                     // Update the corresponding cell in the data row
                     d3.select(dataRow.selectAll("td").nodes()[index + 1])
@@ -778,7 +800,17 @@ function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
             }
         });
 }
-// Apply dynamic filters
+
+/**
+ * createVisualization - Generates an interactive line plot showing song longevity over time.
+ * It handles both single and multiple year ranges, normalizing and visualizing song frequency
+ * based on the number of weeks charted.
+ *
+ * @param {Array} freqData - Data of song frequencies across weeks.
+ * @param {Array} dynamicallyFilteredData - Filtered song data based on user selection.
+ * @param {Array} yearRanges - Array of year ranges to visualize.
+ * @param {number} maxWeeks - Maximum number of weeks to display, also the max longevity.
+ */
 function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxWeeks) {
     var width_scatterplot_container = 680;
     var height_scatterplot_container = 500;
@@ -790,7 +822,6 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
 
     console.log("height container", height_longevityGenre)
 
-    // Clear old plot lines and areas, but not the axes
     svg.selectAll(".line-path").transition().duration(500).style("opacity", 0).remove();
     svg.selectAll(".area").transition().duration(500).style("opacity", 0).remove();
 
@@ -804,31 +835,30 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
         .range([margin_longevityGenre.left, width_longevityGenre - margin_longevityGenre.right])
         .padding(0.1);
 
-    let yScale = d3.scaleLinear()
-        .domain([0, 1])
-        .range([height_longevityGenre - margin_longevityGenre.bottom, margin_longevityGenre.top]);
+    let yScale
 
-    // Handle single year range
+    // ====================== Handling one year range =========================
     if (yearRanges.length === 1) {
         const uniqueSongsCount = new Set(dynamicallyFilteredData.map(row => row.Song_ID)).size;
         console.log("yearranges[0]", yearRanges[0]);
 
         // Normalize the frequency
         freqData.forEach(d => {
-            d.oldfreq = d.frequency; // Non-normalized frequency
-            d.frequency = d.frequency / uniqueSongsCount; // Normalized frequency
+            d.oldfreq = d.frequency;
+            d.frequency = d.frequency / uniqueSongsCount;
             d.range = `${yearRanges[0][0]}-${yearRanges[0][1]}`;
         });
 
         const maxFrequency = d3.max(freqData, (d) => d.frequency);
+
         yScale = d3.scaleLinear()
             .domain([0, Math.max(0.25, maxFrequency)])
             .nice()
             .range([height_longevityGenre - margin_longevityGenre.bottom, margin_longevityGenre.top]);
 
-        singleLinePlot(svg, x, yScale, freqData, viridisScale[0]);
+        singleLinePlot(svg, x, yScale, freqData,  yearColorScale[0]);
     }
-    // Handle multiple year ranges
+    // ====================== Handling multiple year ranges =========================
     else {
         let maxFrequency = 0;
 
@@ -852,8 +882,8 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
             const filledData = fillMissingWeeks(
                 Array.from(longevityCounts, ([weeks, frequency]) => ({
                     weeks: +weeks,
-                    oldfreq: frequency, // Non-normalized frequency
-                    frequency: frequency / uniqueSongsCount, // Normalized frequency
+                    oldfreq: frequency,
+                    frequency: frequency / uniqueSongsCount,
                 })).sort((a, b) => a.weeks - b.weeks),
                 maxWeeks
             );
@@ -863,7 +893,7 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
             return {
                 range: rangeKey,
                 data: smoothingEnabled ? smoothData(filledData) : filledData,
-                color: viridisScale[index],
+                color: yearColorScale[index],
             };
         });
 
@@ -872,10 +902,10 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
             .nice()
             .range([height_longevityGenre - margin_longevityGenre.bottom, margin_longevityGenre.top]);
 
-        renderLinePlot(svg, x, yScale, groupedData, viridisScale, width_longevityGenre, height_longevityGenre, margin_longevityGenre);
+        renderLinePlot(svg, x, yScale, groupedData, yearColorScale, width_longevityGenre, height_longevityGenre, margin_longevityGenre);
     }
 
-    // Handle the X-axis transition
+    // ====================== x-axis transition =========================
     let xAxisGroup = svg.select(".x-axis-group");
     if (xAxisGroup.empty()) {
         xAxisGroup = svg.append("g")
@@ -912,7 +942,7 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
             .style("stroke-width", 3);
     }
 
-    // Handle the Y-axis transition (left axis)
+    // ====================== y-axys transition =========================
     let yAxisGroup = svg.select(".y-axis-group");
     if (yAxisGroup.empty()) {
         yAxisGroup = svg.append("g")
@@ -949,6 +979,7 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
             .style("stroke-width", 3);
     }
 
+    // ==================== AXIS LABELS =========================
     svg.select(".x-axis-label").remove();
 
     svg.append("text")
@@ -962,7 +993,6 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
 
     svg.select(".y-axis-label").remove();
 
-    // Y-axis label
     svg.append("text")
         .attr("class", "y-axis-label")
         .attr("x", -height_longevityGenre / 2.4)
@@ -978,22 +1008,14 @@ function createVisualization(freqData, dynamicallyFilteredData, yearRanges, maxW
     } else {
         addInteractiveLine(svg, x, yScale, groupedData, yearRanges, margin_longevityGenre);
     }
-
     updateHeader();
 }
 
-// Render line plot with smooth transitions and consistent styles
+// Function to render multiple distribution lines
 function renderLinePlot(svg, x, yRight, groupedData, previousData) {
     const line = d3.line()
         .x(d => x(d.weeks) + x.bandwidth() / 2)
         .y(d => yRight(d.frequency));
-
-    // svg.selectAll(".line-path")
-    //     .filter(function () {
-    //         const range = d3.select(this).attr("data-range");
-    //         return !groupedData.some(d => d.range === range);
-    //     })
-    //     .remove();
 
     const existingLines = new Map();
     svg.selectAll(".line-path").each(function () {
@@ -1032,6 +1054,7 @@ function renderLinePlot(svg, x, yRight, groupedData, previousData) {
         .style("opacity", 1.0);
 }
 
+// Function to render just one distribution line, as an area
 function singleLinePlot(svg, x, y, data, color, previousData) {
     const area = d3.area()
         .x(d => x(d.weeks) + x.bandwidth() / 2)
@@ -1040,7 +1063,6 @@ function singleLinePlot(svg, x, y, data, color, previousData) {
 
     let existingArea = svg.select(".area");
     if (!existingArea.empty()) {
-        // Morph area into line smoothly
         existingArea.datum(data)
             .transition()
             .duration(1000)
@@ -1055,8 +1077,7 @@ function singleLinePlot(svg, x, y, data, color, previousData) {
     }
 }
 
-
-// Smoothing toggle
+// Smoothing toggle to smooth the lines NO LONGER USED
 function createSmoothingToggle() {
     const container = d3.select("#controls");
     container.append("label").text("Smoothing:");
@@ -1068,10 +1089,9 @@ function createSmoothingToggle() {
         });
 }
 
+// Function to highlight the correct year range line if there is a selected range
 function longevity_genre_yearhighlight(selectedRange) {
     const svg = d3.select("#longevity_histogram");
-
-    console.log('svg in highlight', svg.selectAll(".line-path").nodes());
 
     if (window.selectedYearRanges.length < 2) {
         return;
@@ -1086,7 +1106,6 @@ function longevity_genre_yearhighlight(selectedRange) {
 
     const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
 
-    // Dim all paths
     svg.selectAll(".line-path")
         .style("opacity", 0.4)
         .style("stroke-width", 2);

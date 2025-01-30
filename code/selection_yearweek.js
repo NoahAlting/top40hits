@@ -1,14 +1,6 @@
 // Data structure for years
-// code based upon:
-// ludwig schubert 2016 multiple brush https://github.com/ludwigschubert/d3-brush-multiple
+// brush snapping code based upon:
 // brush snapping https://observablehq.com/@d3/brush-snapping
-
-// ========================================= UPDATING PLOTS =================================================
-// Create and dispatch a custom event
-function dispatchCustomEvent(eventName, detail = {}) {
-    const event = new CustomEvent(eventName, { detail });
-    window.dispatchEvent(event);
-}
 
 // ============================================ YEAR SELECTOR =================================================
 const years = Array.from({ length: 59 }, (_, i) => 1965 + i);
@@ -20,6 +12,7 @@ const basecolors = ["#4a4a62", "#646487"]
 const svg_yearselect = d3.select("#yearSelector")
     .attr("viewBox", [0, 0, width_year, height_year]);
 
+// =========================== Styling Elements ===========================
 // Define the height for each year block
 const yearHeight = 6;
 const stackGroup = svg_yearselect
@@ -81,7 +74,6 @@ stackGroup
     .text((d) => d)
     .style("fill", "#ffffff")
     .style("font-size", "8px")
-    // make years bigger when hovering over
     .on("mouseover", function(event, d) {
         d3.select(this).style("font-size", "12px");
 
@@ -100,7 +92,7 @@ function resetYearColors() {
         .map((r) => r.range)
         .sort((a, b) => a[0] - b[0]);
 
-    const rangeColors = sortedRanges.map((_, i) => viridisScale[i]);
+    const rangeColors = sortedRanges.map((_, i) => yearColorScale[i]);
 
     const highlightedYears = {};
 
@@ -197,7 +189,6 @@ function updateRanges(brush, range) {
 
     if (existingIndex !== -1) {
         // Ensure the group exists
-
         selectedRanges[existingIndex].range = range;
     } else {
         // Attempt to find the associated group
@@ -265,7 +256,7 @@ function renderRanges() {
         const sortedIndex = sortedRanges.findIndex(
             (sortedRange) => sortedRange[0] === range[0] && sortedRange[1] === range[1]
         );
-        const rangeColor = viridisScale[sortedIndex];
+        const rangeColor = yearColorScale[sortedIndex];
 
         const rangeDiv = document.createElement("div");
         rangeDiv.className = "range-item";
@@ -277,9 +268,9 @@ function renderRanges() {
         rangeDiv.onclick = () => {
             // Toggle selection
             if (window.selectedRange && window.selectedRange[0] === range[0] && window.selectedRange[1] === range[1]) {
-                window.selectedRange = []; // Deselect
+                window.selectedRange = [];
             } else {
-                window.selectedRange = range; // Select new range
+                window.selectedRange = range;
             }
 
             // Update opacity dynamically
@@ -288,7 +279,7 @@ function renderRanges() {
             });
 
             if (window.selectedRange.length) {
-                rangeDiv.style.opacity = "1.0"; // Ensure selected one is fully visible
+                rangeDiv.style.opacity = "1.0";
             }
 
             dispatchCustomEvent('selectedRangeUpdated');
@@ -322,8 +313,6 @@ function renderRanges() {
 
     updateAddBrushButton();
 }
-
-
 
 // Function to edit the range of a previous created year range
 function editRange(index) {
@@ -367,7 +356,6 @@ function editRange(index) {
     multiBrushes.splice(index, 0, { brush: newBrush, group: newGroup });
     selectedRanges.splice(index, 0, { brush: newBrush, range, group: newGroup });
 
-    // Refresh display
     resetYearColors();
     renderRanges();
     window.lastAdded = range;
@@ -378,11 +366,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const addBrushButton = document.getElementById("addBrushButton");
     if (addBrushButton) {
         addBrushButton.addEventListener("click", createBrush);
-    } else {
-        console.error("Element with ID 'addBrushButton' not found");
     }
 });
-
 
 // ============================================ WEEK SELECTOR =================================================
 const margin_week = { top: 10, right: 0, bottom: 20, left: 0 };

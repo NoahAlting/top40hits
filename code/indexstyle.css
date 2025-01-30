@@ -26,7 +26,7 @@ body {
     z-index: 10;
 }
 #drag-handle-right {
-    right: 0; /* Position the new handle on the right of the screen */
+    right: 0;
 }
 
 .chart_container {
@@ -70,7 +70,7 @@ h1 {
     color: #ffffff;
     align-items: center;
     justify-content: center;
-    margin: 0;           /* Remove any default margin to avoid shifting */
+    margin: 0;
     padding: 0;
     font-size: 22px;
 }
@@ -113,8 +113,8 @@ h1 {
     justify-content: center; 
     width: 100%; 
     height: 80px;
-    position: relative;  /* Prevent layout shift */
-    z-index: 10;         /* Ensure it stays on top of other elements */
+    position: relative;
+    z-index: 10;
 }
 
 .chart_container {

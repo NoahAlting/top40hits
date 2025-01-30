@@ -1,8 +1,3 @@
-function dispatchCustomEvent(eventName, detail = {}) {
-    const event = new CustomEvent(eventName, { detail });
-    window.dispatchEvent(event);
-}
-
 // toggle_featgenre from buttonstrip: https://www.cssscript.com/inline-toggle-button-buttonstrip/
 
 function buttonstrip(options) {
@@ -70,7 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
             clickedButton.classList.add("active");
 
             window.selectedType = clickedButton.getAttribute("data-toggle");
-            console.log("Selected Option (global):", window.selectedType);
             dispatchCustomEvent('typeUpdated', { type: selectedType });
         }
     });

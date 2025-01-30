@@ -16,12 +16,12 @@ function createinfobutton_genre() {
     createInfoButtonWithTooltip(
         "longevityCharts",
         "Genre Distribution by Longevity",
-        "This line plot shows the normalized number of songs in the selected genre that stayed in the top position for a certain number of weeks. The values are normalized by dividing the number of songs for each longevity week by the total number of songs in the selected year range. This allows comparisons across year ranges of different sizes.",
+        "This line plot shows the normalized number of songs in the selected genre that stayed in the top position for a certain number of weeks. The values are normalized by dividing the number of songs for each longevity week by the total number of songs in the selected year range. This allows comparisons across year ranges of different sizes. If you hover over the plot, a table will appear for the hovered upon longevity, showing the actual amount of unique songs with that longevity for that year range, and the overall amount of unique songs for the whole year range.",
         "Longevity, amount of weeks in the user-selected top (default 40)",
         "Normalized Song Count",
         "lines, areas underneath lines",
         "color hue for year ranges, y-postion for frequency value, x-position for longevity",
-        "Use this plot to analyze if the selected genre tends to produce longer-lasting hits across different year ranges, and if different trends can be spotted.",
+        "Use this plot to analyze the distribution of hit lengths of specific genres across different year ranges.",
         "left"
     );
 }

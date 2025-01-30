@@ -26,7 +26,7 @@ tooltip.style.background = "rgba(0, 0, 0, 0.9)";
 tooltip.style.color = "white";
 tooltip.style.borderRadius = "8px";
 tooltip.style.fontSize = "18px";
-tooltip.style.maxWidth = "1200px";
+tooltip.style.maxWidth = "1600px";
 tooltip.style.display = "none";
 tooltip.style.zIndex = "11";
 
@@ -64,8 +64,8 @@ tooltip.appendChild(createTooltipLine("Possible Features:",
     <br><strong>(2) Acousticness:</strong> A confidence score that determines whether a track is acoustic.
     <br><strong>(3) Energy:</strong> Represents the intensity and activity of a track. High-energy tracks tend to feel fast, loud, and noisy.
     <br><strong>(4) Valence:</strong> Describes the positivity of a track's musical mood. Tracks with high valence sound more cheerful or happy.
-    <br><strong>(5) Loudness:</strong> The average loudness of a track, measured in decibels (dB), normalized to a range of 0 to 1.
-    <br><strong>(6) Tempo:</strong> The estimated tempo of a track in beats per minute (BPM), normalized to a range of 0 to 1.`));
+    <br><strong>(5) Loudness:</strong> The average loudness of a track, measured in decibels (dB), <strong>transformed by</strong> normalizing to a range of 0 to 1.
+    <br><strong>(6) Tempo:</strong> The estimated tempo of a track in beats per minute (BPM), <strong>transformed by</strong> normalizing to a range of 0 to 1.`));
 tooltip.appendChild(createTooltipLine("Possible Genres:", 
     `The dashboard defines 10 main genres, each encompassing more specific subgenres (some examples are given):
     <br><strong>(1) Pop:</strong> Includes girl groups, boy bands, and comedy musicals.
@@ -78,10 +78,14 @@ tooltip.appendChild(createTooltipLine("Possible Genres:",
     <br><strong>(8) Jazz:</strong> Includes blues, fusion, and swing.
     <br><strong>(9) Classical:</strong> Includes opera, symphonies, and orchestral music.
     <br><strong>(10) Reggae:</strong> Includes dancehall, dub, and mento.`));
-    tooltip.appendChild(createTooltipLine("Longevity Meaning:", `The longevity graphs on the right track how long songs remain in the Top ${window.selectedTop} rankings over a given period. 
-        This means that the graphs are categorizing songs based on their duration of success in the top rankings. 
-        These graphs help analyze how different songs maintain their position in the charts over time and can provide insights into which features of genres have enduring popularity.`));
-      
+tooltip.appendChild(createTooltipLine("Longevity Meaning:", `The longevity graphs on the right track how long songs remain in the Top ${window.selectedTop} rankings over a given period. 
+    This means that the graphs are categorizing songs based on their duration of success in the top rankings. 
+    These graphs help analyze how different songs maintain their position in the charts over time and can provide insights into which features of genres have enduring popularity.`));
+tooltip.appendChild(createTooltipLine("Missing Data:",
+    'The Spotify API was utilized to automatically collect data on the unique songs in the Top 40 charts. However, not all songs were successfully matched due to several reasons: the artist name or song title may have changed since the Top 40 entry, the Top 40 entry could have included multiple songs, or the song might not be available on Spotify. As a result, when comparing data across year ranges, some datasets will be based on a larger number of entries and more averaged results.   <br>\n' +
+    '\n' +
+    'Below, a figure illustrates the distribution of missing data. The plots are divided into two categories: total song count (which represents the total number of appearances a song made in the Top 40) and unique song count (which reflects each song’s unique appearance in the Top 40). These plots show the distribution of missing data across both weeks and years.  <br>\n' +
+    'In total, there are 123,801 entries for the total song count, of which 11,842 (9.5%) are missing. For the unique song count, there are 14,876 songs, with 1,765 (11.8%) missing.\n <img src="distributions.jpg" alt="Data Distribution" style="width: 1200px; vertical-align: middle; margin-left: 10px;">'));
 
 
 infoButton.addEventListener("click", (event) => {

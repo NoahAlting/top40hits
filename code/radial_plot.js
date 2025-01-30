@@ -10,7 +10,6 @@ var selectedYearRanges = window.selectedYearRanges;
 var selectedWeekRange = window.selectedWeekRange;
 let globalData = [];
 
-let currentYearRangeIndex = 0;
 let global_data = []
 const sortedYearRanges = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
 
@@ -112,31 +111,26 @@ function loadAndProcess_FeaturesData_radial(filtered_data_input, range_years, se
 
 // Update the plot 
 function update_radial_features(filtered_data_input) {
-    console.log("ranges", window.selectedRange, window.selectedRange.length);
+    console.log("update", window.selectedYearRanges, window.selectedRange, window.lastAdded);
+    global_data = filtered_data_input;
+    const selectedYearRanges = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
     const header_linegraph = d3.select("#heading-container-radial-year");
-    if (window.selectedYearRanges.length != 0){
-        if (window.selectedRange.length == 0 && window.selectedYearRanges.length == 1){
-            header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${window.selectedYearRanges[0][0]} - ${window.selectedYearRanges[0][1]}`);
+
+    var currentYearRange = window.lastAdded;
+    if (selectedYearRanges.length != 0){
+        if (currentYearRange.length == 0){
+            currentYearRange = selectedYearRanges[0];
         }
-        else if (window.selectedRange.length == 1 && window.selectedRange[0] == window.selectedRange[1]){
-            header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${window.selectedRange[0]}`);
+        else if (!selectedYearRanges.includes(currentYearRange)){
+            console.log("update2", currentYearRange, selectedYearRanges);
+            currentYearRange = selectedYearRanges[0];
         }
-        else if (window.selectedRange.length == 2){
-            header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${window.selectedRange[0]} - ${window.selectedRange[1]}`);
-        }
-        else{
-            header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${window.selectedYearRanges[0][0]} - ${window.selectedYearRanges[0][1]}`);
-        }
+        header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${currentYearRange[0]} - ${currentYearRange[1]}`);
     }
     else{
         header_linegraph.html(`No year ranges selected.`);
     }
-
-    global_data = filtered_data_input;
-    const selectedYearRanges = window.selectedYearRanges.sort((a, b) => a[0] - b[0]);
-    const currentYearRange = selectedYearRanges[currentYearRangeIndex];
     const selectedGenre = window.selectedGenre;
-
     const data = loadAndProcess_FeaturesData_radial(filtered_data_input, currentYearRange, selectedGenre, possible_features_songs);
 
     d3.select("#radial-plot").html("");
@@ -146,19 +140,30 @@ function update_radial_features(filtered_data_input) {
 
 // Update the plot based on the new range
 window.addEventListener("selectedRangeUpdated", function () {
+    var currentYearRange = window.lastAdded;
     if (window.selectedType == "features") {
         const header_linegraph = d3.select("#heading-container-radial-year");
         if (window.selectedRange.length == 0) {
-            header_linegraph.html(`Weekly Scores All Features Averaged over <br> 1965 - 2023`);
+            if (currentYearRange.length == 0){
+                currentYearRange = selectedYearRanges[0];
+            }
+            if (currentYearRange.length != 0){
+                header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${currentYearRange[0]} - ${currentYearRange[1]}`);
+            }
+            else{
+                header_linegraph.html(`No year ranges selected.`);
+            }
         }
-        else if (window.selectedRange[0] == window.selectedRange[1]) {
-            header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${window.selectedRange[0]}`);
-        }
-        else if (window.selectedRange.length == 2) {
-            header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${window.selectedRange[0]} - ${window.selectedRange[1]}`);
-        }
-        const selectedRange = window.selectedRange;
-        const currentYearRange = selectedRange;
+        else{  
+            const selectedRange = window.selectedRange;
+            currentYearRange = selectedRange;
+            if (window.selectedRange[0] == window.selectedRange[1]) {
+                header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${window.selectedRange[0]}`);
+            }
+            else if (window.selectedRange.length == 2) {
+                header_linegraph.html(`Weekly Scores All Features Averaged over <br> ${window.selectedRange[0]} - ${window.selectedRange[1]}`);
+            }
+        } 
         const selectedGenre = window.selectedGenre;
         const data = loadAndProcess_FeaturesData_radial(global_data, currentYearRange, selectedGenre, possible_features_songs);
         d3.select("#radial-plot").html("");

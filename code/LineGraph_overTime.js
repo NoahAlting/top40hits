@@ -90,25 +90,25 @@ function loadAndProcess_GenresData_LineGraph(filtered_data_input, selected_years
 }
 
 function createInteractiveGraph_Features_LineGraph(plotData, selected_years, selected_weeks, max_top, selectedGenre, linePlot, table, width_lineGraph, height_lineGraph) {
-    let minValue = Infinity;
-    let maxValue = -Infinity;
-    plotData.forEach(item => {
-        if ((item.avgValue - item.stdDev) < minValue) minValue = item.avgValue - item.stdDev;
-        if ((item.avgValue + item.stdDev) > maxValue) maxValue = item.avgValue + item.stdDev;
-      });
-    var difference_y = maxValue - minValue;
-    var minY = Math.max(minValue - difference_y * 0.1, 0);
-    var maxY = Math.min(maxValue + difference_y * 0.1, 1);
-    if ((maxY - minY) < 0.2){
-        minY = Math.max(0, (minY - (0.5) * (maxY - minY)));
-        maxY = Math.min(1, (maxY + (0.5) * (maxY - minY)));
-    }
+    // let minValue = Infinity;
+    // let maxValue = -Infinity;
+    // plotData.forEach(item => {
+    //     if ((item.avgValue - item.stdDev) < minValue) minValue = item.avgValue - item.stdDev;
+    //     if ((item.avgValue + item.stdDev) > maxValue) maxValue = item.avgValue + item.stdDev;
+    //   });
+    // var difference_y = maxValue - minValue;
+    // var minY = Math.max(minValue - difference_y * 0.1, 0);
+    // var maxY = Math.min(maxValue + difference_y * 0.1, 1);
+    // if ((maxY - minY) < 0.2){
+    //     minY = Math.max(0, (minY - (0.5) * (maxY - minY)));
+    //     maxY = Math.min(1, (maxY + (0.5) * (maxY - minY)));
+    // }
     var x = d3.scaleLinear()
         .domain([selected_weeks[0], selected_weeks[1]])
         .range([0, width_lineGraph])
         .clamp(true);
     var y = d3.scaleLinear()
-        .domain([minY, maxY])
+        .domain([0, 1])
         .range([height_lineGraph, 0])
         .clamp(true);
     // Label x-axis
@@ -280,19 +280,19 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
 }
 
 function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, selected_weeks, max_top, selectedGenre, linePlot, table, width_lineGraph, height_lineGraph){
-    let minValue = Infinity;
-    let maxValue = -Infinity;
-    plotData.forEach(item => {
-        const value = parseFloat(item.genre_percentage);
-        if (!isNaN(value)) {
-            if (value < minValue) minValue = value;
-            if (value > maxValue) maxValue = value;
-        }
-    });    
-    var difference_y = maxValue - minValue;
-    var minY = Math.max(minValue - difference_y * 0.2, 0);
-    var maxY = Math.min(maxValue + difference_y * 0.2, 100);
-    maxY = Math.max(maxY, 10);
+    // let minValue = Infinity;
+    // let maxValue = -Infinity;
+    // plotData.forEach(item => {
+    //     const value = parseFloat(item.genre_percentage);
+    //     if (!isNaN(value)) {
+    //         if (value < minValue) minValue = value;
+    //         if (value > maxValue) maxValue = value;
+    //     }
+    // });    
+    // var difference_y = maxValue - minValue;
+    // var minY = Math.max(minValue - difference_y * 0.2, 0);
+    // var maxY = Math.min(maxValue + difference_y * 0.2, 100);
+    // maxY = Math.max(maxY, 10);
     /// Graph settings
     // Set domain and ranges for axes
     var x = d3.scaleLinear()
@@ -300,7 +300,7 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
         .range([0, width_lineGraph])
         .clamp(true);
     var y = d3.scaleLinear()
-        .domain([minY, maxY])
+        .domain([0, 100])
         .range([height_lineGraph, 0])
         .clamp(true);
     // Label x-axis

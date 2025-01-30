@@ -1,15 +1,15 @@
 // ============================================ Manual determined variables ============================================
 // Features that are taken into account
 const possible_features_songs = [
-    "Danceability",
     "Acousticness",
+    "Danceability",
     "Energy",
-    // "Liveness",
-    "Valence",
-    // "Speechiness",
     "Loudness",
-    // "Normalized_Popularity", 
     "Tempo",
+    "Valence",
+    // "Liveness",
+    // "Speechiness",
+    // "Normalized_Popularity", 
   ];
 
 // Keywords for the genres

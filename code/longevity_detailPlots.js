@@ -602,7 +602,6 @@ function smoothData(data, windowSize = 3) {
         return { ...d, frequency: average };
     });
 }
-
 function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
     console.log("Input year ranges:", yearRanges);
 
@@ -644,7 +643,7 @@ function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
     const headerRow = tbody.append("thead").append("tr");
 
     // Add a column for "Week" in the header
-    headerRow.append("th").text("Longevity").style("border", "1px solid white").style("padding", "5px");
+    headerRow.append("th").text("Longevity (weeks)").style("border", "1px solid white").style("padding", "5px");
 
     // Add year range columns
     yearRanges.forEach(year_range => {
@@ -660,6 +659,16 @@ function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
 
     yearRanges.forEach(() => {
         dataRow.append("td")
+            .style("border", "1px solid white")
+            .style("padding", "5px");
+    });
+
+    // Add a row for total frequencies at the bottom
+    const totalRow = tbody.append("tbody").append("tr");
+    totalRow.append("td").text("Overall").style("border", "1px solid white").style("padding", "5px");
+
+    yearRanges.forEach(() => {
+        totalRow.append("td")
             .style("border", "1px solid white")
             .style("padding", "5px");
     });
@@ -694,9 +703,12 @@ function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
 
             let yearRangeData = [];
             yearRanges.forEach(year_range => {
+                console.log("Year range being calculated:", year_range);
+                // Filter the data based on the current year range independently
                 const dataForRange = isNested
                     ? freqData.filter(d => {
                         const [rangeStart, rangeEnd] = d.range.split("-").map(Number);
+                        console.log("range start and end:", rangeStart, rangeEnd);
                         return rangeStart <= year_range[1] && rangeEnd >= year_range[0] && d.data.some(item => item.weeks === week);
                     })
                     : freqData.filter(d => d.weeks === week && d.range.split("-").map(Number).some((range, i) => i === 0 ? range <= year_range[1] : range >= year_range[0]));
@@ -706,12 +718,16 @@ function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
 
             // Calculate the total frequency across all weeks for each year range
             let totalFrequency = {};
+            console.log("year ranges before hand", yearRangeData);
             yearRangeData.forEach(({ year_range, data }) => {
+                console.log("year range freq calculation", year_range, data);
+                console.log("flatMap", data.flatMap(d => d.data) )
                 const totalCount = isNested
                     ? d3.sum(data.flatMap(d => d.data), d => d.oldfreq) // Flatten and sum for nested data
                     : d3.sum(data, d => d.oldfreq); // Sum directly for flat data
 
-                totalFrequency[year_range] = totalCount;
+                // Use a string key with both the start and end year to differentiate overlapping ranges
+                totalFrequency[`${year_range[0]}-${year_range[1]}`] = totalCount;
             });
 
             // Now, calculate total frequencies correctly for flat data (sum across all weeks)
@@ -723,7 +739,7 @@ function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
                             return rangeStart <= year_range[1] && rangeEnd >= year_range[0];
                         })
                         .reduce((sum, d) => sum + d.oldfreq, 0);
-                    totalFrequency[year_range] = totalCountForRange;
+                    totalFrequency[`${year_range[0]}-${year_range[1]}`] = totalCountForRange;
                 });
             }
 
@@ -738,12 +754,15 @@ function addInteractiveLine(svg, xScale, yScale, freqData, yearRanges, margin) {
                         ? d3.sum(dataForYearRange.flatMap(d => d.data.filter(d => d.weeks === week)), d => d.oldfreq) // Flatten for nested data
                         : d3.sum(dataForYearRange.filter(d => d.weeks === week), d => d.oldfreq); // Direct sum for flat data
 
-                    // Get the total frequency for the year range (already calculated)
-                    const totalCount = totalFrequency[year_range];
-
                     // Update the corresponding cell in the data row
                     d3.select(dataRow.selectAll("td").nodes()[index + 1])
-                        .text(`${thisWeekCount} (Total: ${totalCount})`);
+                        .text(`${thisWeekCount}`);
+                });
+
+                // Add the total frequencies to the totalRow
+                yearRanges.forEach((year_range, index) => {
+                    d3.select(totalRow.selectAll("td").nodes()[index + 1])
+                        .text(totalFrequency[`${year_range[0]}-${year_range[1]}`]);
                 });
             }
         });

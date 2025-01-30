@@ -48,9 +48,9 @@ function updateHeader() {
 
     if (window.selectedType === "features") {
         if (selectedRange[0] == selectedRange[1]) {
-            headerElement.textContent = `${window.selectedGenre} Value Distribution by Longevity for ${selectedRange[0]}`;
+            headerElement.innerHTML = `${window.selectedGenre} Value Distribution by Longevity for <br> ${selectedRange[0]}`;
         } else {
-            headerElement.textContent = `${window.selectedGenre} Value Distribution by Longevity for ${selectedRange[0]} - ${selectedRange[1]}`;
+            headerElement.innerHTML= `${window.selectedGenre} Value Distribution by Longevity for <br> ${selectedRange[0]} - ${selectedRange[1]}`;
         }
     } else if (window.selectedType === "genres") {
         headerElement.textContent = `Genre ${window.selectedGenre} Distribution by Longevity`;

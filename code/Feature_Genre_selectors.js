@@ -11,7 +11,7 @@ function initializePlots() {
 
     // Determine the plot type based on the global variable `selectedType`
     if (window.selectedType === "features") {
-        header.text("Probability Density for Features");
+        header.text("Probability Density Function for Features");
 
         // Remove any existing info button and create a new one
         removeButtonByContainerId("feature_genre_selector");
@@ -40,13 +40,13 @@ function initializePlots() {
         createInfoButtonWithTooltip(
             "feature_genre_selector",
             `Genres in the top ${window.selectedTop}`,
-            `This histogram plot shows how many songs within a genre were in the top ${window.selectedTop} in the selected data range.`,
+            `This barplot plot shows how many songs within a genre were in the top ${window.selectedTop} in the selected data range.`,
             "The number of songs that were assigned the genre label.",
             `The genre, aggregated to the ${Object.keys(genreKeywords).length} largest genres.`,
             "Position indicates the count, color indicates the year range.",
             "Length, color hue",
             `In the top view, the total count of genres per year can be inspected. Genre groups or labels can be clicked to show a detailed version below.` +
-            `<br><br> In the detailed histogram, the selected genre can be closely inspected across year ranges. Hovering over the bars reveals the exact number of songs in the top ${window.selectedTop} classified as the selected genre.`,
+            `<br><br> In the detailed barplot, the selected genre can be closely inspected across year ranges. Hovering over the bars reveals the exact number of songs in the top ${window.selectedTop} classified as the selected genre.`,
             "right"
         );
 
@@ -116,7 +116,7 @@ function PDF_highlight_range_detailed_opacity(selectedRange) {
 }
 
 
-function GenreHist_range_detailed_opacity(selectedRange) {
+function GenreBarplot_range_detailed_opacity(selectedRange) {
     const svg = d3.select("#bottomContainer_featuregenre").select("svg");
 
     // Reset all bars to full opacity
@@ -187,7 +187,7 @@ function renderTopContainerFeatures() {
             .on("click", () => {
                 // Update the global variable and dispatch a custom event
                 window.selectedGenre = feature;
-                console.log(`Genre updated to: ${feature}`);
+                // console.log(`Genre updated to: ${feature}`);
                 const event = new CustomEvent("genreUpdated", { detail: { feature } });
                 window.dispatchEvent(event);
             });
@@ -330,52 +330,51 @@ function calculateBandwidth(values, factor = 8) {
 
 
 // Renders the bottom container with a detailed Probability Density Function (PDF) plot for the selected feature.
-
 function renderBottomContainerFeatures() {
     const container = d3.select("#bottomContainer_featuregenre");
-    container.selectAll("*").remove(); // Clear existing plots
+    container.selectAll("*").remove();
 
     const width = featureGenreWidth;
     const height = featureGenreHeight;
 
-    const margin = {
-        top: height * 0.15,
-        right: width * 0.05,
-        bottom: height * 0.1,
-        left: width * 0.1
-    };
+    var margin = {
+        top: height * 0.15, 
+        right: width * 0.05, 
+        bottom: height * 0.1, 
+        left: width * 0.1};
 
     const svg = container.append("svg")
-        .attr("width", width)
+        .attr("width", width) // Set width of the detailed view
         .attr("height", height)
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
     const selectedFeature = window.selectedGenre;
-
-    // Render the detailed PDF visualization
-    renderDetailedPDF(svg, selectedFeature,
-        width - margin.left - margin.right,
+    renderDetailedPDF(svg, selectedFeature, 
+        width - margin.left - margin.right, 
         height - margin.top - margin.bottom);
 }
 
 
-//Renders a detailed Probability Density Function (PDF) plot for the selected feature.
 function renderDetailedPDF(svg, feature, width, height) {
     filter_data()
         .then((filteredData) => {
             const allRanges = window.selectedYearRanges || [];
 
-            // Extract density data for each range
+            // Extract data for each range
             const densities = allRanges.map(range => {
                 const rangeData = filteredData
                     .filter(row => row.Jaar >= range[0] && row.Jaar <= range[1] && row[feature] !== undefined)
                     .map(row => row[feature]);
 
                 if (rangeData.length > 0) {
-                    const bandwidth = calculateBandwidth(rangeData, 1.5);
+                    const bandwidth = calculateBandwidth(rangeData, factor = 1.5);
+                    const xTicks = d3.range(
+                        d3.min(rangeData),
+                        d3.max(rangeData),
+                        (d3.max(rangeData) - d3.min(rangeData)) / 100
+                    );
                     const kde = kernelDensityEstimator(kernelEpanechnikov(bandwidth), d3.range(0, 1.001, 0.01));
-
                     return {
                         range,
                         density: kde(rangeData),
@@ -384,30 +383,97 @@ function renderDetailedPDF(svg, feature, width, height) {
                     };
                 }
                 return null;
-            }).filter(d => d !== null); // Remove empty ranges
+            }).filter(d => d !== null); // Remove ranges with no data
 
-            // Compute x and y scales
-            const xExtent = d3.extent(densities.flatMap(d => d.density.map(point => point[0])));
+            // Combine data across ranges to calculate the x and y scales
+            const allFeatureData = densities.flatMap(d => d.density.map(point => point[0]));
+            const xExtent = d3.extent(allFeatureData);
+            const xMax = d3.max(densities.flatMap(d => d.density.map(point => point[0])));
+            const xMin = d3.min(densities.flatMap(d => d.density.map(point => point[0])));
             const yMax = d3.max(densities.flatMap(d => d.density.map(point => point[1])));
 
-            const x = d3.scaleLinear().domain(xExtent).range([0, width]);
-            const y = d3.scaleLinear().domain([0, yMax]).range([height, 0]);
+            // Define scales
+            const x = d3.scaleLinear()
+                .domain(xExtent)
+                .range([0, width]);
 
-            // Add axes
+            const y = d3.scaleLinear()
+                .domain([0, yMax])
+                .range([height, 0]);
+
+            // Add x-axis
             svg.append("g")
                 .attr("transform", `translate(0,${height})`)
                 .call(d3.axisBottom(x).ticks(8));
 
+            // Add y-axis
             svg.append("g")
                 .call(d3.axisLeft(y).ticks(3));
 
             // Add grid lines
-            addGridLines(svg, x, y, width, height);
+            const grid = svg.append("g")
+            .attr("class", "grid");
 
-            // Add axis labels and title
-            addPlotLabels(svg, feature, width, height);
+            const yTicks = y.ticks(6)
+            // Add horizontal grid lines (y-axis)
+            grid.selectAll(".horizontal-line")
+                .data(yTicks)
+                .enter()
+                .append("line")
+                .attr("class", "horizontal-line")
+                .attr("x1", 0)
+                .attr("x2", width)
+                .attr("y1", d => y(d))
+                .attr("y2", d => y(d))
+                .attr("stroke", "white")
+                .attr("stroke-opacity", 0.1)
+                .attr("stroke-dasharray", "4 4");
 
-            // Group for hoverable lines
+            // Add vertical grid lines (x-axis)
+            const xTicks = x.ticks(8); // Get tick positions
+            grid.selectAll(".vertical-line")
+                .data(xTicks)
+                .enter()
+                .append("line")
+                .attr("class", "vertical-line")
+                .attr("x1", d => x(d))
+                .attr("x2", d => x(d))
+                .attr("y1", 0)
+                .attr("y2", height)
+                .attr("stroke", "white")
+                .attr("stroke-opacity", 0.1)
+                .attr("stroke-dasharray", "4 4");
+
+            // Add x-axis label
+            svg.append("text")
+                .attr("x", width / 2)
+                .attr("y", height + 35)
+                .attr("text-anchor", "middle")
+                .style("font-size", "16px")
+                .style("fill", "white")
+                .text(feature + " value");
+
+            // Add y-axis label
+            svg.append("text")
+                .attr("x", -height / 2)
+                .attr("y", -40)
+                .attr("transform", "rotate(-90)")
+                .attr("text-anchor", "middle")
+                .style("font-size", "16px")
+                .style("fill", "white")
+                .text("Density");
+
+            // Add title
+            svg.append("text")
+                .attr("x", width / 2)
+                .attr("y", -20)
+                .attr("text-anchor", "middle")
+                .style("font-size", "16px")
+                .style("font-weight", "bold")
+                .style("fill", "white")
+                .text(`Detailed view: ${feature}`);
+
+            // Hoverable lines
             const hoverLinesGroup = svg.append("g");
 
             // Draw density lines for each range
@@ -418,133 +484,96 @@ function renderDetailedPDF(svg, feature, width, height) {
                 const linePath = svg.append("path")
                     .datum(density)
                     .attr("fill", "none")
-                    .attr("stroke", color)
+                    .attr("stroke", color) // Use the color scheme
                     .attr("stroke-width", 2)
+
+                    // add for highlighting
                     .attr("data-range", `${range[0]}-${range[1]}`)
-                    .attr("data-original-color", color)
+                    .attr("data-original-color", get_color_yearRange(range, allRanges))
+
+                    // add actual line
                     .attr("d", d3.line()
                         .curve(d3.curveBasis)
                         .x(d => x(d[0]))
                         .y(d => y(d[1])));
 
-                // Add invisible hover line
-                addHoverEffects(svg, density, hoverLinesGroup, x, y, median, mean, width, height);
+                // Add invisible line for better hitbox
+                const invisibleLine = svg.append("path")
+                    .datum(density)
+                    .attr("fill", "none")
+                    .attr("stroke", "transparent")
+                    .attr("stroke-width", 15) // Larger clickable area
+                    .attr("d", d3.line()
+                        .curve(d3.curveBasis)
+                        .x(d => x(d[0]))
+                        .y(d => y(d[1])))
+
+                    .on("mouseover", function () {
+                        // Add vertical lines for median and mean
+                        hoverLinesGroup.selectAll("*").remove();
+
+                        // Highlight the hovered line
+                        hoverLinesGroup.append("path")
+                            .datum(density)
+                            .attr("fill", "none")
+                            .attr("stroke", "white")
+                            .attr("stroke-width", 15) // Same size as the hitbox
+                            .attr("stroke-opacity", 0.1) // Semi-transparent
+                            .attr("d", d3.line()
+                                .curve(d3.curveBasis)
+                                .x(d => x(d[0]))
+                                .y(d => y(d[1])));
+
+                        const positions = [
+                            median < mean
+                                ? { value: median, label: `Median: ${median.toFixed(2)}`, align: "left" }
+                                : { value: median, label: `Median: ${median.toFixed(2)}`, align: "right" },
+                            mean < median
+                                ? { value: mean, label: `Mean: ${mean.toFixed(2)}`, align: "left" }
+                                : { value: mean, label: `Mean: ${mean.toFixed(2)}`, align: "right" }
+                        ];
+
+                        positions.forEach((pos) => {
+                            // Add vertical line
+                            hoverLinesGroup.append("line")
+                                .attr("x1", x(pos.value))
+                                .attr("x2", x(pos.value))
+                                .attr("y1", 0)
+                                .attr("y2", height)
+                                .attr("stroke", "white")
+                                .attr("stroke-width", 1)
+                                .attr("stroke-dasharray", "4 2");
+
+                            // Add text
+                            hoverLinesGroup.append("text")
+                                .attr("y", height * 0.8) // Set base y position for text
+                                .attr("text-anchor", "middle")
+                                .attr("fill", "white")
+                                .attr("font-size", "12px")
+                                .html(() => {
+                                    const [label, value] = pos.label.split(': ');
+                                    const offset = 0.05 * width; // Dynamically calculate offset as 5% of the width
+                                    return `
+                                        <tspan x="${x(pos.value) + (pos.align === "left" ? -offset : offset)}" dy="0">${label}</tspan>
+                                        <tspan x="${x(pos.value) + (pos.align === "left" ? -offset : offset)}" dy="1.2em">${value}</tspan>
+                                    `;
+                                });
+                        });
+                    })
+                    .on("mouseout", () => {
+                        // Remove hover lines and highlight on mouseout
+                        hoverLinesGroup.selectAll("*").remove();
+                    });
             });
         })
         .catch((err) => console.error("Error rendering detailed PDF:", err));
 }
 
 
-//Adds grid lines to the plot.
-
-function addGridLines(svg, x, y, width, height) {
-    const grid = svg.append("g").attr("class", "grid");
-
-    // Horizontal grid lines (y-axis)
-    grid.selectAll(".horizontal-line")
-        .data(y.ticks(6))
-        .enter()
-        .append("line")
-        .attr("class", "horizontal-line")
-        .attr("x1", 0)
-        .attr("x2", width)
-        .attr("y1", d => y(d))
-        .attr("y2", d => y(d))
-        .attr("stroke", "white")
-        .attr("stroke-opacity", 0.1)
-        .attr("stroke-dasharray", "4 4");
-
-    // Vertical grid lines (x-axis)
-    grid.selectAll(".vertical-line")
-        .data(x.ticks(8))
-        .enter()
-        .append("line")
-        .attr("class", "vertical-line")
-        .attr("x1", d => x(d))
-        .attr("x2", d => x(d))
-        .attr("y1", 0)
-        .attr("y2", height)
-        .attr("stroke", "white")
-        .attr("stroke-opacity", 0.1)
-        .attr("stroke-dasharray", "4 4");
-}
-
-//Adds axis labels and plot title
-function addPlotLabels(svg, feature, width, height) {
-    svg.append("text")
-        .attr("x", width / 2)
-        .attr("y", height + 35)
-        .attr("text-anchor", "middle")
-        .style("font-size", "16px")
-        .style("fill", "white")
-        .text(`${feature} value`);
-
-    svg.append("text")
-        .attr("x", -height / 2)
-        .attr("y", -40)
-        .attr("transform", "rotate(-90)")
-        .attr("text-anchor", "middle")
-        .style("font-size", "16px")
-        .style("fill", "white")
-        .text("Density");
-
-    svg.append("text")
-        .attr("x", width / 2)
-        .attr("y", -20)
-        .attr("text-anchor", "middle")
-        .style("font-size", "16px")
-        .style("font-weight", "bold")
-        .style("fill", "white")
-        .text(`Detailed view: ${feature}`);
-}
-
-
-//Adds hover effects, including vertical median and mean lines.
-function addHoverEffects(svg, density, hoverLinesGroup, x, y, median, mean, width, height) {
-    const invisibleLine = svg.append("path")
-        .datum(density)
-        .attr("fill", "none")
-        .attr("stroke", "transparent")
-        .attr("stroke-width", 15) // Larger clickable area
-        .attr("d", d3.line()
-            .curve(d3.curveBasis)
-            .x(d => x(d[0]))
-            .y(d => y(d[1])))
-        .on("mouseover", function () {
-            hoverLinesGroup.selectAll("*").remove();
-
-            // Highlight hovered line
-            hoverLinesGroup.append("path")
-                .datum(density)
-                .attr("fill", "none")
-                .attr("stroke", "white")
-                .attr("stroke-width", 15)
-                .attr("stroke-opacity", 0.1)
-                .attr("d", d3.line()
-                    .curve(d3.curveBasis)
-                    .x(d => x(d[0]))
-                    .y(d => y(d[1])));
-
-            // Add median and mean indicators
-            [median, mean].forEach(value => {
-                hoverLinesGroup.append("line")
-                    .attr("x1", x(value))
-                    .attr("x2", x(value))
-                    .attr("y1", 0)
-                    .attr("y2", height)
-                    .attr("stroke", "white")
-                    .attr("stroke-width", 1)
-                    .attr("stroke-dasharray", "4 2");
-            });
-        })
-        .on("mouseout", () => hoverLinesGroup.selectAll("*").remove());
-}
-
-
 // ========================= Top Container (Genres) =========================
 
 
-// Renders the top container with a histogram plot for genres.
+// Renders the top container with a bar plot for genres.
 
 function renderTopContainerGenres(containerHeightFraction) {
     const container = d3.select("#topContainer_featuregenre");
@@ -567,13 +596,13 @@ function renderTopContainerGenres(containerHeightFraction) {
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // Render the genre histogram
-    renderHistogram(svg, width - margin.left - margin.right, height - margin.top - margin.bottom);
+    // Render the genre barplot
+    renderGenreBarplot(svg, width - margin.left - margin.right, height - margin.top - margin.bottom);
 }
 
 
-// Renders a histogram showing the distribution of genres.
-function renderHistogram(svg, width, height) {
+// Renders a barplot showing the number of songs in a genres.
+function renderGenreBarplot(svg, width, height) {
     filter_data()
         .then((filteredData) => {
             if (typeof filteredData !== "object" || Array.isArray(filteredData)) {
@@ -585,7 +614,7 @@ function renderHistogram(svg, width, height) {
             const genres = Object.keys(filteredData);
             const ranges = window.selectedYearRanges.map(range => `${range[0]}-${range[1]}`);
 
-            // Flatten data for the histogram
+            // Flatten data for the barplot
             const data = genres.flatMap(genre => {
                 return window.selectedYearRanges.map(range => {
                     const rangeLabel = `${range[0]}-${range[1]}`;
@@ -656,13 +685,13 @@ function renderHistogram(svg, width, height) {
                 .text("Number of songs");
         })
         .catch((err) => {
-            console.error("Error rendering histogram:", err);
+            console.error("Error rendering barplot:", err);
             displayNoDataMessage(svg, width, height);
         });
 }
 
 
-// Adds vertical grid lines to the histogram.
+// Adds vertical grid lines to the barplot.
 function addGridLines(svg, x, width, height) {
     const grid = svg.append("g").attr("class", "grid");
 
@@ -724,7 +753,7 @@ function addYAxis(svg, yScale, genres) {
 // Updates the global selected genre and dispatches an event.
 function updateSelectedGenre(genre) {
     window.selectedGenre = genre;
-    console.log(`Genre updated to: ${genre}`);
+    // console.log(`Genre updated to: ${genre}`);
     const genreEvent = new CustomEvent("genreUpdated", { detail: { genre } });
     window.dispatchEvent(genreEvent);
 }
@@ -745,7 +774,7 @@ function displayNoDataMessage(svg, width, height) {
 
 // ========================= Bottom Container (Genres) =========================
 
-// Renders the bottom container with a detailed histogram for the selected genre.
+// Renders the bottom container with a detailed barplot for the selected genre.
 function renderBottomContainerGenres(containerHeightFraction) {
     const container = d3.select("#bottomContainer_featuregenre");
     container.selectAll("*").remove(); // Clear previous plots
@@ -767,12 +796,12 @@ function renderBottomContainerGenres(containerHeightFraction) {
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // Render the detailed histogram
-    renderDetailedHistogram(svg, width - margin.left - margin.right, height - margin.top - margin.bottom);
+    // Render the detailed barplot
+    renderDetailedbarplot(svg, width - margin.left - margin.right, height - margin.top - margin.bottom);
 }
 
-//Renders a detailed histogram showing the number of songs per year range for the selected genre.
-function renderDetailedHistogram(svg, width, height) {
+//Renders a detailed barplot showing the number of songs per year range for the selected genre.
+function renderDetailedbarplot(svg, width, height) {
     filter_data()
         .then((filteredData) => {
             const selectedGenre = window.selectedGenre;
@@ -793,7 +822,7 @@ function renderDetailedHistogram(svg, width, height) {
 
             const ranges = window.selectedYearRanges.map(range => `${range[0]}-${range[1]}`);
 
-            // Prepare data for the histogram (song count per year range)
+            // Prepare data for the barplot (song count per year range)
             const data = window.selectedYearRanges.map(range => {
                 const rangeData = genreData.filter(row => row.Jaar >= range[0] && row.Jaar <= range[1]);
                 return {
@@ -807,10 +836,10 @@ function renderDetailedHistogram(svg, width, height) {
             const x = d3.scaleLinear().domain([0, d3.max(data, d => d.count) * 1.05]).range([0, width]);
 
             // Add axes and grid lines
-            addHistogramAxes(svg, x, y, width, height);
+            addbarplotAxes(svg, x, y, width, height);
 
             // Draw bars with hover effects
-            addHistogramBars(svg, data, x, y, width, ranges);
+            addbarplotBars(svg, data, x, y, width, ranges);
 
             // Add x-axis label
             svg.append("text")
@@ -822,12 +851,12 @@ function renderDetailedHistogram(svg, width, height) {
                 .style("fill", "white")
                 .text(`Number of songs labeled as ${selectedGenre}`);
         })
-        .catch((err) => console.error("Error rendering histogram:", err));
+        .catch((err) => console.error("Error rendering barplot:", err));
 }
 
-// Adds x and y axes, along with grid lines, to the histogram.
+// Adds x and y axes, along with grid lines, to the barplot.
 
-function addHistogramAxes(svg, x, y, width, height) {
+function addbarplotAxes(svg, x, y, width, height) {
     // X-axis (count)
     svg.append("g")
         .attr("class", "x-axis")
@@ -857,8 +886,8 @@ function addHistogramAxes(svg, x, y, width, height) {
         .attr("stroke-dasharray", "4 4");
 }
 
-// Adds bars to the histogram, with hover effects.
-function addHistogramBars(svg, data, x, y, width, ranges) {
+// Adds bars to the barplot, with hover effects.
+function addbarplotBars(svg, data, x, y, width, ranges) {
     const bars = svg.selectAll(".bar-group")
         .data(data)
         .enter()

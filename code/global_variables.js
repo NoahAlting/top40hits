@@ -292,7 +292,7 @@ function highlight_selection(selectedRange) {
   }
   if (window.selectedType === "genres"){
       longevity_genre_yearhighlight(selectedRange);
-      GenreHist_range_detailed_opacity(selectedRange);
+      GenreBarplot_range_detailed_opacity(selectedRange);
   }
 }
 

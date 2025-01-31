@@ -1,3 +1,9 @@
+/* 
+USED
+- https://observablehq.com/@d3/radial-area-chart
+*/
+
+// Some general information for the longevity charts
 var longevity_radialChart_container = document.getElementById("longevityradialPlotContainer");
 var width_longevity_radialChartContainer = longevity_radialChart_container.clientWidth;
 var height_longevity_radialChartContainer = longevity_radialChart_container.clientHeight;
@@ -9,6 +15,8 @@ const innerRadius_longevity_radialChart = 20;
 const outerRadius_longevity_radialChart = 100;
 
 var categories = ["Short Hits", "Medium Hits", "Long Hits"];
+
+// A function to define the color of the line category-based. So when one year range is selected.
 function get_color_categories(label, labels) {
   var colorScale = d3
     .scaleSequential(d3.interpolateWarm)
@@ -17,7 +25,10 @@ function get_color_categories(label, labels) {
   return colorScale(index);
 }
 
+// This function loads and proccess feature data, it devides the songs of every year range into short, medium and long hits. Per category it calculates the average for every feature.
 function loadAndProcess_FeaturesData_longevityRadialChart(filtered_data_input, selected_years) {
+  
+  // Load and process the data per year range.
   const all_stats = [];
   selected_years.forEach((range_years) => {
     const mergedData = filtered_data_input
@@ -48,7 +59,46 @@ function loadAndProcess_FeaturesData_longevityRadialChart(filtered_data_input, s
       }),
       (d) => d.Song_ID
     );
-    
+
+    const groupedByLongevity = d3.rollup(
+      Array.from(longevity_information.entries()).map(([Song_ID, data]) => ({
+        Song_ID,
+        ...data,
+      })),
+      (group) => group,
+      (d) => d.maximum_amount_of_weeks
+    );
+
+    const sortedGroups = Array.from(groupedByLongevity.entries()).sort(
+      (a, b) => a[0] - b[0]
+    );
+
+    // Devide the songs into three categories. But making sure the length of these categories is roughly the same.
+    const songs_shortHits = [];
+    const songs_mediumHits = [];
+    const songs_longHits = [];
+    let totalSongs = 0;
+    sortedGroups.forEach((group) => {
+      totalSongs += group[1].length;
+    });
+    let targetSize = Math.ceil(totalSongs / 3);
+    let currentCategory = songs_shortHits;
+    sortedGroups.forEach(([weeks, group]) => {
+      if (
+        currentCategory.length > targetSize &&
+        currentCategory !== songs_longHits
+      ) {
+        if (currentCategory === songs_shortHits) {
+          currentCategory = songs_mediumHits;
+          targetSize = Math.ceil((totalSongs - songs_shortHits.length) / 2);
+        } else {
+          currentCategory = songs_longHits;
+        }
+      }
+      currentCategory.push(...group);
+    });
+
+    // Calculate for a list of songs the average and std for that list of songs
     function calculateStats(songs_inCategory, category_name) {
       const featureStats = {};
       possible_features_songs.forEach((feature) => {
@@ -90,18 +140,60 @@ function loadAndProcess_FeaturesData_longevityRadialChart(filtered_data_input, s
       return stats;
     }
 
+    // Calculate for every category the statistics (average and std) per feature
+    const stats_short = calculateStats(songs_shortHits, "Short Hits");
+    const stats_medium = calculateStats(songs_mediumHits, "Medium Hits");
+    const stats_long = calculateStats(songs_longHits, "Long Hits");
+
+    all_stats.push({
+      range: range_years,
+      [categories[0]]: stats_short,
+      [categories[1]]: stats_medium,
+      [categories[2]]: stats_long,
+    });
+  });
+  return all_stats;
+}
+
+// This function loads and proccess genre data, it devides the songs of every year range into short, medium and long hits. Per category it calculates the percentage per genre.
+function loadAndProcess_GenresData_longevityRadialChart(
+  filtered_data_input,
+  selected_years
+) {
+
+  // Load and process the data per year range.
+  const stats_all = [];
+  selected_years.forEach((range_years) => {
+    let range_year_data = [];
+    possible_genres.concat(remaining_genres).forEach((genre) => {
+      let genre_data = filtered_data_input[genre];
+      let genre_data_year_range = genre_data.filter(obj => 
+          (+obj.Jaar >= range_years[0] && +obj.Jaar <= range_years[1]) || +obj.Jaar == range_years[0]
+      );
+      
+      let songCounts = {};
+      genre_data_year_range.forEach(song => {
+          let songID = song.Song_ID;
+          if (!songCounts[songID]) {
+              songCounts[songID] = {songID, maximum_amount_of_weeks: 0, genre };
+          }
+          songCounts[songID].maximum_amount_of_weeks++;
+      });
+  
+      range_year_data.push(...Object.values(songCounts));
+    });   
+    
     const groupedByLongevity = d3.rollup(
-      Array.from(longevity_information.entries()).map(([Song_ID, data]) => ({
-        Song_ID,
-        ...data,
-      })),
-      (group) => group,
-      (d) => d.maximum_amount_of_weeks
+      range_year_data, 
+      (group) => group, 
+      (d) => d.maximum_amount_of_weeks 
     );
 
     const sortedGroups = Array.from(groupedByLongevity.entries()).sort(
       (a, b) => a[0] - b[0]
     );
+
+    // Devide the songs into three categories. But making sure the length of these categories is roughly the same.
     const songs_shortHits = [];
     const songs_mediumHits = [];
     const songs_longHits = [];
@@ -126,44 +218,7 @@ function loadAndProcess_FeaturesData_longevityRadialChart(filtered_data_input, s
       currentCategory.push(...group);
     });
 
-    const stats_short = calculateStats(songs_shortHits, "Short Hits");
-    const stats_medium = calculateStats(songs_mediumHits, "Medium Hits");
-    const stats_long = calculateStats(songs_longHits, "Long Hits");
-
-    all_stats.push({
-      range: range_years,
-      [categories[0]]: stats_short,
-      [categories[1]]: stats_medium,
-      [categories[2]]: stats_long,
-    });
-  });
-  return all_stats;
-}
-
-function loadAndProcess_GenresData_longevityRadialChart(
-  filtered_data_input,
-  selected_years
-) {
-  const stats_all = [];
-  selected_years.forEach((range_years) => {
-    let range_year_data = [];
-    possible_genres.concat(remaining_genres).forEach((genre) => {
-      let genre_data = filtered_data_input[genre];
-      let genre_data_year_range = genre_data.filter(obj => 
-          (+obj.Jaar >= range_years[0] && +obj.Jaar <= range_years[1]) || +obj.Jaar == range_years[0]
-      );
-      
-      let songCounts = {};
-      genre_data_year_range.forEach(song => {
-          let songID = song.Song_ID;
-          if (!songCounts[songID]) {
-              songCounts[songID] = {songID, maximum_amount_of_weeks: 0, genre };
-          }
-          songCounts[songID].maximum_amount_of_weeks++;
-      });
-  
-      range_year_data.push(...Object.values(songCounts));
-  });   
+    // Calculate for a list of songs the percentage of every genre for that list of songs
     function calculateStats(songs_inCategories, category_name) {
       var stats = [];
       let total_songs_in_category = songs_inCategories.length;
@@ -190,40 +245,7 @@ function loadAndProcess_GenresData_longevityRadialChart(
       })
       return stats;
     }
-    
-    const groupedByLongevity = d3.rollup(
-      range_year_data, 
-      (group) => group, 
-      (d) => d.maximum_amount_of_weeks 
-    );
-
-    const sortedGroups = Array.from(groupedByLongevity.entries()).sort(
-      (a, b) => a[0] - b[0]
-    );
-    const songs_shortHits = [];
-    const songs_mediumHits = [];
-    const songs_longHits = [];
-    let totalSongs = 0;
-    sortedGroups.forEach((group) => {
-      totalSongs += group[1].length;
-    });
-    let targetSize = Math.ceil(totalSongs / 3);
-    let currentCategory = songs_shortHits;
-    sortedGroups.forEach(([weeks, group]) => {
-      if (
-        currentCategory.length > targetSize &&
-        currentCategory !== songs_longHits
-      ) {
-        if (currentCategory === songs_shortHits) {
-          currentCategory = songs_mediumHits;
-          targetSize = Math.ceil((totalSongs - songs_shortHits.length) / 2);
-        } else {
-          currentCategory = songs_longHits;
-        }
-      }
-      currentCategory.push(...group);
-    });
-
+    // Calculate for every category the statistics the amount of genre songs
     const stats_short = calculateStats(songs_shortHits, "Short Hits");
     const stats_medium = calculateStats(songs_mediumHits, "Medium Hits");
     const stats_long = calculateStats(songs_longHits, "Long Hits");
@@ -238,6 +260,7 @@ function loadAndProcess_GenresData_longevityRadialChart(
   return stats_all;
 }
 
+// This function creates one radial plot for the feature averages with the labels being either year ranges or the categories. It also makes it possible to generate a standard deviation area.
 function createInteractiveGraph_Features_longevityRadialChart(
   data,
   chartContainer,
@@ -246,6 +269,7 @@ function createInteractiveGraph_Features_longevityRadialChart(
   function_colors,
   font_size
 ) {
+  // Create radial grid lines for reference
   const radialGrid = d3.range(
     innerRadius_longevity_radialChart,
     outerRadius_longevity_radialChart,
@@ -261,6 +285,9 @@ function createInteractiveGraph_Features_longevityRadialChart(
     .attr("fill", "none")
     .attr("stroke", "#ccc")
     .attr("opacity", 0.3);
+
+
+  // Add axis lines for each feature
   chartContainer
     .selectAll(".graph-axis")
     .data(data[labels[0]])
@@ -274,6 +301,7 @@ function createInteractiveGraph_Features_longevityRadialChart(
     .style("stroke", "#ffffff") 
     .style("stroke-width", 1); 
   
+  // Add feature labels around the radial chart
   chartContainer
     .selectAll(".label")
     .data(data[labels[0]])
@@ -301,17 +329,22 @@ function createInteractiveGraph_Features_longevityRadialChart(
     .attr("alignment-baseline", "middle")
     .text((d) => d.feature);
 
+  // Loop through each label to draw the radial lines representing feature values
   labels.forEach((label) => {
     let rangeKey = `${label[0]}-${label[1]}`; 
         if (label.length === 1) {
             rangeKey = `${label}-${label}`;
         }
     const filteredStats = data[label];
+
+    // Define a radial line function for plotting
     const radialLine = d3
       .lineRadial()
       .angle((d) => d.angle)
       .radius((d) => radiusScale(d.avg))
       .curve(d3.curveLinearClosed);
+
+    // Append the radial line path to the chart
     chartContainer
       .append("path")
       .datum(filteredStats)
@@ -324,10 +357,13 @@ function createInteractiveGraph_Features_longevityRadialChart(
       .attr("stroke-width", 2);
   });
 
+  // Function to activate or remove standard deviation area
   function activateStdArea(event) {
     const isChecked = event.target.checked;
     labels.forEach((label) => {
       const filteredStats = data[label];
+
+      // Define an area generator for standard deviation
       var areaGenerator_raidalchart = d3
         .areaRadial()
         .angle((d) => d.angle)
@@ -349,6 +385,8 @@ function createInteractiveGraph_Features_longevityRadialChart(
     });
   }
   d3.select("#myCheckbox").on("change", activateStdArea);
+
+  // Add axis labels (scale indicators) around the radial chart
   chartContainer
     .selectAll(".axis-label")
     .data(d3.range(0, 1.1, 1)) 
@@ -378,6 +416,7 @@ function createInteractiveGraph_Features_longevityRadialChart(
     });
 }
 
+// This function creates one radial plot for the genre percentages with the labels being either year ranges or the categories.
 function createInteractiveGraph_GenresData_longevityRadialChart(
   data,
   chartContainer,
@@ -387,6 +426,7 @@ function createInteractiveGraph_GenresData_longevityRadialChart(
   maxCount,
   font_size
   ) {
+    // Create radial grid lines as reference circles
   const radialGrid = d3.range(
     innerRadius_longevity_radialChart,
     outerRadius_longevity_radialChart,
@@ -403,6 +443,8 @@ function createInteractiveGraph_GenresData_longevityRadialChart(
     .attr("fill", "none")
     .attr("stroke", "#ccc")
     .attr("opacity", 0.3);
+
+  // Add axis lines for each genre  
   chartContainer
     .selectAll(".graph-axis")
     .data(data[labels[0]])
@@ -415,6 +457,8 @@ function createInteractiveGraph_GenresData_longevityRadialChart(
     .attr("y2", (d) => -radiusScale(maxCount) * Math.cos(d.angle))
     .style("stroke", "#ffffff") 
     .style("stroke-width", 1);
+  
+  // Add genre labels around the radial chart
   chartContainer
     .selectAll(".label")
     .data(data[labels[0]])
@@ -441,18 +485,23 @@ function createInteractiveGraph_GenresData_longevityRadialChart(
     })
     .attr("alignment-baseline", "middle")
     .text((d) => d.genre);
-
+  
+  // Loop through each label to draw radial lines representing genre data
   labels.forEach((label) => {
     let rangeKey = `${label[0]}-${label[1]}`; 
         if (label.length === 1) {
             rangeKey = `${label}-${label}`;
         }
     const filteredStats = data[label];
+
+    // Define a radial line function to plot genre longevity data
     const radialLine = d3
       .lineRadial()
       .angle((d) => d.angle)
       .radius((d) => radiusScale(d.count))
       .curve(d3.curveLinearClosed);
+    
+    // Append the radial line path to the chart
     chartContainer
       .append("path")
       .datum(filteredStats)
@@ -464,6 +513,8 @@ function createInteractiveGraph_GenresData_longevityRadialChart(
       .attr("opacity", 0.8)
       .attr("stroke-width", 2);
   });
+
+  // Add axis labels (scale indicators) around the radial chart
   chartContainer
     .selectAll(".axis-label")
     .data(d3.range(0, maxCount + 1, maxCount)) 
@@ -494,6 +545,7 @@ function createInteractiveGraph_GenresData_longevityRadialChart(
 
 }
 
+// The legend that needs to be added for the categories, so when one year range is selected.
 function add_legend(chartContainer, labels) {
   var legendGroup = chartContainer.append("g").attr("class", "legendGroup");
 
@@ -529,6 +581,7 @@ function add_legend(chartContainer, labels) {
   );
 }
 
+// This function is called if there is an update in the global variables. It checks the global variables, makes 1 or 3 radial plots and calls the above functions.
 function update_LongevityRadialGraph(filtered_data_input) {
   // Clear the entire chart container to allow for new charts
   d3.select("#longevity_radialChart").selectAll("*")
@@ -539,6 +592,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
   const stdButtonContainer = d3.select("#std_button_id");
   stdButtonContainer.selectAll("*").remove();
 
+  // Clear any existing standard deviation button
   const selected_years = window.selectedYearRanges
     .sort((a, b) => a[0] - b[0])
     .map((range) => (range[0] === range[1] ? [range[0]] : range));
@@ -577,6 +631,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
           "left"
       );
     }
+    // Define scale for radial graph
     const radiusScale = d3
       .scaleLinear()
       .domain([0, 1])
@@ -584,6 +639,8 @@ function update_LongevityRadialGraph(filtered_data_input) {
         innerRadius_longevity_radialChart,
         outerRadius_longevity_radialChart,
       ]);
+
+    // Create checkbox for toggling standard deviation area
     const stdButton = stdButtonContainer
       .append("label")
       .text("add standard deviation area")
@@ -592,6 +649,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
       .attr("type", "checkbox")
       .attr("id", "myCheckbox");
 
+    // Load and process feature data for visualization
     const data = loadAndProcess_FeaturesData_longevityRadialChart(
       filtered_data_input,
       selected_years
@@ -603,6 +661,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
       function_colors = [];
       let size_graph = 0;
       let font_size = 0;
+      // If multiple year ranges -> 3 charts
       if (numCharts === 3) {
         data.forEach((stat) => {
           if (!indexed_data[stat.range]) {
@@ -624,6 +683,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
         size_graph = 0.6;
         font_size = 4;
       } else {
+        // If one year range -> 1 charts
         let stat = data[0];
         categories.forEach((hitType) => {
           indexed_data[hitType] = [];
@@ -643,6 +703,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
         size_graph = 1;
         font_size = 0;
       }
+      // Adjust chart positioning for multiple graphs
       var chartX = 0;
       var chartY = -0.1;
       if (numCharts == 3){
@@ -659,6 +720,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
           var chartY = -0.13;
         }
       }
+      // Create SVG container for the chart
       const svgContainer = d3
         .select("#longevity_radialChart")
         .append("svg")
@@ -675,6 +737,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
           `translate(${width_longevity_radialChart * chartX}, ${height_longevity_radialChart * chartY})`
       );
 
+      // Add title for each chart
       svgContainer
         .append("text")
         .attr("x", 0)
@@ -689,12 +752,12 @@ function update_LongevityRadialGraph(filtered_data_input) {
           }`
         );
         
-
+      // Create chart container
       const chartContainer = svgContainer
         .append("g")
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round");
-
+      // Generate the interactive radial graph
       createInteractiveGraph_Features_longevityRadialChart(
         indexed_data,
         chartContainer,
@@ -703,18 +766,18 @@ function update_LongevityRadialGraph(filtered_data_input) {
         function_colors,
         font_size
       );
-
+      // Add legend if only one chart is displayed
       if (numCharts == 1) {
         add_legend(chartContainer, labels);
       }
-
+      // Store chart data for event listeners
       chartContainers.push({
         data: indexed_data,
         container: chartContainer,
         labels,
       });
     }
-    // Centralize the event listener for the checkbox
+    // Handle checkbox toggle for standard deviation area
     d3.select("#myCheckbox")
       .style("width", "10px")
       .style("height", "10px")
@@ -786,11 +849,8 @@ function update_LongevityRadialGraph(filtered_data_input) {
         });
       });
     });
-    console.log("maxcoutn", global_max_count);
     
     global_max_count = Math.ceil(global_max_count/ 10) * 10;
-    console.log("maxcoutn", global_max_count);
-    
     
     for (let i = 0; i < numCharts; i++) {
       let indexed_data = {};
@@ -915,6 +975,7 @@ function update_LongevityRadialGraph(filtered_data_input) {
   }
 }
 
+// This function is called when a year range is selected to highligh it in this graph.
 function longevity_radialChart_yearhighlight(selectedRange) {
   if (window.selectedYearRanges.length > 1) {
     const svgs = d3.select("#longevity_radialChart").selectAll("svg");

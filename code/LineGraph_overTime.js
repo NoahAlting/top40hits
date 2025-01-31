@@ -1,3 +1,12 @@
+/* 
+USED
+- https://d3-graph-gallery.com/graph/line_cursor.html  
+- https://stackoverflow.com/questions/29440455/how-to-as-mouseover-to-line-graph-interactive-in-d3
+
+*/
+
+
+// This function loads and proccess feature data, it outputs the average and std per week
 function loadAndProcess_FeaturesData_LineGraph(filtered_data_input, selected_years, selectedGenre, max_top) {
     const plotData = [];
     selected_years.forEach(range_years=>{
@@ -43,6 +52,7 @@ function loadAndProcess_FeaturesData_LineGraph(filtered_data_input, selected_yea
     return plotData;
 }
 
+// This function loads and proccess feature data, it outputs the amount of songs per genre per week in percentage
 function loadAndProcess_GenresData_LineGraph(filtered_data_input, selected_years, selectedGenre, max_top) {
     const plotData = [];
 
@@ -89,20 +99,8 @@ function loadAndProcess_GenresData_LineGraph(filtered_data_input, selected_years
     return plotData;
 }
 
-function createInteractiveGraph_Features_LineGraph(plotData, selected_years, selected_weeks, max_top, selectedGenre, linePlot, table, width_lineGraph, height_lineGraph) {
-    // let minValue = Infinity;
-    // let maxValue = -Infinity;
-    // plotData.forEach(item => {
-    //     if ((item.avgValue - item.stdDev) < minValue) minValue = item.avgValue - item.stdDev;
-    //     if ((item.avgValue + item.stdDev) > maxValue) maxValue = item.avgValue + item.stdDev;
-    //   });
-    // var difference_y = maxValue - minValue;
-    // var minY = Math.max(minValue - difference_y * 0.1, 0);
-    // var maxY = Math.min(maxValue + difference_y * 0.1, 1);
-    // if ((maxY - minY) < 0.2){
-    //     minY = Math.max(0, (minY - (0.5) * (maxY - minY)));
-    //     maxY = Math.min(1, (maxY + (0.5) * (maxY - minY)));
-    // }
+// This function creates a linegraph with the lines presenting the year ranges. It also fills a table based on a search line. And creates a standard deviation area per line.
+function createInteractiveGraph_Features_LineGraph(plotData, selected_years, selected_weeks, linePlot, table, width_lineGraph, height_lineGraph) {
     var x = d3.scaleLinear()
         .domain([selected_weeks[0], selected_weeks[1]])
         .range([0, width_lineGraph])
@@ -111,6 +109,7 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
         .domain([0, 1])
         .range([height_lineGraph, 0])
         .clamp(true);
+
     // Label x-axis
     linePlot.append("g")
     .attr("transform", "translate(0," + height_lineGraph + ")")
@@ -127,6 +126,7 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
         .attr("x", width_lineGraph * 0.5)
         .attr("y", height_lineGraph * 1.2) 
         .text("Weeknumber");
+
     // Label y-axis
     linePlot.append("g")
         .attr("class", "axis-group")
@@ -176,6 +176,7 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
                 .y(d => y(d.avgValue))
             );
     });
+
     // Area standard deviation
     var areaGenerator = d3.area()
         .x(function(d) { return x(d.week); })
@@ -186,6 +187,7 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
         .attr("class", "area")
         .attr("fill-opacity", 0.2)
         .attr("stroke", "none");
+
     // Table below linegraph
     const legendLabels = selected_years.map(range => 
         range.length > 1
@@ -199,8 +201,8 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
         header.append("th").text(year_range).style("border", "1px solid white").style("padding", "5px");
     });
     var tbody = table.append("tbody");
+
     // Navigation vertical line in graph
-    // https://d3-graph-gallery.com/graph/line_cursor.html  
     var navigationLine = linePlot.append('svg:rect')
         .attr('width', width_lineGraph)
         .attr('height', height_lineGraph)
@@ -208,7 +210,6 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
         .attr('pointer-events', 'all');
 
     /// Interactivity hoovering over graph: vertical navigation line appears, table generated and standard deviation area shown
-    // https://stackoverflow.com/questions/29440455/how-to-as-mouseover-to-line-graph-interactive-in-d3
     linePlot.append("path")
         .attr("class", "mouseLine")
         .attr("fill", "none")
@@ -279,22 +280,8 @@ function createInteractiveGraph_Features_LineGraph(plotData, selected_years, sel
         });
 }
 
-function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, selected_weeks, max_top, selectedGenre, linePlot, table, width_lineGraph, height_lineGraph){
-    // let minValue = Infinity;
-    // let maxValue = -Infinity;
-    // plotData.forEach(item => {
-    //     const value = parseFloat(item.genre_percentage);
-    //     if (!isNaN(value)) {
-    //         if (value < minValue) minValue = value;
-    //         if (value > maxValue) maxValue = value;
-    //     }
-    // });    
-    // var difference_y = maxValue - minValue;
-    // var minY = Math.max(minValue - difference_y * 0.2, 0);
-    // var maxY = Math.min(maxValue + difference_y * 0.2, 100);
-    // maxY = Math.max(maxY, 10);
-    /// Graph settings
-    // Set domain and ranges for axes
+// This function creates a linegraph with the lines presenting the year ranges. It also fills a table based on a search line.
+function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, selected_weeks, linePlot, table, width_lineGraph, height_lineGraph){
     var x = d3.scaleLinear()
         .domain([selected_weeks[0], selected_weeks[1]])
         .range([0, width_lineGraph])
@@ -303,6 +290,7 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
         .domain([0, 100])
         .range([height_lineGraph, 0])
         .clamp(true);
+
     // Label x-axis
     linePlot.append("g")
         .attr("transform", "translate(0," + height_lineGraph + ")")
@@ -319,6 +307,7 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
         .attr("x", width_lineGraph * 0.5)
         .attr("y", height_lineGraph * 1.2) 
         .text("Weeknumber");
+
     // Label y-axis
     linePlot.append("g")
         .attr("class", "axis-group")
@@ -335,6 +324,7 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
         .attr("x", -height_lineGraph * 0.5) 
         .attr("y", -70)
         .text(`Amount of songs (in %)`);
+
     // Y-axis grid lines
     linePlot.append("g")
         .attr("class", "grid")
@@ -346,6 +336,7 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
         )
         .attr("opacity", 0.2)
         .attr("stroke-dasharray", "2,2");
+
     /// Create all graphs/ parts
     // Average line in graph
     selected_years.forEach(year_range => {
@@ -366,6 +357,7 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
                 .y(d => y(d.genre_percentage))
             );
     });
+
     // Table below linegraph
     const legendLabels = selected_years.map(range => 
         range.length > 1
@@ -379,8 +371,8 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
         header.append("th").text(year_range).style("border", "1px solid white").style("padding", "5px");
     });
     var tbody = table.append("tbody");
+
     // Navigation vertical line in graph
-    // https://d3-graph-gallery.com/graph/line_cursor.html  
     var navigationLine = linePlot.append('svg:rect')
         .attr('width', width_lineGraph)
         .attr('height', height_lineGraph)
@@ -388,7 +380,6 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
         .attr('pointer-events', 'all')
 
     /// Create interactivity: mouse line (vertical line) + Table to display the values below the legend
-    // https://stackoverflow.com/questions/29440455/how-to-as-mouseover-to-line-graph-interactive-in-d3
     linePlot.append("path")
         .attr("class", "mouseLine")
         .attr("fill", "none")
@@ -431,7 +422,9 @@ function createInteractiveGraph_Genress_LineGraph(plotData, selected_years, sele
         });
 }
 
+// This function is called if there is an update in the global variables. It checks the global variables and calls the above functions.
 function updateLineGraph(filtered_data_input) {
+    // Making transition between current and new linegraph
     if (typeof linePlot !== "undefined") {
         d3.select("#lineGraph_overTime").selectAll("*")
             .transition()
@@ -443,6 +436,7 @@ function updateLineGraph(filtered_data_input) {
         table.selectAll("*").remove();
     }
     
+    // Information for and generating linegraph and table
     var linegraph_containerWidth = document.getElementById("lineGraphContainer").clientWidth;
     var linegraph_containerHeight = document.getElementById("lineGraphContainer").clientHeight;
     var margin_lineGraph = {top: linegraph_containerHeight * 0.15, right: linegraph_containerWidth * 0.05, bottom: linegraph_containerHeight * 0.2, left: linegraph_containerWidth * 0.05};
@@ -467,6 +461,7 @@ function updateLineGraph(filtered_data_input) {
         .style("border-collapse", "collapse")
         .style("visibility", "hidden");    
 
+    // Global variables
     const selected_years = window.selectedYearRanges.sort((a, b) => a[0] - b[0])
         .map(range => range[0] === range[1] ? [range[0]] : range);
     const selectedType = window.selectedType;
@@ -474,7 +469,10 @@ function updateLineGraph(filtered_data_input) {
     const max_top = window.selectedTop;
     const selected_weeks = window.selectedWeekRange;
 
+    // Making sure header and information button is consistent with the data in the plot
     const header_linegraph = d3.select("#heading-container-linegraph");
+
+    // When features are selected
     if (selectedType == "features"){
         header_linegraph.text(`Weekly ${selectedGenre} Scores Over the Year`);
         removeButtonByContainerId("lineGraphContainer")
@@ -490,8 +488,10 @@ function updateLineGraph(filtered_data_input) {
             "right"
         );        
         const data = loadAndProcess_FeaturesData_LineGraph(filtered_data_input, selected_years, selectedGenre, max_top);
-        createInteractiveGraph_Features_LineGraph(data, selected_years, selected_weeks, max_top, selectedGenre,  linePlot, table, width_lineGraph, height_lineGraph);
+        createInteractiveGraph_Features_LineGraph(data, selected_years, selected_weeks,  linePlot, table, width_lineGraph, height_lineGraph);
     }
+
+    // When genres are selected
     else {
         header_linegraph.text(`Weekly Amount of ${selectedGenre} Songs Over the Year`);
         removeButtonByContainerId("lineGraphContainer")
@@ -507,12 +507,15 @@ function updateLineGraph(filtered_data_input) {
             "right"
         );        
         const data = loadAndProcess_GenresData_LineGraph(filtered_data_input, selected_years, selectedGenre, max_top);
-        createInteractiveGraph_Genress_LineGraph(data, selected_years, selected_weeks, max_top, selectedGenre,  linePlot, table, width_lineGraph, height_lineGraph);
+        createInteractiveGraph_Genress_LineGraph(data, selected_years, selected_weeks,  linePlot, table, width_lineGraph, height_lineGraph);
     }
 }
 
+// This function is called when a year range is selected to highligh it in this graph.
 function linegraph_yearhighlight(selectedRange) {
     const svg = d3.select("#lineGraph_overTime");
+    
+    // If there is a range selected, adjust look of the not selected lines
     svg.selectAll("path")
         .attr("stroke-width", 1.5)
         .attr("opacity", 0.4)
@@ -520,6 +523,7 @@ function linegraph_yearhighlight(selectedRange) {
             return d3.select(this).attr("data-original-color");
         });
 
+    // If there is no range selected
     if (!selectedRange || !Array.isArray(selectedRange) || selectedRange.length !== 2) {
         svg.selectAll("path")
             .attr("stroke-width", 2)
@@ -528,6 +532,8 @@ function linegraph_yearhighlight(selectedRange) {
                 return d3.select(this).attr("data-original-color");
             });
     }
+
+    // If there is a range selected, adjust look of the selected year range
     const rangeKey = `${selectedRange[0]}-${selectedRange[1]}`;
     const highlightedPath = svg.selectAll("path")
         .filter(function () {

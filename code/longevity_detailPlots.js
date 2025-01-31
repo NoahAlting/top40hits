@@ -376,6 +376,7 @@ function createInteractiveGraph_Features_scat(divId, data, features, feature, ye
         .attr("height", height_scatterplot);
 
     // Contour density
+    // Inspiration source density curves: https://observablehq.com/@d3/density-contours
     const contours = d3.contourDensity()
         .x(d => xScale(d.Longevity))
         .y(d => yScale(d[feature]))
@@ -400,6 +401,7 @@ function createInteractiveGraph_Features_scat(divId, data, features, feature, ye
     // Create the dot group with clipping path applied
     const dotGroup = svg.append("g").attr("clip-path", "url(#clip)");
 
+    // Inspritation source mousehovering: https://medium.com/@kj_schmidt/hover-effects-for-your-scatter-plot-447df80ea116
     let previouslySelectedDot = null;
     // Dots for the scatterplot
     const dots = dotGroup
@@ -470,6 +472,7 @@ function createInteractiveGraph_Features_scat(divId, data, features, feature, ye
         });
 
 
+    // Inspiration source zooming: https://d3-graph-gallery.com/graph/interactivity_zoom.html
     const zoom = d3.zoom()
         .scaleExtent([1, 30])
         .on("zoom", event => {

@@ -173,6 +173,7 @@ window.addEventListener("selectedRangeUpdated", function () {
 
 
 // Create the plot
+// Inspiration source donut lineplot: https://observablehq.com/@veltman/radial-area-chart
 function createInteractiveGraph_Features_radial(divId, data, features) {
     const svg = d3
         .select(divId)
@@ -250,6 +251,7 @@ function createInteractiveGraph_Features_radial(divId, data, features) {
             .attr("stroke-width", 2)
             .attr("d", featureLines);
 
+        
         svg.selectAll(`.dot-${feature}`)
             .data(featureData)
             .enter()

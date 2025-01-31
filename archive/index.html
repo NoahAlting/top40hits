@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3 test practice page</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            display: grid; /* Arrange content horizontally */
+            grid-template-columns: repeat(2, auto);
+            gap: 20px; /* Space between the circle and bar plot */
+            justify-content: center; /* Center both horizontally */
+            align-items: flex-start; /* Align items at the top */
+        }
+
+        .frame {
+            border: 20px auto; /* Optional border for debugging layout */
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        #lineGraph_overTime {
+            width: 500px;
+            height: 500px;
+        }
+        #scatterplot, #barchart {
+            margin-top: 20px; 
+        }
+        #legend {
+            margin-left: 20px;
+            min-width: 150px;
+        }
+        #longevity_radialChart{
+            width: 500px;
+            height: 500px;
+            margin-top: 20px; 
+        }        
+    </style>
+</head>
+<body>
+    <div id="lineGraph_overTime">
+        <h1>Linegraph</h1>
+    </div>
+    
+    <div class="longevity-section">
+        <h1>Longevity vs Features</h1>
+        <div id="feature-selector"></div>
+        <!-- <div id="year-slider"></div> -->
+        <div id="scatterplot"></div>
+        <div id="legend"></div>
+        <div id="barchart"></div>
+    </div>
+
+    <div id="longevity_radialChart">
+        <div id="std_button_id"></div>
+        <h1>Longevity Radial chart</h1>
+    </div>
+  
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="../code/longevity_detailPlots.js"></script>
+    <script src="../code/Longevity_radialCharts.js"></script>
+    <script src="../code/LineGraph_overTime.js"></script>
+</body>
+</html>

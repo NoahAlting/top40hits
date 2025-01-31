@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style2.css">
+    <title>D3 Year and Week Selection</title>
+</head>
+<body>
+
+
+<div id = "selectorDashboard">
+    <!-- Year Selection (Vertical) -->
+    <div id="yearselectordashboard">
+        <svg id="yearSelector"></svg>
+        <div>
+            <button id="addBrushButton">Add Range</button>
+            <div id="rangeContainer"></div>
+        </div>
+    </div>
+
+    <svg id="weekSelector" width="250" height="50"></svg>
+    <div id="weekRangeContainer"></div>
+</div>
+
+<div class="buttonstrip" id="toggleButtonStrip">
+    <button data-toggle="genres" class="active">Genres</button>
+    <button data-toggle="features">Features</button>
+</div>
+
+<!--week and year ranges-->
+<script>
+    // Define global variables in the global scope (window object)
+    window.selectedType = "features";
+    window.selectedYearRanges = [[1965, 2023]];
+    window.selectedWeekRange = [1,52];
+</script>
+
+<!-- D3.js and Script -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="stack_selection.js"></script> <!-- Your D3 script file -->
+
+</body>
+</html>

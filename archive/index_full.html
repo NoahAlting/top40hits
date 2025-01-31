@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3 test practice page</title>
+    <link rel="stylesheet" href="../code/indexstyle.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+<!-- Radial Plots -->
+
+
+<div id="radial_plots">
+    <h1>Radial Chart Features</h1>
+    <div id="radial-plot" class="chart"></div>
+    <button id="prev-radial">Previous</button>
+    <button id="next-radial">Next</button>
+</div>
+
+<!-- Line Graph on the Left -->
+<div id="lineGraphContainer">
+    <div class="heading-container">
+        <h1>Linegraph</h1>
+    </div>
+    <div id="lineGraph_overTime" class="chart"></div>
+</div>
+
+<!-- Selector Dashboard in the Middle -->
+<div id="selectorDashboard">
+    <h1>Selector Dashboard</h1>
+    <div class="buttonstrip" id="toggleTop">
+        <button data-toggle="top1">1</button>
+        <button data-toggle="top3">3</button>
+        <button data-toggle="top5">5</button>
+        <button data-toggle="top10">10</button>
+        <button data-toggle="top20">20</button>
+        <button data-toggle="top40" class="active">40</button>
+    </div>
+
+    <div id="menu-container">
+        <label for="genre_feature_dropdown">Select: </label>
+        <div id="genre_feature_menu"></div>
+    </div>
+
+    <div class="buttonstrip" id="toggleType">
+        <button data-toggle="genres">Genres</button>
+        <button data-toggle="features" class="active">Features</button>
+    </div>
+    <div id="yearselectordashboard">
+        <svg id="yearSelector"></svg>
+        <div>
+            <button id="addBrushButton">Add Range</button>
+            <div id="rangeContainer"></div>
+        </div>
+    </div>
+    <svg id="weekSelector" width="250" height="50"></svg>
+    <div id="weekRangeContainer"></div>
+</div>
+
+<!-- Feature / Genre selector -->
+ <div id="feature_genre_selector">
+    <div id="topContainer"></div>
+    <div id="bottomContainer"></div>
+ </div>
+
+<!-- Longevity Charts on the Right -->
+
+<div id="longevityradialPlotContainer">
+    <div class="heading-container">
+        <h1>Radial Plots</h1>
+        <div id="std_button_id"></div>
+    </div>
+    <div id="longevity_radialChart" class="chart"></div>
+</div>
+
+
+<div id="longevityCharts">
+    <h1>Longevity vs Features</h1>
+
+    <div id="selected_feature_long"></div>
+        <div id="feature-selector"></div>
+        <div id="scatterplot"></div>
+        <button id="prev">Previous</button>
+        <button id="next">Next</button>
+        <div id="year-range-display"> </div>
+        <div id="tooltip"> </div>
+        <div id="barchart" class="chart"></div>></div>
+    </div>
+
+    <div id="selected_genre_long">
+        <svg id="longevity_histogram" class="chart"></svg>></svg>
+        <div id="controls"></div>
+    </div>
+
+</div>
+
+<!--Global variables-->
+<script>
+    window.selectedType = "features";
+    window.selectedTop = 40;
+    window.selectedYearRanges = [[1965, 2023]];
+    window.selectedWeekRange = [1,52];
+    window.selectedGenre = "Danceability"
+    window.previousYearLength = 0;
+</script>
+
+<!--Scripts-->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="../code/selection_yearweek.js"></script>
+<script src="../code/selection_typetop.js"></script>
+<script src="../code/global_variables.js"></script>
+<script src="../code/longevity_detailPlots.js"></script>
+<script src="../code/Longevity_radialCharts.js"></script>
+<script src="../code/LineGraph_overTime.js"></script>
+<script src="../code/radial_plot.js"></script>
+
+
+</body>
+</html>
